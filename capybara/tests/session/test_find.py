@@ -19,8 +19,18 @@ class TestFind(FindTestCase):
         finally:
             remove_selector("beatle")
 
+    def test_finds_the_first_element_using_the_given_locator(self, session):
+        assert session.find("//h1").text == "This is a test"
+        assert session.find("//input[@id='test_field']").value == "monkey"
+
+    def test_waits_for_asynchronous_load(self, session):
+        session.visit("/with_js")
+        session.click_link("Click me")
+        assert "Has been clicked" in session.find("xpath", ".//a[@id='has-been-clicked']").text
+
     def test_finds_the_first_element_using_the_given_xpath_selector_locator(self, session):
         assert session.find("xpath", "//h1").text == "This is a test"
+        assert session.find("xpath", "//input[@id='test_field']").value == "monkey"
 
     def test_uses_a_custom_selector(self, session):
         with add_selector("beatle") as s:
@@ -28,6 +38,11 @@ class TestFind(FindTestCase):
 
         assert session.find("beatle", "john").text == "John"
         assert session.find("beatle", "paul").text == "Paul"
+
+    def test_finds_an_element_using_the_given_locator_in_a_scope(self, session):
+        session.visit("/with_scope")
+        with session.scope("xpath", "//div[@id='for_bar']"):
+            assert "With Simple HTML" in session.find(".//li[1]").text
 
 
 class TestFindExact(FindTestCase):

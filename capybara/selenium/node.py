@@ -8,6 +8,10 @@ class Node(Base):
         return self.native.tag_name
 
     @property
+    def value(self):
+        return self.native.get_attribute("value")
+
+    @property
     def text(self):
         return normalize_text(self.native.text)
 

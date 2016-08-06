@@ -16,6 +16,11 @@ class TestHasXPath:
         assert not session.has_xpath("//p//a[@id='doesnotexist']")
         assert not session.has_xpath("//p[contains(.,'thisstringisnotonpage')]")
 
+    def test_respects_scopes(self, session):
+        with session.scope("//p[@id='first']"):
+            assert session.has_xpath(".//a[@id='foo']")
+            assert not session.has_xpath(".//a[@id='red']")
+
     def test_waits_for_content_to_appear(self, session):
         session.visit("/with_js")
         session.click_link("Click me")

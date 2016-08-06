@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 from functools import wraps
 import sys
 if sys.version_info >= (3, 0):
@@ -6,6 +7,7 @@ else:
     from urlparse import ParseResult, urlparse
 
 import capybara
+from capybara.node.base import Base
 from capybara.node.document import Document
 from capybara.server import Server
 from capybara.utils import cached_property
@@ -46,6 +48,7 @@ class Session(object):
         self.app = app
         self.server = Server(app).boot()
         self.synchronized = False
+        self._scopes = [None]
 
     @cached_property
     def driver(self):
@@ -56,6 +59,11 @@ class Session(object):
     def document(self):
         """ Document: The document for the current page. """
         return Document(self, self.driver)
+
+    @property
+    def current_scope(self):
+        """ node.Base: The current node relative to which all interaction will be scoped. """
+        return self._scopes[-1] or self.document
 
     def visit(self, visit_uri):
         """
@@ -80,11 +88,41 @@ class Session(object):
 
         self.driver.visit(visit_uri.geturl())
 
+    @contextmanager
+    def scope(self, *args, **kwargs):
+        """
+        Executes the wrapped code within the context of a node. ``scope`` takes the same options
+        as :meth:`find`. For the duration of the context, any command to Capybara will be handled
+        as though it were scoped to the given element. ::
+
+            with scope("xpath", "//div[@id='delivery-address']"):
+                click_link("Edit")
+
+        Just as with :meth:`find`, if multiple elements match the selector given to ``scope``, an
+        error will be raised, and just as with :meth:`find`, this behavior can be controlled
+        through the ``exact`` option.
+
+        Note that a lot of uses of ``scope`` can be replaced more succinctly with chaining::
+
+            find("xpath", "div#delivery-address").click_link("Edit")
+
+        Args:
+            *args: Variable length argument list for the call to :meth:`find`.
+            **kwargs: Arbitrary keywords arguments for the call to :meth:`find`.
+        """
+
+        new_scope = args[0] if isinstance(args[0], Base) else self.find(*args, **kwargs)
+        self._scopes.append(new_scope)
+        try:
+            yield
+        finally:
+            self._scopes.pop()
+
 
 def _define_node_method(method_name):
-    @wraps(getattr(Document, method_name))
+    @wraps(getattr(Base, method_name))
     def func(self, *args, **kwargs):
-        return getattr(self.document, method_name)(*args, **kwargs)
+        return getattr(self.current_scope, method_name)(*args, **kwargs)
     setattr(Session, method_name, func)
 
 

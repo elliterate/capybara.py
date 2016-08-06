@@ -6,6 +6,7 @@ class Element(Base):
     An :class:`Element` represents a single element on the page and has access to HTML attributes
     and other properties of the element::
 
+        bar.value
         bar.text
         bar["title"]
     """
@@ -18,6 +19,11 @@ class Element(Base):
     def tag_name(self):
         """ str: The tag name of the element. """
         return self.base.tag_name
+
+    @property
+    def value(self):
+        """ str: The value of the form element. """
+        return self.base.value
 
     @property
     def text(self):

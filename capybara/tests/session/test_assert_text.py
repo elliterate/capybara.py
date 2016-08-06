@@ -17,6 +17,18 @@ class TestAssertText:
         with pytest.raises(ExpectationNotMet):
             session.assert_text("thisisnotonthepage")
 
+    def test_takes_scopes_into_account(self, session):
+        session.visit("/with_html")
+        with session.scope("//a[@title='awesome title']"):
+            assert session.assert_text("labore") is True
+
+    def test_raises_if_scoped_to_an_element_which_does_not_have_the_text(self, session):
+        session.visit("/with_html")
+        with session.scope("//a[@title='awesome title']"):
+            with pytest.raises(ExpectationNotMet) as excinfo:
+                session.assert_text("monkey")
+        assert "expected to find text 'monkey' in 'labore'" in str(excinfo.value)
+
     def test_waits_for_text_to_appear(self, session):
         session.visit("/with_js")
         session.click_link("Click me")

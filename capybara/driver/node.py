@@ -17,6 +17,11 @@ class Node(object):
         raise NotImplementedError()
 
     @property
+    def value(self):
+        """ str: The value of the node. """
+        raise NotImplementedError()
+
+    @property
     def text(self):
         """ str: The text of the node. """
         raise NotImplementedError()

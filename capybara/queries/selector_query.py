@@ -1,6 +1,7 @@
 from xpath.expression import ExpressionType
 from xpath.renderer import to_xpath
 
+import capybara
 from capybara.helpers import desc
 from capybara.result import Result
 from capybara.selector import selectors
@@ -10,13 +11,20 @@ class SelectorQuery(object):
     """
     Queries for elements using a selector.
 
+    If no locator is provided and the given selector is not a valid selector, the first
+    argument is assumed to be the locator and the default selector will be used.
+
     Args:
         selector (str): The name of the selector to use.
         locator (str): An identifying string to use to locate desired elements.
         exact (bool, optional): Whether to exactly match the locator string. Defaults to False.
     """
 
-    def __init__(self, selector, locator, exact=None):
+    def __init__(self, selector, locator=None, exact=None):
+        if locator is None and selector not in selectors:
+            locator = selector
+            selector = capybara.default_selector
+
         self.selector = selectors[selector]
         self.expression = self.selector(locator)
         self.locator = locator

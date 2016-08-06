@@ -22,6 +22,9 @@ server_port = None
 default_max_wait_time = 2
 """ int: The maximum number of seconds to wait for asynchronous processes to finish. """
 
+default_selector = "xpath"
+""" str: The name of the default selector used to find elements. """
+
 servers = {}
 # Dict[str, Callable[[object, str, int], None]]: A dictionary of server initialization functions.
 

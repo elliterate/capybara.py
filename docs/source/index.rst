@@ -97,7 +97,8 @@ _`Finding`
 
 You can also find specific elements, in order to manipulate them::
 
-    session.find("xpath", "//table/tr").text
+    session.find("xpath", "//table/tr").click()
+    session.find(".//*[@id='overlay']").find(".//h1").click()
 
 **Note**: :meth:`find <capybara.node.finders.FindersMixin.find>` will wait for an element to appear
 on the page, as explained in the Ajax section. If the element does not appear it will raise an
@@ -106,7 +107,21 @@ error.
 These elements all have all the Capybara DSL methods available, so you can restrict them
 to specific parts of the page::
 
-    session.find("xpath", ".//*[@id='navigation']").click_link("Home")
+    session.find(".//*[@id='navigation']").click_link("Home")
+
+_`Scoping`
+----------
+
+Capybara makes it possible to restrict certain actions, such as clicking links, to
+within a specific area of the page. For this purpose you can use the generic
+:meth:`scope <capybara.session.Session.scope>` context manager. Optionally you can specify which
+kind of selector to use. ::
+
+    with session.scope("li#employee"):
+        session.click_link("Jimmy")
+
+    with session.scope("xpath", "//li[@id='employee']"):
+        session.click_link("Jimmy")
 
 _`Asynchronous JavaScript (Ajax and friends)`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
