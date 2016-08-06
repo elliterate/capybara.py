@@ -38,3 +38,7 @@ class Element(Base):
         """
 
         return self.base[name]
+
+    def click(self):
+        """ Click the element. """
+        self.base.click()

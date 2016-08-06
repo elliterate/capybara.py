@@ -64,6 +64,19 @@ You can use the :meth:`visit <capybara.session.Session.visit>` method to navigat
 The visit method only takes a single parameter, the request method is **always**
 GET.
 
+_`Clicking links`
+-----------------
+
+*Full reference:* :class:`capybara.node.actions.ActionsMixin`
+
+You can interact with the webapp by following links. ::
+
+    from capybara import current_session
+
+    session = current_session()
+    session.click_link("id-of-link")
+    session.click_link("Link Text")
+
 _`Querying`
 -----------
 

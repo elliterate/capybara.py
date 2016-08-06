@@ -4,6 +4,14 @@ capybara.node package
 Submodules
 ----------
 
+capybara.node.actions module
+----------------------------
+
+.. automodule:: capybara.node.actions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 capybara.node.base module
 -------------------------
 

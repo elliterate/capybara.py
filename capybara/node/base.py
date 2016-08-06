@@ -1,15 +1,17 @@
+from capybara.node.actions import ActionsMixin
 from capybara.node.finders import FindersMixin
 from capybara.node.matchers import MatchersMixin
 
 
-class Base(FindersMixin, MatchersMixin, object):
+class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
     """
     A :class:`Base` represents either an element on a page through the subclass :class:`Element` or
     a document through :class:`Document`.
 
     Both types of Node share the same methods, used for interacting with the elements on the page.
-    These methods are divided into two categories: finders and matchers. These are found in the
-    classes :class:`FindersMixin` and :class:`MatchersMixin` respectively.
+    These methods are divided into three categories: finders, actions, and matchers. These are found
+    in the classes :class:`FindersMixin`, :class:`ActionsMixin`, and :class:`MatchersMixin`
+    respectively.
 
     A :class:`Session` exposes all methods from :class:`Document` directly::
 

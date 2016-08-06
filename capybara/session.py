@@ -11,7 +11,7 @@ from capybara.server import Server
 from capybara.utils import cached_property
 
 
-_NODE_METHODS = ["assert_text", "find", "find_link", "has_content", "has_text"]
+_NODE_METHODS = ["assert_text", "click_link", "find", "find_link", "has_content", "has_text"]
 _NODE_PROPERTIES = ["text"]
 
 

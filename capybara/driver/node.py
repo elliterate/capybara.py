@@ -33,3 +33,7 @@ class Node(object):
         """
 
         raise NotImplementedError()
+
+    def click(self):
+        """ Clicks on this node. """
+        raise NotImplementedError()
