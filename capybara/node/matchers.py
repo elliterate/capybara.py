@@ -19,12 +19,17 @@ class MatchersMixin(object):
         """
 
         query = TextQuery(*args, **kwargs)
-        matches = query.resolve_for(self)
 
-        if not matches:
-            raise ExpectationNotMet(query.failure_message)
+        @self.synchronize
+        def assert_text():
+            matches = query.resolve_for(self)
 
-        return True
+            if not matches:
+                raise ExpectationNotMet(query.failure_message)
+
+            return True
+
+        return assert_text()
 
     def has_text(self, *args, **kwargs):
         """

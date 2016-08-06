@@ -8,13 +8,16 @@ from capybara.tests.app import app
 def setup_capybara():
     original_app = capybara.app
     original_app_host = capybara.app_host
+    original_default_max_wait_time = capybara.default_max_wait_time
     try:
         capybara.app = app
         capybara.app_host = None
+        capybara.default_max_wait_time = 1
         yield
     finally:
         capybara.app = original_app
         capybara.app_host = original_app_host
+        capybara.default_max_wait_time = original_default_max_wait_time
 
 
 @pytest.fixture(scope="session")

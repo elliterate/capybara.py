@@ -61,5 +61,9 @@ class SelectorQuery(object):
 
         from capybara.node.element import Element
 
-        children = node._find_xpath(self.xpath)
-        return [Element(child) for child in children]
+        @node.synchronize
+        def resolve():
+            children = node._find_xpath(self.xpath)
+            return [Element(node.session, child) for child in children]
+
+        return resolve()

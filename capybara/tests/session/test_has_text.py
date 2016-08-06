@@ -51,3 +51,8 @@ class TestHasText:
     def test_is_true_when_passed_none(self, session):
         session.visit("/with_html")
         assert session.has_text(None)
+
+    def test_waits_for_text_to_appear(self, session):
+        session.visit("/with_js")
+        session.click_link("Click me")
+        assert session.has_text("Has been clicked")

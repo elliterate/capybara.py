@@ -43,6 +43,7 @@ class Session(object):
         self.mode = mode
         self.app = app
         self.server = Server(app).boot()
+        self.synchronized = False
 
     @cached_property
     def driver(self):
@@ -52,7 +53,7 @@ class Session(object):
     @cached_property
     def document(self):
         """ Document: The document for the current page. """
-        return Document(self.driver)
+        return Document(self, self.driver)
 
     def visit(self, visit_uri):
         """

@@ -16,3 +16,8 @@ class TestAssertText:
         session.visit("/with_html")
         with pytest.raises(ExpectationNotMet):
             session.assert_text("thisisnotonthepage")
+
+    def test_waits_for_text_to_appear(self, session):
+        session.visit("/with_js")
+        session.click_link("Click me")
+        assert session.assert_text("Has been clicked") is True

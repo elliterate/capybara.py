@@ -10,6 +10,8 @@ _`Key benefits`
 
 - **No setup** necessary for WSGI-compliant applications. Works out of the box.
 - **Intuitive API** which mimics the language an actual user would use.
+- **Powerful synchronization** features mean you never have to manually wait
+  for asynchronous processes to complete.
 
 _`Setup`
 ~~~~~~~~
@@ -71,9 +73,6 @@ _`Clicking links`
 
 You can interact with the webapp by following links. ::
 
-    from capybara import current_session
-
-    session = current_session()
     session.click_link("id-of-link")
     session.click_link("Link Text")
 
@@ -95,6 +94,42 @@ _`Finding`
 You can also find specific elements, in order to manipulate them::
 
     session.find("xpath", "//table/tr").text
+
+**Note**: :meth:`find <capybara.node.finders.FindersMixin.find>` will wait for an element to appear
+on the page, as explained in the Ajax section. If the element does not appear it will raise an
+error.
+
+These elements all have all the Capybara DSL methods available, so you can restrict them
+to specific parts of the page::
+
+    session.find("xpath", ".//*[@id='navigation']").click_link("Home")
+
+_`Asynchronous JavaScript (Ajax and friends)`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+When working with asynchronous JavaScript, you might come across situations
+where you are attempting to interact with an element which is not yet present
+on the page. Capybara automatically deals with this by waiting for elements
+to appear on the page.
+
+When issuing instructions to the DSL such as::
+
+    session.click_link("foo")
+    session.click_link("bar")
+    assert session.has_text("baz")
+
+If clicking on the *foo* link triggers an asynchronous process, such as
+an Ajax request, which, when complete will add the *bar* link to the page,
+clicking on the *bar* link would be expected to fail, since that link doesn't
+exist yet. However Capybara is smart enough to retry finding the link for a
+brief period of time before giving up and throwing an error. The same is true of
+the next line, which looks for the content *baz* on the page; it will retry
+looking for that content for a brief time. You can adjust how long this period
+is (the default is 2 seconds)::
+
+    import capybara
+
+    capybara.default_max_wait_time = 5
 
 Indices and tables
 ==================

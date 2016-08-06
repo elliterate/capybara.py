@@ -19,6 +19,9 @@ server_host = "127.0.0.1"
 server_port = None
 """ int, optional: The port bound by the default server. """
 
+default_max_wait_time = 2
+""" int: The maximum number of seconds to wait for asynchronous processes to finish. """
+
 servers = {}
 # Dict[str, Callable[[object, str, int], None]]: A dictionary of server initialization functions.
 
