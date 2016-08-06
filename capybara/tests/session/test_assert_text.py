@@ -9,6 +9,8 @@ class TestAssertText:
         assert session.assert_text("est") is True
         assert session.assert_text("Lorem") is True
         assert session.assert_text("Redirect") is True
+        assert session.assert_text("text with whitespace") is True
+        assert session.assert_text("text     with \n\n whitespace") is True
 
     def test_raises_an_error_if_the_given_text_is_not_on_the_page(self, session):
         session.visit("/with_html")

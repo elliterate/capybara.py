@@ -19,7 +19,7 @@ class SelectorQuery(object):
     @property
     def label(self):
         """ str: A short description of the selector. """
-        return self.selector.name
+        return self.selector.label or self.selector.name
 
     @property
     def description(self):

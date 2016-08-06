@@ -30,6 +30,8 @@ class MatchersMixin(object):
         """
         Checks if the page or current node has the given text content, ignoring any HTML tags.
 
+        Whitespaces are normalized in both the node's text and the passed text parameter.
+
         Args:
             *args: Variable length argument list for :class:`TextQuery`.
             **kwargs: Arbitrary keyword arguments for :class:`TextQuery`.

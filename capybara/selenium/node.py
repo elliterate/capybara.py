@@ -1,4 +1,5 @@
 from capybara.driver.node import Node as Base
+from capybara.helpers import normalize_text
 
 
 class Node(Base):
@@ -8,7 +9,7 @@ class Node(Base):
 
     @property
     def text(self):
-        return self.native.text
+        return normalize_text(self.native.text)
 
     def _find_xpath(self, xpath):
         cls = type(self)

@@ -1,3 +1,5 @@
+import re
+
 from capybara.utils import decode_bytes, isbytes
 
 
@@ -12,7 +14,7 @@ def desc(value):
 
 def normalize_text(value):
     """
-    Normalizes the given value to a string of text.
+    Normalizes the given value to a string of text with extra whitespace removed.
 
     Byte sequences are decoded. ``None`` is converted to an empty string. Everything else
     is simply cast to a string.
@@ -27,4 +29,20 @@ def normalize_text(value):
     if value is None:
         return ""
 
-    return decode_bytes(value) if isbytes(value) else str(value)
+    text = decode_bytes(value) if isbytes(value) else str(value)
+
+    return normalize_whitespace(text)
+
+
+def normalize_whitespace(text):
+    """
+    Returns the given text with outer whitespace removed and inner whitespace collapsed.
+
+    Args:
+        text (str): The text to normalize.
+
+    Returns:
+        str: The normalized text.
+    """
+
+    return re.sub(r"\s+", " ", text, flags=re.UNICODE).strip()
