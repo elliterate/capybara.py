@@ -123,6 +123,18 @@ kind of selector to use. ::
     with session.scope("xpath", "//li[@id='employee']"):
         session.click_link("Jimmy")
 
+_`Debugging`
+------------
+
+You can retrieve the current state of the DOM as a string using
+:attr:`session.html <capybara.session.Session.html>`. ::
+
+    print(session.html)
+
+This is mostly useful for debugging. You should avoid testing against the contents of
+:attr:`session.html <capybara.session.Session.html>` and use the more expressive finder methods
+instead.
+
 _`Asynchronous JavaScript (Ajax and friends)`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

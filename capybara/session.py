@@ -65,6 +65,17 @@ class Session(object):
         """ node.Base: The current node relative to which all interaction will be scoped. """
         return self._scopes[-1] or self.document
 
+    @property
+    def html(self):
+        """ str: A snapshot of the DOM of the current document, as it looks right now. """
+        return self.driver.html
+
+    body = html
+    """ Alias for :attr:`html`. """
+
+    source = html
+    """ Alias for :attr:`html`. """
+
     def visit(self, visit_uri):
         """
         Navigate to the given URL. ::

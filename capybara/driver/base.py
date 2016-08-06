@@ -1,6 +1,11 @@
 class Base(object):
     """ The base class for drivers used by sessions. """
 
+    @property
+    def html(self):
+        """ str: A snapshot of the DOM of the current document, as it looks right now. """
+        raise NotImplementedError()
+
     def visit(self, path):
         """
         Visits the given path.

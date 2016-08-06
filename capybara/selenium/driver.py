@@ -17,6 +17,10 @@ class Driver(Base):
         return browser
 
     @property
+    def html(self):
+        return self.browser.page_source
+
+    @property
     def text(self):
         return self.browser.text
 
