@@ -1,6 +1,6 @@
 import pytest
 
 
-@pytest.fixture(autouse=True)
-def setup_capybara():
-    pass
+@pytest.fixture(scope="session", params=["selenium"])
+def driver(request):
+    return request.param

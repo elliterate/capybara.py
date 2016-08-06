@@ -1,8 +1,59 @@
 capybara package
 ================
 
+Subpackages
+-----------
+
+.. toctree::
+
+    capybara.driver
+    capybara.node
+    capybara.queries
+    capybara.selector
+    capybara.selenium
+
 Submodules
 ----------
+
+capybara.exceptions module
+--------------------------
+
+.. automodule:: capybara.exceptions
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+capybara.helpers module
+-----------------------
+
+.. automodule:: capybara.helpers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+capybara.server module
+----------------------
+
+.. automodule:: capybara.server
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+capybara.session module
+-----------------------
+
+.. automodule:: capybara.session
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+capybara.utils module
+---------------------
+
+.. automodule:: capybara.utils
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 capybara.version module
 -----------------------

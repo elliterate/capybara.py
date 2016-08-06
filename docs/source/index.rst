@@ -16,6 +16,73 @@ _`Setup`
 
 To install, add ``capybara-py`` to your application's test requirements.
 
+In your test setup, set :data:`capybara.app` to your WSGI-compliant app::
+
+    import app
+    import capybara
+
+    capybara.app = app
+
+_`Drivers`
+~~~~~~~~~~
+
+Capybara uses the same DSL to drive a variety of browser and headless drivers.
+By default, Capybara uses the ``"selenium"`` driver.
+
+_`Selenium`
+-----------
+
+At the moment, Capybara supports |selenium_2.0_webdriver|_, *not* Selenium RC.
+In order to use Selenium, you'll need to install the ``selenium-webdriver``
+package. Provided Firefox is installed, everything is set up for you, and you
+should be able to start using Selenium right away.
+
+.. |selenium_2.0_webdriver| replace:: Selenium 2.0 (Webdriver)
+.. _selenium_2.0_webdriver: http://seleniumhq.org/docs/01_introducing_selenium.html#selenium-2-aka-selenium-webdriver
+
+_`Using Capybara`
+~~~~~~~~~~~~~~~~~
+
+You can access the DSL by importing ``capybara`` and getting the
+:func:`current_session <capybara.current_session>`:
+
+    import capybara
+
+    session = capybara.current_session()
+    session.visit("/")
+
+_`The DSL`
+~~~~~~~~~~
+
+_`Navigating`
+-------------
+
+You can use the :meth:`visit <capybara.session.Session.visit>` method to navigate to other pages::
+
+    session.visit("/projects")
+
+The visit method only takes a single parameter, the request method is **always**
+GET.
+
+_`Querying`
+-----------
+
+*Full reference:* :class:`capybara.node.matchers.MatchersMixin`
+
+Capybara has a rich set of options for querying the page for the existence of certain elements, and
+working with and manipulating those elements. ::
+
+    session.has_text("foo")
+
+_`Finding`
+----------
+
+*Full reference:* :class:`capybara.node.finders.FindersMixin`
+
+You can also find specific elements, in order to manipulate them::
+
+    session.find("xpath", "//table/tr").text
+
 Indices and tables
 ==================
 
