@@ -13,7 +13,7 @@ from capybara.utils import cached_property
 
 _NODE_METHODS = [
     "assert_selector", "assert_text", "click_link", "find", "find_link", "has_content",
-    "has_selector", "has_text"]
+    "has_selector", "has_text", "has_xpath"]
 _NODE_PROPERTIES = ["text"]
 
 

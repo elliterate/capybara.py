@@ -87,6 +87,9 @@ working with and manipulating those elements. ::
     session.has_selector("table tr")
     session.has_selector("xpath", "//table/tr")
 
+    session.has_xpath("//table/tr")
+    session.has_text("foo")
+
 _`Finding`
 ----------
 
