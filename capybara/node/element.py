@@ -3,10 +3,11 @@ from capybara.node.base import Base
 
 class Element(Base):
     """
-    An :class:`Element` represents a single element on the page and has access to properties of the
-    element::
+    An :class:`Element` represents a single element on the page and has access to HTML attributes
+    and other properties of the element::
 
         bar.text
+        bar["title"]
     """
 
     def __repr__(self):
@@ -22,3 +23,18 @@ class Element(Base):
     def text(self):
         """ str: The text of the element. """
         return self.base.text
+
+    def __getitem__(self, name):
+        """
+        Retrieve the given attribute. ::
+
+            element["title"]  # => HTML title attribute
+
+        Args:
+            name (str): The attribute to retrieve.
+
+        Returns:
+            str: The value of the attribute.
+        """
+
+        return self.base[name]

@@ -15,3 +15,13 @@ class TestNodeText(NodeTestCase):
     def test_returns_document_text_on_html_selector(self, session):
         session.visit("/with_simple_html")
         assert session.find("xpath", "/html").text == "Bar"
+
+
+class TestNodeAttribute(NodeTestCase):
+    def test_extracts_node_attributes(self, session):
+        assert session.find("xpath", "//a[1]")["class"] == "simple"
+        assert session.find("xpath", "//a[2]")["id"] == "foo"
+        assert session.find("xpath", "//input[1]")["type"] == "text"
+
+    def test_extracts_boolean_node_attributes(self, session):
+        assert session.find("xpath", "//input[@id='checked_field']")["checked"]

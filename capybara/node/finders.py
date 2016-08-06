@@ -28,3 +28,17 @@ class FindersMixin(object):
             raise ElementNotFound("Unable to find {0}".format(query.description))
 
         return result[0]
+
+    def find_link(self, locator, **kwargs):
+        """
+        Find a link on the page. The link can be found by its id or text.
+
+        Args:
+            locator (str): ID, title, text, or alt of enclosed img element.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            Element: The found element.
+        """
+
+        return self.find("link", locator, **kwargs)

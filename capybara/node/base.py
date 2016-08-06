@@ -24,6 +24,19 @@ class Base(FindersMixin, MatchersMixin, object):
     def __init__(self, base):
         self.base = base
 
+    def __getitem__(self, name):
+        """
+        Retrieve the given attribute.
+
+        Args:
+            name (str): The attribute to retrieve.
+
+        Returns:
+            str: The value of the attribute.
+        """
+
+        raise NotImplementedError()
+
     @property
     def text(self):
         """ str: The text of the node. """

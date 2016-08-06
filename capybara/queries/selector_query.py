@@ -1,3 +1,6 @@
+from xpath.expression import ExpressionType
+from xpath.renderer import to_xpath
+
 from capybara.helpers import desc
 from capybara.selector import selectors
 
@@ -9,12 +12,15 @@ class SelectorQuery(object):
     Args:
         selector (str): The name of the selector to use.
         locator (str): An identifying string to use to locate desired elements.
+        exact (bool, optional): Whether to exactly match the locator string. Defaults to False.
     """
 
-    def __init__(self, selector, locator):
+    def __init__(self, selector, locator, exact=None):
         self.selector = selectors[selector]
         self.expression = self.selector(locator)
         self.locator = locator
+        self.options = {
+            "exact": exact}
 
     @property
     def label(self):
@@ -27,9 +33,20 @@ class SelectorQuery(object):
         return "{} {}".format(self.label, desc(self.locator))
 
     @property
+    def exact(self):
+        """ bool: Whether to exactly match the locator string. """
+        if self.options["exact"] is not None:
+            return self.options["exact"]
+        else:
+            return False
+
+    @property
     def xpath(self):
         """ str: The XPath query for this selector. """
-        return str(self.expression)
+        if isinstance(self.expression, ExpressionType):
+            return to_xpath(self.expression, exact=self.exact)
+        else:
+            return str(self.expression)
 
     def resolve_for(self, node):
         """

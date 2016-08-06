@@ -20,3 +20,16 @@ class Node(object):
     def text(self):
         """ str: The text of the node. """
         raise NotImplementedError()
+
+    def __getitem__(self, name):
+        """
+        Returns the value of a given attribute of this node.
+
+        Args:
+            name (str): The name of the desired attribute.
+
+        Returns:
+            str: The value of the desired attribute.
+        """
+
+        raise NotImplementedError()
