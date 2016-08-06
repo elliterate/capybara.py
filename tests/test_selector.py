@@ -45,6 +45,28 @@ class TestAddSelector:
         selector = selectors["custom_selector"]
         assert selector("foo") == ".//h1[./@id = 'foo']"
 
+    def test_css_assignment_sets_css_query_function(self):
+        with add_selector("custom_selector") as s:
+            s.css = lambda id: "h1#{}".format(id)
+        selector = selectors["custom_selector"]
+        assert selector("foo") == "h1#foo"
+
+    def test_css_decorator_sets_css_query_function(self):
+        with add_selector("custom_selector") as s:
+            @s.css
+            def css(id):
+                return "h1#{}".format(id)
+        selector = selectors["custom_selector"]
+        assert selector("foo") == "h1#foo"
+
+    def test_css_decorator_with_parens_sets_css_query_function(self):
+        with add_selector("custom_selector") as s:
+            @s.css()
+            def css(id):
+                return "h1#{}".format(id)
+        selector = selectors["custom_selector"]
+        assert selector("foo") == "h1#foo"
+
 
 class TestRemoveSelector:
     def test_removes_added_selector(self):

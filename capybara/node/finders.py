@@ -15,7 +15,9 @@ class FindersMixin(object):
         Find an :class:`Element` based on the given arguments. ``find`` will raise an error if the
         element is not found. ::
 
+            page.find("#foo").find(".bar")
             page.find("xpath", "//div[contains(., 'bar')]")
+            page.find("li").click_link("Delete")
 
         Args:
             *args: Variable length argument list for :class:`SelectorQuery`.

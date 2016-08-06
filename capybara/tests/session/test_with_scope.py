@@ -8,6 +8,11 @@ class TestScope:
     def setup_session(self, session):
         session.visit("/with_scope")
 
+    def test_asserts_content_in_the_given_scope(self, session):
+        with session.scope("css", "#for_foo"):
+            assert not session.has_text("First Name")
+        assert session.has_text("First Name")
+
     def test_clicks_links_in_the_given_xpath_scope(self, session):
         with session.scope("xpath", "//div[@id='for_bar']//li[contains(.,'With Simple HTML')]"):
             session.click_link("Go")

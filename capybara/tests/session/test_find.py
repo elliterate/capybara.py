@@ -26,7 +26,14 @@ class TestFind(FindTestCase):
     def test_waits_for_asynchronous_load(self, session):
         session.visit("/with_js")
         session.click_link("Click me")
-        assert "Has been clicked" in session.find("xpath", ".//a[@id='has-been-clicked']").text
+        assert "Has been clicked" in session.find("css", "a#has-been-clicked").text
+
+    def test_finds_the_first_element_with_using_the_given_css_selector_locator(self, session):
+        assert session.find("css", "h1").text == "This is a test"
+        assert session.find("css", "input[id='test_field']")["value"] == "monkey"
+
+    def test_supports_css_pseudo_selectors(self, session):
+        assert session.find("css", "input:disabled")["value"] == "This is disabled"
 
     def test_finds_the_first_element_using_the_given_xpath_selector_locator(self, session):
         assert session.find("xpath", "//h1").text == "This is a test"
@@ -43,6 +50,11 @@ class TestFind(FindTestCase):
         session.visit("/with_scope")
         with session.scope("xpath", "//div[@id='for_bar']"):
             assert "With Simple HTML" in session.find(".//li[1]").text
+
+    def test_supports_pseudo_selectors_in_a_scope(self, session):
+        session.visit("/with_scope")
+        with session.scope("xpath", "//div[@id='for_bar']"):
+          assert session.find("css", "input:disabled")["value"] == "James"
 
 
 class TestFindExact(FindTestCase):

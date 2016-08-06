@@ -88,6 +88,7 @@ working with and manipulating those elements. ::
     session.has_selector("xpath", "//table/tr")
 
     session.has_xpath("//table/tr")
+    session.has_css("table tr.foo")
     session.has_text("foo")
 
 _`Finding`
@@ -98,7 +99,7 @@ _`Finding`
 You can also find specific elements, in order to manipulate them::
 
     session.find("xpath", "//table/tr").click()
-    session.find(".//*[@id='overlay']").find(".//h1").click()
+    session.find("#overlay").find("h1").click()
 
 **Note**: :meth:`find <capybara.node.finders.FindersMixin.find>` will wait for an element to appear
 on the page, as explained in the Ajax section. If the element does not appear it will raise an
@@ -107,7 +108,7 @@ error.
 These elements all have all the Capybara DSL methods available, so you can restrict them
 to specific parts of the page::
 
-    session.find(".//*[@id='navigation']").click_link("Home")
+    session.find("#navigation").click_link("Home")
 
 _`Scoping`
 ----------
@@ -161,6 +162,70 @@ is (the default is 2 seconds)::
     import capybara
 
     capybara.default_max_wait_time = 5
+
+_`XPath, CSS and selectors`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Capybara does not try to guess what kind of selector you are going to give it,
+and will always use CSS by default. If you want to use XPath, you'll need to
+do::
+
+    with session.scope("xpath", "//ul/li"):
+        # ...
+    session.find("xpath", "//ul/li").text
+
+Alternatively you can set the default selector to XPath::
+
+    import capybara
+
+    capybara.default_selector = "xpath"
+
+    session.find("//ul/li").text
+
+Capybara allows you to add custom selectors, which can be very useful if you
+find yourself using the same kinds of selectors very often::
+
+    from capybara.selector import add_selector
+    from xpath import dsl as x
+
+    with add_selector("id") as s:
+        s.xpath = lambda id: x.descendant[x.attr("id") == str(id)]
+
+    with add_selector("row") as s:
+        s.xpath = lambda num: ".//tbody/tr[{}]".format(num)
+
+    with add_selector("flash_type") as s:
+        s.css = lambda flash_type: "#flash.{}".format(flash_type)
+
+The block given to xpath must always return an XPath expression as a string, or
+an XPath expression generated through the ``xpath-py`` package. You can now use these
+selectors like this::
+
+    session.find("id", "post_123")
+    session.find("row", 3)
+    session.find("flash_type", "notice")
+
+_`Beware the XPath // trap`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+In XPath the expression // means something very specific, and it might not be what
+you think. Contrary to common belief, // means "anywhere in the document" not "anywhere
+in the current context". As an example::
+
+    session.find("xpath", "//body").find("xpath", "//script")
+
+You might expect this to find a script tag in the body, but actually, it finds a
+script tag anywhere in the entire document, not only in the body! What you're looking
+for is the .// expression which means "any descendant of the current node"::
+
+    session.find("xpath", "//body").find("xpath", ".//script")
+
+The same thing goes for :meth:`scope <capybara.session.Session.scope>`::
+
+    with session.scope("xpath", "//body"):
+        session.find("xpath", ".//script")
+        with session.scope("xpath", ".//table/tbody"):
+            # ...
 
 Indices and tables
 ==================

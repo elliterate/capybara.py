@@ -7,6 +7,11 @@ class NodeTestCase:
         session.visit("/with_html")
 
 
+class TestNode(NodeTestCase):
+    def test_scopes_css_selectors(self, session):
+        assert not session.find("css", "#second").has_css("h1")
+
+
 class TestNodeText(NodeTestCase):
     def test_extracts_node_text(self, session):
         assert session.find("//a[1]").text == "labore"

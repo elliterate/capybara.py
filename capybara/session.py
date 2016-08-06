@@ -16,7 +16,7 @@ from capybara.utils import cached_property
 _DOCUMENT_METHODS = ["assert_title", "has_title"]
 _DOCUMENT_PROPERTIES = ["title"]
 _NODE_METHODS = [
-    "assert_selector", "assert_text", "click_link", "find", "find_link", "has_content",
+    "assert_selector", "assert_text", "click_link", "find", "find_link", "has_content", "has_css",
     "has_selector", "has_text", "has_xpath"]
 _NODE_PROPERTIES = ["text"]
 
@@ -115,9 +115,15 @@ class Session(object):
         error will be raised, and just as with :meth:`find`, this behavior can be controlled
         through the ``exact`` option.
 
+        It is possible to omit the first argument, in that case, the selector is assumed to be of
+        the type set in :data:`capybara.default_selector`. ::
+
+            with scope("div#delivery-address"):
+                click_link("Edit")
+
         Note that a lot of uses of ``scope`` can be replaced more succinctly with chaining::
 
-            find("xpath", "div#delivery-address").click_link("Edit")
+            find("div#delivery-address").click_link("Edit")
 
         Args:
             *args: Variable length argument list for the call to :meth:`find`.

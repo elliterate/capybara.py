@@ -23,6 +23,7 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
         session = Session("selenium", my_app)
         session.visit("/")
         bar = session.find("#bar")  # from capybara.node.finders.FindersMixin
+        session.has_css("#foobar")  # from capybara.node.matchers.MatchersMixin
 
     Args:
         session (Session): The session from which this node originated.
@@ -102,6 +103,9 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
                     self.session.synchronized = False
 
         return outer
+
+    def _find_css(self, css):
+        return self.base._find_css(css)
 
     def _find_xpath(self, xpath):
         return self.base._find_xpath(xpath)

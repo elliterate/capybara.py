@@ -21,6 +21,19 @@ class Base(object):
 
         raise NotImplementedError()
 
+    def _find_css(self, query):
+        """
+        A private method for finding nodes matching a given CSS query.
+
+        Args:
+            query (str): The CSS query to match.
+
+        Returns:
+            list(driver.Node): A list of matching nodes found by the driver.
+        """
+
+        raise NotImplementedError()
+
     def _find_xpath(self, query):
         """
         A private method for finding nodes matching a given XPath query.

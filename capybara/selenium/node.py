@@ -18,6 +18,10 @@ class Node(Base):
     def __getitem__(self, name):
         return self.native.get_attribute(name)
 
+    def _find_css(self, css):
+        cls = type(self)
+        return [cls(self.driver, element) for element in self.native.find_elements_by_css_selector(css)]
+
     def _find_xpath(self, xpath):
         cls = type(self)
         return [cls(self.driver, element) for element in self.native.find_elements_by_xpath(xpath)]

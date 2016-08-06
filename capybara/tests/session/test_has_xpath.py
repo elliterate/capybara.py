@@ -1,5 +1,7 @@
 import pytest
 
+import capybara
+
 
 class TestHasXPath:
     @pytest.fixture(autouse=True)
@@ -15,6 +17,10 @@ class TestHasXPath:
         assert not session.has_xpath("//abbr")
         assert not session.has_xpath("//p//a[@id='doesnotexist']")
         assert not session.has_xpath("//p[contains(.,'thisstringisnotonpage')]")
+
+    def test_uses_xpath_even_if_default_selector_is_css(self, session):
+        capybara.default_selector = "css"
+        assert not session.has_xpath("//p//a[@id='doesnotexist']")
 
     def test_respects_scopes(self, session):
         with session.scope("//p[@id='first']"):

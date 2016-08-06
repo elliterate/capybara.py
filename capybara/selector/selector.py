@@ -14,20 +14,22 @@ class Selector(object):
     Args:
         name (str): The name of the selector.
         label (str, optional): The label to use when describing this selector.
+        css (Callable[[str], str], optional): A function to generate a CSS selector given a locator
+            string.
         xpath (Callable[[str], str], optional): A function to generate an XPath query given a
             locator string.
     """
 
-    def __init__(self, name, label=None, xpath=None):
-        """
-        """
-
+    def __init__(self, name, label=None, css=None, xpath=None):
         self.name = name
         self.label = label
+        self.css = css
         self.xpath = xpath
+        self.format = "xpath" if xpath else "css"
 
     def __call__(self, locator):
-        return self.xpath(locator)
+        assert self.format, "selector has no format"
+        return getattr(self, self.format)(locator)
 
 
 class SelectorFactory(object):
@@ -42,6 +44,19 @@ class SelectorFactory(object):
         self.name = name
         self.label = None
         self.func = None
+        self.format = None
+
+    @setter_decorator
+    def css(self, func):
+        """
+        Sets the given function as the CSS selector generation function.
+
+        Args:
+            func (Callable[[str], str]): The CSS selector generation function.
+        """
+
+        self.func = func
+        self.format = "css"
 
     @setter_decorator
     def xpath(self, func):
@@ -53,10 +68,17 @@ class SelectorFactory(object):
         """
 
         self.func = func
+        self.format = "xpath"
 
     def build_selector(self):
         """ Selector: Returns a new :class:`Selector` instance with the current configuration. """
-        kwargs = {'label': self.label, 'xpath': self.func}
+
+        kwargs = {'label': self.label}
+        if self.format == "xpath":
+            kwargs['xpath'] = self.func
+        if self.format == "css":
+            kwargs['css'] = self.func
+
         return Selector(self.name, **kwargs)
 
 

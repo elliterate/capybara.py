@@ -31,5 +31,8 @@ class Driver(Base):
     def visit(self, url):
         self.browser.get(url)
 
+    def _find_css(self, css):
+        return [Node(self, element) for element in self.browser.find_elements_by_css_selector(css)]
+
     def _find_xpath(self, xpath):
         return [Node(self, element) for element in self.browser.find_elements_by_xpath(xpath)]

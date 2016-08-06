@@ -50,6 +50,11 @@ class SelectorQuery(object):
             return False
 
     @property
+    def css(self):
+        """ str: The CSS query for this selector. """
+        return self.expression
+
+    @property
     def xpath(self):
         """ str: The XPath query for this selector. """
         if isinstance(self.expression, ExpressionType):
@@ -72,8 +77,13 @@ class SelectorQuery(object):
 
         @node.synchronize
         def resolve():
-            children = node._find_xpath(self.xpath)
+            if self.selector.format == "css":
+                children = node._find_css(self.css)
+            else:
+                children = node._find_xpath(self.xpath)
+
             children = [Element(node.session, child) for child in children]
+
             return Result(children, self)
 
         return resolve()
