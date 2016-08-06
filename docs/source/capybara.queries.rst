@@ -20,6 +20,14 @@ capybara.queries.text_query module
     :undoc-members:
     :show-inheritance:
 
+capybara.queries.title_query module
+-----------------------------------
+
+.. automodule:: capybara.queries.title_query
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

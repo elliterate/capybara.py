@@ -13,6 +13,8 @@ from capybara.server import Server
 from capybara.utils import cached_property
 
 
+_DOCUMENT_METHODS = ["assert_title", "has_title"]
+_DOCUMENT_PROPERTIES = ["title"]
 _NODE_METHODS = [
     "assert_selector", "assert_text", "click_link", "find", "find_link", "has_content",
     "has_selector", "has_text", "has_xpath"]
@@ -130,6 +132,20 @@ class Session(object):
             self._scopes.pop()
 
 
+def _define_document_method(method_name):
+    @wraps(getattr(Document, method_name))
+    def func(self, *args, **kwargs):
+        return getattr(self.document, method_name)(*args, **kwargs)
+    setattr(Session, method_name, func)
+
+
+def _define_document_property(property_name):
+    def fget(self):
+        return getattr(self.document, property_name)
+    fdoc = getattr(Document, property_name).__doc__
+    setattr(Session, property_name, property(fget, None, None, fdoc))
+
+
 def _define_node_method(method_name):
     @wraps(getattr(Base, method_name))
     def func(self, *args, **kwargs):
@@ -139,10 +155,16 @@ def _define_node_method(method_name):
 
 def _define_node_property(property_name):
     def fget(self):
-        return getattr(self.document, property_name)
-    fdoc = getattr(Document, property_name).__doc__
+        return getattr(self.current_scope, property_name)
+    fdoc = getattr(Base, property_name).__doc__
     setattr(Session, property_name, property(fget, None, None, fdoc))
 
+
+for method_name in _DOCUMENT_METHODS:
+    _define_document_method(method_name)
+
+for property_name in _DOCUMENT_PROPERTIES:
+    _define_document_property(property_name)
 
 for method_name in _NODE_METHODS:
     _define_node_method(method_name)

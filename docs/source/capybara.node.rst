@@ -28,6 +28,14 @@ capybara.node.document module
     :undoc-members:
     :show-inheritance:
 
+capybara.node.document_matchers module
+--------------------------------------
+
+.. automodule:: capybara.node.document_matchers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 capybara.node.element module
 ----------------------------
 

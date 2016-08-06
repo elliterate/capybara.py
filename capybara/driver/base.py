@@ -2,6 +2,11 @@ class Base(object):
     """ The base class for drivers used by sessions. """
 
     @property
+    def title(self):
+        """ str: The current page title. """
+        raise NotImplementedError()
+
+    @property
     def html(self):
         """ str: A snapshot of the DOM of the current document, as it looks right now. """
         raise NotImplementedError()
