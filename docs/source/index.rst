@@ -84,7 +84,8 @@ _`Querying`
 Capybara has a rich set of options for querying the page for the existence of certain elements, and
 working with and manipulating those elements. ::
 
-    session.has_text("foo")
+    session.has_selector("table tr")
+    session.has_selector("xpath", "//table/tr")
 
 _`Finding`
 ----------

@@ -31,6 +31,14 @@ capybara.helpers module
     :undoc-members:
     :show-inheritance:
 
+capybara.result module
+----------------------
+
+.. automodule:: capybara.result
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 capybara.server module
 ----------------------
 

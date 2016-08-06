@@ -1,4 +1,4 @@
-from capybara.helpers import desc, normalize_text
+from capybara.helpers import desc, failure_message, normalize_text
 
 
 class TextQuery(object):
@@ -34,5 +34,10 @@ class TextQuery(object):
     @property
     def failure_message(self):
         """ str: A message describing the query failure. """
-        return "expected to find text {expected} in {actual}".format(
-            expected=desc(self.expected_text), actual=desc(self.actual_text))
+
+        description = "text {expected}".format(expected=desc(self.expected_text))
+
+        message = failure_message(description)
+        message += " in {actual}".format(actual=desc(self.actual_text))
+
+        return message

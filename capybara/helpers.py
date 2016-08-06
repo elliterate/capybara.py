@@ -12,6 +12,20 @@ def desc(value):
     return repr(value)
 
 
+def failure_message(description):
+    """
+    Returns a expectation failure message for the given query description.
+
+    Args:
+        description (str): A description of the failed query.
+
+    Returns:
+        str: A message describing the failure.
+    """
+
+    return "expected to find {}".format(description)
+
+
 def normalize_text(value):
     """
     Normalizes the given value to a string of text with extra whitespace removed.

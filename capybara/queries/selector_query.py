@@ -2,6 +2,7 @@ from xpath.expression import ExpressionType
 from xpath.renderer import to_xpath
 
 from capybara.helpers import desc
+from capybara.result import Result
 from capybara.selector import selectors
 
 
@@ -64,6 +65,7 @@ class SelectorQuery(object):
         @node.synchronize
         def resolve():
             children = node._find_xpath(self.xpath)
-            return [Element(node.session, child) for child in children]
+            children = [Element(node.session, child) for child in children]
+            return Result(children, self)
 
         return resolve()
