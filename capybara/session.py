@@ -9,6 +9,7 @@ else:
 import capybara
 from capybara.node.base import Base
 from capybara.node.document import Document
+from capybara.node.element import Element
 from capybara.server import Server
 from capybara.utils import cached_property
 
@@ -137,6 +138,26 @@ class Session(object):
         finally:
             self._scopes.pop()
 
+    @contextmanager
+    def frame(self, locator):
+        """
+        Execute the wrapped code within the given iframe using the given frame or frame name/id.
+        May not be supported by all drivers.
+
+        Args:
+            locator (str | Element): The name/id of the frame or the frame's element.
+        """
+
+        self._scopes.append(None)
+        try:
+            new_frame = locator if isinstance(locator, Element) else self.find("frame", locator)
+            self.driver.switch_to_frame(new_frame)
+            try:
+                yield
+            finally:
+                self.driver.switch_to_frame("parent")
+        finally:
+            self._scopes.pop()
 
 def _define_document_method(method_name):
     @wraps(getattr(Document, method_name))

@@ -16,6 +16,11 @@ class Element(Base):
             tag=self.tag_name)
 
     @property
+    def native(self):
+        """ object: The native element from the driver. """
+        return self.base.native
+
+    @property
     def tag_name(self):
         """ str: The tag name of the element. """
         return self.base.tag_name

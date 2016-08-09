@@ -11,6 +11,16 @@ class Base(object):
         """ str: A snapshot of the DOM of the current document, as it looks right now. """
         raise NotImplementedError()
 
+    def switch_to_frame(self, frame):
+        """
+        Switch to the given frame.
+
+        Args:
+            frame (Element | str): The element of the desired frame, or "parent".
+        """
+
+        raise NotImplementedError()
+
     def visit(self, path):
         """
         Visits the given path.

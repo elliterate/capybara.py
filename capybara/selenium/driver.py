@@ -9,6 +9,7 @@ from capybara.utils import cached_property
 class Driver(Base):
     def __init__(self, app):
         self.app = app
+        self._frame_handles = []
 
     @cached_property
     def browser(self):
@@ -27,6 +28,16 @@ class Driver(Base):
     @property
     def text(self):
         return self.browser.text
+
+    def switch_to_frame(self, frame):
+        if frame == "parent":
+            self._frame_handles.pop()
+            self.browser.switch_to.default_content()
+            for frame_handle in self._frame_handles:
+                self.browser.switch_to.frame(frame_handle)
+        else:
+            self._frame_handles.append(frame.native)
+            self.browser.switch_to.frame(frame.native)
 
     def visit(self, url):
         self.browser.get(url)

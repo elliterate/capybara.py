@@ -12,6 +12,13 @@ with add_selector("css") as s:
 with add_selector("xpath") as s:
     s.xpath = lambda xpath: xpath
 
+with add_selector("frame") as s:
+    @s.xpath
+    def xpath(locator):
+        expr = x.descendant("frame") + x.descendant("iframe")
+        expr = expr[x.attr("id").equals(locator) | x.attr("name").equals(locator)]
+        return expr
+
 with add_selector("link") as s:
     @s.xpath
     def xpath(locator):
