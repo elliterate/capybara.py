@@ -18,7 +18,7 @@ _DOCUMENT_METHODS = ["assert_title", "has_title"]
 _DOCUMENT_PROPERTIES = ["title"]
 _NODE_METHODS = [
     "assert_selector", "assert_text", "click_link", "find", "find_link", "has_content", "has_css",
-    "has_selector", "has_text", "has_xpath"]
+    "has_link", "has_selector", "has_text", "has_xpath"]
 _NODE_PROPERTIES = ["text"]
 
 

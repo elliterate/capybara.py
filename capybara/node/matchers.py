@@ -106,6 +106,20 @@ class MatchersMixin(object):
 
         return self.has_selector("css", path, **kwargs)
 
+    def has_link(self, locator, **kwargs):
+        """
+        Checks if the page or current node has a link with the given text or id.
+
+        Args:
+            locator (str): The text or id of a link to check for.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it exists.
+        """
+
+        return self.has_selector("link", locator, **kwargs)
+
     def assert_text(self, *args, **kwargs):
         """
         Asserts that the page or current node has the given text content, ignoring any HTML tags.
