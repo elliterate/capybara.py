@@ -86,6 +86,7 @@ _`Interacting with forms`
 
 There are a number of tools for interacting with form elements::
 
+    session.choose("A Radio Button")
     session.check("A Checkbox")
     session.uncheck("A Checkbox")
 

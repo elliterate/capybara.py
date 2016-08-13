@@ -33,7 +33,9 @@ class Node(Base):
         tag_name = self.tag_name
         type_attr = self["type"]
 
-        if tag_name == "input" and type_attr == "checkbox":
+        if tag_name == "input" and type_attr == "radio":
+            self.click()
+        elif tag_name == "input" and type_attr == "checkbox":
             current = self.native.get_attribute("checked") == "true"
 
             if current ^ value:

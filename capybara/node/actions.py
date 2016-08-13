@@ -20,6 +20,20 @@ class ActionsMixin(object):
 
         self.find("checkbox", locator, **kwargs).set(True)
 
+    def choose(self, locator, **kwargs):
+        """
+        Find a radio button and mark it as checked. The radio button can be found via name, id, or
+        label text. ::
+
+            session.choose("Male")
+
+        Args:
+            locator (str): Which radio button to choose.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+        """
+
+        self.find("radio_button", locator, **kwargs).set(True)
+
     def click_button(self, locator, **kwargs):
         """
         Finds a button on the page and clicks it. This can be any ``<input>`` element of type

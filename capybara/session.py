@@ -17,9 +17,9 @@ from capybara.utils import cached_property
 _DOCUMENT_METHODS = ["assert_title", "has_title"]
 _DOCUMENT_PROPERTIES = ["title"]
 _NODE_METHODS = [
-    "assert_selector", "assert_text", "check", "click_button", "click_link", "click_link_or_button",
-    "click_on", "find", "find_button", "find_link", "has_button", "has_content", "has_css",
-    "has_link", "has_selector", "has_text", "has_xpath", "uncheck"]
+    "assert_selector", "assert_text", "check", "choose", "click_button", "click_link",
+    "click_link_or_button", "click_on", "find", "find_button", "find_link", "has_button", "has_content",
+    "has_css", "has_link", "has_selector", "has_text", "has_xpath", "uncheck"]
 _NODE_PROPERTIES = ["text"]
 
 
