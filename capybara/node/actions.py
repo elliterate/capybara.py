@@ -46,6 +46,21 @@ class ActionsMixin(object):
 
         return self.find("link", locator, **kwargs).click()
 
+    def click_link_or_button(self, locator, **kwargs):
+        """
+        Finds a button or link by id, text or value and clicks it. Also looks at image alt text
+        inside the link.
+
+        Args:
+            locator (str): Text, id, or value of link or button.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+        """
+
+        return self.find("link_or_button", locator, **kwargs).click()
+
+    click_on = click_link_or_button
+    """ Alias for :meth:`click_link_or_button`. """
+
     def uncheck(self, locator, **kwargs):
         """
         Find a check box and uncheck it. The check box can be found via name, id, or label text. ::

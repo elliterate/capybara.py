@@ -76,6 +76,8 @@ You can interact with the webapp by following links. ::
     session.click_link("id-of-link")
     session.click_link("Link Text")
     session.click_button("Save")
+    session.click_on("Link Text")  # clicks on either links or buttons
+    session.click_on("Button Value")
 
 _`Interacting with forms`
 -------------------------

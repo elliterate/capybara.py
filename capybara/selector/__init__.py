@@ -59,6 +59,13 @@ with add_selector("link") as s:
             x.descendant("img")[x.attr("alt").is_(locator)]]
         return expr
 
+with add_selector("link_or_button") as s:
+    s.label = "link or button"
+
+    @s.xpath
+    def xpath(locator):
+        return selectors["link"](locator) + selectors["button"](locator)
+
 
 def _locate_field(field_expr, locator):
     expr = field_expr[
