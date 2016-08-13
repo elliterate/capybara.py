@@ -12,6 +12,28 @@ with add_selector("css") as s:
 with add_selector("xpath") as s:
     s.xpath = lambda xpath: xpath
 
+with add_selector("button") as s:
+    @s.xpath
+    def xpath(locator):
+        input_button_expr = x.descendant("input")[
+            x.attr("type").one_of("submit", "reset", "image", "button")]
+        button_expr = x.descendant("button")
+        image_button_expr = x.descendant("input")[x.attr("type").equals("image")]
+
+        input_button_expr = input_button_expr[
+            x.attr("id").equals(locator) |
+            x.attr("value").is_(locator) |
+            x.attr("title").is_(locator)]
+        button_expr = button_expr[
+            x.attr("id").equals(locator) |
+            x.attr("value").is_(locator) |
+            x.attr("title").is_(locator) |
+            x.string.n.is_(locator)]
+        image_button_expr = image_button_expr[
+            x.attr("alt").is_(locator)]
+
+        return input_button_expr + button_expr + image_button_expr
+
 with add_selector("frame") as s:
     @s.xpath
     def xpath(locator):

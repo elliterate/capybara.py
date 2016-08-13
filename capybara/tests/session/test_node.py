@@ -8,6 +8,11 @@ class NodeTestCase:
 
 
 class TestNode(NodeTestCase):
+    def test_acts_like_a_session_object(self, session):
+        session.visit("/form")
+        form = session.find("css", "#get-form")
+        form.click_button("med")
+
     def test_scopes_css_selectors(self, session):
         assert not session.find("css", "#second").has_css("h1")
 

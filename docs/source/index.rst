@@ -66,8 +66,8 @@ You can use the :meth:`visit <capybara.session.Session.visit>` method to navigat
 The visit method only takes a single parameter, the request method is **always**
 GET.
 
-_`Clicking links`
------------------
+_`Clicking links and buttons`
+-----------------------------
 
 *Full reference:* :class:`capybara.node.actions.ActionsMixin`
 
@@ -75,6 +75,7 @@ You can interact with the webapp by following links. ::
 
     session.click_link("id-of-link")
     session.click_link("Link Text")
+    session.click_button("Save")
 
 _`Querying`
 -----------
@@ -97,6 +98,8 @@ _`Finding`
 *Full reference:* :class:`capybara.node.finders.FindersMixin`
 
 You can also find specific elements, in order to manipulate them::
+
+    session.find_button("Send").click()
 
     session.find("xpath", "//table/tr").click()
     session.find("#overlay").find("h1").click()

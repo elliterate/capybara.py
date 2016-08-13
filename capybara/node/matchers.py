@@ -106,6 +106,20 @@ class MatchersMixin(object):
 
         return self.has_selector("css", path, **kwargs)
 
+    def has_button(self, locator, **kwargs):
+        """
+        Checks if the page or current node has a button with the given text, value, or id.
+
+        Args:
+            locator (str): The text, value, or id of a button to check for.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it exists.
+        """
+
+        return self.has_selector("button", locator, **kwargs)
+
     def has_link(self, locator, **kwargs):
         """
         Checks if the page or current node has a link with the given text or id.

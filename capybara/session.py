@@ -17,8 +17,9 @@ from capybara.utils import cached_property
 _DOCUMENT_METHODS = ["assert_title", "has_title"]
 _DOCUMENT_PROPERTIES = ["title"]
 _NODE_METHODS = [
-    "assert_selector", "assert_text", "click_link", "find", "find_link", "has_content", "has_css",
-    "has_link", "has_selector", "has_text", "has_xpath"]
+    "assert_selector", "assert_text", "click_button", "click_link", "find", "find_button",
+    "find_link", "has_button", "has_content", "has_css", "has_link", "has_selector", "has_text",
+    "has_xpath"]
 _NODE_PROPERTIES = ["text"]
 
 
@@ -39,6 +40,7 @@ class Session(object):
     such as :meth:`visit` and so on. It also delegates a number of methods to a :class:`Document`,
     representing the current HTML document. This allows interaction::
 
+        session.click_button("Search")
         assert session.has_text("Capybara")
 
     Args:

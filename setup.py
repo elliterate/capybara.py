@@ -58,4 +58,4 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*", "*.tests.*", "*.tests"]),
     install_requires=["xpath-py >= 0.0.4"],
     setup_requires=["pytest-runner"],
-    tests_require=["flask", "pytest >= 3", "selenium < 3", "werkzeug"])
+    tests_require=["flask", "lxml", "pytest >= 3", "selenium < 3", "werkzeug"])

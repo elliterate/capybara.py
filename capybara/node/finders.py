@@ -43,6 +43,23 @@ class FindersMixin(object):
 
         return find()
 
+    def find_button(self, locator, **kwargs):
+        """
+        Find a button on the page. This can be any ``<input>`` element of type submit, reset, image,
+        or button, or it can be a ``<button>`` element. All buttons can be found by their id, value,
+        or title. ``<button>`` elements can also be found by their text content, and image
+        ``<input>`` elements by their alt attribute.
+
+        Args:
+            locator (str): The id, value, title, text content, alt of image.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            Element: The found element.
+        """
+
+        return self.find("button", locator, **kwargs)
+
     def find_link(self, locator, **kwargs):
         """
         Find a link on the page. The link can be found by its id or text.
