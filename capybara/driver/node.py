@@ -42,3 +42,18 @@ class Node(object):
     def click(self):
         """ Clicks on this node. """
         raise NotImplementedError()
+
+    def set(self, value):
+        """
+        Sets the value of this node.
+
+        Args:
+            value (bool): The desired value.
+        """
+
+        raise NotImplementedError()
+
+    @property
+    def checked(self):
+        """ bool: Whether this node is checked. """
+        raise NotImplementedError()

@@ -16,6 +16,11 @@ class TestClickButton(ClickButtonTestCase):
         session.click_link("Click me")
         session.click_button("New Here")
 
+    def test_submits_the_latest_given_value_with_multiple_values_of_the_same_name(self, session):
+        session.check("Terms of Use")
+        session.click_button("awesome")
+        assert extract_results(session).getlist("form[terms_of_use]")[-1] == "1"
+
     def test_submits_form_for_submit_button_by_id(self, session):
         session.click_button("awe123")
         assert extract_results(session)["form[first_name]"] == "John"

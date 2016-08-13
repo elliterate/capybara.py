@@ -77,6 +77,16 @@ You can interact with the webapp by following links. ::
     session.click_link("Link Text")
     session.click_button("Save")
 
+_`Interacting with forms`
+-------------------------
+
+*Full reference:* :class:`capybara.node.actions.ActionsMixin`
+
+There are a number of tools for interacting with form elements::
+
+    session.check("A Checkbox")
+    session.uncheck("A Checkbox")
+
 _`Querying`
 -----------
 

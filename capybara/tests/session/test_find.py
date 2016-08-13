@@ -30,10 +30,10 @@ class TestFind(FindTestCase):
 
     def test_finds_the_first_element_with_using_the_given_css_selector_locator(self, session):
         assert session.find("css", "h1").text == "This is a test"
-        assert session.find("css", "input[id='test_field']")["value"] == "monkey"
+        assert session.find("css", "input[id='test_field']").value == "monkey"
 
     def test_supports_css_pseudo_selectors(self, session):
-        assert session.find("css", "input:disabled")["value"] == "This is disabled"
+        assert session.find("css", "input:disabled").value == "This is disabled"
 
     def test_finds_the_first_element_using_the_given_xpath_selector_locator(self, session):
         assert session.find("xpath", "//h1").text == "This is a test"
@@ -54,13 +54,13 @@ class TestFind(FindTestCase):
     def test_supports_pseudo_selectors_in_a_scope(self, session):
         session.visit("/with_scope")
         with session.scope("xpath", "//div[@id='for_bar']"):
-          assert session.find("css", "input:disabled")["value"] == "James"
+            assert session.find("css", "input:disabled").value == "James"
 
 
 class TestFindExact(FindTestCase):
     def test_matches_exactly_when_true(self, session):
         xpath_expr = x.descendant("input")[x.attr("id").is_("test_field")]
-        assert session.find("xpath", xpath_expr, exact=True)["value"] == "monkey"
+        assert session.find("xpath", xpath_expr, exact=True).value == "monkey"
 
         with pytest.raises(ElementNotFound):
             xpath_expr = x.descendant("input")[x.attr("id").is_("est_fiel")]
@@ -68,7 +68,7 @@ class TestFindExact(FindTestCase):
 
     def test_matches_loosely_when_false(self, session):
         xpath_expr = x.descendant("input")[x.attr("id").is_("test_field")]
-        assert session.find("xpath", xpath_expr, exact=False)["value"] == "monkey"
+        assert session.find("xpath", xpath_expr, exact=False).value == "monkey"
 
         xpath_expr = x.descendant("input")[x.attr("id").is_("est_fiel")]
-        assert session.find("xpath", xpath_expr, exact=False)["value"] == "monkey"
+        assert session.find("xpath", xpath_expr, exact=False).value == "monkey"

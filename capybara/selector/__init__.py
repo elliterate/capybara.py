@@ -34,6 +34,13 @@ with add_selector("button") as s:
 
         return input_button_expr + button_expr + image_button_expr
 
+with add_selector("checkbox") as s:
+    @s.xpath
+    def xpath(locator):
+        expr = x.descendant("input")[x.attr("type").equals("checkbox")]
+        expr = _locate_field(expr, locator)
+        return expr
+
 with add_selector("frame") as s:
     @s.xpath
     def xpath(locator):
@@ -51,3 +58,14 @@ with add_selector("link") as s:
             x.string.n.is_(locator) |
             x.descendant("img")[x.attr("alt").is_(locator)]]
         return expr
+
+
+def _locate_field(field_expr, locator):
+    expr = field_expr[
+        x.attr("id").equals(locator) |
+        x.attr("name").equals(locator) |
+        x.attr("placeholder").equals(locator) |
+        x.attr("id").equals(x.anywhere("label")[x.string.n.is_(locator)].attr("for"))]
+    expr += x.descendant("label")[x.string.n.is_(locator)].descendant(field_expr)
+
+    return expr

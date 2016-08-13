@@ -51,3 +51,11 @@ class TestNodeValue(NodeTestCase):
     def test_defaults_to_on_for_radio_buttons(self, session):
         session.visit("/form")
         assert session.find("//input[@id='valueless_radio']").value == "on"
+
+
+class TestNodeChecked(NodeTestCase):
+    def test_extracts_node_checked_state(self, session):
+        session.visit("/form")
+        assert session.find("//input[@id='gender_female']").checked is True
+        assert session.find("//input[@id='gender_male']").checked is False
+        assert session.find("//h1").checked is False

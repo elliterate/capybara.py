@@ -28,3 +28,17 @@ class Node(Base):
 
     def click(self):
         self.native.click()
+
+    def set(self, value):
+        tag_name = self.tag_name
+        type_attr = self["type"]
+
+        if tag_name == "input" and type_attr == "checkbox":
+            current = self.native.get_attribute("checked") == "true"
+
+            if current ^ value:
+                self.click()
+
+    @property
+    def checked(self):
+        return self.native.is_selected()

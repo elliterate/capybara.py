@@ -35,6 +35,11 @@ class Element(Base):
         """ str: The text of the element. """
         return self.base.text
 
+    @property
+    def checked(self):
+        """ bool: Whether or not the element is checked. """
+        return self.base.checked
+
     def __getitem__(self, name):
         """
         Retrieve the given attribute. ::
@@ -53,3 +58,13 @@ class Element(Base):
     def click(self):
         """ Click the element. """
         self.base.click()
+
+    def set(self, value):
+        """
+        Set the value of the form element to the given value.
+
+        Args:
+            value (bool): The new value.
+        """
+
+        self.base.set(value)
