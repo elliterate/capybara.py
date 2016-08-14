@@ -1,9 +1,12 @@
 import atexit
 from contextlib import contextmanager
 from selenium import webdriver
+from selenium.common.exceptions import NoAlertPresentException, UnexpectedAlertPresentException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from time import sleep, time
 
+import capybara
 from capybara.driver.base import Base
 from capybara.exceptions import ModalNotFound
 from capybara.selenium.node import Node
@@ -17,7 +20,9 @@ class Driver(Base):
 
     @cached_property
     def browser(self):
-        browser = webdriver.Firefox()
+        browser = webdriver.Firefox(
+            # Auto-accept unload alerts triggered by navigating away.
+            capabilities={"unexpectedAlertBehaviour": "ignore"})
         atexit.register(browser.quit)
         return browser
 
@@ -52,6 +57,39 @@ class Driver(Base):
         modal = self._find_modal(text=text, wait=wait)
         modal.accept()
 
+    @contextmanager
+    def dismiss_modal(self, modal_type, text=None, wait=None):
+        yield
+        modal = self._find_modal(text=text, wait=wait)
+        modal.dismiss()
+
+    def reset(self):
+        # Avoid starting the browser just to reset the session.
+        if "browser" in self.__dict__:
+            navigated = False
+            start_time = time()
+            while True:
+                try:
+                    # Only trigger a navigation if we haven't done it already,
+                    # otherwise it can trigger an endless series of unload modals.
+                    if not navigated:
+                        self.browser.get("about:blank")
+                        navigated = True
+
+                    break
+                except UnexpectedAlertPresentException:
+                    # This error is thrown if an unhandled alert is on the page.
+                    try:
+                        self.browser.switch_to.alert.accept()
+
+                        # Allow time for the modal to be handled.
+                        sleep(0.25)
+                    except NoAlertPresentException:
+                        # The alert is now gone. Nothing to do.
+                        pass
+
+                    # Try cleaning up the browser again.
+                    continue
 
     def _find_css(self, css):
         return [Node(self, element) for element in self.browser.find_elements_by_css_selector(css)]

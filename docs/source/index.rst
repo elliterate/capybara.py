@@ -155,6 +155,11 @@ You can accept or dismiss alert messages by wrapping the code that produces the 
     with session.accept_alert():
         session.click_link("Show Alert")
 
+You can accept or dismiss a confirmation by wrapping it in a context manager, as well::
+
+    with session.dismiss_confirm():
+        session.click_link("Show Confirm")
+
 _`Debugging`
 ------------
 

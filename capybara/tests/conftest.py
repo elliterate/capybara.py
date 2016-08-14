@@ -28,3 +28,11 @@ def session(driver):
     from capybara.session import Session
 
     return Session(driver, app)
+
+
+@pytest.fixture(autouse=True)
+def reset_session(session):
+    try:
+        yield
+    finally:
+        session.reset()

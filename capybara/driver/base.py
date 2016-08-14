@@ -47,6 +47,23 @@ class Base(object):
 
         raise NotImplementedError()
 
+    @contextmanager
+    def dismiss_modal(self, modal_type, text=None, wait=None):
+        """
+        Dismisses the modal that appears matching the given type and, optionally, text.
+
+        Args:
+            modal_type (str): The type of modal that should be dismissed.
+            text (str, optional): Text that is expected to appear in the modal.
+            wait (int, optional): The number of seconds to wait for the modal to appear.
+        """
+
+        raise NotImplementedError()
+
+    def reset(self):
+        """ Resets the driver. """
+        pass
+
     def _find_css(self, query):
         """
         A private method for finding nodes matching a given CSS query.

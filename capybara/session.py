@@ -181,6 +181,65 @@ class Session(object):
         with self.driver.accept_modal("alert", text=text, wait=wait):
             yield
 
+    @contextmanager
+    def accept_confirm(self, text=None, wait=None):
+        """
+        Execute the wrapped code, accepting a confirm.
+
+        Args:
+            text (str, optional): Text to match against the text in the modal.
+            wait (int | float, optional): Maximum time to wait for the modal to appear after
+                executing the wrapped code.
+
+        Raises:
+            ModalNotFound: If a modal dialog hasn't been found.
+        """
+
+        with self.driver.accept_modal("confirm", text=text, wait=wait):
+            yield
+
+    @contextmanager
+    def dismiss_confirm(self, text=None, wait=None):
+        """
+        Execute the wrapped code, dismissing a confirm.
+
+        Args:
+            text (str, optional): Text to match against the text in the modal.
+            wait (int | float, optional): Maximum time to wait for the modal to appear after
+                executing the wrapped code.
+
+        Raises:
+            ModalNotFound: If a modal dialog hasn't been found.
+        """
+
+        with self.driver.dismiss_modal("confirm", text=text, wait=wait):
+            yield
+
+    def reset(self):
+        """
+        Reset the session (i.e., navigate to a blank page).
+
+        This method does not:
+        * accept modal dialogs if they are present (the Selenium driver does, but others may not),
+        * clear the browser cache/HTML 5 local storage/IndexedDB/Web SQL database/etc., or
+        * modify the state of the driver/underlying browser in any other way
+
+        as doing so would result in performance downsides and it's not needed to do everything
+        from the list above for most apps.
+
+        If you want to do anything from the list above on a general basis you can write a test
+        teardown method.
+        """
+
+        self.driver.reset()
+
+    cleanup = reset
+    """ Alias for :meth:`reset`. """
+
+    reset_session = reset
+    """ Alias for :meth:`reset`. """
+
+
 def _define_document_method(method_name):
     @wraps(getattr(Document, method_name))
     def func(self, *args, **kwargs):
