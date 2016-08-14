@@ -72,6 +72,13 @@ class TestNodeSet(NodeTestCase):
         assert session.find("//input[1]").value == "gorilla"
 
 
+class TestNodeTagName(NodeTestCase):
+    def test_extracts_node_tag_name(self, session):
+        assert session.find("//a[1]").tag_name == "a"
+        assert session.find("//a[2]").tag_name == "a"
+        assert session.find("//p[1]").tag_name == "p"
+
+
 class TestNodeChecked(NodeTestCase):
     def test_extracts_node_checked_state(self, session):
         session.visit("/form")

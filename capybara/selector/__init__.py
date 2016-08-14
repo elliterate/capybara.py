@@ -12,6 +12,11 @@ with add_selector("css") as s:
 with add_selector("xpath") as s:
     s.xpath = lambda xpath: xpath
 
+with add_selector("id") as s:
+    @s.xpath
+    def xpath(id):
+        return x.descendant()[x.attr("id") == id]
+
 with add_selector("button") as s:
     @s.xpath
     def xpath(locator):

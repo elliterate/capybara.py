@@ -60,6 +60,20 @@ class FindersMixin(object):
 
         return self.find("button", locator, **kwargs)
 
+    def find_by_id(self, id, **kwargs):
+        """
+        Find an element on the page, given its id.
+
+        Args:
+            id (str): The id of the element.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            Element: The found element.
+        """
+
+        return self.find("id", id, **kwargs)
+
     def find_field(self, locator, **kwargs):
         """
         Find a form field on the page. The field can be found by its name, id, or label text.
