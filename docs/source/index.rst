@@ -115,6 +115,7 @@ _`Finding`
 
 You can also find specific elements, in order to manipulate them::
 
+    session.find_field("First Name").value
     session.find_button("Send").click()
 
     session.find("xpath", "//table/tr").click()

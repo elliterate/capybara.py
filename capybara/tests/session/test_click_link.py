@@ -40,6 +40,15 @@ class TestClickLink:
         with pytest.raises(ElementNotFound):
             session.click_link("does not exist")
 
+    def test_does_nothing_on_anchor_links(self, session):
+        session.fill_in("test_field", value="blah")
+        session.click_link("Normal Anchor")
+        assert session.find_field("test_field").value == "blah"
+        session.click_link("Blank Anchor")
+        assert session.find_field("test_field").value == "blah"
+        session.click_link("Blank JS Anchor")
+        assert session.find_field("test_field").value == "blah"
+
     def test_raises_an_error_for_links_with_no_href(self, session):
         with pytest.raises(ElementNotFound):
             session.click_link("No Href")
