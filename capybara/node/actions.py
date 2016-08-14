@@ -90,6 +90,27 @@ class ActionsMixin(object):
 
         self.find("fillable_field", locator, **kwargs).set(value)
 
+    def select(self, value, field=None, **kwargs):
+        """
+        If the ``field`` argument is present, ``select`` finds a select box on the page and selects
+        a particular option from it. Otherwise it finds an option inside the current scope and
+        selects it. If the select box is a multiple select, ``select`` can be called multiple times
+        to select more than one option. The select box can be found via its name, id, or label text.
+        The option can be found by its text. ::
+
+            session.select("March", field="Month")
+
+        Args:
+            value (str): Which option to select.
+            field (str, optional): The id, name, or label of the select box.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+        """
+
+        if field:
+            self.find("select", field, **kwargs).find("option", value, **kwargs).select_option()
+        else:
+            self.find("option", value, **kwargs).select_option()
+
     def uncheck(self, locator, **kwargs):
         """
         Find a check box and uncheck it. The check box can be found via name, id, or label text. ::
@@ -102,3 +123,22 @@ class ActionsMixin(object):
         """
 
         self.find("checkbox", locator, **kwargs).set(False)
+
+    def unselect(self, value, field=None, **kwargs):
+        """
+        Find a select box on the page and unselect a particular option from it. If the select box is
+        a multiple select, ``unselect`` can be called multiple times to unselect more than one
+        option. The select box can be found via its name, id, or label text. ::
+
+            session.unselect("March", field="Month")
+
+        Args:
+            value (str): Which option to unselect.
+            field (str, optional): The id, name, or label of the select box.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+        """
+
+        if field:
+            self.find("select", field, **kwargs).find("option", value, **kwargs).unselect_option()
+        else:
+            self.find("option", value, **kwargs).unselect_option()

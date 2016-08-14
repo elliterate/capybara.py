@@ -24,6 +24,7 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
         session.visit("/")
         session.fill_in("Foo", value="Bar")  # from capybara.node.actions.ActionsMixin
         bar = session.find("#bar")           # from capybara.node.finders.FindersMixin
+        bar.select("Baz", field="Quox")      # from capybara.node.actions.ActionsMixin
         session.has_css("#foobar")           # from capybara.node.matchers.MatchersMixin
 
     Args:

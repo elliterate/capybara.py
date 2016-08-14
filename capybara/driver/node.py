@@ -22,6 +22,16 @@ class Node(object):
         raise NotImplementedError()
 
     @property
+    def selected(self):
+        """ bool: Whether this is a selected option node. """
+        raise NotImplementedError()
+
+    @property
+    def multiple(self):
+        """ bool: Whether this is a multi-select node. """
+        raise NotImplementedError()
+
+    @property
     def text(self):
         """ str: The text of the node. """
         raise NotImplementedError()
@@ -43,6 +53,10 @@ class Node(object):
         """ Clicks on this node. """
         raise NotImplementedError()
 
+    def select_option(self):
+        """ Selects this option node. """
+        raise NotImplementedError()
+
     def set(self, value):
         """
         Sets the value of this node.
@@ -53,7 +67,16 @@ class Node(object):
 
         raise NotImplementedError()
 
+    def unselect_option(self):
+        """ Deselects this option node. """
+        raise NotImplementedError()
+
     @property
     def checked(self):
         """ bool: Whether this node is checked. """
+        raise NotImplementedError()
+
+    @property
+    def selected(self):
+        """ bool: Whether this node is selected. """
         raise NotImplementedError()

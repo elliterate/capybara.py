@@ -1,3 +1,4 @@
+from capybara.exceptions import UnselectNotAllowed
 from capybara.driver.node import Node as Base
 from capybara.helpers import normalize_text
 
@@ -9,7 +10,21 @@ class Node(Base):
 
     @property
     def value(self):
-        return self.native.get_attribute("value")
+        if self.tag_name == "select" and self.multiple:
+            options = self.native.find_elements_by_xpath(".//option")
+            selected_options = filter(lambda opt: opt.is_selected(), options)
+            return [opt.get_attribute("value") for opt in selected_options]
+        else:
+            return self.native.get_attribute("value")
+
+    @property
+    def selected(self):
+        return self.native.is_selected()
+
+    @property
+    def multiple(self):
+        val = self["multiple"]
+        return bool(val) and val != "false"
 
     @property
     def text(self):
@@ -29,6 +44,10 @@ class Node(Base):
     def click(self):
         self.native.click()
 
+    def select_option(self):
+        if not self.selected:
+            self.native.click()
+
     def set(self, value):
         tag_name = self.tag_name
         type_attr = self["type"]
@@ -45,6 +64,21 @@ class Node(Base):
             self.driver.browser.execute_script("arguments[0].value = ''", self.native)
             self.native.send_keys(value)
 
+    def unselect_option(self):
+        if not self._select_node.multiple:
+            raise UnselectNotAllowed("Cannot unselect option from single select box.")
+
+        if self.selected:
+            self.native.click()
+
     @property
     def checked(self):
+        return self.selected
+
+    @property
+    def selected(self):
         return self.native.is_selected()
+
+    @property
+    def _select_node(self):
+        return self._find_xpath("./ancestor::select")[0]

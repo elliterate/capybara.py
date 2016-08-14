@@ -8,3 +8,7 @@ class ElementNotFound(CapybaraError):
 
 class ExpectationNotMet(ElementNotFound):
     pass
+
+
+class UnselectNotAllowed(CapybaraError):
+    pass

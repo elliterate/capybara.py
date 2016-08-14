@@ -92,6 +92,7 @@ There are a number of tools for interacting with form elements::
     session.choose("A Radio Button")
     session.check("A Checkbox")
     session.uncheck("A Checkbox")
+    session.select("Option", field="Select Box")
 
 _`Querying`
 -----------

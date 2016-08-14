@@ -78,3 +78,11 @@ class TestNodeChecked(NodeTestCase):
         assert session.find("//input[@id='gender_female']").checked is True
         assert session.find("//input[@id='gender_male']").checked is False
         assert session.find("//h1").checked is False
+
+
+class TestNodeSelected(NodeTestCase):
+    def test_extracts_node_selected_state(self, session):
+        session.visit("/form")
+        assert session.find("//option[@value='en']").selected is True
+        assert session.find("//option[@value='sv']").selected is False
+        assert session.find("//h1").selected is False

@@ -84,12 +84,28 @@ with add_selector("link_or_button") as s:
     def xpath(locator):
         return selectors["link"](locator) + selectors["button"](locator)
 
+with add_selector("option") as s:
+    @s.xpath
+    def xpath(locator):
+        expr = x.descendant("option")
+        expr = expr[x.string.n.is_(locator)]
+        return expr
+
 with add_selector("radio_button") as s:
     s.label = "radio button"
 
     @s.xpath
     def xpath(locator):
         expr = x.descendant("input")[x.attr("type").equals("radio")]
+        expr = _locate_field(expr, locator)
+        return expr
+
+with add_selector("select") as s:
+    s.label = "select box"
+
+    @s.xpath
+    def xpath(locator):
+        expr = x.descendant("select")
         expr = _locate_field(expr, locator)
         return expr
 
