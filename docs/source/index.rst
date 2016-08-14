@@ -145,6 +145,18 @@ kind of selector to use. ::
     with session.scope("xpath", "//li[@id='employee']"):
         session.click_link("Jimmy")
 
+_`Scripting`
+------------
+
+In drivers which support it, you can easily execute JavaScript::
+
+    session.execute_script("$('body').empty()")
+
+For simple expressions, you can return the result of the script. Note that this may break with
+more complicated expressions::
+
+    result = session.evaluate_script("4 + 4")
+
 _`Modals`
 ---------
 

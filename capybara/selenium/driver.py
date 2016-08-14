@@ -51,6 +51,12 @@ class Driver(Base):
     def visit(self, url):
         self.browser.get(url)
 
+    def execute_script(self, script):
+        self.browser.execute_script(script)
+
+    def evaluate_script(self, script):
+        return self.browser.execute_script("return {0}".format(script))
+
     @contextmanager
     def accept_modal(self, modal_type, text=None, response=None, wait=None):
         yield

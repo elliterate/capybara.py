@@ -34,6 +34,29 @@ class Base(object):
 
         raise NotImplementedError()
 
+    def execute_script(self, script):
+        """
+        Executes the given script.
+
+        Args:
+            script (str): A JavaScript string to execute.
+        """
+
+        raise NotImplementedError()
+
+    def evaluate_script(self, script):
+        """
+        Evaluates and returns the result of the given JavaScript.
+
+        Args:
+            script (str): A string of JavaScript to evaluate.
+
+        Returns:
+            object: The result of the evaluated JavaScript.
+        """
+
+        raise NotImplementedError()
+
     @contextmanager
     def accept_modal(self, modal_type, text=None, response=None, wait=None):
         """

@@ -163,6 +163,33 @@ class Session(object):
         finally:
             self._scopes.pop()
 
+    def execute_script(self, script):
+        """
+        Execute the given script, not returning a result. This is useful for scripts that return
+        complex objects, such as jQuery statements. ``execute_script`` should be used over
+        :meth:`evaluate_script` whenever possible.
+
+        Args:
+            script (str): A string of JavaScript to execute.
+        """
+
+        self.driver.execute_script(script)
+
+    def evaluate_script(self, script):
+        """
+        Evaluate the given JavaScript and return the result. Be careful when using this with
+        scripts that return complex objects, such as jQuery statements. :meth:`execute_script`
+        might be a better alternative.
+
+        Args:
+            script (str): A string of JavaScript to evaluate.
+
+        Returns:
+            object: The result of the evaluated JavaScript (may be driver specific).
+        """
+
+        return self.driver.evaluate_script(script)
+
     @contextmanager
     def accept_alert(self, text=None, wait=None):
         """
