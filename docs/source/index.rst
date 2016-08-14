@@ -160,6 +160,11 @@ You can accept or dismiss a confirmation by wrapping it in a context manager, as
     with session.dismiss_confirm():
         session.click_link("Show Confirm")
 
+You can accept or dismiss prompts as well, and also provide text to fill in for the response::
+
+    with session.accept_prompt(response="Linus Torvalds"):
+        session.click_link("Show Prompt About Linux")
+
 _`Debugging`
 ------------
 

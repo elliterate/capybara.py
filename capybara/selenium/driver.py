@@ -52,9 +52,11 @@ class Driver(Base):
         self.browser.get(url)
 
     @contextmanager
-    def accept_modal(self, modal_type, text=None, wait=None):
+    def accept_modal(self, modal_type, text=None, response=None, wait=None):
         yield
         modal = self._find_modal(text=text, wait=wait)
+        if response:
+            modal.send_keys(response)
         modal.accept()
 
     @contextmanager

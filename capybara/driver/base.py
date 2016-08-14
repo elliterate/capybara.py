@@ -35,13 +35,14 @@ class Base(object):
         raise NotImplementedError()
 
     @contextmanager
-    def accept_modal(self, modal_type, text=None, wait=None):
+    def accept_modal(self, modal_type, text=None, response=None, wait=None):
         """
         Accepts the modal that appears matching the given type and, optionally, text.
 
         Args:
             modal_type (str): The type of modal that should be accepted.
             text (str, optional): Text that is expected to appear in the modal.
+            response (str, optional): Text to enter for a response, if applicable.
             wait (int, optional): The number of seconds to wait for the modal to appear.
         """
 

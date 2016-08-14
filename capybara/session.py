@@ -215,6 +215,41 @@ class Session(object):
         with self.driver.dismiss_modal("confirm", text=text, wait=wait):
             yield
 
+    @contextmanager
+    def accept_prompt(self, text=None, response=None, wait=None):
+        """
+        Execute the wrapped code, accepting a prompt, optionally responding to the prompt.
+
+        Args:
+            text (str, optional): Text to match against the text in the modal.
+            response (str, optional): Response to provide to the prompt.
+            wait (int | float, optional): Maximum time to wait for the modal to appear after
+                executing the wrapped code.
+
+        Raises:
+            ModalNotFound: If a modal dialog hasn't been found.
+        """
+
+        with self.driver.accept_modal("prompt", text=text, response=response, wait=wait):
+            yield
+
+    @contextmanager
+    def dismiss_prompt(self, text=None, wait=None):
+        """
+        Execute the wrapped code, dismissing a prompt.
+
+        Args:
+            text (str, optional): Text to match against the text in the modal.
+            wait (int | float, optional): Maximum time to wait for the modal to appear after
+                executing the wrapped code.
+
+        Raises:
+            ModalNotFound: If a modal dialog hasn't been found.
+        """
+
+        with self.driver.dismiss_modal("prompt", text=text, wait=wait):
+            yield
+
     def reset(self):
         """
         Reset the session (i.e., navigate to a blank page).
