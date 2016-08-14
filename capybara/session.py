@@ -163,6 +163,24 @@ class Session(object):
         finally:
             self._scopes.pop()
 
+    @contextmanager
+    def accept_alert(self, text=None, wait=None):
+        """
+        Execute the wrapped code, accepting an alert.
+
+        Args:
+            text (str, optional): Text to match against the text in the modal.
+            wait (int | float, optional): Maximum time to wait for the modal to appear after
+                executing the wrapped code.
+
+        Raises:
+            ModalNotFound: If a modal dialog hasn't been found.
+        """
+
+        wait = wait or capybara.default_max_wait_time
+        with self.driver.accept_modal("alert", text=text, wait=wait):
+            yield
+
 def _define_document_method(method_name):
     @wraps(getattr(Document, method_name))
     def func(self, *args, **kwargs):

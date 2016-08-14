@@ -1,3 +1,6 @@
+from contextlib import contextmanager
+
+
 class Base(object):
     """ The base class for drivers used by sessions. """
 
@@ -27,6 +30,19 @@ class Base(object):
 
         Args:
             path (str): The path to visit.
+        """
+
+        raise NotImplementedError()
+
+    @contextmanager
+    def accept_modal(self, modal_type, text=None, wait=None):
+        """
+        Accepts the modal that appears matching the given type and, optionally, text.
+
+        Args:
+            modal_type (str): The type of modal that should be accepted.
+            text (str, optional): Text that is expected to appear in the modal.
+            wait (int, optional): The number of seconds to wait for the modal to appear.
         """
 
         raise NotImplementedError()

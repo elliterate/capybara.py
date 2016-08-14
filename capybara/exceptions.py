@@ -6,6 +6,10 @@ class ElementNotFound(CapybaraError):
     pass
 
 
+class ModalNotFound(CapybaraError):
+    pass
+
+
 class ExpectationNotMet(ElementNotFound):
     pass
 

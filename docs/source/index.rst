@@ -145,6 +145,16 @@ kind of selector to use. ::
     with session.scope("xpath", "//li[@id='employee']"):
         session.click_link("Jimmy")
 
+_`Modals`
+---------
+
+In drivers which support it, you can accept, dismiss and respond to alerts, confirms and prompts.
+
+You can accept or dismiss alert messages by wrapping the code that produces the alert in a context manager::
+
+    with session.accept_alert():
+        session.click_link("Show Alert")
+
 _`Debugging`
 ------------
 
