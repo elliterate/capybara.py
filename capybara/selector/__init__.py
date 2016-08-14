@@ -41,6 +41,16 @@ with add_selector("checkbox") as s:
         expr = _locate_field(expr, locator)
         return expr
 
+with add_selector("fillable_field") as s:
+    s.label = "field"
+
+    @s.xpath
+    def xpath(locator):
+        expr = x.descendant("input", "textarea")[
+            ~x.attr("type").one_of("checkbox", "file", "hidden", "image", "radio", "submit")]
+        expr = _locate_field(expr, locator)
+        return expr
+
 with add_selector("frame") as s:
     @s.xpath
     def xpath(locator):

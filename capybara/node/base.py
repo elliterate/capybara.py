@@ -22,8 +22,9 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
 
         session = Session("selenium", my_app)
         session.visit("/")
-        bar = session.find("#bar")  # from capybara.node.finders.FindersMixin
-        session.has_css("#foobar")  # from capybara.node.matchers.MatchersMixin
+        session.fill_in("Foo", value="Bar")  # from capybara.node.actions.ActionsMixin
+        bar = session.find("#bar")           # from capybara.node.finders.FindersMixin
+        session.has_css("#foobar")           # from capybara.node.matchers.MatchersMixin
 
     Args:
         session (Session): The session from which this node originated.

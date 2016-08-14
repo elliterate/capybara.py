@@ -1,6 +1,7 @@
 import pytest
 
 from capybara.exceptions import ElementNotFound
+from capybara.tests.helpers import extract_results
 
 
 class TestScope:
@@ -50,3 +51,14 @@ class TestScope:
                     pass
             assert not session.has_xpath(".//div[@id='another_foo']")
         assert session.has_xpath(".//div[@id='another_foo']")
+
+    def test_fills_in_a_field_and_clicks_a_button(self, session):
+        with session.scope("//li[contains(.,'Bar')]"):
+            session.click_button("Go")
+        assert extract_results(session)["form[first_name]"] == "Peter"
+
+        session.visit("/with_scope")
+        with session.scope("//li[contains(.,'Bar')]"):
+            session.fill_in("First Name", value="Dagobert")
+            session.click_button("Go")
+        assert extract_results(session)["form[first_name]"] == "Dagobert"

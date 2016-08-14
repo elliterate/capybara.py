@@ -40,6 +40,10 @@ class Node(Base):
 
             if current ^ value:
                 self.click()
+        elif tag_name == "textarea" or tag_name == "input":
+            # Clear field by JavaScript assignment of the value property.
+            self.driver.browser.execute_script("arguments[0].value = ''", self.native)
+            self.native.send_keys(value)
 
     @property
     def checked(self):

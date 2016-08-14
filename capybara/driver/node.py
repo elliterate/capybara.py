@@ -48,7 +48,7 @@ class Node(object):
         Sets the value of this node.
 
         Args:
-            value (bool): The desired value.
+            value (bool | str): The desired value.
         """
 
         raise NotImplementedError()

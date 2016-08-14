@@ -75,6 +75,21 @@ class ActionsMixin(object):
     click_on = click_link_or_button
     """ Alias for :meth:`click_link_or_button`. """
 
+    def fill_in(self, locator, value=None, **kwargs):
+        """
+        Locate a text field or text area and fill it in with the given text. The field can be found
+        via its name, id, or label text. ::
+
+            page.fill_in("Name", value="Bob")
+
+        Args:
+            locator (str): Which field to fill in.
+            value (str, optional): The value to fill in. Defaults to None.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+        """
+
+        self.find("fillable_field", locator, **kwargs).set(value)
+
     def uncheck(self, locator, **kwargs):
         """
         Find a check box and uncheck it. The check box can be found via name, id, or label text. ::

@@ -113,6 +113,21 @@ class TestClickButton(ClickButtonTestCase):
         session.click_button("awesome")
         assert extract_results(session).get("form[okay]") is None
 
+    def test_encodes_complex_field_names(self, session):
+        session.fill_in("address1_city", value="Paris")
+        session.fill_in("address1_street", value="CDG")
+
+        session.fill_in("address2_city", value="Mikolaiv")
+        session.fill_in("address2_street", value="PGS")
+
+        session.click_button("awesome")
+
+        results = extract_results(session)
+
+        assert results.getlist("form[addresses][][street]") == ["CDG", "PGS"]
+        assert results.getlist("form[addresses][][city]") == ["Paris", "Mikolaiv"]
+        assert results.getlist("form[addresses][][country]") == ["France", "Ukraine"]
+
 
 class TestClickSubmitButtonWithHTML5Fields(ClickButtonTestCase):
     @pytest.fixture

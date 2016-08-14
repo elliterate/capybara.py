@@ -64,7 +64,7 @@ class Element(Base):
         Set the value of the form element to the given value.
 
         Args:
-            value (bool): The new value.
+            value (bool | str): The new value.
         """
 
         self.base.set(value)

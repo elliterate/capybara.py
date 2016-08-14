@@ -18,8 +18,8 @@ _DOCUMENT_METHODS = ["assert_title", "has_title"]
 _DOCUMENT_PROPERTIES = ["title"]
 _NODE_METHODS = [
     "assert_selector", "assert_text", "check", "choose", "click_button", "click_link",
-    "click_link_or_button", "click_on", "find", "find_button", "find_link", "has_button", "has_content",
-    "has_css", "has_link", "has_selector", "has_text", "has_xpath", "uncheck"]
+    "click_link_or_button", "click_on", "fill_in", "find", "find_button", "find_link", "has_button",
+    "has_content", "has_css", "has_link", "has_selector", "has_text", "has_xpath", "uncheck"]
 _NODE_PROPERTIES = ["text"]
 
 
@@ -40,6 +40,7 @@ class Session(object):
     such as :meth:`visit` and so on. It also delegates a number of methods to a :class:`Document`,
     representing the current HTML document. This allows interaction::
 
+        session.fill_in("q", value="Capybara")
         session.click_button("Search")
         assert session.has_text("Capybara")
 
@@ -112,7 +113,7 @@ class Session(object):
         as though it were scoped to the given element. ::
 
             with scope("xpath", "//div[@id='delivery-address']"):
-                click_link("Edit")
+                fill_in("Street", value="12 Main Street")
 
         Just as with :meth:`find`, if multiple elements match the selector given to ``scope``, an
         error will be raised, and just as with :meth:`find`, this behavior can be controlled
@@ -122,11 +123,11 @@ class Session(object):
         the type set in :data:`capybara.default_selector`. ::
 
             with scope("div#delivery-address"):
-                click_link("Edit")
+                fill_in("Street", value="12 Main Street")
 
         Note that a lot of uses of ``scope`` can be replaced more succinctly with chaining::
 
-            find("div#delivery-address").click_link("Edit")
+            find("div#delivery-address").fill_in("Street", value="12 Main Street")
 
         Args:
             *args: Variable length argument list for the call to :meth:`find`.

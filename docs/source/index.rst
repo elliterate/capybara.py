@@ -86,6 +86,9 @@ _`Interacting with forms`
 
 There are a number of tools for interacting with form elements::
 
+    session.fill_in("First Name", value="John")
+    session.fill_in("Password", value="Seekrit")
+    session.fill_in("Description", value="Really Long Text...")
     session.choose("A Radio Button")
     session.check("A Checkbox")
     session.uncheck("A Checkbox")
