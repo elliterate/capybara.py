@@ -27,6 +27,10 @@ class Driver(Base):
         return browser
 
     @property
+    def current_url(self):
+        return self.browser.current_url
+
+    @property
     def title(self):
         return self.browser.title
 

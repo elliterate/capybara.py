@@ -38,8 +38,8 @@ class Session(object):
         session.visit("http://www.google.com")
 
     Session provides a number of methods and properties for controlling the navigation of the page,
-    such as :meth:`visit` and so on. It also delegates a number of methods to a :class:`Document`,
-    representing the current HTML document. This allows interaction::
+    such as :meth:`visit`, :attr:`current_path`, and so on. It also delegates a number of methods to
+    a :class:`Document`, representing the current HTML document. This allows interaction::
 
         session.fill_in("q", value="Capybara")
         session.click_button("Search")
@@ -53,7 +53,7 @@ class Session(object):
     def __init__(self, mode, app):
         self.mode = mode
         self.app = app
-        self.server = Server(app).boot()
+        self.server = Server(app).boot() if app else None
         self.synchronized = False
         self._scopes = [None]
 
@@ -83,22 +83,57 @@ class Session(object):
     source = html
     """ Alias for :attr:`html`. """
 
+    @property
+    def current_path(self):
+        """ str: Path of the current page, without any domain information. """
+        path = urlparse(self.current_url).path
+        return path if path else None
+
+    @property
+    def current_host(self):
+        """ str: Host of the current page. """
+        result = urlparse(self.current_url)
+        scheme, netloc = result.scheme, result.netloc
+        host = netloc.split(":")[0] if netloc else None
+        return "{0}://{1}".format(scheme, host) if host else None
+
+    @property
+    def current_url(self):
+        """ str: Fully qualified URL of the current page. """
+        return self.driver.current_url
+
     def visit(self, visit_uri):
         """
-        Navigate to the given URL. ::
+        Navigate to the given URL. The URL can either be a relative URL or an absolute URL. The
+        behavior of either depends on the driver. ::
 
             session.visit("/foo")
+            session.visit("http://google.com")
+
+        For drivers which can run against an external application, such as the Selenium driver,
+        giving an absolute URL will navigate to that page. This allows testing applications running
+        on remote servers. For these drivers, setting :data:`capybara.app_host` will make the
+        remote server the default. For example::
+
+            capybara.app_host = "http://google.com"
+            session.visit("/")  # visits the Google homepage
 
         Args:
             visit_uri (str): The URL to navigate to.
         """
 
         visit_uri = urlparse(visit_uri)
-        uri_base = urlparse("http://{0}:{1}".format(self.server.host, self.server.port))
+
+        if capybara.app_host:
+            uri_base = urlparse(capybara.app_host)
+        elif self.server:
+            uri_base = urlparse("http://{}:{}".format(self.server.host, self.server.port))
+        else:
+            uri_base = None
 
         visit_uri = ParseResult(
-            scheme=uri_base.scheme,
-            netloc=uri_base.netloc,
+            scheme=visit_uri.scheme or (uri_base.scheme if uri_base else None),
+            netloc=visit_uri.netloc or (uri_base.netloc if uri_base else None),
             path=visit_uri.path,
             params=visit_uri.params,
             query=visit_uri.query,

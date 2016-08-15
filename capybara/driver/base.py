@@ -5,6 +5,11 @@ class Base(object):
     """ The base class for drivers used by sessions. """
 
     @property
+    def current_url(self):
+        """ str: The current URL. """
+        raise NotImplementedError()
+
+    @property
     def title(self):
         """ str: The current page title. """
         raise NotImplementedError()

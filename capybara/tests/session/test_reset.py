@@ -1,4 +1,15 @@
 class TestReset:
+    def test_resets_current_url_host_and_path(self, session):
+        session.visit("/foo")
+        assert session.current_url
+        assert session.current_url
+        assert session.current_path == "/foo"
+
+        session.reset()
+        assert session.current_url in [None, "", "about:blank"]
+        assert session.current_path in [None, "", "blank"]
+        assert session.current_host is None
+
     def test_resets_page_body(self, session):
         session.visit("/with_html")
         assert session.has_text("This is a test")
