@@ -1,4 +1,5 @@
 from __future__ import absolute_import
+from contextlib import contextmanager
 
 
 app = None
@@ -73,6 +74,25 @@ def register_driver(name):
 
 def run_default_server(app, port):
     servers["werkzeug"](app, port, server_host)
+
+
+@contextmanager
+def using_wait_time(seconds):
+    """
+    Execute a context using a specific wait time.
+
+    Args:
+        seconds (int | float): The new wait time.
+    """
+
+    global default_max_wait_time
+
+    original_max_wait_time = default_max_wait_time
+    default_max_wait_time = seconds
+    try:
+        yield
+    finally:
+        default_max_wait_time = original_max_wait_time
 
 
 def current_session():

@@ -71,6 +71,14 @@ capybara.version module
     :undoc-members:
     :show-inheritance:
 
+capybara.window module
+----------------------
+
+.. automodule:: capybara.window
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------

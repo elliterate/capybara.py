@@ -1,7 +1,10 @@
 import atexit
 from contextlib import contextmanager
 from selenium import webdriver
-from selenium.common.exceptions import NoAlertPresentException, UnexpectedAlertPresentException
+from selenium.common.exceptions import (
+    NoAlertPresentException,
+    NoSuchWindowException,
+    UnexpectedAlertPresentException)
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from time import sleep, time
@@ -51,6 +54,28 @@ class Driver(Base):
         else:
             self._frame_handles.append(frame.native)
             self.browser.switch_to.frame(frame.native)
+
+    @property
+    def current_window_handle(self):
+        return self.browser.current_window_handle
+
+    def close_window(self, handle):
+        with self._window(handle):
+            self.browser.close()
+
+    @property
+    def window_handles(self):
+        return self.browser.window_handles
+
+    def open_new_window(self):
+        self.browser.execute_script("window.open();")
+
+    def switch_to_window(self, handle):
+        self.browser.switch_to.window(handle)
+
+    @property
+    def no_such_window_error(self):
+        return NoSuchWindowException
 
     def visit(self, url):
         self.browser.get(url)
@@ -118,3 +143,15 @@ class Driver(Base):
         if text and text not in alert.text:
             raise ModalNotFound("Unable to find modal dialog with {0}".format(text))
         return alert
+
+    @contextmanager
+    def _window(self, handle):
+        original_handle = self.current_window_handle
+        if handle == original_handle:
+            yield
+        else:
+            self.switch_to_window(handle)
+            try:
+                yield
+            finally:
+                self.switch_to_window(original_handle)

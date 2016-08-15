@@ -7,11 +7,13 @@ else:
     from urlparse import ParseResult, urlparse
 
 import capybara
+from capybara.exceptions import ScopeError, WindowError
 from capybara.node.base import Base
 from capybara.node.document import Document
 from capybara.node.element import Element
 from capybara.server import Server
 from capybara.utils import cached_property
+from capybara.window import Window
 
 
 _DOCUMENT_METHODS = ["assert_title", "has_title"]
@@ -197,6 +199,139 @@ class Session(object):
                 self.driver.switch_to_frame("parent")
         finally:
             self._scopes.pop()
+
+    @property
+    def current_window(self):
+        """ Window: The current window. """
+        return Window(self, self.driver.current_window_handle)
+
+    @property
+    def windows(self):
+        """
+        Get all opened windows. The order of the windows in the returned list is not defined. The
+        driver may sort windows by their creation time but it's not required.
+
+        Returns:
+            List[Window]: A list of all windows.
+        """
+
+        return [Window(self, window_handle) for window_handle in self.driver.window_handles]
+
+    def open_new_window(self):
+        """
+        Open new window. The current window doesn't change as a result of this call. It should be
+        switched explicitly.
+
+        Returns:
+            Window: The window that has been opened.
+        """
+
+        return self.window_opened_by(lambda: self.driver.open_new_window())
+
+    def switch_to_window(self, window, wait=None):
+        """
+        If ``window`` is a lambda, it switches to the first window for which ``window`` returns a
+        value other than False or None. If a window that matches can't be found, the window will be
+        switched back and :exc:`WindowError` will be raised.
+
+        Args:
+            window (Window | lambda): The window that should be switched to, or a filtering lambda.
+            wait (int | float, optional): The number of seconds to wait to find the window.
+
+        Returns:
+            Window: The new current window.
+
+        Raises:
+            ScopeError: If this method is invoked inside :meth:`scope, :meth:`frame`, or
+                :meth:`window`.
+            WindowError: If no window matches the given lambda.
+        """
+
+        if len(self._scopes) > 1:
+            raise ScopeError(
+                "`switch_to_window` is not supposed to be invoked from "
+                "within `scope`s, `frame`s, or other `window`s.")
+
+        if isinstance(window, Window):
+            self.driver.switch_to_window(window.handle)
+            return window
+        else:
+            @self.document.synchronize(errors=(WindowError,), wait=wait)
+            def switch_and_get_matching_window():
+                original_window_handle = self.driver.current_window_handle
+                try:
+                    for handle in self.driver.window_handles:
+                        self.driver.switch_to_window(handle)
+                        result = window()
+                        if result:
+                            return Window(self, handle)
+                except Exception:
+                    self.driver.switch_to_window(original_window_handle)
+                    raise
+
+                self.driver.switch_to_window(original_window_handle)
+                raise WindowError("Could not find a window matching lambda")
+
+            return switch_and_get_matching_window()
+
+    @contextmanager
+    def window(self, window):
+        """
+        This method does the following:
+
+        1. Switches to the given window (it can be located by window instance/lambda/string).
+        2. Executes the given block (within window located at previous step).
+        3. Switches back (this step will be invoked even if exception happens at second step).
+
+        Args:
+            window (Window | lambda): The desired :class:`Window`, or a lambda that will be run in
+                the context of each open window and returns ``True`` for the desired window.
+        """
+
+        original = self.current_window
+        if window != original:
+            self.switch_to_window(window)
+        self._scopes.append(None)
+        try:
+            yield
+        finally:
+            self._scopes.pop()
+            if original != window:
+                self.switch_to_window(original)
+
+    def window_opened_by(self, trigger_func, wait=None):
+        """
+        Get the window that has been opened by the passed lambda. It will wait for it to be opened
+        (in the same way as other Capybara methods wait). It's better to use this method than
+        ``windows[-1]`` `as order of windows isn't defined in some drivers`__.
+
+        __ https://dvcs.w3.org/hg/webdriver/raw-file/default/webdriver-spec.html#h_note_10
+
+        Args:
+            trigger_func (func): The function that should trigger the opening of a new window.
+            wait (int | float, optional): Maximum wait time. Defaults to
+                :data:`capybara.default_max_wait_time`.
+
+        Returns:
+            Window: The window that has been opened within the lambda.
+
+        Raises:
+            WindowError: If lambda passed to window hasn't opened window or opened more than one
+                window.
+        """
+
+        old_handles = set(self.driver.window_handles)
+        trigger_func()
+
+        @self.document.synchronize(wait=wait, errors=(WindowError,))
+        def get_new_window():
+            opened_handles = set(self.driver.window_handles) - old_handles
+            if len(opened_handles) != 1:
+                raise WindowError("lambda passed to `window_opened_by` "
+                                  "opened {0} windows instead of 1".format(len(opened_handles)))
+            return Window(self, list(opened_handles)[0])
+
+        return get_new_window()
 
     def execute_script(self, script):
         """

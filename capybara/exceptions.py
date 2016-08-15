@@ -16,3 +16,11 @@ class ExpectationNotMet(ElementNotFound):
 
 class UnselectNotAllowed(CapybaraError):
     pass
+
+
+class ScopeError(CapybaraError):
+    pass
+
+
+class WindowError(CapybaraError):
+    pass

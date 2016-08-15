@@ -29,6 +29,45 @@ class Base(object):
 
         raise NotImplementedError()
 
+    @property
+    def current_window_handle(self):
+        """ object: The current window handle. """
+        raise NotImplementedError()
+
+    def close_window(self, handle):
+        """
+        Closes the window with the given handle.
+
+        args:
+            handle (object): The handle for the desired window.
+        """
+
+        raise NotImplementedError()
+
+    @property
+    def window_handles(self):
+        """ List[object]: The handles for all opened windows. """
+        raise NotImplementedError()
+
+    def open_new_window(self):
+        """ Opens a new window. """
+        raise NotImplementedError()
+
+    def switch_to_window(self, handle):
+        """
+        Switches to the given window handle.
+
+        Args:
+            handle (object): The handle for the desired window.
+        """
+
+        raise NotImplementedError()
+
+    @property
+    def no_such_window_error(self):
+        """ Exception: The error that is thrown when a window cannot be found. """
+        raise NotImplementedError()
+
     def visit(self, path):
         """
         Visits the given path.

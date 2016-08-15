@@ -7,10 +7,29 @@ class DSLTestCase:
     @pytest.fixture(autouse=True)
     def teardown_capybara(self):
         original_app = capybara.app
+        original_default_max_wait_time = capybara.default_max_wait_time
         try:
             yield
         finally:
             capybara.app = original_app
+            capybara.default_max_wait_time = original_default_max_wait_time
+
+
+class TestUsingWaitTime(DSLTestCase):
+    def test_switches_and_restores_the_wait_time(self):
+        previous_wait_time = capybara.default_max_wait_time
+        with capybara.using_wait_time(6):
+            in_context = capybara.default_max_wait_time
+        assert in_context == 6
+        assert capybara.default_max_wait_time == previous_wait_time
+
+    def test_ensures_wait_time_is_reset(self):
+        previous_wait_time = capybara.default_max_wait_time
+        with pytest.raises(RuntimeError) as excinfo:
+            with capybara.using_wait_time(6):
+                raise RuntimeError("hell")
+        assert "hell" in str(excinfo.value)
+        assert capybara.default_max_wait_time == previous_wait_time
 
 
 class TestApp(DSLTestCase):

@@ -145,6 +145,18 @@ kind of selector to use. ::
     with session.scope("xpath", "//li[@id='employee']"):
         session.click_link("Jimmy")
 
+_`Working with windows`
+-----------------------
+
+Capybara provides some methods to ease finding and switching windows::
+
+    facebook_window = session.window_opened_by(
+        lambda: session.click_button("Like"))
+    with session.window(facebook_window):
+        session.find("#login_email").set("a@example.com")
+        session.find("#login_password").set("qwerty")
+        session.click_button("Submit")
+
 _`Scripting`
 ------------
 
@@ -215,6 +227,21 @@ is (the default is 2 seconds)::
     import capybara
 
     capybara.default_max_wait_time = 5
+
+_`Calling remote servers`
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Normally Capybara expects to be testing an in-process WSGI application, but you
+can also use it to talk to a web server running anywhere on the internet, by
+setting :data:`capybara.app_host`::
+
+    capybara.app_host = "http://www.google.com"
+    # ...
+    session.visit("/")
+
+With drivers that support it, you can also visit any URL directly::
+
+    session.visit("http://www.google.com")
 
 _`XPath, CSS and selectors`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~

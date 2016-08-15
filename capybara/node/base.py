@@ -54,7 +54,7 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
         """ str: The text of the node. """
         raise NotImplementedError()
 
-    def synchronize(self, func):
+    def synchronize(self, func=None, wait=None, errors=()):
         """
         This method is Capybara's primary defense against asynchronicity problems. It works by
         attempting to run a given decorated function until it succeeds. The exact behavior of this
@@ -70,41 +70,53 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
         be rerun.
 
         As long as any of these exceptions are thrown, the function is re-run, until a certain
-        amount of time passes. The amount of time defaults to
-        :data:`capybara.default_max_wait_time`. This time is compared with the system time to see
-        how much time has passed.
+        amount of time passes. The amount of time defaults to :data:`capybara.default_max_wait_time`
+        and can be overridden through the ``wait`` argument. This time is compared with the system
+        time to see how much time has passed.
 
         Args:
-            func (Callable): The function to decorate.
+            func (Callable, optional): The function to decorate.
+            wait (int, optional): Number of seconds to retry this function.
+            errors (Tuple[Type[Exception]], optional): Exception types that cause the function to be
+                rerun. Defaults to :exc:`ElementNotFound`.
 
         Returns:
-            Callable: The decorated function.
+            Callable: The decorated function, or a decorator function.
         """
 
-        @wraps(func)
-        def outer(*args, **kwargs):
-            seconds = capybara.default_max_wait_time
+        def decorator(func):
+            @wraps(func)
+            def outer(*args, **kwargs):
+                caught_errors = errors or (ElementNotFound,)
+                seconds = wait or capybara.default_max_wait_time
 
-            def inner():
-                return func(*args, **kwargs)
+                def inner():
+                    return func(*args, **kwargs)
 
-            if self.session.synchronized:
-                return inner()
-            else:
-                start_time = time()
-                self.session.synchronized = True
-                try:
-                    while True:
-                        try:
-                            return inner()
-                        except ElementNotFound:
-                            if time() - start_time >= seconds:
-                                raise
-                            sleep(0.05)
-                finally:
-                    self.session.synchronized = False
+                if self.session.synchronized:
+                    return inner()
+                else:
+                    start_time = time()
+                    self.session.synchronized = True
+                    try:
+                        while True:
+                            try:
+                                return inner()
+                            except Exception as e:
+                                if not isinstance(e, caught_errors):
+                                    raise
+                                if time() - start_time >= seconds:
+                                    raise
+                                sleep(0.05)
+                    finally:
+                        self.session.synchronized = False
 
-        return outer
+            return outer
+
+        if func:
+            return decorator(func)
+        else:
+            return decorator
 
     def _find_css(self, css):
         return self.base._find_css(css)
