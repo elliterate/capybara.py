@@ -54,6 +54,15 @@ with add_selector("field") as s:
         expr = _locate_field(expr, locator)
         return expr
 
+with add_selector("fieldset") as s:
+    @s.xpath
+    def xpath(locator):
+        expr = x.descendant("fieldset")
+        expr = expr[
+            x.attr("id").equals(locator) |
+            x.child("legend")[x.string.n.is_(locator)]]
+        return expr
+
 with add_selector("fillable_field") as s:
     s.label = "field"
 
@@ -112,6 +121,15 @@ with add_selector("select") as s:
     def xpath(locator):
         expr = x.descendant("select")
         expr = _locate_field(expr, locator)
+        return expr
+
+with add_selector("table") as s:
+    @s.xpath
+    def xpath(locator):
+        expr = x.descendant("table")
+        expr = expr[
+            x.attr("id").equals(locator) |
+            x.descendant("caption").is_(locator)]
         return expr
 
 

@@ -180,6 +180,31 @@ class Session(object):
             self._scopes.pop()
 
     @contextmanager
+    def fieldset(self, locator):
+        """
+        Execute the wrapped code within a specific fieldset given the id or legend of that
+        fieldset.
+
+        Args:
+            locator (str): The id or legend of the fieldset.
+        """
+
+        with self.scope("fieldset", locator):
+            yield
+
+    @contextmanager
+    def table(self, locator):
+        """
+        Execute the wrapped code within a specific table given the id or caption of that table.
+
+        Args:
+            locator (str): The id or caption of the table.
+        """
+
+        with self.scope("table", locator):
+            yield
+
+    @contextmanager
     def frame(self, locator):
         """
         Execute the wrapped code within the given iframe using the given frame or frame name/id.
