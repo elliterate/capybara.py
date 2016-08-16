@@ -78,6 +78,14 @@ class Base(object):
 
         raise NotImplementedError()
 
+    def go_back(self):
+        """ Move back a single entry in the browser's history. """
+        raise NotImplementedError()
+
+    def go_forward(self):
+        """ Move forward a single entry in the browser's history. """
+        raise NotImplementedError()
+
     def execute_script(self, script):
         """
         Executes the given script.

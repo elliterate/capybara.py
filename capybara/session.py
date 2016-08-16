@@ -143,6 +143,14 @@ class Session(object):
 
         self.driver.visit(visit_uri.geturl())
 
+    def go_back(self):
+        """ Move back a single entry in the browser's history. """
+        self.driver.go_back()
+
+    def go_forward(self):
+        """ Move forward a single entry in the browser's history. """
+        self.driver.go_forward()
+
     @contextmanager
     def scope(self, *args, **kwargs):
         """

@@ -80,6 +80,12 @@ class Driver(Base):
     def visit(self, url):
         self.browser.get(url)
 
+    def go_back(self):
+        self.browser.back()
+
+    def go_forward(self):
+        self.browser.forward()
+
     def execute_script(self, script):
         self.browser.execute_script(script)
 
