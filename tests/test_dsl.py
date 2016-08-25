@@ -8,11 +8,13 @@ class DSLTestCase:
     def teardown_capybara(self):
         original_app = capybara.app
         original_default_max_wait_time = capybara.default_max_wait_time
+        original_session_name = capybara.session_name
         try:
             yield
         finally:
             capybara.app = original_app
             capybara.default_max_wait_time = original_default_max_wait_time
+            capybara.session_name = original_session_name
 
 
 class TestUsingWaitTime(DSLTestCase):
@@ -49,3 +51,41 @@ class TestCurrentSession(DSLTestCase):
         capybara.app = lambda: None
         assert id(capybara.current_session()) != object_id
         assert capybara.current_session().app == capybara.app
+
+    def test_changes_when_the_session_name_changes(self):
+        object_id = id(capybara.current_session())
+        capybara.session_name = "administrator"
+        assert capybara.session_name == "administrator"
+        assert id(capybara.current_session()) != object_id
+        capybara.session_name = "default"
+        assert capybara.session_name == "default"
+        assert id(capybara.current_session()) == object_id
+
+
+class TestUsingSession(DSLTestCase):
+    def test_changes_the_session_name_for_the_duration_of_the_block(self):
+        assert capybara.session_name == "default"
+        with capybara.using_session("administrator"):
+            assert capybara.session_name == "administrator"
+        assert capybara.session_name == "default"
+
+    def test_resets_the_session_to_the_default_even_if_an_exception_occurs(self):
+        try:
+            with capybara.using_session("raise"):
+                raise RuntimeError()
+        except RuntimeError:
+            pass
+        assert capybara.session_name == "default"
+
+    def test_is_nestable(self):
+        with capybara.using_session("outer"):
+            assert capybara.session_name == "outer"
+            with capybara.using_session("inner"):
+                assert capybara.session_name == "inner"
+            assert capybara.session_name == "outer"
+        assert capybara.session_name == "default"
+
+
+class TestSessionName(DSLTestCase):
+    def test_defaults_to_default(self):
+        assert capybara.session_name == "default"

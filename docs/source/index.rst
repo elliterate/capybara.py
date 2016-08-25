@@ -242,6 +242,46 @@ is (the default is 2 seconds)::
 
     capybara.default_max_wait_time = 5
 
+_`Using sessions`
+~~~~~~~~~~~~~~~~~
+
+Capybara manages named sessions ("default" if not specified) allowing multiple
+sessions using the same driver and test app instance to be interacted with. A
+new session will be created using the current driver if a session with the given
+name using the current driver and test app instance is not found.
+
+_`Named sessions`
+-----------------
+
+To perform operations in a different session and then revert to the previous
+session::
+
+    import capybara
+
+    with capybara.using_session("Bob's session"):
+         # do something in Bob's browser session
+    # reverts to previous session
+
+To permanently switch the current session to a different session::
+
+    import capybara
+
+    capybara.session_name = "some other session"
+
+_`Using sessions manually`
+--------------------------
+
+For ultimate control, you can instantiate and use a :class:`Session <capybara.session.Session>`
+manually. ::
+
+    from capybara.session import Session
+
+    session = Session("selenium", my_wsgi_app)
+    with session.scope("//form[@id='session']"):
+        session.fill_in("Email", value="email@example.com")
+        session.fill_in("Password", value="password")
+    session.click_button("Sign in")
+
 _`Calling remote servers`
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 

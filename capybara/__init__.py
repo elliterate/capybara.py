@@ -32,6 +32,9 @@ servers = {}
 drivers = {}
 # Dict[str, Callable[[object], object]]: A dictionary of driver initialization functions.
 
+session_name = "default"
+""" str: The current session name. """
+
 _session_pool = {}
 # Dict[str, Session]: A pool of `Session` objects, keyed by driver and app.
 
@@ -103,8 +106,8 @@ def current_session():
         Session: The :class:`Session` for the current driver and app.
     """
 
-    session_key = "{driver}:{app}".format(
-        driver=current_driver, app=str(id(app)))
+    session_key = "{driver}:{session}:{app}".format(
+        driver=current_driver, session=session_name, app=str(id(app)))
     session = _session_pool.get(session_key, None)
 
     if session is None:
@@ -113,6 +116,25 @@ def current_session():
         _session_pool[session_key] = session
 
     return session
+
+
+@contextmanager
+def using_session(name):
+    """
+    Execute the wrapped code using a specific session name.
+
+    Args:
+        name (str): The name of the session to use.
+    """
+
+    global session_name
+
+    previous_session_name = session_name
+    session_name = name
+    try:
+        yield
+    finally:
+        session_name = previous_session_name
 
 
 @register_server("default")
