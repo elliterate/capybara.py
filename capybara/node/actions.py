@@ -1,3 +1,8 @@
+import os.path
+
+from capybara.exceptions import FileNotFound
+
+
 class ActionsMixin(object):
     """
     If the driver is capable of executing JavaScript, actions will wait for a set amount of time and
@@ -5,6 +10,27 @@ class ActionsMixin(object):
     The length of time :meth:`find` will wait is controlled through
     :data:`capybara.default_max_wait_time`.
     """
+
+    def attach_file(self, locator, path, **kwargs):
+        """
+        Find a file field on the page and attach a file given its path. The file field can be found
+        via its name, id, or label text. ::
+
+            session.attach_file(locator, "/path/to/file.png")
+
+        Args:
+            locator (str): Which field to attach the file to.
+            path (str): The path of the file that will be attached.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Raises:
+            FileNotFound: No file exists at the given path.
+        """
+
+        if not os.path.isfile(path):
+            raise FileNotFound("cannot attach file, {0} does not exist".format(path))
+
+        self.find("file_field", locator, **kwargs).set(path)
 
     def check(self, locator, **kwargs):
         """

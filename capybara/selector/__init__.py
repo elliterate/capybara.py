@@ -63,6 +63,15 @@ with add_selector("fieldset") as s:
             x.child("legend")[x.string.n.is_(locator)]]
         return expr
 
+with add_selector("file_field") as s:
+    s.label = "file field"
+
+    @s.xpath
+    def xpath(locator):
+        expr = x.descendant("input")[x.attr("type").equals("file")]
+        expr = _locate_field(expr, locator)
+        return expr
+
 with add_selector("fillable_field") as s:
     s.label = "field"
 

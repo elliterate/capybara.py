@@ -1,7 +1,13 @@
+import inspect
+import os.path
 import pytest
 
 import capybara
 from capybara.tests.app import app
+
+
+_DIR = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+_FIXTURE_DIR = os.path.join(_DIR, "fixtures")
 
 
 @pytest.fixture(autouse=True)
@@ -28,6 +34,14 @@ def session(driver):
     from capybara.session import Session
 
     return Session(driver, app)
+
+
+@pytest.fixture(scope="session")
+def fixture_path():
+    def fixture_path(fixture_name):
+        return os.path.join(_FIXTURE_DIR, fixture_name)
+
+    return fixture_path
 
 
 @pytest.fixture(autouse=True)

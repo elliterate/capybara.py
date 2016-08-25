@@ -14,6 +14,10 @@ class ExpectationNotMet(ElementNotFound):
     pass
 
 
+class FileNotFound(CapybaraError):
+    pass
+
+
 class UnselectNotAllowed(CapybaraError):
     pass
 
