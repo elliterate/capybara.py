@@ -66,6 +66,19 @@ You can use the :meth:`visit <capybara.session.Session.visit>` method to navigat
 The visit method only takes a single parameter, the request method is **always**
 GET.
 
+You can get the current path of the browsing session, and test it using the
+:meth:`has_current_path <capybara.session_matchers.SessionMatchersMixin.has_current_path>` matcher::
+
+    assert page.has_current_path("/posts/1/comments/2")
+
+**Note:** You can also assert the current path by testing the value of
+:attr:`current_path <capybara.session.Session.current_path>` directly. However, using the
+:meth:`has_current_path <capybara.session_matchers.SessionMatchersMixin.has_current_path>` matcher
+is safer since it uses Capybara's `waiting behavior`_ to ensure that preceding actions (such as a
+:meth:`click_link <capybara.node.actions.ActionsMixin.click_link>`) have completed.
+
+.. _waiting behavior: `Asynchronous JavaScript (Ajax and friends)`_
+
 _`Clicking links and buttons`
 -----------------------------
 

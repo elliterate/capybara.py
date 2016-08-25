@@ -12,6 +12,7 @@ from capybara.node.base import Base
 from capybara.node.document import Document
 from capybara.node.element import Element
 from capybara.server import Server
+from capybara.session_matchers import SessionMatchersMixin
 from capybara.utils import cached_property
 from capybara.window import Window
 
@@ -26,7 +27,7 @@ _NODE_METHODS = [
 _NODE_PROPERTIES = ["text"]
 
 
-class Session(object):
+class Session(SessionMatchersMixin, object):
     """
     The Session class represents a single user's interaction with the system. The Session can use
     any of the underlying drivers. A session can be initialized manually like this::

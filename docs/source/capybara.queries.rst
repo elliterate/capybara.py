@@ -4,6 +4,14 @@ capybara.queries package
 Submodules
 ----------
 
+capybara.queries.current_path_query module
+------------------------------------------
+
+.. automodule:: capybara.queries.current_path_query
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 capybara.queries.selector_query module
 --------------------------------------
 

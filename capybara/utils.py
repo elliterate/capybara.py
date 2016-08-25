@@ -51,6 +51,20 @@ def isbytes(value):
     return isinstance(value, _bytes)
 
 
+def isregex(possible_regex):
+    """
+    Returns whether the given object is (probably) a regular expression object.
+
+    Args:
+        possible_regex (object): An object which may or may not be a regular expression.
+
+    Returns:
+        bool: Whether the given object is (probably) a regular expression object.
+    """
+
+    return hasattr(possible_regex, "search") and callable(possible_regex.search)
+
+
 def setter_decorator(fset):
     """
     Define a write-only property that, in addition to the given setter function, also

@@ -55,6 +55,14 @@ capybara.session module
     :undoc-members:
     :show-inheritance:
 
+capybara.session_matchers module
+--------------------------------
+
+.. automodule:: capybara.session_matchers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 capybara.utils module
 ---------------------
 

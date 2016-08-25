@@ -1,6 +1,6 @@
 import re
 
-from capybara.utils import decode_bytes, isbytes
+from capybara.utils import decode_bytes, isbytes, isregex
 
 
 def desc(value):
@@ -8,6 +8,8 @@ def desc(value):
 
     if isbytes(value):
         value = decode_bytes(value)
+    if isregex(value):
+        value = value.pattern
 
     return repr(value)
 
