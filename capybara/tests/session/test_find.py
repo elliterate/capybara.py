@@ -1,7 +1,7 @@
 import pytest
 from xpath import dsl as x
 
-from capybara.exceptions import ElementNotFound
+from capybara.exceptions import Ambiguous, ElementNotFound
 from capybara.selector import add_selector, remove_selector
 
 
@@ -22,6 +22,10 @@ class TestFind(FindTestCase):
     def test_finds_the_first_element_using_the_given_locator(self, session):
         assert session.find("//h1").text == "This is a test"
         assert session.find("//input[@id='test_field']").value == "monkey"
+
+    def test_raises_an_error_if_there_are_multiple_matches(self, session):
+        with pytest.raises(Ambiguous):
+            session.find("//a")
 
     def test_waits_for_asynchronous_load(self, session):
         session.visit("/with_js")

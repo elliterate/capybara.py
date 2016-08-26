@@ -346,13 +346,13 @@ In XPath the expression // means something very specific, and it might not be wh
 you think. Contrary to common belief, // means "anywhere in the document" not "anywhere
 in the current context". As an example::
 
-    session.find("xpath", "//body").find("xpath", "//script")
+    session.find("xpath", "//body").find_all("xpath", "//script")
 
-You might expect this to find a script tag in the body, but actually, it finds a
-script tag anywhere in the entire document, not only in the body! What you're looking
+You might expect this to find all script tags in the body, but actually, it finds all
+script tags anywhere in the entire document, not only in the body! What you're looking
 for is the .// expression which means "any descendant of the current node"::
 
-    session.find("xpath", "//body").find("xpath", ".//script")
+    session.find("xpath", "//body").find_all("xpath", ".//script")
 
 The same thing goes for :meth:`scope <capybara.session.Session.scope>`::
 

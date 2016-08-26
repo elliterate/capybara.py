@@ -10,6 +10,10 @@ class ModalNotFound(CapybaraError):
     pass
 
 
+class Ambiguous(ElementNotFound):
+    pass
+
+
 class ExpectationNotMet(ElementNotFound):
     pass
 

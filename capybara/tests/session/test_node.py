@@ -23,8 +23,8 @@ class TestNode(NodeTestCase):
 
 class TestNodeText(NodeTestCase):
     def test_extracts_node_text(self, session):
-        assert session.find("//a[1]").text == "labore"
-        assert session.find("//a[2]").text == "ullamco"
+        assert session.find_all("//a")[0].text == "labore"
+        assert session.find_all("//a")[1].text == "ullamco"
 
     def test_returns_document_text_on_html_selector(self, session):
         session.visit("/with_simple_html")
@@ -33,9 +33,9 @@ class TestNodeText(NodeTestCase):
 
 class TestNodeAttribute(NodeTestCase):
     def test_extracts_node_attributes(self, session):
-        assert session.find("//a[1]")["class"] == "simple"
-        assert session.find("//a[2]")["id"] == "foo"
-        assert session.find("//input[1]")["type"] == "text"
+        assert session.find_all("//a")[0]["class"] == "simple"
+        assert session.find_all("//a")[1]["id"] == "foo"
+        assert session.find_all("//input")[0]["type"] == "text"
 
     def test_extracts_boolean_node_attributes(self, session):
         assert session.find("//input[@id='checked_field']")["checked"]
@@ -67,16 +67,16 @@ class TestNodeValue(NodeTestCase):
 
 class TestNodeSet(NodeTestCase):
     def test_allows_assignment_of_field_value(self, session):
-        assert session.find("//input[1]").value == "monkey"
-        session.find("//input[1]").set("gorilla")
-        assert session.find("//input[1]").value == "gorilla"
+        assert session.find_first("//input").value == "monkey"
+        session.find_first("//input").set("gorilla")
+        assert session.find_first("//input").value == "gorilla"
 
 
 class TestNodeTagName(NodeTestCase):
     def test_extracts_node_tag_name(self, session):
-        assert session.find("//a[1]").tag_name == "a"
-        assert session.find("//a[2]").tag_name == "a"
-        assert session.find("//p[1]").tag_name == "p"
+        assert session.find_all("//a")[0].tag_name == "a"
+        assert session.find_all("//a")[1].tag_name == "a"
+        assert session.find_all("//p")[0].tag_name == "p"
 
 
 class TestNodeChecked(NodeTestCase):
@@ -84,7 +84,7 @@ class TestNodeChecked(NodeTestCase):
         session.visit("/form")
         assert session.find("//input[@id='gender_female']").checked is True
         assert session.find("//input[@id='gender_male']").checked is False
-        assert session.find("//h1").checked is False
+        assert session.find_first("//h1").checked is False
 
 
 class TestNodeSelected(NodeTestCase):
@@ -92,4 +92,4 @@ class TestNodeSelected(NodeTestCase):
         session.visit("/form")
         assert session.find("//option[@value='en']").selected is True
         assert session.find("//option[@value='sv']").selected is False
-        assert session.find("//h1").selected is False
+        assert session.find_first("//h1").checked is False

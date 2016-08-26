@@ -1,4 +1,4 @@
-from capybara.exceptions import ElementNotFound
+from capybara.exceptions import Ambiguous, ElementNotFound
 from capybara.queries.selector_query import SelectorQuery
 
 
@@ -13,7 +13,9 @@ class FindersMixin(object):
     def find(self, *args, **kwargs):
         """
         Find an :class:`Element` based on the given arguments. ``find`` will raise an error if the
-        element is not found. ::
+        element is not found.
+
+        ``find`` takes the same options as :meth:`find_all`. ::
 
             page.find("#foo").find(".bar")
             page.find("xpath", "//div[contains(., 'bar')]")
@@ -27,6 +29,7 @@ class FindersMixin(object):
             Element: The found element.
 
         Raises:
+            Ambiguous: If more than one element matching element is found.
             ElementNotFound: If the element can't be found before time expires.
         """
 
@@ -36,6 +39,9 @@ class FindersMixin(object):
         def find():
             result = query.resolve_for(self)
 
+            if len(result) > 1:
+                raise Ambiguous("Ambiguous match, found {count} elements matching {query}".format(
+                    count=len(result), query=query.description))
             if len(result) == 0:
                 raise ElementNotFound("Unable to find {0}".format(query.description))
 
@@ -101,3 +107,53 @@ class FindersMixin(object):
         """
 
         return self.find("link", locator, **kwargs)
+
+    def find_all(self, *args, **kwargs):
+        """
+        Find all elements on the page matching the given selector and options.
+
+        Both XPath and CSS expressions are supported, but Capybara does not try to automatically
+        distinguish between them. The following statements are equivalent::
+
+            session.find_all("css", "a#person_123")
+            session.find_all("xpath", "//a[@id='person_123']")
+
+        If the type of selector is left out, Capybara uses :data:`capybara.default_selector`. It's
+        set to ``"css"`` by default. ::
+
+            session.find_all("a#person_123")
+
+            capybara.default_selector = "xpath"
+            session.find_all("//a[@id='person_123']")
+
+        Args:
+            *args: Variable length argument list for :class:`SelectorQuery`.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            List[Element]: The list of matching elements.
+        """
+
+        query = SelectorQuery(*args, **kwargs)
+
+        @self.synchronize
+        def find_all():
+            return query.resolve_for(self)
+
+        return find_all()
+
+    def find_first(self, *args, **kwargs):
+        """
+        Find the first element on the page matching the given selector and options, or None if no
+        element matches.
+
+        Args:
+            *args: Variable length argument list for :class:`SelectorQuery`.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            Element: The found element or None.
+        """
+
+        result = self.find_all(*args, **kwargs)
+        return result[0] if len(result) > 0 else None
