@@ -11,6 +11,12 @@ class Node(object):
         self.driver = driver
         self.native = native
 
+    def __eq__(self, other):
+        raise NotImplementedError()
+
+    def __hash__(self):
+        raise NotImplementedError()
+
     @property
     def tag_name(self):
         """ str: The tag name of the node. """

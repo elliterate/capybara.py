@@ -47,6 +47,12 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
 
         return self
 
+    def __eq__(self, other):
+        return id(self) == id(other) or (hasattr(other, "base") and self.base == other.base)
+
+    def __hash__(self):
+        return hash(self.base)
+
     def __getitem__(self, name):
         """
         Retrieve the given attribute.

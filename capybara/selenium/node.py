@@ -71,6 +71,12 @@ class Node(Base):
         if self.selected:
             self.native.click()
 
+    def __eq__(self, other):
+        return self.native == other.native
+
+    def __hash__(self):
+        return hash(self.native)
+
     @property
     def checked(self):
         return self.selected

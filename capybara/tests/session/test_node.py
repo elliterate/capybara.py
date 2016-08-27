@@ -104,6 +104,17 @@ class TestNodeSelected(NodeTestCase):
         assert session.find_first("//h1").checked is False
 
 
+class TestNodeEquals(NodeTestCase):
+    def test_is_true_for_the_same_element(self, session):
+        assert session.find("//h1") == session.find("//h1")
+
+    def test_is_false_for_different_elements(self, session):
+        assert session.find("//h1") != session.find_first("//p")
+
+    def test_is_false_for_unrelated_objects(self, session):
+        assert session.find("//h1") != "Not a node"
+
+
 class TestNodeReloadWithoutAutomaticReload(NodeTestCase):
     @pytest.fixture(autouse=True)
     def setup_capybara(self):
