@@ -35,6 +35,17 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
     def __init__(self, session, base):
         self.session = session
         self.base = base
+        self.allow_reload = False
+
+    def reload(self):
+        """
+        Reloads the underlying driver node.
+
+        Returns:
+            node.Base: This node.
+        """
+
+        return self
 
     def __getitem__(self, name):
         """
@@ -67,7 +78,9 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
         where an expectation fails.
 
         Only exceptions that are :exc:`ElementNotFound` or any subclass thereof cause the block to
-        be rerun.
+        be rerun. Drivers may specify additional exceptions which also cause reruns. This usually
+        occurs when a node is manipulated which no longer exists on the page. For example, the
+        Selenium driver specifies ``selenium.common.exceptions.StateElementReferenceException``.
 
         As long as any of these exceptions are thrown, the function is re-run, until a certain
         amount of time passes. The amount of time defaults to :data:`capybara.default_max_wait_time`
@@ -78,7 +91,7 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
             func (Callable, optional): The function to decorate.
             wait (int, optional): Number of seconds to retry this function.
             errors (Tuple[Type[Exception]], optional): Exception types that cause the function to be
-                rerun. Defaults to :exc:`ElementNotFound`.
+                rerun. Defaults to ``driver.invalid_element_errors`` + :exc:`ElementNotFound`.
 
         Returns:
             Callable: The decorated function, or a decorator function.
@@ -87,7 +100,9 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
         def decorator(func):
             @wraps(func)
             def outer(*args, **kwargs):
-                caught_errors = errors or (ElementNotFound,)
+                caught_errors = (
+                    errors or
+                    self.session.driver.invalid_element_errors + (ElementNotFound,))
                 seconds = wait or capybara.default_max_wait_time
 
                 def inner():
@@ -107,7 +122,11 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
                                     raise
                                 if time() - start_time >= seconds:
                                     raise
+
                                 sleep(0.05)
+
+                                if capybara.automatic_reload:
+                                    self.reload()
                     finally:
                         self.session.synchronized = False
 

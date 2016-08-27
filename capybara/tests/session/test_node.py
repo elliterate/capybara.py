@@ -1,5 +1,7 @@
 import pytest
+from time import sleep
 
+import capybara
 from capybara.tests.helpers import extract_results
 
 
@@ -19,6 +21,13 @@ class TestNode(NodeTestCase):
 
     def test_scopes_css_selectors(self, session):
         assert not session.find("css", "#second").has_css("h1")
+
+
+class TestNodeQueryScope(NodeTestCase):
+    def test_returns_a_reference_to_the_element_the_query_was_evaluated_on(self, session):
+        node = session.find("css", "#first")
+        assert node.query_scope == node.session.document
+        assert node.find("css", "#foo").query_scope == node
 
 
 class TestNodeText(NodeTestCase):
@@ -93,3 +102,73 @@ class TestNodeSelected(NodeTestCase):
         assert session.find("//option[@value='en']").selected is True
         assert session.find("//option[@value='sv']").selected is False
         assert session.find_first("//h1").checked is False
+
+
+class TestNodeReloadWithoutAutomaticReload(NodeTestCase):
+    @pytest.fixture(autouse=True)
+    def setup_capybara(self):
+        capybara.automatic_reload = False
+
+    def test_reloads_the_current_context_of_the_node(self, session):
+        session.visit("/with_js")
+        node = session.find("css", "#reload-me")
+        session.click_link("Reload!")
+        sleep(0.3)
+        assert node.reload().text == "has been reloaded"
+        assert node.text == "has been reloaded"
+
+    def test_reloads_a_parent_node(self, session):
+        session.visit("/with_js")
+        node = session.find("css", "#reload-me").find("css", "em")
+        session.click_link("Reload!")
+        sleep(0.3)
+        assert node.reload().text == "has been reloaded"
+        assert node.text == "has been reloaded"
+
+    def test_does_not_automatically_reload(self, session):
+        session.visit("/with_js")
+        node = session.find("css", "#reload-me")
+        session.click_link("Reload!")
+        sleep(0.3)
+        with pytest.raises(Exception) as excinfo:
+            assert node.has_text("has been reloaded")
+        assert isinstance(excinfo.value, session.driver.invalid_element_errors)
+
+
+class TestNodeReloadWithAutomaticReload(NodeTestCase):
+    @pytest.fixture(autouse=True)
+    def setup_capybara(self):
+        capybara.automatic_reload = True
+
+    def test_reloads_the_current_context_of_the_node_automatically(self, session):
+        session.visit("/with_js")
+        node = session.find("css", "#reload-me")
+        session.click_link("Reload!")
+        sleep(0.3)
+        assert node.text == "has been reloaded"
+
+    def test_reloads_a_parent_node_automatically(self, session):
+        session.visit("/with_js")
+        node = session.find("css", "#reload-me").find("css", "em")
+        session.click_link("Reload!")
+        sleep(0.3)
+        assert node.text == "has been reloaded"
+
+    def test_reloads_a_node_automatically_when_using_find(self, session):
+        session.visit("/with_js")
+        node = session.find("css", "#reload-me")
+        session.click_link("Reload!")
+        sleep(0.3)
+        assert node.find("css", "a").text == "has been reloaded"
+
+    def test_does_not_reload_nodes_which_have_not_been_found_with_reevaluatable_queries(self, session):
+        session.visit("/with_js")
+        node = session.find_all("css", "#the-list li")[1]
+        session.click_link("Fetch new list!")
+        sleep(0.3)
+        with pytest.raises(Exception) as excinfo:
+            assert node.has_text("Foo")
+        assert isinstance(excinfo.value, session.driver.invalid_element_errors)
+        with pytest.raises(Exception) as excinfo:
+            assert node.has_text("Bar")
+        assert isinstance(excinfo.value, session.driver.invalid_element_errors)

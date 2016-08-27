@@ -14,6 +14,7 @@ _FIXTURE_DIR = os.path.join(_DIR, "fixtures")
 def setup_capybara():
     original_app = capybara.app
     original_app_host = capybara.app_host
+    original_automatic_reload = capybara.automatic_reload
     original_default_max_wait_time = capybara.default_max_wait_time
     original_default_selector = capybara.default_selector
     try:
@@ -25,6 +26,7 @@ def setup_capybara():
     finally:
         capybara.app = original_app
         capybara.app_host = original_app_host
+        capybara.automatic_reload = original_automatic_reload
         capybara.default_max_wait_time = original_default_max_wait_time
         capybara.default_selector = original_default_selector
 

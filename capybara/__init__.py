@@ -20,6 +20,9 @@ server_host = "127.0.0.1"
 server_port = None
 """ int, optional: The port bound by the default server. """
 
+automatic_reload = True
+""" bool: Whether to automatically reload elements as Capybara is waiting. """
+
 default_max_wait_time = 2
 """ int: The maximum number of seconds to wait for asynchronous processes to finish. """
 

@@ -136,6 +136,11 @@ class Base(object):
 
         raise NotImplementedError()
 
+    @property
+    def invalid_element_errors(self):
+        """ Tuple[Exception]: A tuple of exceptions that indicate an element is invalid. """
+        return ()
+
     def reset(self):
         """ Resets the driver. """
         pass

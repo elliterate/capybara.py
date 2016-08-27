@@ -4,6 +4,7 @@ from selenium import webdriver
 from selenium.common.exceptions import (
     NoAlertPresentException,
     NoSuchWindowException,
+    StaleElementReferenceException,
     UnexpectedAlertPresentException)
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
@@ -133,6 +134,10 @@ class Driver(Base):
 
                     # Try cleaning up the browser again.
                     continue
+
+    @property
+    def invalid_element_errors(self):
+        return (StaleElementReferenceException,)
 
     def _find_css(self, css):
         return [Node(self, element) for element in self.browser.find_elements_by_css_selector(css)]

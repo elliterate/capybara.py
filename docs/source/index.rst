@@ -242,6 +242,18 @@ is (the default is 2 seconds)::
 
     capybara.default_max_wait_time = 5
 
+Capybara's waiting behavior is quite advanced, and can deal with situations
+such as the following line of code::
+
+    assert session.find("#sidebar").find("h1").has_text("Something")
+
+Even if JavaScript causes ``#sidebar`` to disappear off the page, Capybara
+will automatically reload it and any elements it contains. So if an AJAX
+request causes the contents of ``#sidebar`` to change, which would update
+the text of the ``h1`` to "Something", and this happened, this test would
+pass. If you do not want this behavior, you can set
+:data:`capybara.automatic_reload` to ``False``.
+
 _`Using sessions`
 ~~~~~~~~~~~~~~~~~
 

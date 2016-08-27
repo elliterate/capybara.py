@@ -32,9 +32,19 @@ class SelectorQuery(object):
             "exact": exact}
 
     @property
+    def name(self):
+        """ str: The name of selector. """
+        return self.selector.name
+
+    @property
     def label(self):
         """ str: A short description of the selector. """
         return self.selector.label or self.selector.name
+
+    @property
+    def kwargs(self):
+        """ Dict[str, Any]: The keyword arguments with which this query was initialized. """
+        return self.options
 
     @property
     def description(self):
@@ -82,7 +92,7 @@ class SelectorQuery(object):
             else:
                 children = node._find_xpath(self.xpath)
 
-            children = [Element(node.session, child) for child in children]
+            children = [Element(node.session, child, node, self) for child in children]
 
             return Result(children, self)
 

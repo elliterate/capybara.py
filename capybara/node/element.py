@@ -1,4 +1,4 @@
-from capybara.node.base import Base
+from capybara.node.base import Base, synchronize
 
 
 class Element(Base):
@@ -18,6 +18,11 @@ class Element(Base):
         bar["title"]
     """
 
+    def __init__(self, session, base, query_scope, query):
+        super(type(self), self).__init__(session, base)
+        self.query_scope = query_scope
+        self.query = query
+
     def __repr__(self):
         return "<capybara.node.element.Element tag=\"{tag}\">".format(
             tag=self.tag_name)
@@ -27,31 +32,46 @@ class Element(Base):
         """ object: The native element from the driver. """
         return self.base.native
 
+    def reload(self):
+        if self.allow_reload:
+            query_scope = self.query_scope.reload()
+            reloaded = query_scope.find_first(
+                self.query.name, self.query.locator, **self.query.kwargs)
+            if reloaded:
+                self.base = reloaded.base
+        return self
+
     @property
+    @synchronize
     def tag_name(self):
         """ str: The tag name of the element. """
         return self.base.tag_name
 
     @property
+    @synchronize
     def value(self):
         """ str: The value of the form element. """
         return self.base.value
 
     @property
+    @synchronize
     def text(self):
         """ str: The text of the element. """
         return self.base.text
 
     @property
+    @synchronize
     def checked(self):
         """ bool: Whether or not the element is checked. """
         return self.base.checked
 
     @property
+    @synchronize
     def selected(self):
         """ bool: Whether or not the element is selected. """
         return self.base.selected
 
+    @synchronize
     def __getitem__(self, name):
         """
         Retrieve the given attribute. ::
@@ -67,14 +87,17 @@ class Element(Base):
 
         return self.base[name]
 
+    @synchronize
     def click(self):
         """ Click the element. """
         self.base.click()
 
+    @synchronize
     def select_option(self):
         """ Select this node if it is an option element inside a select tag. """
         self.base.select_option()
 
+    @synchronize
     def set(self, value):
         """
         Set the value of the form element to the given value.
@@ -85,6 +108,7 @@ class Element(Base):
 
         self.base.set(value)
 
+    @synchronize
     def unselect_option(self):
         """ Unselect this node if it is an option element inside a multiple select tag. """
         self.base.unselect_option()

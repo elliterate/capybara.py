@@ -45,7 +45,9 @@ class FindersMixin(object):
             if len(result) == 0:
                 raise ElementNotFound("Unable to find {0}".format(query.description))
 
-            return result[0]
+            element = result[0]
+            element.allow_reload = True
+            return element
 
         return find()
 
