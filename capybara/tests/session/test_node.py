@@ -15,6 +15,7 @@ class TestNode(NodeTestCase):
     def test_acts_like_a_session_object(self, session):
         session.visit("/form")
         form = session.find("css", "#get-form")
+        assert form.has_field("Middle Name")
         form.fill_in("Middle Name", value="Monkey")
         form.click_button("med")
         assert extract_results(session)["form[middle_name]"] == "Monkey"

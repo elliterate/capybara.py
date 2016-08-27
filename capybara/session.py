@@ -23,7 +23,8 @@ _NODE_METHODS = [
     "assert_selector", "assert_text", "attach_file", "check", "choose", "click_button",
     "click_link", "click_link_or_button", "click_on", "fill_in", "find", "find_all", "find_button",
     "find_by_id", "find_field", "find_first", "find_link", "has_button", "has_content", "has_css",
-    "has_link", "has_selector", "has_text", "has_xpath", "select", "uncheck", "unselect"]
+    "has_field", "has_link", "has_selector", "has_text", "has_xpath", "select", "uncheck",
+    "unselect"]
 _NODE_PROPERTIES = ["text"]
 
 

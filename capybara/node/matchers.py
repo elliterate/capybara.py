@@ -120,6 +120,25 @@ class MatchersMixin(object):
 
         return self.has_selector("button", locator, **kwargs)
 
+    def has_field(self, locator, **kwargs):
+        """
+        Checks if the page or current node has a form field with the given label, name, or id.
+
+        For text fields and other textual fields, such as textareas and HTML5 email/url/etc. fields,
+        it's possible to specify a ``value`` argument to specify the text the field should contain::
+
+            session.has_field("Name", value="Jonas")
+
+        Args:
+            locator (str): The label, name, or id of a field to check for.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it exists.
+        """
+
+        return self.has_selector("field", locator, **kwargs)
+
     def has_link(self, locator, **kwargs):
         """
         Checks if the page or current node has a link with the given text or id.
