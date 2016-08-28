@@ -1,4 +1,4 @@
-from capybara.helpers import failure_message
+from capybara.helpers import desc, failure_message
 
 
 class Result(object):
@@ -11,12 +11,16 @@ class Result(object):
     * ``__nonzero__`` (Python 2)
 
     Args:
-        elements (List[Element]): The list of elements found by the query.
+        elements (List[Element]): The initial list of elements found by the query.
         query (SelectorQuery): The query used to find elements.
     """
 
     def __init__(self, elements, query):
-        self.result = elements
+
+        # Further reduce the result set using the query's filters.
+        self.result = [node for node in elements
+                       if query.matches_filters(node)]
+        self.rest = list(set(elements) - set(self.result))
         self.query = query
 
     def __getitem__(self, key):
@@ -33,4 +37,8 @@ class Result(object):
         """ str: A message describing the query failure. """
         message = failure_message(self.query.description)
         message += " but there were no matches"
+        if self.rest:
+            elements = ", ".join([desc(element.text) for element in self.rest])
+            message += (". Also found {}, which matched the selector"
+                        " but not all filters.".format(elements))
         return message

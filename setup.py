@@ -1,5 +1,11 @@
 import os
 from setuptools import setup, find_packages
+import sys
+
+
+tests_require = ["flask", "lxml", "pytest >= 3", "selenium < 3", "werkzeug"]
+if sys.version_info < (3, 3):
+    tests_require.append("mock")
 
 
 def read(filename):
@@ -58,4 +64,4 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*", "*.tests.*", "*.tests"]),
     install_requires=["xpath-py >= 0.0.4"],
     setup_requires=["pytest-runner"],
-    tests_require=["flask", "lxml", "pytest >= 3", "selenium < 3", "werkzeug"])
+    tests_require=tests_require)

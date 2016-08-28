@@ -1,5 +1,7 @@
 from contextlib import contextmanager
 
+from capybara.selector.filter import Filter
+from capybara.selector.filter_set import filter_sets
 from capybara.utils import setter_decorator
 
 
@@ -18,14 +20,17 @@ class Selector(object):
             string.
         xpath (Callable[[str], str], optional): A function to generate an XPath query given a
             locator string.
+        custom_filters (Dict[str, Filter]): A dictionary of filters this selector should use
+            to identify matching elements. Defaults to {}.
     """
 
-    def __init__(self, name, label=None, css=None, xpath=None):
+    def __init__(self, name, label=None, css=None, xpath=None, custom_filters=None):
         self.name = name
         self.label = label
         self.css = css
         self.xpath = xpath
         self.format = "xpath" if xpath else "css"
+        self.custom_filters = custom_filters or {}
 
     def __call__(self, locator):
         assert self.format, "selector has no format"
@@ -45,6 +50,7 @@ class SelectorFactory(object):
         self.label = None
         self.func = None
         self.format = None
+        self.custom_filters = {}
 
     @setter_decorator
     def css(self, func):
@@ -70,10 +76,41 @@ class SelectorFactory(object):
         self.func = func
         self.format = "xpath"
 
+    def filter(self, name, **kwargs):
+        """
+        Returns a decorator function for adding afilter.
+
+        Args:
+            name (str): The name of the filter.
+            **kwargs: Variable keyword arguments for the filter.
+
+        Returns:
+            Callable[[Callable[[Element, Any], bool]]]: A decorator function for adding a filter.
+        """
+
+        def decorator(func):
+            self.custom_filters[name] = Filter(name, func, **kwargs)
+
+        return decorator
+
+    def filter_set(self, name):
+        """
+        Adds filters from a particular global :class:`FilterSet`.
+
+        Args:
+            name (str): The name of the set whose filters should be added.
+        """
+
+        filter_set = filter_sets[name]
+        for name, filter_ in iter(filter_set.filters.items()):
+            self.custom_filters[name] = filter_
+
     def build_selector(self):
         """ Selector: Returns a new :class:`Selector` instance with the current configuration. """
 
-        kwargs = {'label': self.label}
+        kwargs = {
+            'label': self.label,
+            'custom_filters': self.custom_filters}
         if self.format == "xpath":
             kwargs['xpath'] = self.func
         if self.format == "css":

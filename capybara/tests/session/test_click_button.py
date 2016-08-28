@@ -113,6 +113,10 @@ class TestClickButton(ClickButtonTestCase):
         session.click_button("awesome")
         assert extract_results(session).get("form[okay]") is None
 
+    def test_raises_an_error_for_disabled_buttons(self, session):
+        with pytest.raises(ElementNotFound):
+            session.click_button("Disabled button")
+
     def test_encodes_complex_field_names(self, session):
         session.fill_in("address1_city", value="Paris")
         session.fill_in("address1_street", value="CDG")

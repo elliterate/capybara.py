@@ -45,6 +45,11 @@ class TestClickLinkOrButton:
         session.click_link_or_button("awe")
         assert extract_results(session)["form[first_name]"] == "John"
 
+    def test_clicks_on_links_which_incorrectly_have_the_disabled_attribute(self, session):
+        session.visit("/with_html")
+        session.click_link_or_button("Disabled link")
+        assert session.has_text("Bar")
+
 
 class TextExactClickLinkOrButton:
     def test_does_not_click_on_approximately_matching_link(self, session):

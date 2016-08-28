@@ -30,6 +30,10 @@ class TestChoose(ChooseTestCase):
         with pytest.raises(ElementNotFound):
             session.choose("does not exist")
 
+    def test_raises_an_error_for_a_disabled_radio_button(self, session):
+        with pytest.raises(ElementNotFound):
+            session.choose("Disabled Radio")
+
 
 class TestExactChoose(ChooseTestCase):
     def test_raises_an_error_for_an_approximately_matching_radio_button(self, session):

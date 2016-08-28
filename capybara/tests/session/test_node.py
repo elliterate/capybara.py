@@ -89,6 +89,29 @@ class TestNodeTagName(NodeTestCase):
         assert session.find_all("//p")[0].tag_name == "p"
 
 
+class TestNodeDisabled(NodeTestCase):
+    def test_extracts_disabled_node(self, session):
+        session.visit("/form")
+        assert session.find("//input[@id='customer_name']").disabled
+        assert not session.find("//input[@id='customer_email']").disabled
+
+    def test_sees_disabled_options_as_disabled(self, session):
+        session.visit("/form")
+        assert not session.find("//select[@id='form_title']/option[1]").disabled
+        assert session.find("//select[@id='form_title']/option[@disabled]").disabled
+
+    def test_sees_enabled_options_in_disabled_select_as_disabled(self, session):
+        session.visit("/form")
+        assert session.find("//select[@id='form_disabled_select']/option").disabled
+        assert not session.find("//select[@id='form_title']/option[1]").disabled
+
+    def test_is_boolean(self, session):
+        session.visit("/form")
+        assert session.find("//select[@id='form_disabled_select']/option").disabled is True
+        assert session.find("//select[@id='form_disabled_select2']/option").disabled is True
+        assert session.find("//select[@id='form_title']/option[1]").disabled is False
+
+
 class TestNodeChecked(NodeTestCase):
     def test_extracts_node_checked_state(self, session):
         session.visit("/form")

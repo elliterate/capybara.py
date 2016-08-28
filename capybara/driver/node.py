@@ -86,3 +86,8 @@ class Node(object):
     def selected(self):
         """ bool: Whether this node is selected. """
         raise NotImplementedError()
+
+    @property
+    def disabled(self):
+        """ bool: Whether this node is disabled. """
+        raise NotImplementedError()

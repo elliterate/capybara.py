@@ -17,6 +17,10 @@ class TestFindField:
         with pytest.raises(ElementNotFound):
             session.find_field("Does not exist")
 
+    def test_raises_an_error_if_the_field_is_disabled(self, session):
+        with pytest.raises(ElementNotFound):
+            session.find_field("Disabled Checkbox")
+
     def test_finds_an_approximately_matching_field(self, session):
         assert session.find_field("Explanation")["name"] == "form[name_explanation]"
 

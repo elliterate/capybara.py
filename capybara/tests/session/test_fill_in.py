@@ -93,6 +93,10 @@ class TestFillIn:
         with pytest.raises(ElementNotFound):
             session.fill_in("does not exist", value="Blah blah")
 
+    def test_raises_an_error_for_a_disabled_field(self, session):
+        with pytest.raises(ElementNotFound):
+            session.fill_in("Disabled Text Field", value="Blah blah")
+
     def test_fills_in_an_approximately_matched_field(self, session):
         session.fill_in("Explanation", value="Dude")
         session.click_button("awesome")

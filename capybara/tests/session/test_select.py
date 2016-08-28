@@ -63,6 +63,17 @@ class TestSelect:
         with pytest.raises(ElementNotFound):
             session.select("Does not Exist", field="form_locale")
 
+    def test_raises_an_error_for_a_disabled_select(self, session):
+        with pytest.raises(ElementNotFound):
+            session.select("Should not see me", field="Disabled Select")
+
+    def test_does_not_select_a_disabled_option(self, session):
+        with pytest.warns(None) as record:
+            session.select("Other", field="form_title")
+        assert len(record) == 1
+        assert "Attempt to select disabled option" in record[0].message.args[0]
+        assert session.find_field("form_title").value != "Other"
+
     def test_approximately_matches_select_box(self, session):
         session.select("Finish", field="Loc")
         session.click_button("awesome")

@@ -86,5 +86,9 @@ class Node(Base):
         return self.native.is_selected()
 
     @property
+    def disabled(self):
+        return not self.native.is_enabled()
+
+    @property
     def _select_node(self):
         return self._find_xpath("./ancestor::select")[0]

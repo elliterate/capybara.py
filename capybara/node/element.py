@@ -1,3 +1,5 @@
+from warnings import warn
+
 from capybara.node.base import Base, synchronize
 
 
@@ -71,6 +73,12 @@ class Element(Base):
         """ bool: Whether or not the element is selected. """
         return self.base.selected
 
+    @property
+    @synchronize
+    def disabled(self):
+        """ bool: Whether or not the element is disabled. """
+        return self.base.disabled
+
     @synchronize
     def __getitem__(self, name):
         """
@@ -95,6 +103,8 @@ class Element(Base):
     @synchronize
     def select_option(self):
         """ Select this node if it is an option element inside a select tag. """
+        if self.disabled:
+            warn("Attempt to select disabled option: {}".format(self.value or self.text))
         self.base.select_option()
 
     @synchronize

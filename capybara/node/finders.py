@@ -133,7 +133,7 @@ class FindersMixin(object):
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
 
         Returns:
-            List[Element]: The list of matching elements.
+            Result: A collection of found elements.
         """
 
         query = SelectorQuery(*args, **kwargs)

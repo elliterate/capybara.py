@@ -15,3 +15,7 @@ class TestFindButton:
     def test_raises_an_error_if_the_button_does_not_exist(self, session):
         with pytest.raises(ElementNotFound):
             session.find_button("Does not exist")
+
+    def test_raises_an_error_if_the_button_is_disabled(self, session):
+        with pytest.raises(ElementNotFound):
+            session.find_button("Disabled button")

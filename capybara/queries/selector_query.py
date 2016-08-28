@@ -97,3 +97,24 @@ class SelectorQuery(object):
             return Result(children, self)
 
         return resolve()
+
+    def matches_filters(self, node):
+        """
+        Returns whether the given node matches all filters.
+
+        Args:
+            node (Element): The node to evaluate.
+
+        Returns:
+            bool: Whether the given node matches.
+        """
+
+        for name, query_filter in iter(self._query_filters.items()):
+            if query_filter.has_default:
+                if not query_filter.matches(node, query_filter.default):
+                    return False
+        return True
+
+    @property
+    def _query_filters(self):
+        return self.selector.custom_filters

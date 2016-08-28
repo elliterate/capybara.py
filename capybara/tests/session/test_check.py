@@ -60,3 +60,7 @@ class TestCheck:
     def test_raises_an_error_for_a_locator_that_does_not_exist(self, session):
         with pytest.raises(ElementNotFound):
             session.check("does not exist")
+
+    def test_raises_an_error_for_a_disabled_checkbox(self, session):
+        with pytest.raises(ElementNotFound):
+            session.check("Disabled Checkbox")

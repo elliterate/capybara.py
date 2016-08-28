@@ -1,5 +1,6 @@
 from xpath import dsl as x
 
+from capybara.selector.filter_set import add_filter_set
 from capybara.selector.selector import add_selector, remove_selector, selectors
 
 
@@ -16,6 +17,11 @@ with add_selector("id") as s:
     @s.xpath
     def xpath(id):
         return x.descendant()[x.attr("id") == id]
+
+with add_filter_set("field") as fs:
+    @fs.filter("disabled", default=False)
+    def disabled(node, value):
+        return not node.disabled ^ value
 
 with add_selector("button") as s:
     @s.xpath
@@ -39,12 +45,18 @@ with add_selector("button") as s:
 
         return input_button_expr + button_expr + image_button_expr
 
+    @s.filter("disabled", default=False)
+    def disabled(node, value):
+        return not node.disabled ^ value
+
 with add_selector("checkbox") as s:
     @s.xpath
     def xpath(locator):
         expr = x.descendant("input")[x.attr("type").equals("checkbox")]
         expr = _locate_field(expr, locator)
         return expr
+
+    s.filter_set("field")
 
 with add_selector("field") as s:
     @s.xpath
@@ -53,6 +65,8 @@ with add_selector("field") as s:
             ~x.attr("type").one_of("hidden", "image", "submit")]
         expr = _locate_field(expr, locator)
         return expr
+
+    s.filter_set("field")
 
 with add_selector("fieldset") as s:
     @s.xpath
@@ -72,6 +86,8 @@ with add_selector("file_field") as s:
         expr = _locate_field(expr, locator)
         return expr
 
+    s.filter_set("field")
+
 with add_selector("fillable_field") as s:
     s.label = "field"
 
@@ -81,6 +97,8 @@ with add_selector("fillable_field") as s:
             ~x.attr("type").one_of("checkbox", "file", "hidden", "image", "radio", "submit")]
         expr = _locate_field(expr, locator)
         return expr
+
+    s.filter_set("field")
 
 with add_selector("frame") as s:
     @s.xpath
@@ -107,6 +125,12 @@ with add_selector("link_or_button") as s:
     def xpath(locator):
         return selectors["link"](locator) + selectors["button"](locator)
 
+    @s.filter("disabled", default=False)
+    def disabled(node, value):
+        return (
+            node.tag_name == "a" or
+            not node.disabled ^ value)
+
 with add_selector("option") as s:
     @s.xpath
     def xpath(locator):
@@ -123,6 +147,8 @@ with add_selector("radio_button") as s:
         expr = _locate_field(expr, locator)
         return expr
 
+    s.filter_set("field")
+
 with add_selector("select") as s:
     s.label = "select box"
 
@@ -131,6 +157,8 @@ with add_selector("select") as s:
         expr = x.descendant("select")
         expr = _locate_field(expr, locator)
         return expr
+
+    s.filter_set("field")
 
 with add_selector("table") as s:
     @s.xpath
