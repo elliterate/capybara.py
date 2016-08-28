@@ -13,12 +13,28 @@ class FilterSet(object):
 
     Args:
         name (str): The name of this set of filters.
+        descriptions (List[Callable[[Dict[str, Any]], str]]): Functions that generate descriptions
+            for options.
         filters (Dict[str, Filter], optional): The filters in this set. Defaults to {}.
     """
 
-    def __init__(self, name, filters=None):
+    def __init__(self, name, descriptions=None, filters=None):
         self.name = name
+        self.descriptions = descriptions or []
         self.filters = filters or {}
+
+    def description(self, options):
+        """
+        Returns a description of the given filter options relevant to this filter set.
+
+        Args:
+            options (Dict[str, Any]): The filter options to describe.
+
+        Returns:
+            str: A description of the filter options.
+        """
+
+        return "".join([describe(options) for describe in self.descriptions])
 
 
 class FilterSetFactory(object):
@@ -26,7 +42,18 @@ class FilterSetFactory(object):
 
     def __init__(self, name):
         self.name = name
+        self.descriptions = []
         self.filters = {}
+
+    def describe(self, func):
+        """
+        Decorates a function that builds a description of some filter set options.
+
+        Args:
+            func (Callable[[Dict[str, Any]], str]): The description builder function.
+        """
+
+        self.descriptions.append(func)
 
     def filter(self, name, **kwargs):
         """
@@ -48,7 +75,7 @@ class FilterSetFactory(object):
 
     def build_filter_set(self):
         """ FilterSet: Returns a new :class:`FilterSet` with the current factory config. """
-        return FilterSet(self.name, self.filters)
+        return FilterSet(self.name, self.descriptions, self.filters)
 
 
 @contextmanager

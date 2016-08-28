@@ -19,9 +19,16 @@ with add_selector("id") as s:
         return x.descendant()[x.attr("id") == id]
 
 with add_filter_set("field") as fs:
-    @fs.filter("disabled", default=False)
+    @fs.filter("disabled", default=False, skip_if="all")
     def disabled(node, value):
         return not node.disabled ^ value
+
+    @fs.describe
+    def describe(options):
+        description = ""
+        if options.get("disabled") is True:
+            description += " that is disabled"
+        return description
 
 with add_selector("button") as s:
     @s.xpath
@@ -45,9 +52,16 @@ with add_selector("button") as s:
 
         return input_button_expr + button_expr + image_button_expr
 
-    @s.filter("disabled", default=False)
+    @s.filter("disabled", default=False, skip_if="all")
     def disabled(node, value):
         return not node.disabled ^ value
+
+    @s.describe
+    def describe(options):
+        description = ""
+        if options.get("disabled") is True:
+            description += " that is disabled"
+        return description
 
 with add_selector("checkbox") as s:
     @s.xpath
@@ -125,11 +139,18 @@ with add_selector("link_or_button") as s:
     def xpath(locator):
         return selectors["link"](locator) + selectors["button"](locator)
 
-    @s.filter("disabled", default=False)
+    @s.filter("disabled", default=False, skip_if="all")
     def disabled(node, value):
         return (
             node.tag_name == "a" or
             not node.disabled ^ value)
+
+    @s.describe
+    def describe(options):
+        description = ""
+        if options.get("disabled") is True:
+            description += " that is disabled"
+        return description
 
 with add_selector("option") as s:
     @s.xpath

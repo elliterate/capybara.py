@@ -18,9 +18,10 @@ class SelectorQuery(object):
         selector (str): The name of the selector to use.
         locator (str): An identifying string to use to locate desired elements.
         exact (bool, optional): Whether to exactly match the locator string. Defaults to False.
+        **filter_options: Arbitrary keyword arguments for the selector's filters.
     """
 
-    def __init__(self, selector, locator=None, exact=None):
+    def __init__(self, selector, locator=None, exact=None, **filter_options):
         if locator is None and selector not in selectors:
             locator = selector
             selector = capybara.default_selector
@@ -30,6 +31,7 @@ class SelectorQuery(object):
         self.locator = locator
         self.options = {
             "exact": exact}
+        self.filter_options = filter_options
 
     @property
     def name(self):
@@ -44,12 +46,17 @@ class SelectorQuery(object):
     @property
     def kwargs(self):
         """ Dict[str, Any]: The keyword arguments with which this query was initialized. """
-        return self.options
+        kwargs = {}
+        kwargs.update(self.options)
+        kwargs.update(self.filter_options)
+        return kwargs
 
     @property
     def description(self):
         """ str: A long description of this query. """
-        return "{} {}".format(self.label, desc(self.locator))
+        description = "{} {}".format(self.label, desc(self.locator))
+        description += self.selector.description(self.filter_options)
+        return description
 
     @property
     def exact(self):
@@ -110,7 +117,10 @@ class SelectorQuery(object):
         """
 
         for name, query_filter in iter(self._query_filters.items()):
-            if query_filter.has_default:
+            if name in self.filter_options:
+                if not query_filter.matches(node, self.filter_options[name]):
+                    return False
+            elif query_filter.has_default:
                 if not query_filter.matches(node, query_filter.default):
                     return False
         return True

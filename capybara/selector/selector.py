@@ -16,6 +16,8 @@ class Selector(object):
     Args:
         name (str): The name of the selector.
         label (str, optional): The label to use when describing this selector.
+        descriptions (List[Callable[[Dict[str, Any]], str]]): Functions that build a description of
+            the given filter options.
         css (Callable[[str], str], optional): A function to generate a CSS selector given a locator
             string.
         xpath (Callable[[str], str], optional): A function to generate an XPath query given a
@@ -24,9 +26,11 @@ class Selector(object):
             to identify matching elements. Defaults to {}.
     """
 
-    def __init__(self, name, label=None, css=None, xpath=None, custom_filters=None):
+    def __init__(self, name, label=None, descriptions=None, css=None, xpath=None,
+                 custom_filters=None):
         self.name = name
         self.label = label
+        self.descriptions = descriptions or []
         self.css = css
         self.xpath = xpath
         self.format = "xpath" if xpath else "css"
@@ -35,6 +39,19 @@ class Selector(object):
     def __call__(self, locator):
         assert self.format, "selector has no format"
         return getattr(self, self.format)(locator)
+
+    def description(self, options):
+        """
+        Returns a description of the given filter options relevant to this selector.
+
+        Args:
+            options (Dict[str, Any]): The filter options to describe.
+
+        Returns:
+            str: A description of the filter options.
+        """
+
+        return "".join([describe(options) for describe in self.descriptions])
 
 
 class SelectorFactory(object):
@@ -48,9 +65,20 @@ class SelectorFactory(object):
     def __init__(self, name):
         self.name = name
         self.label = None
+        self.descriptions = []
         self.func = None
         self.format = None
         self.custom_filters = {}
+
+    def describe(self, func):
+        """
+        Decorates a function that builds a description of some selector options.
+
+        Args:
+            func (Callable[[Dict[str, Any]], str]): The description builder function.
+        """
+
+        self.descriptions.append(func)
 
     @setter_decorator
     def css(self, func):
@@ -104,12 +132,14 @@ class SelectorFactory(object):
         filter_set = filter_sets[name]
         for name, filter_ in iter(filter_set.filters.items()):
             self.custom_filters[name] = filter_
+        self.descriptions += filter_set.descriptions
 
     def build_selector(self):
         """ Selector: Returns a new :class:`Selector` instance with the current configuration. """
 
         kwargs = {
             'label': self.label,
+            'descriptions': self.descriptions,
             'custom_filters': self.custom_filters}
         if self.format == "xpath":
             kwargs['xpath'] = self.func
