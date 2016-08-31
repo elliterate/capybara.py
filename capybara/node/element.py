@@ -56,10 +56,21 @@ class Element(Base):
         return self.base.value
 
     @property
-    @synchronize
     def text(self):
         """ str: The text of the element. """
-        return self.base.text
+        return self.visible_text
+
+    @property
+    @synchronize
+    def all_text(self):
+        """ str: All of the text of the element. """
+        return self.base.all_text
+
+    @property
+    @synchronize
+    def visible_text(self):
+        """ str: Only the visible text of the element. """
+        return self.base.visible_text
 
     @property
     @synchronize

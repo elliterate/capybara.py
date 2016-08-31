@@ -42,6 +42,16 @@ class Node(object):
         """ str: The text of the node. """
         raise NotImplementedError()
 
+    @property
+    def all_text(self):
+        """ str: All of the text of the node. """
+        raise NotImplementedError()
+
+    @property
+    def visible_text(self):
+        """ str: Only the visible text of the node. """
+        raise NotImplementedError()
+
     def __getitem__(self, name):
         """
         Returns the value of a given attribute of this node.

@@ -27,7 +27,12 @@ class Node(Base):
         return bool(val) and val != "false"
 
     @property
-    def text(self):
+    def all_text(self):
+        text = self.driver.browser.execute_script("return arguments[0].textContent", self.native)
+        return normalize_text(text)
+
+    @property
+    def visible_text(self):
         return normalize_text(self.native.text)
 
     def __getitem__(self, name):

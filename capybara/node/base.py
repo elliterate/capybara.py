@@ -71,6 +71,16 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
         """ str: The text of the node. """
         raise NotImplementedError()
 
+    @property
+    def all_text(self):
+        """ str: All of the text of the node. """
+        raise NotImplementedError()
+
+    @property
+    def visible_text(self):
+        """ str: Only the visible text of the node. """
+        raise NotImplementedError()
+
     def synchronize(self, func=None, wait=None, errors=()):
         """
         This method is Capybara's primary defense against asynchronicity problems. It works by

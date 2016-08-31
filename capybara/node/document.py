@@ -20,3 +20,13 @@ class Document(DocumentMatchersMixin, Base):
     def text(self):
         """ str: The text of the document. """
         return self.find("xpath", "/html").text
+
+    @property
+    def all_text(self):
+        """ str: All of the text of the document. """
+        return self.find("xpath", "/html").all_text
+
+    @property
+    def visible_text(self):
+        """ str: Only the visible text of the document. """
+        return self.find("xpath", "/html").visible_text

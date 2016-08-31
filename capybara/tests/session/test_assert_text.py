@@ -29,6 +29,17 @@ class TestAssertText:
                 session.assert_text("monkey")
         assert "expected to find text 'monkey' in 'labore'" in str(excinfo.value)
 
+    def test_is_true_if_all_given_and_text_is_invisible(self, session):
+        session.visit("/with_html")
+        assert session.assert_text("all", "Some of this text is hidden!") is True
+
+    def test_raises_an_error_with_a_helpful_message_if_the_requested_text_is_present_but_invisible(self, session):
+        session.visit("/with_html")
+        el = session.find("css", "#hidden-text")
+        with pytest.raises(ExpectationNotMet) as excinfo:
+            el.assert_text("visible", "Some of this text is hidden!")
+        assert "it was found 1 time including non-visible text" in str(excinfo.value)
+
     def test_waits_for_text_to_appear(self, session):
         session.visit("/with_js")
         session.click_link("Click me")

@@ -44,6 +44,14 @@ class TestHasText:
         assert not session.has_text("a javascript comment")
         assert not session.has_text("aVar")
 
+    def test_is_false_if_the_given_text_is_on_the_page_but_not_visible(self, session):
+        session.visit("/with_html")
+        assert not session.has_text("Inside element with hidden ancestor")
+
+    def test_is_true_if_all_given_and_text_is_invisible(self, session):
+        session.visit("/with_html")
+        assert session.has_text("all", "Some of this text is hidden!")
+
     def test_accepts_non_string_parameters(self, session):
         session.visit("/with_html")
         assert session.has_text(42)
