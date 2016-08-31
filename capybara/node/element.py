@@ -1,5 +1,6 @@
 from warnings import warn
 
+import capybara
 from capybara.node.base import Base, synchronize
 
 
@@ -51,14 +52,32 @@ class Element(Base):
 
     @property
     @synchronize
+    def visible(self):
+        """ bool: Whether or not the element is visible. """
+        return self.base.visible
+
+    @property
+    @synchronize
     def value(self):
         """ str: The value of the form element. """
         return self.base.value
 
     @property
     def text(self):
-        """ str: The text of the element. """
-        return self.visible_text
+        """
+        Retrieve the text of the element. If :data:`capybara.ignore_hidden_elements` is ``True``,
+        which it is by default, then this will return only text which is visible. The exact
+        semantics of this may differ between drivers, but generally any text within elements with
+        ``display: none`` is ignored.
+
+        Returns:
+            str: The text of the element.
+        """
+
+        if capybara.ignore_hidden_elements or capybara.visible_text_only:
+            return self.visible_text
+        else:
+            return self.all_text
 
     @property
     @synchronize

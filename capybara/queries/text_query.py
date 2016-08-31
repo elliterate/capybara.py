@@ -1,3 +1,4 @@
+import capybara
 from capybara.helpers import desc, failure_message, normalize_text
 
 
@@ -18,7 +19,11 @@ class TextQuery(object):
     def __init__(self, query_type, expected_text=None):
         if expected_text is None:
             expected_text = query_type
-            query_type = "visible"
+            query_type = None
+
+        if query_type is None:
+            query_type = ("visible" if capybara.ignore_hidden_elements or capybara.visible_text_only
+                          else "all")
 
         assert query_type in VALID_QUERY_TYPE, \
             "invalid option {query_type} for query_type, should be one of {valid_values}".format(

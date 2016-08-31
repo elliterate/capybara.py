@@ -112,6 +112,22 @@ class TestNodeDisabled(NodeTestCase):
         assert session.find("//select[@id='form_title']/option[1]").disabled is False
 
 
+class TestNodeVisible(NodeTestCase):
+    def test_extracts_node_visibility(self, session):
+        capybara.ignore_hidden_elements = False
+        assert session.find_first("//a").visible
+        assert not session.find("//div[@id='hidden']").visible
+        assert not session.find("//div[@id='hidden_via_ancestor']").visible
+        assert not session.find("//div[@id='hidden_attr']").visible
+        assert not session.find("//a[@id='hidden_attr_via_ancestor']").visible
+        assert not session.find("//input[@id='hidden_input']").visible
+
+    def test_is_boolean(self, session):
+        capybara.ignore_hidden_elements = False
+        assert session.find_first("//a").visible is True
+        assert session.find("//div[@id='hidden']").visible is False
+
+
 class TestNodeChecked(NodeTestCase):
     def test_extracts_node_checked_state(self, session):
         session.visit("/form")

@@ -17,6 +17,8 @@ def setup_capybara():
     original_automatic_reload = capybara.automatic_reload
     original_default_max_wait_time = capybara.default_max_wait_time
     original_default_selector = capybara.default_selector
+    original_ignore_hidden_elements = capybara.ignore_hidden_elements
+    original_visible_text_only = capybara.visible_text_only
     try:
         capybara.app = app
         capybara.app_host = None
@@ -29,6 +31,8 @@ def setup_capybara():
         capybara.automatic_reload = original_automatic_reload
         capybara.default_max_wait_time = original_default_max_wait_time
         capybara.default_selector = original_default_selector
+        capybara.ignore_hidden_elements = original_ignore_hidden_elements
+        capybara.visible_text_only = original_visible_text_only
 
 
 @pytest.fixture(scope="session")

@@ -29,6 +29,12 @@ default_max_wait_time = 2
 default_selector = "css"
 """ str: The name of the default selector used to find elements. """
 
+ignore_hidden_elements = True
+""" bool: Whether to ignore hidden elements on the page. """
+
+visible_text_only = False
+""" bool: Whether to only consider visible text. """
+
 servers = {}
 # Dict[str, Callable[[object, str, int], None]]: A dictionary of server initialization functions.
 

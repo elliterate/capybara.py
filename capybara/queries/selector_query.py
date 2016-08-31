@@ -18,10 +18,12 @@ class SelectorQuery(object):
         selector (str): The name of the selector to use.
         locator (str): An identifying string to use to locate desired elements.
         exact (bool, optional): Whether to exactly match the locator string. Defaults to False.
+        visible (bool | str, optional): The desired element visibility. Defaults to
+            :data:`capybara.ignore_hidden_elements`.
         **filter_options: Arbitrary keyword arguments for the selector's filters.
     """
 
-    def __init__(self, selector, locator=None, exact=None, **filter_options):
+    def __init__(self, selector, locator=None, exact=None, visible=None, **filter_options):
         if locator is None and selector not in selectors:
             locator = selector
             selector = capybara.default_selector
@@ -30,7 +32,8 @@ class SelectorQuery(object):
         self.expression = self.selector(locator)
         self.locator = locator
         self.options = {
-            "exact": exact}
+            "exact": exact,
+            "visible": visible}
         self.filter_options = filter_options
 
     @property
@@ -65,6 +68,22 @@ class SelectorQuery(object):
             return self.options["exact"]
         else:
             return False
+
+    @property
+    def visible(self):
+        """ str: The desired element visibility. """
+        if self.options["visible"] is not None:
+            if self.options["visible"] is True:
+                return "visible"
+            elif self.options["visible"] is False:
+                return "all"
+            else:
+                return self.options["visible"]
+        else:
+            if capybara.ignore_hidden_elements:
+                return "visible"
+            else:
+                return "all"
 
     @property
     def css(self):
@@ -115,6 +134,14 @@ class SelectorQuery(object):
         Returns:
             bool: Whether the given node matches.
         """
+
+        visible = self.visible
+        if visible == "visible":
+            if not node.visible:
+                return False
+        elif visible == "hidden":
+            if node.visible:
+                return False
 
         for name, query_filter in iter(self._query_filters.items()):
             if name in self.filter_options:

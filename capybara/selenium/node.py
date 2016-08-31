@@ -9,6 +9,10 @@ class Node(Base):
         return self.native.tag_name
 
     @property
+    def visible(self):
+        return self.native.is_displayed()
+
+    @property
     def value(self):
         if self.tag_name == "select" and self.multiple:
             options = self.native.find_elements_by_xpath(".//option")

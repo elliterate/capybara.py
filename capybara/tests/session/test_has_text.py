@@ -1,3 +1,6 @@
+import capybara
+
+
 class TestHasText:
     def test_is_true_if_the_given_text_is_on_the_page_at_least_once(self, session):
         session.visit("/with_html")
@@ -51,6 +54,11 @@ class TestHasText:
     def test_is_true_if_all_given_and_text_is_invisible(self, session):
         session.visit("/with_html")
         assert session.has_text("all", "Some of this text is hidden!")
+
+    def test_is_true_if_capybara_ignore_hidden_elements_is_false_and_text_is_invisible(self, session):
+        capybara.ignore_hidden_elements = False
+        session.visit("/with_html")
+        assert session.has_text("Some of this text is hidden!")
 
     def test_accepts_non_string_parameters(self, session):
         session.visit("/with_html")

@@ -4,11 +4,13 @@ from xpath import html
 import capybara
 
 
-class TestFindAll:
+class FindAllTestCase:
     @pytest.fixture(autouse=True)
     def setup_session(self, session):
         session.visit("/with_html")
 
+
+class TestFindAll(FindAllTestCase):
     def test_finds_all_elements_using_the_given_locator(self, session):
         assert len(session.find_all("//p")) == 3
         assert session.find_all("//h1")[0].text == "This is a test"
@@ -45,3 +47,17 @@ class TestFindAll:
         session.visit("/with_scope")
         with session.scope("xpath", "//div[@id='for_bar']"):
             assert len(session.find_all(".//li")) == 2
+
+
+class TestFindAllVisible(FindAllTestCase):
+    def test_only_finds_visible_nodes_when_true(self, session):
+        assert len(session.find_all("css", "a.simple", visible=True)) == 1
+
+    def test_finds_nodes_regardless_of_whether_they_are_invisible_when_false(self, session):
+        assert len(session.find_all("css", "a.simple", visible=False)) == 2
+
+    def test_defaults_to_capybara_ignore_hidden_elements(self, session):
+        capybara.ignore_hidden_elements = True
+        assert len(session.find_all("css", "a.simple")) == 1
+        capybara.ignore_hidden_elements = False
+        assert len(session.find_all("css", "a.simple")) == 2

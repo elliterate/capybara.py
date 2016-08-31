@@ -128,6 +128,11 @@ class FindersMixin(object):
             capybara.default_selector = "xpath"
             session.find_all("//a[@id='person_123']")
 
+        The set of found elements can further be restricted by specifying options. It's possible to
+        select elements by their visibility::
+
+            session.find_all("#menu li", visible=True)
+
         Args:
             *args: Variable length argument list for :class:`SelectorQuery`.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.

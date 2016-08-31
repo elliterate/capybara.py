@@ -1,11 +1,31 @@
+import capybara
+
+
 class TestText:
     def test_returns_the_text_of_the_page(self, session):
         session.visit("/with_simple_html")
         assert session.text == "Bar"
 
-    def test_ignores_invisible_text(self, session):
+    def test_ignores_invisible_text_by_default(self, session):
         session.visit("/with_html")
         assert session.find("xpath", "//*[@id='hidden-text']").text == "Some of this text is"
+
+    def test_ignores_invisible_text_if_ignore_hidden_elements_is_true(self, session):
+        session.visit("/with_html")
+        assert session.find("id", "hidden-text").text == "Some of this text is"
+        capybara.ignore_hidden_elements = False
+        assert session.find("id", "hidden-text").text == "Some of this text is hidden!"
+
+    def test_ignores_invisible_text_if_visible_text_only_is_true(self, session):
+        session.visit("/with_html")
+        capybara.visible_text_only = True
+        assert session.find("id", "hidden-text").text == "Some of this text is"
+        capybara.ignore_hidden_elements = False
+        assert session.find("id", "hidden-text").text == "Some of this text is"
+
+    def test_ignores_invisible_text_if_ancestor_is_invisible(self, session):
+        session.visit("/with_html")
+        assert session.find("id", "hidden_via_ancestor", visible=False).text == ""
 
     def test_strips_whitespace(self, session):
         session.visit("/with_html")

@@ -23,6 +23,11 @@ class Node(object):
         raise NotImplementedError()
 
     @property
+    def visible(self):
+        """ bool: Whether or not the node is visible. """
+        raise NotImplementedError()
+
+    @property
     def value(self):
         """ str: The value of the node. """
         raise NotImplementedError()
