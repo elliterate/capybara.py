@@ -1,4 +1,5 @@
 import pytest
+import re
 
 from capybara.exceptions import ElementNotFound
 
@@ -39,6 +40,32 @@ class TestClickLink:
     def test_raises_an_error_for_a_locator_that_does_not_exist(self, session):
         with pytest.raises(ElementNotFound):
             session.click_link("does not exist")
+
+    def test_finds_links_with_a_given_href(self, session):
+        session.click_link("labore", href="/with_simple_html")
+        assert session.has_text("Bar")
+
+    def test_raises_if_link_with_given_href_not_found(self, session):
+        with pytest.raises(ElementNotFound):
+            session.click_link("labore", href="invalid_href")
+
+    def test_finds_a_link_matching_an_all_matching_regex_pattern(self, session):
+        session.click_link("labore", href=re.compile(r".+"))
+        assert session.has_text("Bar")
+
+    def test_finds_a_link_matching_an_exact_regex_pattern(self, session):
+        session.click_link("labore", href=re.compile(r"\/with_simple_html"))
+        assert session.has_text("Bar")
+
+    def test_finds_a_link_matching_a_partial_regex_pattern(self, session):
+        session.click_link("labore", href=re.compile(r"\/with_simple"))
+        assert session.has_text("Bar")
+
+    def test_raises_an_error_if_no_link_href_matched_the_pattern(self, session):
+        with pytest.raises(ElementNotFound):
+            session.click_link("labore", href=re.compile(r"invalid_pattern"))
+        with pytest.raises(ElementNotFound):
+            session.click_link("labore", href=re.compile(r".+d+"))
 
     def test_does_nothing_on_anchor_links(self, session):
         session.fill_in("test_field", value="blah")

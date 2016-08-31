@@ -93,3 +93,14 @@ def add_filter_set(name):
     factory = FilterSetFactory(name)
     yield factory
     filter_sets[name] = factory.build_filter_set()
+
+
+def remove_filter_set(name):
+    """
+    Unregisters filter set with the given name.
+
+    Args:
+        name (str): The name of the filter set.
+    """
+
+    filter_sets.pop(name, None)

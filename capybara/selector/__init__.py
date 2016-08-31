@@ -1,10 +1,12 @@
 from xpath import dsl as x
 
-from capybara.selector.filter_set import add_filter_set
+from capybara.helpers import desc
+from capybara.selector.filter_set import add_filter_set, remove_filter_set, filter_sets
 from capybara.selector.selector import add_selector, remove_selector, selectors
+from capybara.utils import isregex
 
 
-__all__ = ["add_selector", "remove_selector", "selectors"]
+__all__ = ["add_filter_set", "add_selector", "filter_sets", "remove_filter_set", "remove_selector", "selectors"]
 
 
 with add_selector("css") as s:
@@ -131,6 +133,23 @@ with add_selector("link") as s:
             x.string.n.is_(locator) |
             x.descendant("img")[x.attr("alt").is_(locator)]]
         return expr
+
+    @s.filter("href")
+    def href(node, href):
+        if isregex(href):
+            return bool(href.search(node["href"]))
+        else:
+            # For href element attributes, Selenium returns the full URL that would
+            # be visited rather than the raw value in the source. So we use XPath.
+            query = x.axis("self")[x.attr("href") == str(href)]
+            return node.has_selector("xpath", query)
+
+    @s.describe
+    def describe(options):
+        description = ""
+        if options.get("href"):
+            description += " with href {}".format(desc(options["href"]))
+        return description
 
 with add_selector("link_or_button") as s:
     s.label = "link or button"
