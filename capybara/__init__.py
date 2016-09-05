@@ -146,6 +146,46 @@ def using_session(name):
         session_name = previous_session_name
 
 
+def string(html):
+    """
+    Wraps the given string, which should contain an HTML document or fragment in a :class:`Simple`
+    which exposes :class:`MatchersMixin`, :class:`FindersMixin`, and :class:`DocumentMatchersMixin`.
+    This allows you to query any string containing HTML in the exact same way you would query the
+    current document in a Capybara session.
+
+    Example: A single element ::
+
+        node = Capybara.string(\"""<a href="foo">bar</a>\""")
+        anchor = node.find_first("a")
+        anchor["href"]  # => "foo"
+        anchor.text  # => "bar"
+
+    Example: Multiple elements ::
+
+        node = Capybara.string(\"""
+          <ul>
+            <li id="home">Home</li>
+            <li id="projects">Projects</li>
+          </ul>
+        \""")
+
+        node.find("#projects").text  # => "Projects"
+        node.has_selector("li#home", text="Home")
+        node.has_selector("#projects")
+        node.find("ul").find("li:first-child").text  # => "Home"
+
+    Args:
+        html (str | lxml.etree.Element): An HTML fragment or document.
+
+    Returns:
+        Simple: A node which has Capybara's finders and matchers.
+    """
+
+    from capybara.node.simple import Simple
+
+    return Simple(html)
+
+
 @register_server("default")
 def init_default_server(app, port, host):
     run_default_server(app, port)

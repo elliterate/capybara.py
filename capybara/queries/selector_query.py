@@ -109,7 +109,9 @@ class SelectorQuery(object):
             list[Element]: A list of elements matched by this query.
         """
 
+        from capybara.driver.node import Node
         from capybara.node.element import Element
+        from capybara.node.simple import Simple
 
         @node.synchronize
         def resolve():
@@ -118,7 +120,13 @@ class SelectorQuery(object):
             else:
                 children = node._find_xpath(self.xpath)
 
-            children = [Element(node.session, child, node, self) for child in children]
+            def wrap(child):
+                if isinstance(child, Node):
+                    return Element(node.session, child, node, self)
+                else:
+                    return Simple(child)
+
+            children = [wrap(child) for child in children]
 
             return Result(children, self)
 

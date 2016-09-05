@@ -46,6 +46,33 @@ def find_available_port():
     return s.getsockname()[1]
 
 
+def inner_content(node):
+    """
+    Returns the inner content of a given XML node, including tags.
+
+    Args:
+        node (lxml.etree.Element): The node whose inner content is desired.
+
+    Returns:
+        str: The inner content of the node.
+    """
+
+    from lxml import etree
+
+    # Include text content at the start of the node.
+    parts = [node.text]
+
+    for child in node.getchildren():
+        # Include the child serialized to raw XML.
+        parts.append(etree.tostring(child, encoding="utf-8"))
+
+        # Include any text following the child.
+        parts.append(child.tail)
+
+    # Discard any non-existent text parts and return.
+    return "".join(filter(None, parts))
+
+
 def isbytes(value):
     """ bool: Whether the given value is a sequence of bytes. """
     return isinstance(value, _bytes)

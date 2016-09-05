@@ -60,6 +60,14 @@ capybara.node.matchers module
     :undoc-members:
     :show-inheritance:
 
+capybara.node.simple module
+---------------------------
+
+.. automodule:: capybara.node.simple
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------
