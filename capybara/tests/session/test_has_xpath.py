@@ -31,3 +31,15 @@ class TestHasXPath:
         session.visit("/with_js")
         session.click_link("Click me")
         assert session.has_xpath("//input[@type='submit' and @value='New Here']")
+
+    def test_is_true_if_the_content_occurs_the_given_number_of_times(self, session):
+        assert session.has_xpath("//p", count=3)
+        assert session.has_xpath("//p//a[@id='foo']", count=1)
+        assert session.has_xpath("//p[contains(.,'est')]", count=1)
+        assert session.has_xpath("//p//a[@id='doesnotexist']", count=0)
+
+    def test_is_false_if_the_content_occurs_a_different_number_of_times_than_the_given(self, session):
+        assert not session.has_xpath("//p", count=6)
+        assert not session.has_xpath("//p//a[@id='foo']", count=2)
+        assert not session.has_xpath("//p[contains(.,'est')]", count=5)
+        assert not session.has_xpath("//p//a[@id='doesnotexist']", count=1)

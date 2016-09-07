@@ -1,4 +1,4 @@
-from capybara.helpers import desc, failure_message
+from capybara.helpers import declension, desc, failure_message
 
 
 class Result(object):
@@ -35,10 +35,20 @@ class Result(object):
     @property
     def failure_message(self):
         """ str: A message describing the query failure. """
-        message = failure_message(self.query.description)
-        message += " but there were no matches"
+
+        message = failure_message(self.query.description, self.query.options)
+
+        if len(self) > 0:
+            message += ", found {count} {matches}: {results}".format(
+                count=len(self),
+                matches=declension("match", "matches", len(self)),
+                results=", ".join([desc(node.text) for node in self]))
+        else:
+            message += " but there were no matches"
+
         if self.rest:
             elements = ", ".join([desc(element.text) for element in self.rest])
             message += (". Also found {}, which matched the selector"
                         " but not all filters.".format(elements))
+
         return message

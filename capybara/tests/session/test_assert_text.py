@@ -40,6 +40,12 @@ class TestAssertText:
             el.assert_text("visible", "Some of this text is hidden!")
         assert "it was found 1 time including non-visible text" in str(excinfo.value)
 
+    def test_raises_error_with_a_helpful_message_if_the_requested_text_is_present_but_with_incorrect_case(self, session):
+        session.visit("/with_html")
+        with pytest.raises(ExpectationNotMet) as excinfo:
+            session.assert_text("Text With Whitespace")
+        assert "it was found 1 time using a case insensitive search" in str(excinfo.value)
+
     def test_waits_for_text_to_appear(self, session):
         session.visit("/with_js")
         session.click_link("Click me")

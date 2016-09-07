@@ -1,4 +1,5 @@
-from capybara.exceptions import Ambiguous, ElementNotFound
+from capybara.exceptions import Ambiguous, ElementNotFound, ExpectationNotMet
+from capybara.helpers import matches_count
 from capybara.queries.selector_query import SelectorQuery
 
 
@@ -133,19 +134,35 @@ class FindersMixin(object):
 
             session.find_all("#menu li", visible=True)
 
+        By default if no elements are found, an empty list is returned; however, expectations can be
+        set on the number of elements to be found which will trigger Capybara's waiting behavior for
+        the expectations to match. The expectations can be set using::
+
+            session.assert_selector("p#foo", count=4)
+
+        See :func:`matches_count` for additional information about count matching.
+
         Args:
             *args: Variable length argument list for :class:`SelectorQuery`.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
 
         Returns:
             Result: A collection of found elements.
+
+        Raises:
+            ExpectationNotMet: The matched results did not meet the expected criteria.
         """
 
         query = SelectorQuery(*args, **kwargs)
 
         @self.synchronize
         def find_all():
-            return query.resolve_for(self)
+            result = query.resolve_for(self)
+
+            if not matches_count(len(result), query.options):
+                raise ExpectationNotMet(result.failure_message)
+
+            return result
 
         return find_all()
 

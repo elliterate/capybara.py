@@ -1,4 +1,5 @@
 from capybara.exceptions import ExpectationNotMet
+from capybara.helpers import expects_none, matches_count
 from capybara.queries.selector_query import SelectorQuery
 from capybara.queries.text_query import TextQuery
 
@@ -10,6 +11,13 @@ class MatchersMixin(object):
 
             session.has_selector("p#foo")
             session.has_selector("xpath", ".//p[@id='foo']")
+
+        By default it will check if the expression occurs at least once, but a different number can
+        be specified. ::
+
+            session.has_selector("p.foo", count=4)
+
+        This will check if the expression occurs exactly 4 times.
 
         It also accepts all options that :meth:`find_all` accepts, such as ``visible``. ::
 
@@ -41,6 +49,13 @@ class MatchersMixin(object):
 
             session.assert_selector("p#foo")
 
+        By default it will check if the expression occurs at least once, but a different number can
+        be specified. ::
+
+            session.assert_selector("p.foo", count=4)
+
+        This will check if the expression occurs exactly 4 times.
+
         It also accepts all options that :meth:`find_all` accepts, such as ``visible``. ::
 
             session.assert_selector("li", visible=True)
@@ -69,7 +84,8 @@ class MatchersMixin(object):
         def assert_selector():
             result = query.resolve_for(self)
 
-            if not len(result):
+            if not (matches_count(len(result), query.options) and
+                    (len(result) > 0 or expects_none(query.options))):
                 raise ExpectationNotMet(result.failure_message)
 
             return True
@@ -103,6 +119,13 @@ class MatchersMixin(object):
         Checks if a given CSS selector is on the page or a descendant of the current node. ::
 
             session.has_css("p#foo")
+
+        By default it will check if the selector occurs at least once, but a different number can
+        be specified. ::
+
+            session.has_css("p#foo", count=4)
+
+        This will check if the selector occurs exactly 4 times.
 
         It also accepts all options that :meth:`find_all` accepts, such as ``visible``. ::
 
@@ -184,9 +207,10 @@ class MatchersMixin(object):
 
         @self.synchronize
         def assert_text():
-            matches = query.resolve_for(self)
+            count = query.resolve_for(self)
 
-            if not matches:
+            if not (matches_count(count, query.options) and
+                    (count > 0 or expects_none(query.options))):
                 raise ExpectationNotMet(query.failure_message)
 
             return True

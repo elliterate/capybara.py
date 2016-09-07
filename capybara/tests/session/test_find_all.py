@@ -2,6 +2,7 @@ import pytest
 from xpath import html
 
 import capybara
+from capybara.exceptions import ExpectationNotMet
 
 
 class FindAllTestCase:
@@ -61,3 +62,12 @@ class TestFindAllVisible(FindAllTestCase):
         assert len(session.find_all("css", "a.simple")) == 1
         capybara.ignore_hidden_elements = False
         assert len(session.find_all("css", "a.simple")) == 2
+
+
+class TestFindAllCount(FindAllTestCase):
+    def test_succeeds_when_the_number_of_elements_found_matches_the_expectation(self, session):
+        session.find_all("css", "h1, p", count=4)
+
+    def test_raises_when_the_number_of_elements_found_does_not_match_the_expectation(self, session):
+        with pytest.raises(ExpectationNotMet):
+            session.find_all("css", "h1, p", count=5)

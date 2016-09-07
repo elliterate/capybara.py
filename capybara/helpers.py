@@ -3,6 +3,22 @@ import re
 from capybara.utils import decode_bytes, isbytes, isregex
 
 
+def declension(singular, plural, count):
+    """
+    Returns the appropriate word variation for the given quantity.
+
+    Args:
+        singular (str): The singular variation.
+        plural (str): The plural variation.
+        count (int): The count.
+
+    Returns:
+        str: The appropriate variation for the quantity.
+    """
+
+    return singular if count == 1 else plural
+
+
 def desc(value):
     """ str: A normalized representation for a user-provided value. """
 
@@ -14,18 +30,62 @@ def desc(value):
     return repr(value)
 
 
-def failure_message(description):
+def expects_none(options):
+    """
+    Returns whether the given query options expect a possible count of zero.
+
+    Args:
+        options (Dict[str, int | Iterable[int]]): A dictionary of query options.
+
+    Returns:
+        bool: Whether a possible count of zero is expected.
+    """
+
+    if any(options.get(key) is not None for key in ["count", "maximum", "minimum", "between"]):
+        return matches_count(0, options)
+    else:
+        return False
+
+
+def failure_message(description, options):
     """
     Returns a expectation failure message for the given query description.
 
     Args:
         description (str): A description of the failed query.
+        options (Dict[str, Any]): The query options.
 
     Returns:
         str: A message describing the failure.
     """
 
-    return "expected to find {}".format(description)
+    message = "expected to find {}".format(description)
+
+    if options["count"] is not None:
+        message += " {count} {times}".format(
+            count=options["count"],
+            times=declension("time", "times", options["count"]))
+
+    return message
+
+
+def matches_count(count, options):
+    """
+    Returns whether the given count matches the given query options.
+
+    If no quantity options are specified, any count is considered acceptable.
+
+    Args:
+        count (int): The count to be validated.
+        options (Dict[str, int | Iterable[int]]): A dictionary of query options.
+
+    Returns:
+        bool: Whether the count matches the options.
+    """
+
+    if options.get("count") is not None:
+        return count == int(options["count"])
+    return True
 
 
 def normalize_text(value):

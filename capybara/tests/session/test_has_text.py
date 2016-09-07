@@ -72,3 +72,18 @@ class TestHasText:
         session.visit("/with_js")
         session.click_link("Click me")
         assert session.has_text("Has been clicked")
+
+    def test_is_true_if_the_text_occurs_the_given_number_of_times(self, session):
+        session.visit("/with_count")
+        assert session.has_text("count", count=2)
+
+    def test_is_false_if_the_text_occurs_a_different_number_of_times_than_given(self, session):
+        session.visit("/with_count")
+        assert not session.has_text("count", count=0)
+        assert not session.has_text("count", count=1)
+        assert not session.has_text("count", count=3)
+
+    def test_coerces_count_to_an_integer(self, session):
+        session.visit("/with_count")
+        assert session.has_text("count", count="2")
+        assert not session.has_text("count", count="3")

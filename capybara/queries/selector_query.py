@@ -17,13 +17,15 @@ class SelectorQuery(object):
     Args:
         selector (str): The name of the selector to use.
         locator (str): An identifying string to use to locate desired elements.
+        count (int, optional): The number of times the selector should match. Defaults to any number
+            of times greater than zero.
         exact (bool, optional): Whether to exactly match the locator string. Defaults to False.
         visible (bool | str, optional): The desired element visibility. Defaults to
             :data:`capybara.ignore_hidden_elements`.
         **filter_options: Arbitrary keyword arguments for the selector's filters.
     """
 
-    def __init__(self, selector, locator=None, exact=None, visible=None, **filter_options):
+    def __init__(self, selector, locator=None, count=None, exact=None, visible=None, **filter_options):
         if locator is None and selector not in selectors:
             locator = selector
             selector = capybara.default_selector
@@ -32,6 +34,7 @@ class SelectorQuery(object):
         self.expression = self.selector(locator)
         self.locator = locator
         self.options = {
+            "count": count,
             "exact": exact,
             "visible": visible}
         self.filter_options = filter_options

@@ -33,3 +33,22 @@ class TestAssertSelector:
             session.assert_selector(".//a[@id='foo']")
             with pytest.raises(ElementNotFound):
                 session.assert_selector(".//a[@id='red']")
+
+    def test_is_true_if_the_content_is_on_the_page_the_given_number_of_times(self, session):
+        session.assert_selector("//p", count=3)
+        session.assert_selector("//p//a[@id='foo']", count=1)
+        session.assert_selector("//p[contains(.,'est')]", count=1)
+
+    def test_raises_if_the_content_is_on_the_page_the_given_number_of_times(self, session):
+        with pytest.raises(ElementNotFound):
+            session.assert_selector("//p", count=6)
+        with pytest.raises(ElementNotFound):
+            session.assert_selector("//p//a[@id='foo']", count=2)
+        with pytest.raises(ElementNotFound):
+            session.assert_selector("//p[contains(.,'est')]", count=5)
+
+    def test_raises_if_the_content_is_not_on_the_page_at_all(self, session):
+        with pytest.raises(ElementNotFound):
+            session.assert_selector("//abbr", count=2)
+        with pytest.raises(ElementNotFound):
+            session.assert_selector("//p//a[@id='doesnotexist']", count=1)
