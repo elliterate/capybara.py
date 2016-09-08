@@ -65,6 +65,24 @@ def failure_message(description, options):
         message += " {count} {times}".format(
             count=options["count"],
             times=declension("time", "times", options["count"]))
+    elif options["between"] is not None:
+        between = options["between"]
+        if between:
+            first, last = between[0], between[-1]
+        else:
+            first, last = None, None
+
+        message += " between {first} and {last} times".format(
+            first=first,
+            last=last)
+    elif options["maximum"] is not None:
+        message += " at most {maximum} {times}".format(
+            maximum=options["maximum"],
+            times=declension("time", "times", options["maximum"]))
+    elif options["minimum"] is not None:
+        message += " at least {minimum} {times}".format(
+            minimum=options["minimum"],
+            times=declension("time", "times", options["minimum"]))
 
     return message
 
@@ -85,6 +103,12 @@ def matches_count(count, options):
 
     if options.get("count") is not None:
         return count == int(options["count"])
+    if options.get("maximum") is not None and int(options["maximum"]) < count:
+        return False
+    if options.get("minimum") is not None and int(options["minimum"]) > count:
+        return False
+    if options.get("between") is not None and count not in options["between"]:
+        return False
     return True
 
 

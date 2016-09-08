@@ -54,7 +54,8 @@ class MatchersMixin(object):
 
             session.assert_selector("p.foo", count=4)
 
-        This will check if the expression occurs exactly 4 times.
+        This will check if the expression occurs exactly 4 times. See :meth:`find_all` for other
+        available result size options.
 
         It also accepts all options that :meth:`find_all` accepts, such as ``visible``. ::
 
@@ -222,6 +223,11 @@ class MatchersMixin(object):
         Checks if the page or current node has the given text content, ignoring any HTML tags.
 
         Whitespaces are normalized in both the node's text and the passed text parameter.
+
+        By default it will check if the text occurs at least once, but a different number can be
+        specified. ::
+
+            session.has_text("lorem ipsum", between=range(2, 5))
 
         Args:
             *args: Variable length argument list for :class:`TextQuery`.

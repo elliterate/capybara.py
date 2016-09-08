@@ -139,6 +139,9 @@ class FindersMixin(object):
         the expectations to match. The expectations can be set using::
 
             session.assert_selector("p#foo", count=4)
+            session.assert_selector("p#foo", maximum=10)
+            session.assert_selector("p#foo", minimum=1)
+            session.assert_selector("p#foo", between=range(1, 11))
 
         See :func:`matches_count` for additional information about count matching.
 

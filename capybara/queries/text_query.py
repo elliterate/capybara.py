@@ -16,11 +16,17 @@ class TextQuery(object):
     Args:
         query_type (str, optional): One of "visible" or "all". Defaults to "visible".
         expected_text (str): The desired text.
+        between (Iterable[int], optional): A range of acceptable counts.
         count (int, optional): The number of times the text should match. Defaults to any number of
             times greater than zero.
+        maximum (int, optional): The maximum number of times the selector should match. Defaults to
+            infinite.
+        minimum (int, optional): The minimum number of times the selector should match. Defaults to
+            1.
     """
 
-    def __init__(self, query_type, expected_text=None, count=None):
+    def __init__(self, query_type, expected_text=None, between=None, count=None, maximum=None,
+                 minimum=None):
         if expected_text is None:
             expected_text = query_type
             query_type = None
@@ -38,7 +44,10 @@ class TextQuery(object):
         self.query_type = query_type
         self.search_regexp = re.compile(re.escape(self.expected_text))
         self.options = {
-            "count": count}
+            "between": between,
+            "count": count,
+            "maximum": maximum,
+            "minimum": minimum}
         self.node = None
         self.actual_text = None
         self.count = None
@@ -68,6 +77,10 @@ class TextQuery(object):
         description = "text {expected}".format(expected=desc(self.expected_text))
 
         message = failure_message(description, self.options)
+        if any(self.options.values()):
+            message += " but found {count} {times}".format(
+                count=self.count,
+                times=declension("time", "times", self.count))
         message += " in {actual}".format(actual=desc(self.actual_text))
 
         details_message = []

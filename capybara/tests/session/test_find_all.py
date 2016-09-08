@@ -71,3 +71,30 @@ class TestFindAllCount(FindAllTestCase):
     def test_raises_when_the_number_of_elements_found_does_not_match_the_expectation(self, session):
         with pytest.raises(ExpectationNotMet):
             session.find_all("css", "h1, p", count=5)
+
+
+class TestFindAllMinimum(FindAllTestCase):
+    def test_succeeds_when_the_number_of_elements_found_matches_the_expectation(self, session):
+        session.find_all("css", "h1, p", minimum=0)
+
+    def test_raises_when_the_number_of_elements_found_does_not_match_the_expectation(self, session):
+        with pytest.raises(ExpectationNotMet):
+            session.find_all("css", "h1, p", minimum=5)
+
+
+class TestFindAllMaximum(FindAllTestCase):
+    def test_succeeds_when_the_number_of_elements_found_matches_the_expectation(self, session):
+        session.find_all("css", "h1, p", maximum=4)
+
+    def test_raises_when_the_number_of_elements_found_does_not_match_the_expectation(self, session):
+        with pytest.raises(ExpectationNotMet):
+            session.find_all("css", "h1, p", maximum=0)
+
+
+class TestFindAllBetween(FindAllTestCase):
+    def test_succeeds_when_the_number_of_elements_found_matches_the_expectation(self, session):
+        session.find_all("css", "h1, p", between=range(2, 7))
+
+    def test_raises_when_the_number_of_elements_found_does_not_match_the_expectation(self, session):
+        with pytest.raises(ExpectationNotMet):
+            session.find_all("css", "h1, p", between=range(0, 3))

@@ -50,3 +50,37 @@ class TestAssertText:
         session.visit("/with_js")
         session.click_link("Click me")
         assert session.assert_text("Has been clicked") is True
+
+    def test_is_true_if_the_text_occurs_within_the_range_given(self, session):
+        session.visit("/with_count")
+        assert session.assert_text("count", between=range(1, 4)) is True
+
+    def test_is_false_if_the_text_occurs_more_or_fewer_times_than_range(self, session):
+        session.visit("/with_count")
+        with pytest.raises(ExpectationNotMet) as excinfo:
+            session.assert_text("count", between=range(0, 2))
+        assert "expected to find text 'count' between 0 and 1 times but found 2 times" in str(excinfo.value)
+
+
+class TestAssertTextCount:
+    @pytest.fixture(autouse=True)
+    def setup_session(self, session):
+        session.visit("/with_html")
+
+    def test_ignores_other_filters_when_count_is_specified(self, session):
+        session.assert_text("Header", count=5, minimum=6, maximum=0, between=range(0, 5))
+
+    def test_fails_if_minimum_is_not_met(self, session):
+        with pytest.raises(ExpectationNotMet):
+            session.assert_text("Header", minimum=0, maximum=0, between=range(2, 8))
+
+    def test_fails_if_maximum_is_not_met(self, session):
+        with pytest.raises(ExpectationNotMet):
+            session.assert_text("Header", minimum=0, maximum=0, between=range(2, 8))
+
+    def test_fails_if_between_is_not_met(self, session):
+        with pytest.raises(ExpectationNotMet):
+            session.assert_text("Header", minimum=0, maximum=5, between=range(0, 5))
+
+    def test_succeeds_if_all_combined_expectations_are_met(self, session):
+        session.assert_text("Header", minimum=0, maximum=5, between=range(2, 8))

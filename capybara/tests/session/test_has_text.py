@@ -73,6 +73,17 @@ class TestHasText:
         session.click_link("Click me")
         assert session.has_text("Has been clicked")
 
+    def test_is_true_if_the_text_occurs_within_the_range_given(self, session):
+        session.visit("/with_count")
+        assert session.has_text("count", between=range(1, 4))
+        assert session.has_text("count", between=range(2, 3))
+
+    def test_is_false_if_the_text_occurs_more_or_fewer_times_than_range(self, session):
+        session.visit("/with_count")
+        assert not session.has_text("count", between=range(0, 2))
+        assert not session.has_text("count", between=range(3, 11))
+        assert not session.has_text("count", between=range(2, 2))
+
     def test_is_true_if_the_text_occurs_the_given_number_of_times(self, session):
         session.visit("/with_count")
         assert session.has_text("count", count=2)
@@ -87,3 +98,32 @@ class TestHasText:
         session.visit("/with_count")
         assert session.has_text("count", count="2")
         assert not session.has_text("count", count="3")
+
+    def test_is_true_when_text_occurs_same_or_fewer_times_than_given(self, session):
+        session.visit("/with_count")
+        assert session.has_text("count", maximum=2)
+        assert session.has_text("count", maximum=3)
+
+    def test_is_false_when_text_occurs_more_times_than_given(self, session):
+        session.visit("/with_count")
+        assert not session.has_text("count", maximum=1)
+        assert not session.has_text("count", maximum=0)
+
+    def test_coerces_maximum_to_an_integer(self, session):
+        session.visit("/with_count")
+        assert session.has_text("count", maximum="2")
+        assert not session.has_text("count", maximum="1")
+
+    def test_is_true_when_text_occurs_same_or_more_times_than_given(self, session):
+        session.visit("/with_count")
+        assert session.has_text("count", minimum=2)
+        assert session.has_text("count", minimum=0)
+
+    def test_is_false_when_text_occurs_fewer_times_than_given(self, session):
+        session.visit("/with_count")
+        assert not session.has_text("count", minimum=3)
+
+    def test_coerces_minimum_to_an_integer(self, session):
+        session.visit("/with_count")
+        assert session.has_text("count", minimum="2")
+        assert not session.has_text("count", minimum="3")
