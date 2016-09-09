@@ -1,4 +1,5 @@
 import pytest
+import re
 
 import capybara
 from capybara.exceptions import ElementNotFound
@@ -52,3 +53,13 @@ class TestAssertSelector:
             session.assert_selector("//abbr", count=2)
         with pytest.raises(ElementNotFound):
             session.assert_selector("//p//a[@id='doesnotexist']", count=1)
+
+    def test_discards_all_matches_where_the_given_string_is_not_contained(self, session):
+        session.assert_selector("//p//a", text="Redirect", count=1)
+        with pytest.raises(ElementNotFound):
+            session.assert_selector("//p", text="Doesnotexist")
+
+    def test_discards_all_matches_where_the_given_regex_is_not_matched(self, session):
+        session.assert_selector("//p//a", text=re.compile("re[dab]i", re.IGNORECASE), count=1)
+        with pytest.raises(ElementNotFound):
+            session.assert_selector("//p//a", text=re.compile("Red$"))

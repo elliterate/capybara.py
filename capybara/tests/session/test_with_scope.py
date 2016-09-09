@@ -14,13 +14,18 @@ class TestScope:
             assert not session.has_text("First Name")
         assert session.has_text("First Name")
 
+    def test_accepts_additional_options(self, session):
+        with session.scope("css", "#for_bar li", text="With Simple HTML"):
+            session.click_link("Go")
+        assert session.has_text("Bar")
+
     def test_clicks_links_in_the_given_xpath_scope(self, session):
         with session.scope("xpath", "//div[@id='for_bar']//li[contains(.,'With Simple HTML')]"):
             session.click_link("Go")
         assert session.has_text("Bar")
 
     def test_clicks_links_in_the_given_node(self, session):
-        node_of_interest = session.find("xpath", "//div[@id='for_bar']//li[contains(.,'With Simple HTML')]")
+        node_of_interest = session.find("css", "#for_bar li", text="With Simple HTML")
         with session.scope(node_of_interest):
             session.click_link("Go")
         assert session.has_text("Bar")

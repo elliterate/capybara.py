@@ -2,7 +2,7 @@ from xpath.expression import ExpressionType
 from xpath.renderer import to_xpath
 
 import capybara
-from capybara.helpers import desc
+from capybara.helpers import desc, normalize_text, toregex
 from capybara.result import Result
 from capybara.selector import selectors
 
@@ -25,13 +25,14 @@ class SelectorQuery(object):
             infinite.
         minimum (int, optional): The minimum number of times the selector should match. Defaults to
             1.
+        text (str | RegexObject, optional): Text that should be contained in matched elements.
         visible (bool | str, optional): The desired element visibility. Defaults to
             :data:`capybara.ignore_hidden_elements`.
         **filter_options: Arbitrary keyword arguments for the selector's filters.
     """
 
     def __init__(self, selector, locator=None, between=None, count=None, exact=None, maximum=None,
-                 minimum=None, visible=None, **filter_options):
+                 minimum=None, text=None, visible=None, **filter_options):
         if locator is None and selector not in selectors:
             locator = selector
             selector = capybara.default_selector
@@ -45,6 +46,7 @@ class SelectorQuery(object):
             "exact": exact,
             "maximum": maximum,
             "minimum": minimum,
+            "text": text,
             "visible": visible}
         self.filter_options = filter_options
 
@@ -70,6 +72,8 @@ class SelectorQuery(object):
     def description(self):
         """ str: A long description of this query. """
         description = "{} {}".format(self.label, desc(self.locator))
+        if self.options["text"] is not None:
+            description += " with text {}".format(desc(self.options["text"]))
         description += self.selector.description(self.filter_options)
         return description
 
@@ -156,6 +160,15 @@ class SelectorQuery(object):
         """
 
         visible = self.visible
+
+        if self.options["text"]:
+            regex = toregex(self.options["text"])
+            text = normalize_text(
+                node.all_text if visible == "all" else node.visible_text)
+
+            if not regex.search(text):
+                return False
+
         if visible == "visible":
             if not node.visible:
                 return False

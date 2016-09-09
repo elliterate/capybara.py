@@ -20,7 +20,7 @@ class FindersMixin(object):
 
             page.find("#foo").find(".bar")
             page.find("xpath", "//div[contains(., 'bar')]")
-            page.find("li").click_link("Delete")
+            page.find("li", text="Quox").click_link("Delete")
 
         Args:
             *args: Variable length argument list for :class:`SelectorQuery`.
@@ -130,8 +130,9 @@ class FindersMixin(object):
             session.find_all("//a[@id='person_123']")
 
         The set of found elements can further be restricted by specifying options. It's possible to
-        select elements by their visibility::
+        select elements by their text or visibility::
 
+            session.find_all("a", text="Home")
             session.find_all("#menu li", visible=True)
 
         By default if no elements are found, an empty list is returned; however, expectations can be

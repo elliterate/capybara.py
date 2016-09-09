@@ -146,3 +146,18 @@ def normalize_whitespace(text):
     """
 
     return re.sub(r"\s+", " ", text, flags=re.UNICODE).strip()
+
+
+def toregex(text):
+    """
+    Returns a compiled regular expression for the given text.
+
+    Args:
+        text (str | RegexObject): The text to match.
+
+    Returns:
+        RegexObject: A compiled regular expression that will match the text.
+    """
+
+    return (text if isregex(text)
+            else re.compile(re.escape(normalize_text(text))))

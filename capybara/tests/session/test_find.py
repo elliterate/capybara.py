@@ -32,6 +32,9 @@ class TestFind(FindTestCase):
         session.click_link("Click me")
         assert "Has been clicked" in session.find("css", "a#has-been-clicked").text
 
+    def test_casts_text_argument_to_string(self, session):
+        assert session.find("css", ".number", text=42).has_text("42")
+
     def test_finds_the_first_element_with_using_the_given_css_selector_locator(self, session):
         assert session.find("css", "h1").text == "This is a test"
         assert session.find("css", "input[id='test_field']").value == "monkey"

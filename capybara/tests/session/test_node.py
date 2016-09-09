@@ -223,3 +223,10 @@ class TestNodeReloadWithAutomaticReload(NodeTestCase):
         with pytest.raises(Exception) as excinfo:
             assert node.has_text("Bar")
         assert isinstance(excinfo.value, session.driver.invalid_element_errors)
+
+    def test_reloads_nodes_with_options(self, session):
+        session.visit("/with_js")
+        node = session.find("css", "em", text="reloaded")
+        session.click_link("Reload!")
+        sleep(1)
+        assert node.text == "has been reloaded"

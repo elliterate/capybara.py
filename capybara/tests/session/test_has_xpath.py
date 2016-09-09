@@ -1,4 +1,5 @@
 import pytest
+import re
 
 import capybara
 
@@ -43,3 +44,11 @@ class TestHasXPath:
         assert not session.has_xpath("//p//a[@id='foo']", count=2)
         assert not session.has_xpath("//p[contains(.,'est')]", count=5)
         assert not session.has_xpath("//p//a[@id='doesnotexist']", count=1)
+
+    def test_discards_all_matches_where_the_given_string_is_not_contained(self, session):
+        assert session.has_xpath("//p//a", text="Redirect", count=1)
+        assert not session.has_xpath("//p", text="Doesnotexist")
+
+    def test_discards_all_matches_where_the_given_regex_is_not_matched(self, session):
+        assert session.has_xpath("//p//a", text=re.compile("re[dab]i", re.IGNORECASE), count=1)
+        assert not session.has_xpath("//p", text=re.compile("Red$"))

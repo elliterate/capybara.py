@@ -1,4 +1,5 @@
 import pytest
+import re
 
 
 class TestHasCSS:
@@ -78,3 +79,11 @@ class TestHasCSS:
     def test_coerces_minimum_to_an_integer(self, session):
         assert session.has_css("h2.head", minimum="5")
         assert session.has_css("h2", minimum="3")
+
+    def test_discards_all_matches_where_the_given_string_is_not_contained(self, session):
+        assert session.has_css("p a", text="Redirect", count=1)
+        assert not session.has_css("p a", text="Doesnotexist")
+
+    def test_discards_all_matches_where_the_given_regex_is_not_matched(self, session):
+        assert session.has_css("p a", text=re.compile("re[dab]i", re.IGNORECASE), count=1)
+        assert not session.has_css("p a", text=re.compile("Red$"))
