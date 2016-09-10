@@ -82,10 +82,16 @@ class SelectorQuery(object):
     @property
     def description(self):
         """ str: A long description of this query. """
-        description = "{} {}".format(self.label, desc(self.locator))
+
+        description = self.label
+
+        if self.locator:
+            description += " {}".format(desc(self.locator))
         if self.options["text"] is not None:
             description += " with text {}".format(desc(self.options["text"]))
+
         description += self.selector.description(self.filter_options)
+
         return description
 
     @property

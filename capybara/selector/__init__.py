@@ -140,6 +140,33 @@ with add_selector("frame") as s:
         expr = expr[x.attr("id").equals(locator) | x.attr("name").equals(locator)]
         return expr
 
+with add_selector("label") as s:
+    @s.xpath
+    def xpath(locator):
+        expr = x.descendant("label")
+        if locator:
+            expr = expr[x.string.n.is_(str(locator)) | x.attr("id").equals(str(locator))]
+        return expr
+
+    @s.filter("field")
+    def field(node, field_or_value):
+        from capybara.node.element import Element
+
+        if isinstance(field_or_value, Element):
+            if field_or_value["id"] and field_or_value["id"] == node["for"]:
+                return True
+            else:
+                return node.base in field_or_value._find_xpath("./ancestor::label[1]")
+        else:
+            return node["for"] == str(field_or_value)
+
+    @s.describe
+    def describe(options):
+        description = ""
+        if options.get("field"):
+            description += " for {}".format(options["field"])
+        return description
+
 with add_selector("link") as s:
     @s.xpath
     def xpath(locator):
