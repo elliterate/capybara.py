@@ -1,5 +1,8 @@
 from contextlib import contextmanager
+from datetime import datetime
 from functools import wraps
+import os
+import random
 import sys
 if sys.version_info >= (3, 0):
     from urllib.parse import ParseResult, urlparse
@@ -13,7 +16,7 @@ from capybara.node.document import Document
 from capybara.node.element import Element
 from capybara.server import Server
 from capybara.session_matchers import SessionMatchersMixin
-from capybara.utils import cached_property
+from capybara.utils import cached_property, encode_string
 from capybara.window import Window
 
 
@@ -482,6 +485,48 @@ class Session(SessionMatchersMixin, object):
         with self.driver.dismiss_modal("prompt", text=text, wait=wait):
             yield
 
+    def save_page(self, path=None):
+        """
+        Save a snapshot of the page.
+
+        If invoked without arguments, it will save a file to :data:`capybara.save_path` and the
+        file will be given a randomly generated filename. If invoked with a relative path, the path
+        will be relative to :data:`capybara.save_path`.
+
+        Args:
+            path (str, optional): The path to where it should be saved.
+
+        Returns:
+            str: The path to which the file was saved.
+        """
+
+        path = _prepare_path(path, "html")
+
+        with open(path, "wb") as f:
+            f.write(encode_string(self.body))
+
+        return path
+
+    def save_screenshot(self, path=None, **kwargs):
+        """
+        Save a screenshot of the page.
+
+        If invoked without arguments, it will save a file to :data:`capybara.save_path` and the
+        file will be given a randomly generated filename. If invoked with a relative path, the path
+        will be relative to :data:`capybara.save_path`.
+
+        Args:
+            path (str, optional): The path to where it should be saved.
+            **kwargs: Arbitrary keywords arguments for the driver.
+
+        Returns:
+            str: The path to which the file was saved.
+        """
+
+        path = _prepare_path(path, "png")
+        self.driver.save_screenshot(path, **kwargs)
+        return path
+
     def reset(self):
         """
         Reset the session (i.e., navigate to a blank page).
@@ -546,3 +591,21 @@ for method_name in _NODE_METHODS:
 
 for property_name in _NODE_PROPERTIES:
     _define_node_property(property_name)
+
+
+def _prepare_path(path, extension):
+    save_path = capybara.save_path or os.getcwd()
+    path = os.path.normpath(os.path.join(save_path, path or _default_fn(extension)))
+
+    if not os.path.exists(os.path.dirname(path)):
+        os.makedirs(os.path.dirname(path))
+
+    return path
+
+
+def _default_fn(extension):
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    return "capybara-{timestamp}{random}.{extension}".format(
+        timestamp=timestamp,
+        random=random.randint(0, 10**10),
+        extension=extension)

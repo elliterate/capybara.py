@@ -10,9 +10,11 @@ _missing = object()
 if sys.version_info >= (3, 0):
     _bytes = bytes
     _bytes_decode_attr_name = "decode"
+    _string_encode_attr_name = "encode"
 else:
     _bytes = unicode
     _bytes_decode_attr_name = "encode"
+    _string_encode_attr_name = "decode"
 
 
 class cached_property(property):
@@ -37,6 +39,11 @@ class cached_property(property):
 def decode_bytes(value):
     """ str: Decodes the given byte sequence. """
     return getattr(value, _bytes_decode_attr_name)("utf-8")
+
+
+def encode_string(value):
+    """ bytes: Encodes the given string. """
+    return getattr(value, _string_encode_attr_name)("utf-8") if isinstance(value, str) else value
 
 
 def find_available_port():

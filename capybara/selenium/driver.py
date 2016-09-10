@@ -93,6 +93,9 @@ class Driver(Base):
     def evaluate_script(self, script):
         return self.browser.execute_script("return {0}".format(script))
 
+    def save_screenshot(self, path, **kwargs):
+        self.browser.get_screenshot_as_file(path)
+
     @contextmanager
     def accept_modal(self, modal_type, text=None, response=None, wait=None):
         yield

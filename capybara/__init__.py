@@ -38,6 +38,9 @@ ignore_hidden_elements = True
 match = "smart"
 """ str: The matching strategy to use. """
 
+save_path = None
+""" str, optional: Where to put saved pages and screenshots. """
+
 visible_text_only = False
 """ bool: Whether to only consider visible text. """
 

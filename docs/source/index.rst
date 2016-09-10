@@ -206,7 +206,12 @@ You can accept or dismiss prompts as well, and also provide text to fill in for 
 _`Debugging`
 ------------
 
-You can retrieve the current state of the DOM as a string using
+It can be useful to take a snapshot of the page as it currently is and take a
+look at it::
+
+    session.save_page("page.html")
+
+You can also retrieve the current state of the DOM as a string using
 :attr:`session.html <capybara.session.Session.html>`. ::
 
     print(session.html)
@@ -214,6 +219,10 @@ You can retrieve the current state of the DOM as a string using
 This is mostly useful for debugging. You should avoid testing against the contents of
 :attr:`session.html <capybara.session.Session.html>` and use the more expressive finder methods
 instead.
+
+Finally, in drivers that support it, you can save a screenshot::
+
+    session.save_screenshot("screenshot.png")
 
 _`Matching`
 ~~~~~~~~~~~

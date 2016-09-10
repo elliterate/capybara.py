@@ -109,6 +109,17 @@ class Base(object):
 
         raise NotImplementedError()
 
+    def save_screenshot(self, path, **kwargs):
+        """
+        Saves a screenshot of the current state of the page.
+
+        Args:
+            path (str): The path to where it should be saved.
+            **kwargs: Arbitrary keywords arguments for the driver.
+        """
+
+        raise NotImplementedError()
+
     @contextmanager
     def accept_modal(self, modal_type, text=None, response=None, wait=None):
         """
