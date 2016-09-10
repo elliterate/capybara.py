@@ -165,7 +165,7 @@ class Session(SessionMatchersMixin, object):
 
         Just as with :meth:`find`, if multiple elements match the selector given to ``scope``, an
         error will be raised, and just as with :meth:`find`, this behavior can be controlled
-        through the ``exact`` option.
+        through the ``match`` and ``exact`` options.
 
         It is possible to omit the first argument, in that case, the selector is assumed to be of
         the type set in :data:`capybara.default_selector`. ::

@@ -19,6 +19,7 @@ def setup_capybara():
     original_default_selector = capybara.default_selector
     original_exact = capybara.exact
     original_ignore_hidden_elements = capybara.ignore_hidden_elements
+    original_match = capybara.match
     original_visible_text_only = capybara.visible_text_only
     try:
         capybara.app = app
@@ -34,6 +35,7 @@ def setup_capybara():
         capybara.default_selector = original_default_selector
         capybara.exact = original_exact
         capybara.ignore_hidden_elements = original_ignore_hidden_elements
+        capybara.match = original_match
         capybara.visible_text_only = original_visible_text_only
 
 

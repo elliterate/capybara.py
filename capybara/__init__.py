@@ -35,6 +35,9 @@ default_selector = "css"
 ignore_hidden_elements = True
 """ bool: Whether to ignore hidden elements on the page. """
 
+match = "smart"
+""" str: The matching strategy to use. """
+
 visible_text_only = False
 """ bool: Whether to only consider visible text. """
 

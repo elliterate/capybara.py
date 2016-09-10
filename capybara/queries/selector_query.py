@@ -7,6 +7,9 @@ from capybara.result import Result
 from capybara.selector import selectors
 
 
+VALID_MATCH = ["first", "one", "prefer_exact", "smart"]
+
+
 class SelectorQuery(object):
     """
     Queries for elements using a selector.
@@ -22,6 +25,7 @@ class SelectorQuery(object):
             of times greater than zero.
         exact (bool, optional): Whether to exactly match the locator string. Defaults to
             :data:`capybara.exact`.
+        match (str, optional): The matching strategy to use. Defaults to :data:`capybara.match`.
         maximum (int, optional): The maximum number of times the selector should match. Defaults to
             infinite.
         minimum (int, optional): The minimum number of times the selector should match. Defaults to
@@ -32,8 +36,8 @@ class SelectorQuery(object):
         **filter_options: Arbitrary keyword arguments for the selector's filters.
     """
 
-    def __init__(self, selector, locator=None, between=None, count=None, exact=None, maximum=None,
-                 minimum=None, text=None, visible=None, **filter_options):
+    def __init__(self, selector, locator=None, between=None, count=None, exact=None, match=None,
+                 maximum=None, minimum=None, text=None, visible=None, **filter_options):
         if locator is None and selector not in selectors:
             locator = selector
             selector = capybara.default_selector
@@ -45,11 +49,17 @@ class SelectorQuery(object):
             "between": between,
             "count": count,
             "exact": exact,
+            "match": match,
             "maximum": maximum,
             "minimum": minimum,
             "text": text,
             "visible": visible}
         self.filter_options = filter_options
+
+        assert self.match in VALID_MATCH, \
+            "invalid option {match} for match, should be one of {valid_values}".format(
+                match=desc(self.match),
+                valid_values=", ".join(desc(VALID_MATCH)))
 
     @property
     def name(self):
@@ -87,6 +97,14 @@ class SelectorQuery(object):
             return capybara.exact
 
     @property
+    def match(self):
+        """ str: The matching strategy to use. """
+        if self.options["match"] is not None:
+            return self.options["match"]
+        else:
+            return capybara.match
+
+    @property
     def visible(self):
         """ str: The desired element visibility. """
         if self.options["visible"] is not None:
@@ -102,25 +120,35 @@ class SelectorQuery(object):
             else:
                 return "all"
 
-    @property
     def css(self):
         """ str: The CSS query for this selector. """
         return self.expression
 
-    @property
-    def xpath(self):
-        """ str: The XPath query for this selector. """
+    def xpath(self, exact=None):
+        """
+        Returns the XPath query for this selector.
+
+        Args:
+            exact (bool, optional): Whether to exactly match text.
+
+        Returns:
+            str: The XPath query for this selector.
+        """
+
+        exact = exact if exact is not None else self.exact
+
         if isinstance(self.expression, ExpressionType):
-            return to_xpath(self.expression, exact=self.exact)
+            return to_xpath(self.expression, exact=exact)
         else:
             return str(self.expression)
 
-    def resolve_for(self, node):
+    def resolve_for(self, node, exact=None):
         """
         Resolves this query relative to the given node.
 
         Args:
             node (node.Base): The node relative to which this query should be resolved.
+            exact (bool, optional): Whether to exactly match text.
 
         Returns:
             list[Element]: A list of elements matched by this query.
@@ -133,9 +161,9 @@ class SelectorQuery(object):
         @node.synchronize
         def resolve():
             if self.selector.format == "css":
-                children = node._find_css(self.css)
+                children = node._find_css(self.css())
             else:
-                children = node._find_xpath(self.xpath)
+                children = node._find_xpath(self.xpath(exact))
 
             def wrap(child):
                 if isinstance(child, Node):

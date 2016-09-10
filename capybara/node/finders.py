@@ -38,9 +38,14 @@ class FindersMixin(object):
 
         @self.synchronize
         def find():
-            result = query.resolve_for(self)
+            if query.match in ["prefer_exact", "smart"]:
+                result = query.resolve_for(self, True)
+                if len(result) == 0 and not query.exact:
+                    result = query.resolve_for(self, False)
+            else:
+                result = query.resolve_for(self)
 
-            if len(result) > 1:
+            if query.match in ["one", "smart"] and len(result) > 1:
                 raise Ambiguous("Ambiguous match, found {count} elements matching {query}".format(
                     count=len(result), query=query.description))
             if len(result) == 0:

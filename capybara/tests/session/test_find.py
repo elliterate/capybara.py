@@ -65,6 +65,151 @@ class TestFind(FindTestCase):
             assert session.find("css", "input:disabled").value == "James"
 
 
+class TestFindMatch(FindTestCase):
+    def test_defaults_to_capybara_match(self, session):
+        capybara.match = "one"
+        with pytest.raises(Ambiguous):
+            session.find("css", ".multiple")
+
+        capybara.match = "first"
+        assert session.find("css", ".multiple").text == "multiple one"
+
+    def test_raises_an_error_when_unknown_option_given(self, session):
+        with pytest.raises(Exception):
+            session.find("css", ".singular", match="schmoo")
+
+
+class TestFindMatchOne(FindTestCase):
+    def test_raises_an_error_when_multiple_matches_exist(self, session):
+        with pytest.raises(Ambiguous):
+            session.find("css", ".multiple", match="one")
+
+    def test_raises_an_error_even_if_one_match_is_exact_and_the_others_are_inexact(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("almost_singular")]
+        with pytest.raises(Ambiguous):
+            session.find("xpath", xpath_expr, exact=False, match="one")
+
+    def test_returns_the_element_if_there_is_only_one(self, session):
+        assert session.find("css", ".singular", match="one").text == "singular"
+
+    def test_raises_an_error_if_there_is_no_match(self, session):
+        with pytest.raises(ElementNotFound):
+            session.find("css", ".does-not-exist", match="one")
+
+
+class TestFindMatchFirst(FindTestCase):
+    def test_returns_the_first_matched_element(self, session):
+        assert session.find("css", ".multiple", match="first").text == "multiple one"
+
+    def test_raises_an_error_if_there_is_no_match(self, session):
+        with pytest.raises(ElementNotFound):
+            session.find("css", ".does-not-exist", match="first")
+
+
+class TestFindMatchSmartAndInexact(FindTestCase):
+    def test_raises_an_error_when_there_are_multiple_exact_matches(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("multiple")]
+        with pytest.raises(Ambiguous):
+            session.find("xpath", xpath_expr, match="smart", exact=False)
+
+    def test_finds_a_single_exact_match_when_there_also_are_inexact_matches(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("almost_singular")]
+        result = session.find("xpath", xpath_expr, match="smart", exact=False)
+        assert result.text == "almost singular"
+
+    def test_raises_an_error_when_there_are_multiple_inexact_matches(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("almost_singul")]
+        with pytest.raises(Ambiguous):
+            session.find("xpath", xpath_expr, match="smart", exact=False)
+
+    def test_finds_a_single_inexact_match(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("almost_singular but")]
+        result = session.find("xpath", xpath_expr, match="smart", exact=False)
+        assert result.text == "almost singular but not quite"
+
+    def test_raises_an_error_if_there_is_no_match(self, session):
+        with pytest.raises(ElementNotFound):
+            session.find("css", ".does-not-exist", match="smart", exact=False)
+
+
+class TestFindMatchSmartAndExact(FindTestCase):
+    def test_raises_an_error_when_there_are_multiple_exact_matches(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("multiple")]
+        with pytest.raises(Ambiguous):
+            session.find("xpath", xpath_expr, match="smart", exact=True)
+
+    def test_finds_a_single_exact_match_when_there_also_are_inexact_matches(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("almost_singular")]
+        result = session.find("xpath", xpath_expr, match="smart", exact=True)
+        assert result.text == "almost singular"
+
+    def test_raises_an_error_when_there_are_multiple_inexact_matches(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("almost_singul")]
+        with pytest.raises(ElementNotFound):
+            session.find("xpath", xpath_expr, match="smart", exact=True)
+
+    def test_raises_an_error_when_there_is_a_single_inexact_matches(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("almost_singular but")]
+        with pytest.raises(ElementNotFound):
+            session.find("xpath", xpath_expr, match="smart", exact=True)
+
+    def test_raises_an_error_if_there_is_no_match(self, session):
+        with pytest.raises(ElementNotFound):
+            session.find("css", ".does-not-exist", match="smart", exact=True)
+
+
+class TestFindMatchPreferExactAndInexact(FindTestCase):
+    def test_picks_the_first_one_when_there_are_multiple_exact_matches(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("multiple")]
+        result = session.find("xpath", xpath_expr, match="prefer_exact", exact=False)
+        assert result.text == "multiple one"
+
+    def test_finds_a_single_exact_match_when_there_also_are_inexact_matches(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("almost_singular")]
+        result = session.find("xpath", xpath_expr, match="prefer_exact", exact=False)
+        assert result.text == "almost singular"
+
+    def test_picks_the_first_one_when_there_are_multiple_inexact_matches(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("almost_singul")]
+        result = session.find("xpath", xpath_expr, match="prefer_exact", exact=False)
+        assert result.text == "almost singular but not quite"
+
+    def test_finds_a_single_inexact_match(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("almost_singular but")]
+        result = session.find("xpath", xpath_expr, match="prefer_exact", exact=False)
+        assert result.text == "almost singular but not quite"
+
+    def test_raises_an_error_if_there_is_no_match(self, session):
+        with pytest.raises(ElementNotFound):
+            session.find("css", ".does-not-exist", match="prefer_exact", exact=False)
+
+
+class TestFindMatchPreferExactAndExact(FindTestCase):
+    def test_picks_the_first_one_when_there_are_multiple_exact_matches(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("multiple")]
+        result = session.find("xpath", xpath_expr, match="prefer_exact", exact=True)
+        assert result.text == "multiple one"
+
+    def test_finds_a_single_exact_match_when_there_also_are_inexact_matches(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("almost_singular")]
+        result = session.find("xpath", xpath_expr, match="prefer_exact", exact=True)
+        assert result.text == "almost singular"
+
+    def test_raises_an_error_if_there_are_multiple_inexact_matches(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("almost_singul")]
+        with pytest.raises(ElementNotFound):
+            session.find("xpath", xpath_expr, match="prefer_exact", exact=True)
+
+    def test_raises_an_error_if_there_is_a_single_inexact_match(self, session):
+        xpath_expr = x.descendant()[x.attr("class").is_("almost_singular but")]
+        with pytest.raises(ElementNotFound):
+            session.find("xpath", xpath_expr, match="prefer_exact", exact=True)
+
+    def test_raises_an_error_if_there_is_no_match(self, session):
+        with pytest.raises(ElementNotFound):
+            session.find("css", ".does-not-exist", match="prefer_exact", exact=True)
+
+
 class TestFindExact(FindTestCase):
     def test_matches_exactly_when_true(self, session):
         xpath_expr = x.descendant("input")[x.attr("id").is_("test_field")]

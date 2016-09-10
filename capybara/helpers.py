@@ -20,7 +20,10 @@ def declension(singular, plural, count):
 
 
 def desc(value):
-    """ str: A normalized representation for a user-provided value. """
+    """ str | List[str]: A normalized representation for a user-provided value. """
+
+    if isinstance(value, list):
+        return map(desc, value)
 
     if isbytes(value):
         value = decode_bytes(value)

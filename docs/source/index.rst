@@ -218,8 +218,8 @@ instead.
 _`Matching`
 ~~~~~~~~~~~
 
-It is possible to customize how Capybara finds elements. At your disposal is
-the :data:`capybara.exact` option.
+It is possible to customize how Capybara finds elements. At your disposal are
+two options, :data:`capybara.exact` and :data:`capybara.match`.
 
 _`Exactness`
 ------------
@@ -237,6 +237,25 @@ For example::
     capybara.exact = True
     session.click_link("Password")  # does not match "Password confirmation"
     session.click_link("Password", exact=False)  # can be overridden
+
+_`Strategy`
+-----------
+
+Using :data:`capybara.match` and the equivalent ``match`` option, you can control
+how Capybara behaves when multiple elements all match a query. There are
+currently four different strategies built into Capybara:
+
+1. **first:** Just picks the first element that matches.
+2. **one:** Raises an error if more than one element matches.
+3. **smart:** If ``exact`` is ``True``, raises an error if more than one element
+   matches, just like ``one``. If ``exact`` is ``False``, it will first try to
+   find an exact match. An error is raised if more than one element is found. If
+   no element is found, a new search is performed which allows partial matches.
+   If that search returns multiple matches, an error is raised.
+4. **prefer_exact:** If multiple matches are found, some of which are exact, and
+   some of which are not, then the first exactly matching element is returned.
+
+The default for :data:`capybara.match` is ``"smart"``.
 
 _`Asynchronous JavaScript (Ajax and friends)`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
