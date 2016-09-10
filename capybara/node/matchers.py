@@ -159,6 +159,22 @@ class MatchersMixin(object):
 
         return self.has_selector("button", locator, **kwargs)
 
+    def has_checked_field(self, locator, **kwargs):
+        """
+        Checks if the page or current node has a radio button or checkbox with the given label,
+        value, or id, that is currently checked.
+
+        Args:
+            locator (str): The label, name, or id of a checked field.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it exists.
+        """
+
+        kwargs["checked"] = True
+        return self.has_selector("field", locator, **kwargs)
+
     def has_field(self, locator, **kwargs):
         """
         Checks if the page or current node has a form field with the given label, name, or id.
@@ -191,6 +207,22 @@ class MatchersMixin(object):
         """
 
         return self.has_selector("link", locator, **kwargs)
+
+    def has_unchecked_field(self, locator, **kwargs):
+        """
+        Checks if the page or current node has a radio button or checkbox with the given label,
+        value, or id, that is currently unchecked.
+
+        Args:
+            locator (str): The label, name, or id of an unchecked field.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it exists.
+        """
+
+        kwargs["checked"] = False
+        return self.has_selector("field", locator, **kwargs)
 
     def assert_text(self, *args, **kwargs):
         """

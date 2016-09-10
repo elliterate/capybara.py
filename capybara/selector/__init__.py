@@ -21,15 +21,32 @@ with add_selector("id") as s:
         return x.descendant()[x.attr("id") == id]
 
 with add_filter_set("field") as fs:
+    @fs.filter("checked")
+    def checked(node, value):
+        return not node.checked ^ value
+
     @fs.filter("disabled", default=False, skip_if="all")
     def disabled(node, value):
         return not node.disabled ^ value
 
+    @fs.filter("unchecked")
+    def unchecked(node, value):
+        return node.checked ^ value
+
     @fs.describe
     def describe(options):
-        description = ""
+        description, states = "", []
+
+        if options.get("checked") or options.get("unchecked") is False:
+            states.append("checked")
+        if options.get("unchecked") or options.get("checked") is False:
+            states.append("not checked")
         if options.get("disabled") is True:
-            description += " that is disabled"
+            states.append("disabled")
+
+        if states:
+            description += " that is {}".format(" and ".join(states))
+
         return description
 
 with add_selector("button") as s:
