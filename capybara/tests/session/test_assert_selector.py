@@ -63,3 +63,9 @@ class TestAssertSelector:
         session.assert_selector("//p//a", text=re.compile("re[dab]i", re.IGNORECASE), count=1)
         with pytest.raises(ElementNotFound):
             session.assert_selector("//p//a", text=re.compile("Red$"))
+
+    def test_finds_element_if_it_appears_before_given_wait_duration(self, session):
+        with capybara.using_wait_time(0.1):
+            session.visit("/with_js")
+            session.click_link("Click me")
+            session.assert_selector("css", "a#has-been-clicked", text="Has been clicked", wait=0.9)

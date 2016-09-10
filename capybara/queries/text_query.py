@@ -23,10 +23,12 @@ class TextQuery(object):
             infinite.
         minimum (int, optional): The minimum number of times the selector should match. Defaults to
             1.
+        wait (bool | int | float, optional): Whether and how long to wait for synchronization.
+            Defaults to :data:`capybara.default_max_wait_time`.
     """
 
     def __init__(self, query_type, expected_text=None, between=None, count=None, maximum=None,
-                 minimum=None):
+                 minimum=None, wait=None):
         if expected_text is None:
             expected_text = query_type
             query_type = None
@@ -47,10 +49,19 @@ class TextQuery(object):
             "between": between,
             "count": count,
             "maximum": maximum,
-            "minimum": minimum}
+            "minimum": minimum,
+            "wait": wait}
         self.node = None
         self.actual_text = None
         self.count = None
+
+    @property
+    def wait(self):
+        """ int | float: How long to wait for synchronization. """
+        if self.options["wait"] is not None:
+            return self.options["wait"] or 0
+        else:
+            return capybara.default_max_wait_time
 
     def resolve_for(self, node):
         """

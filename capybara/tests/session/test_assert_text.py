@@ -1,5 +1,6 @@
 import pytest
 
+import capybara
 from capybara.exceptions import ExpectationNotMet
 
 
@@ -60,6 +61,20 @@ class TestAssertText:
         with pytest.raises(ExpectationNotMet) as excinfo:
             session.assert_text("count", between=range(0, 2))
         assert "expected to find text 'count' between 0 and 1 times but found 2 times" in str(excinfo.value)
+
+    def test_finds_element_if_it_appears_before_given_wait_duration(self, session):
+        with capybara.using_wait_time(0):
+            session.visit("/with_js")
+            session.find("css", "#reload-list").click()
+            session.find("css", "#the-list").assert_text("Foo Bar", wait=0.9)
+
+    def test_raises_error_if_it_appears_after_given_wait_duration(self, session):
+        with capybara.using_wait_time(0):
+            session.visit("/with_js")
+            session.find("css", "#reload-list").click()
+            el = session.find("css", "#the-list", visible=False)
+            with pytest.raises(ExpectationNotMet):
+                el.assert_text("all", "Foo Bar", wait=0.3)
 
 
 class TestAssertTextCount:

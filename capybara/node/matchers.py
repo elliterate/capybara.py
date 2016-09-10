@@ -83,7 +83,7 @@ class MatchersMixin(object):
 
         query = SelectorQuery(*args, **kwargs)
 
-        @self.synchronize
+        @self.synchronize(wait=query.wait)
         def assert_selector():
             result = query.resolve_for(self)
 
@@ -241,7 +241,7 @@ class MatchersMixin(object):
 
         query = TextQuery(*args, **kwargs)
 
-        @self.synchronize
+        @self.synchronize(wait=query.wait)
         def assert_text():
             count = query.resolve_for(self)
 

@@ -33,11 +33,13 @@ class SelectorQuery(object):
         text (str | RegexObject, optional): Text that should be contained in matched elements.
         visible (bool | str, optional): The desired element visibility. Defaults to
             :data:`capybara.ignore_hidden_elements`.
+        wait (bool | int | float, optional): Whether and how long to wait for synchronization.
+            Defaults to :data:`capybara.default_max_wait_time`.
         **filter_options: Arbitrary keyword arguments for the selector's filters.
     """
 
     def __init__(self, selector, locator=None, between=None, count=None, exact=None, match=None,
-                 maximum=None, minimum=None, text=None, visible=None, **filter_options):
+                 maximum=None, minimum=None, text=None, visible=None, wait=None, **filter_options):
         if locator is None and selector not in selectors:
             locator = selector
             selector = capybara.default_selector
@@ -53,7 +55,8 @@ class SelectorQuery(object):
             "maximum": maximum,
             "minimum": minimum,
             "text": text,
-            "visible": visible}
+            "visible": visible,
+            "wait": wait}
         self.filter_options = filter_options
 
         assert self.match in VALID_MATCH, \
@@ -125,6 +128,14 @@ class SelectorQuery(object):
                 return "visible"
             else:
                 return "all"
+
+    @property
+    def wait(self):
+        """ int | float: How long to wait for synchronization. """
+        if self.options["wait"] is not None:
+            return self.options["wait"] or 0
+        else:
+            return capybara.default_max_wait_time
 
     def css(self):
         """ str: The CSS query for this selector. """

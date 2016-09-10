@@ -119,7 +119,7 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
                 caught_errors = (
                     errors or
                     self.session.driver.invalid_element_errors + (ElementNotFound,))
-                seconds = wait or capybara.default_max_wait_time
+                seconds = wait if wait is not None else capybara.default_max_wait_time
 
                 def inner():
                     return func(*args, **kwargs)

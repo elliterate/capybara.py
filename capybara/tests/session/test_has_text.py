@@ -127,3 +127,9 @@ class TestHasText:
         session.visit("/with_count")
         assert session.has_text("count", minimum="2")
         assert not session.has_text("count", minimum="3")
+
+    def test_finds_element_if_it_appears_before_given_wait_duration(self, session):
+        with capybara.using_wait_time(0.1):
+            session.visit("/with_js")
+            session.click_link("Click me")
+            assert session.has_text("Has been clicked", wait=0.9)

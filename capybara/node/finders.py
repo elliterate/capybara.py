@@ -37,7 +37,7 @@ class FindersMixin(object):
 
         query = SelectorQuery(*args, **kwargs)
 
-        @self.synchronize
+        @self.synchronize(wait=query.wait)
         def find():
             if query.match in ["prefer_exact", "smart"]:
                 result = query.resolve_for(self, True)
@@ -165,7 +165,7 @@ class FindersMixin(object):
 
         query = SelectorQuery(*args, **kwargs)
 
-        @self.synchronize
+        @self.synchronize(wait=query.wait)
         def find_all():
             result = query.resolve_for(self)
 

@@ -36,6 +36,23 @@ class TestFind(FindTestCase):
     def test_casts_text_argument_to_string(self, session):
         assert session.find("css", ".number", text=42).has_text("42")
 
+    def test_does_not_wait_for_asynchronous_load_when_false_given(self, session):
+        session.visit("/with_js")
+        session.click_link("Click me")
+        with pytest.raises(ElementNotFound):
+            session.find("css", "a#has-been-clicked", wait=False)
+
+    def test_does_not_find_element_if_it_appears_after_given_wait_duration(self, session):
+        session.visit("/with_js")
+        session.click_link("Slowly")
+        with pytest.raises(ElementNotFound):
+            session.find("css", "a#slow-clicked", wait=0.2)
+
+    def test_finds_element_if_it_appears_before_given_wait_duration(self, session):
+        session.visit("/with_js")
+        session.click_link("Click me")
+        assert "Has been clicked" in session.find("css", "a#has-been-clicked", wait=0.9).text
+
     def test_finds_the_first_element_with_using_the_given_css_selector_locator(self, session):
         assert session.find("css", "h1").text == "This is a test"
         assert session.find("css", "input[id='test_field']").value == "monkey"
