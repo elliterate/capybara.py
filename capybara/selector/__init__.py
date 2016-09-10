@@ -244,6 +244,58 @@ with add_selector("select") as s:
 
     s.filter_set("field")
 
+    @s.filter("multiple")
+    def multiple(node, value):
+        return not node.multiple ^ value
+
+    @s.filter("options")
+    def options(node, options):
+        if node.visible:
+            actual = [n.text for n in node.find_all("xpath", ".//option")]
+        else:
+            actual = [n.all_text for n in node.find_all("xpath", ".//option", visible=False)]
+
+        return sorted(options) == sorted(actual)
+
+    @s.filter("selected")
+    def selected(node, selected):
+        if not isinstance(selected, list):
+            selected = [selected]
+
+        actual = [
+            n.all_text
+            for n in node.find_all("xpath", ".//option", visible=False)
+            if n.selected]
+
+        return sorted(selected) == sorted(actual)
+
+    @s.filter("with_options")
+    def with_options(node, options):
+        finder_settings = {"minimum": 0}
+        if not node.visible:
+            finder_settings["visible"] = False
+
+        return all([
+            node.find_first("option", option, **finder_settings)
+            for option in options])
+
+    @s.describe
+    def describe(options):
+        description = ""
+
+        if options.get("multiple") is True:
+            description += " with the multiple attribute"
+        if options.get("multiple") is False:
+            description += " without the multiple attribute"
+        if options.get("options"):
+            description += " with options {}".format(desc(options["options"]))
+        if options.get("selected"):
+            description += " with {} selected".format(desc(options["selected"]))
+        if options.get("with_options"):
+            description += " with at least options {}".format(desc(options["with_options"]))
+
+        return description
+
 with add_selector("table") as s:
     @s.xpath
     def xpath(locator):

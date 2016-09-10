@@ -208,6 +208,36 @@ class MatchersMixin(object):
 
         return self.has_selector("link", locator, **kwargs)
 
+    def has_select(self, locator, **kwargs):
+        """
+        Checks if the page or current node has a select field with the given label, name, or id.
+
+        It can be specified which option should currently be selected::
+
+            session.has_select("Language", selected="German")
+
+        For multiple select boxes, several options may be specified::
+
+            session.has_select("Language", selected=["English", "German"])
+
+        It's also possible to check if the exact set of options exists for this select box::
+
+            session.has_select("Language", options=["English", "German", "Spanish"])
+
+        You can also check for a partial set of options::
+
+            session.has_select("Language", with_options=["English", "German"])
+
+        Args:
+            locator (str): The label, name, or id of a select box.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it exists.
+        """
+
+        return self.has_selector("select", locator, **kwargs)
+
     def has_unchecked_field(self, locator, **kwargs):
         """
         Checks if the page or current node has a radio button or checkbox with the given label,

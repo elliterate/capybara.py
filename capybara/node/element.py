@@ -109,6 +109,12 @@ class Element(Base):
         """ bool: Whether or not the element is disabled. """
         return self.base.disabled
 
+    @property
+    @synchronize
+    def multiple(self):
+        """ bool: Whether or not the element supports multiple results. """
+        return self.base.multiple
+
     @synchronize
     def __getitem__(self, name):
         """
