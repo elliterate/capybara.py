@@ -1,6 +1,7 @@
 import pytest
 from xpath import dsl as x
 
+import capybara
 from capybara.exceptions import Ambiguous, ElementNotFound
 from capybara.selector import add_selector, remove_selector
 
@@ -79,3 +80,13 @@ class TestFindExact(FindTestCase):
 
         xpath_expr = x.descendant("input")[x.attr("id").is_("est_fiel")]
         assert session.find("xpath", xpath_expr, exact=False).value == "monkey"
+
+    def test_defaults_to_capybara_exact(self, session):
+        xpath_expr = x.descendant("input")[x.attr("id").is_("est_fiel")]
+
+        capybara.exact = True
+        with pytest.raises(ElementNotFound):
+            session.find("xpath", xpath_expr)
+
+        capybara.exact = False
+        session.find("xpath", xpath_expr)

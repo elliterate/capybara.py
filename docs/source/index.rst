@@ -215,6 +215,29 @@ This is mostly useful for debugging. You should avoid testing against the conten
 :attr:`session.html <capybara.session.Session.html>` and use the more expressive finder methods
 instead.
 
+_`Matching`
+~~~~~~~~~~~
+
+It is possible to customize how Capybara finds elements. At your disposal is
+the :data:`capybara.exact` option.
+
+_`Exactness`
+------------
+
+:data:`capybara.exact` and the ``exact`` option work together with the ``is_``
+expression inside the XPath package. When ``exact`` is true, all ``is_``
+expressions match exactly; when it is false, they allow substring matches.
+Many of the selectors built into Capybara use the ``is_`` expression. This
+way you can specify whether you want to allow substring matches or not.
+:data:`capybara.exact` is false by default.
+
+For example::
+
+    session.click_link("Password")  # also matches "Password confirmation"
+    capybara.exact = True
+    session.click_link("Password")  # does not match "Password confirmation"
+    session.click_link("Password", exact=False)  # can be overridden
+
 _`Asynchronous JavaScript (Ajax and friends)`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

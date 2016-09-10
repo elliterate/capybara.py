@@ -20,7 +20,8 @@ class SelectorQuery(object):
         between (Iterable[int], optional): A range of acceptable counts.
         count (int, optional): The number of times the selector should match. Defaults to any number
             of times greater than zero.
-        exact (bool, optional): Whether to exactly match the locator string. Defaults to False.
+        exact (bool, optional): Whether to exactly match the locator string. Defaults to
+            :data:`capybara.exact`.
         maximum (int, optional): The maximum number of times the selector should match. Defaults to
             infinite.
         minimum (int, optional): The minimum number of times the selector should match. Defaults to
@@ -83,7 +84,7 @@ class SelectorQuery(object):
         if self.options["exact"] is not None:
             return self.options["exact"]
         else:
-            return False
+            return capybara.exact
 
     @property
     def visible(self):

@@ -23,6 +23,9 @@ server_port = None
 automatic_reload = True
 """ bool: Whether to automatically reload elements as Capybara is waiting. """
 
+exact = False
+""" bool: Whether to match the exact label name/contents. """
+
 default_max_wait_time = 2
 """ int: The maximum number of seconds to wait for asynchronous processes to finish. """
 
