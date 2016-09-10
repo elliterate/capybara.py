@@ -62,3 +62,24 @@ class TestFindFirstVisible(FindFirstTestCase):
     def test_finds_only_visible_nodes_when_visible(self, session):
         assert session.find_first("css", "a#invisible", visible="visible") is None
         assert session.find_first("css", "a#visible", visible="visible") is not None
+
+
+class TestFindFirstWithWaitOnFirstByDefault(FindFirstTestCase):
+    @pytest.fixture(autouse=True)
+    def setup_session(self, session):
+        session.visit("/with_js")
+
+    def test_does_not_wait_if_false(self, session):
+        capybara.wait_on_first_by_default = False
+        session.click_link("clickable")
+        assert session.find_first("css", "a#has-been-clicked") is None
+
+    def test_waits_for_at_least_one_match_if_true(self, session):
+        capybara.wait_on_first_by_default = True
+        session.click_link("clickable")
+        assert session.find_first("css", "a#has-been-clicked") is not None
+
+    def test_returns_nil_after_waiting_if_no_match(self, session):
+        capybara.wait_on_first_by_default = True
+        session.click_link("clickable")
+        assert session.find_first("css", "a#not-a-real-link") is None

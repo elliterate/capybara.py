@@ -1,3 +1,4 @@
+import capybara
 from capybara.exceptions import Ambiguous, ElementNotFound, ExpectationNotMet
 from capybara.helpers import matches_count
 from capybara.queries.selector_query import SelectorQuery
@@ -180,6 +181,10 @@ class FindersMixin(object):
         Find the first element on the page matching the given selector and options, or None if no
         element matches.
 
+        By default, no waiting behavior occurs. However, if ``capybara.wait_on_first_by_default``
+        is set to true, it will trigger Capybara's waiting behavior for a minimum of 1 matching
+        element to be found.
+
         Args:
             *args: Variable length argument list for :class:`SelectorQuery`.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
@@ -188,5 +193,11 @@ class FindersMixin(object):
             Element: The found element or None.
         """
 
-        result = self.find_all(*args, **kwargs)
-        return result[0] if len(result) > 0 else None
+        if capybara.wait_on_first_by_default:
+            kwargs.setdefault("minimum", 1)
+
+        try:
+            result = self.find_all(*args, **kwargs)
+            return result[0] if len(result) > 0 else None
+        except ExpectationNotMet:
+            return None

@@ -44,6 +44,9 @@ save_path = None
 visible_text_only = False
 """ bool: Whether to only consider visible text. """
 
+wait_on_first_by_default = False
+""" bool: Whether :meth:`find_first` should wait for at least one element to appear. """
+
 servers = {}
 # Dict[str, Callable[[object, str, int], None]]: A dictionary of server initialization functions.
 
