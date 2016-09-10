@@ -238,6 +238,22 @@ class MatchersMixin(object):
 
         return self.has_selector("select", locator, **kwargs)
 
+    def has_table(self, locator, **kwargs):
+        """
+        Checks if the page or current node has a table with the given id or caption::
+
+            session.has_table("People")
+
+        Args:
+            locator (str): The id or caption of a table.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it exists.
+        """
+
+        return self.has_selector("table", locator, **kwargs)
+
     def has_unchecked_field(self, locator, **kwargs):
         """
         Checks if the page or current node has a radio button or checkbox with the given label,
