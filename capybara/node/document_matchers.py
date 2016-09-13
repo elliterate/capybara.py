@@ -8,7 +8,7 @@ class DocumentMatchersMixin(object):
         Asserts that the page has the given title.
 
         Args:
-            title (str): The string that the title should include.
+            title (str | RegexObject): The string or regex that the title should match.
 
         Returns:
             True
@@ -33,7 +33,7 @@ class DocumentMatchersMixin(object):
         Checks if the page has the given title.
 
         Args:
-            title (str): The string that the title should include.
+            title (str | RegexObject): The string or regex that the title should match.
 
         Returns:
             bool: Whether it matches.

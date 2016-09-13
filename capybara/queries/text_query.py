@@ -1,7 +1,8 @@
 import re
 
 import capybara
-from capybara.helpers import declension, desc, failure_message, normalize_text
+from capybara.helpers import declension, desc, failure_message, normalize_text, toregex
+from capybara.utils import isregex
 
 
 VALID_QUERY_TYPE = ["all", "visible"]
@@ -15,7 +16,7 @@ class TextQuery(object):
 
     Args:
         query_type (str, optional): One of "visible" or "all". Defaults to "visible".
-        expected_text (str): The desired text.
+        expected_text (str | RegexObject): The desired text.
         between (Iterable[int], optional): A range of acceptable counts.
         count (int, optional): The number of times the text should match. Defaults to any number of
             times greater than zero.
@@ -42,9 +43,10 @@ class TextQuery(object):
                 query_type=desc(query_type),
                 valid_values=", ".join(desc(VALID_QUERY_TYPE)))
 
-        self.expected_text = normalize_text(expected_text)
+        self.expected_text = (expected_text if isregex(expected_text)
+                              else normalize_text(expected_text))
         self.query_type = query_type
-        self.search_regexp = re.compile(re.escape(self.expected_text))
+        self.search_regexp = toregex(expected_text)
         self.options = {
             "between": between,
             "count": count,
@@ -82,12 +84,17 @@ class TextQuery(object):
         return self.count
 
     @property
+    def description(self):
+        if isregex(self.expected_text):
+            return "text matching {}".format(desc(self.expected_text))
+        else:
+            return "text {}".format(desc(self.expected_text))
+
+    @property
     def failure_message(self):
         """ str: A message describing the query failure. """
 
-        description = "text {expected}".format(expected=desc(self.expected_text))
-
-        message = failure_message(description, self.options)
+        message = failure_message(self.description, self.options)
         if any(self.options.values()):
             message += " but found {count} {times}".format(
                 count=self.count,

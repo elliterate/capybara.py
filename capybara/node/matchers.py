@@ -366,7 +366,9 @@ class MatchersMixin(object):
         """
         Checks if the page or current node has the given text content, ignoring any HTML tags.
 
-        Whitespaces are normalized in both the node's text and the passed text parameter.
+        Whitespaces are normalized in both the node's text and the passed text parameter. Note that
+        whitespace isn't normalized in a passed regular expression as normalizing whitespace in a
+        regular expression isn't easy and doesn't seem to be worth it.
 
         By default it will check if the text occurs at least once, but a different number can be
         specified. ::

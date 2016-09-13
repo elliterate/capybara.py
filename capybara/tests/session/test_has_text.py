@@ -1,3 +1,5 @@
+import re
+
 import capybara
 
 
@@ -60,6 +62,18 @@ class TestHasText:
         session.visit("/with_html")
         assert session.has_text("Some of this text is hidden!")
 
+    def test_is_true_if_the_text_in_the_page_matches_given_regex(self, session):
+        session.visit("/with_html")
+        assert session.has_text(re.compile(r"Lorem"))
+
+    def test_is_false_if_the_text_in_the_page_does_not_match_given_regex(self, session):
+        session.visit("/with_html")
+        assert not session.has_text(re.compile(r"xxxxyzzz"))
+
+    def test_escapes_any_characters_that_would_have_special_meaning_in_a_regex(self, session):
+        session.visit("/with_html")
+        assert not session.has_text(".orem")
+
     def test_accepts_non_string_parameters(self, session):
         session.visit("/with_html")
         assert session.has_text(42)
@@ -76,13 +90,13 @@ class TestHasText:
     def test_is_true_if_the_text_occurs_within_the_range_given(self, session):
         session.visit("/with_count")
         assert session.has_text("count", between=range(1, 4))
-        assert session.has_text("count", between=range(2, 3))
+        assert session.has_text(re.compile(r"count"), between=range(2, 3))
 
     def test_is_false_if_the_text_occurs_more_or_fewer_times_than_range(self, session):
         session.visit("/with_count")
         assert not session.has_text("count", between=range(0, 2))
         assert not session.has_text("count", between=range(3, 11))
-        assert not session.has_text("count", between=range(2, 2))
+        assert not session.has_text(re.compile(r"count"), between=range(2, 2))
 
     def test_is_true_if_the_text_occurs_the_given_number_of_times(self, session):
         session.visit("/with_count")
@@ -92,7 +106,7 @@ class TestHasText:
         session.visit("/with_count")
         assert not session.has_text("count", count=0)
         assert not session.has_text("count", count=1)
-        assert not session.has_text("count", count=3)
+        assert not session.has_text(re.compile(r"count"), count=3)
 
     def test_coerces_count_to_an_integer(self, session):
         session.visit("/with_count")
@@ -107,7 +121,7 @@ class TestHasText:
     def test_is_false_when_text_occurs_more_times_than_given(self, session):
         session.visit("/with_count")
         assert not session.has_text("count", maximum=1)
-        assert not session.has_text("count", maximum=0)
+        assert not session.has_text(re.compile(r"count"), maximum=0)
 
     def test_coerces_maximum_to_an_integer(self, session):
         session.visit("/with_count")
@@ -117,7 +131,7 @@ class TestHasText:
     def test_is_true_when_text_occurs_same_or_more_times_than_given(self, session):
         session.visit("/with_count")
         assert session.has_text("count", minimum=2)
-        assert session.has_text("count", minimum=0)
+        assert session.has_text(re.compile(r"count"), minimum=0)
 
     def test_is_false_when_text_occurs_fewer_times_than_given(self, session):
         session.visit("/with_count")

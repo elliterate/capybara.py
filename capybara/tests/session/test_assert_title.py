@@ -1,4 +1,5 @@
 import pytest
+import re
 
 from capybara.exceptions import ExpectationNotMet
 
@@ -13,6 +14,12 @@ class TestAssertTitle:
 
     def test_is_true_when_given_an_empty_string(self, session):
         assert session.assert_title("") is True
+
+    def test_allows_regex_matches(self, session):
+        assert session.assert_title(re.compile(r"w[a-z]{3}_js")) is True
+        with pytest.raises(ExpectationNotMet) as excinfo:
+            session.assert_title(re.compile(r"w[a-z]{10}_js"))
+        assert "expected 'with_js' to match 'w[a-z]{10}_js'" in str(excinfo.value)
 
     def test_waits_for_title(self, session):
         session.click_link("Change title")

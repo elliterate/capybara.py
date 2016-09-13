@@ -1,4 +1,5 @@
 import pytest
+import re
 
 import capybara
 from capybara.exceptions import ExpectationNotMet
@@ -46,6 +47,21 @@ class TestAssertText:
         with pytest.raises(ExpectationNotMet) as excinfo:
             session.assert_text("Text With Whitespace")
         assert "it was found 1 time using a case insensitive search" in str(excinfo.value)
+
+    def test_is_true_if_the_text_in_the_page_matches_given_regex(self, session):
+        session.visit("/with_html")
+        assert session.assert_text(re.compile(r"Lorem")) is True
+
+    def test_raises_error_if_the_text_in_the_page_does_not_match_given_regex(self, session):
+        session.visit("/with_html")
+        with pytest.raises(ExpectationNotMet) as excinfo:
+            session.assert_text(re.compile(r"xxxxyzzz"))
+        assert "expected to find text matching 'xxxxyzzz' in 'This is a test Header Class" in str(excinfo.value)
+
+    def test_excapes_any_characters_that_would_have_special_meaning_in_a_regex(self, session):
+        session.visit("/with_html")
+        with pytest.raises(ExpectationNotMet):
+            session.assert_text(".orem")
 
     def test_waits_for_text_to_appear(self, session):
         session.visit("/with_js")

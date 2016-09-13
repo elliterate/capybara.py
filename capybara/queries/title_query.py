@@ -1,6 +1,7 @@
 import re
 
-from capybara.helpers import desc, normalize_text
+from capybara.helpers import desc, normalize_text, toregex
+from capybara.utils import isregex
 
 
 class TitleQuery(object):
@@ -8,13 +9,14 @@ class TitleQuery(object):
     Queries the title content of a node.
 
     Args:
-        expected_title (str): The desired title.
+        expected_title (str | RegexObject): The desired title.
     """
 
     def __init__(self, expected_title):
-        self.expected_title = normalize_text(expected_title)
+        self.expected_title = (expected_title if isregex(expected_title)
+                               else normalize_text(expected_title))
         self.actual_title = None
-        self.search_regexp = re.compile(re.escape(self.expected_title))
+        self.search_regexp = toregex(expected_title)
 
     def resolves_for(self, node):
         """
@@ -33,6 +35,8 @@ class TitleQuery(object):
     @property
     def failure_message(self):
         """ str: A message describing the query failure. """
-        return "expected {actual} to include {expected}".format(
+        verb = "match" if isregex(self.expected_title) else "include"
+        return "expected {actual} to {verb} {expected}".format(
             actual=desc(self.actual_title),
+            verb=verb,
             expected=desc(self.expected_title))
