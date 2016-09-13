@@ -44,3 +44,23 @@ class TestHasCurrentPath:
     def test_does_not_allow_url_and_only_path_at_the_same_time(self, session):
         with pytest.raises(RuntimeError):
             session.has_current_path("/with_js", url=True, only_path=True)
+
+
+class TestHasNoCurrentPath:
+    @pytest.fixture(autouse=True)
+    def setup_session(self, session):
+        session.visit("/with_js")
+
+    def test_is_false_if_the_page_has_the_given_current_path(self, session):
+        assert not session.has_no_current_path("/with_js")
+
+    def test_allows_regex_matches(self, session):
+        assert not session.has_no_current_path(re.compile(r"w[a-z]{3}_js"))
+        assert session.has_no_current_path(re.compile(r"monkey"))
+
+    def test_waits_for_current_path_to_disappear(self, session):
+        session.click_link("Change page")
+        assert session.has_no_current_path("/with_js")
+
+    def test_is_true_if_the_page_does_not_have_the_given_current_path(self, session):
+        assert session.has_no_current_path("/with_html")

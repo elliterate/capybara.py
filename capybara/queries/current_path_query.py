@@ -61,10 +61,18 @@ class CurrentPathQuery(object):
     @property
     def failure_message(self):
         """ str: A description of this query's failure. """
+        return self._build_message()
 
+    @property
+    def negative_failure_message(self):
+        """ str: A description of this query's negative failure. """
+        return self._build_message(" not")
+
+    def _build_message(self, negated=""):
         verb = "match" if isregex(self.expected_path) else "equal"
 
-        return "expected {actual} to {verb} {expected}".format(
+        return "expected {actual}{negated} to {verb} {expected}".format(
             actual=desc(self.actual_path),
+            negated=negated,
             verb=verb,
             expected=desc(self.expected_path))

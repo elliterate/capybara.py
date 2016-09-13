@@ -43,3 +43,23 @@ class TestAssertCurrentPath:
         session.visit("/with_js?test=test")
         session.assert_current_path("/with_js?test=test")
         session.assert_current_path("/with_js", only_path=True)
+
+
+class TestAssertNoCurrentPath:
+    @pytest.fixture(autouse=True)
+    def setup_session(self, session):
+        session.visit("/with_js")
+
+    def test_raises_if_the_page_has_the_given_current_path(self, session):
+        with pytest.raises(ExpectationNotMet):
+            session.assert_no_current_path("/with_js")
+
+    def test_allows_regex_matches(self, session):
+        session.assert_no_current_path(re.compile(r"monkey"))
+
+    def test_waits_for_current_path_to_disappear(self, session):
+        session.click_link("Change page")
+        session.assert_no_current_path("/with_js")
+
+    def test_does_not_raise_if_the_page_does_not_have_the_given_current_path(self, session):
+        session.assert_no_current_path("/with_html")
