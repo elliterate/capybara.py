@@ -58,3 +58,51 @@ class TestHasSelector:
     def test_discards_all_matches_where_the_given_regex_is_not_matched(self, session):
         assert session.has_selector("//p//a", text=re.compile("re[dab]i", re.IGNORECASE), count=1)
         assert not session.has_selector("//p//a", text=re.compile("Red$"))
+
+
+class TestHasNoSelector:
+    @pytest.fixture(autouse=True)
+    def setup_session(self, session):
+        session.visit("/with_html")
+
+    def test_is_false_if_the_given_selector_is_on_the_page(self, session):
+        assert not session.has_no_selector("xpath", "//p")
+        assert not session.has_no_selector("css", "p a#foo")
+        assert not session.has_no_selector("//p[contains(.,'est')]")
+
+    def test_is_true_if_the_given_selector_is_not_on_the_page(self, session):
+        assert session.has_no_selector("xpath", "//abbr")
+        assert session.has_no_selector("css", "p a#doesnotexist")
+        assert session.has_no_selector("//p[contains(.,'thisstringisnotonpage')]")
+
+    def test_uses_default_selector(self, session):
+        capybara.default_selector = "css"
+        assert session.has_no_selector("p a#doesnotexist")
+        assert not session.has_no_selector("p a#foo")
+
+    def test_respects_scopes(self, session):
+        with session.scope("//p[@id='first']"):
+            assert not session.has_no_selector(".//a[@id='foo']")
+            assert session.has_no_selector("../a[@id='red']")
+
+    def test_is_false_if_the_content_is_on_the_page_the_given_number_of_times(self, session):
+        assert not session.has_no_selector("//p", count=3)
+        assert not session.has_no_selector("//p//a[@id='foo']", count=1)
+        assert not session.has_no_selector("//p[contains(.,'est')]", count=1)
+
+    def test_is_true_if_the_content_is_on_the_page_the_wrong_number_of_times(self, session):
+        assert session.has_no_selector("//p", count=6)
+        assert session.has_no_selector("//p//a[@id='foo']", count=2)
+        assert session.has_no_selector("//p[contains(.,'est')]", count=5)
+
+    def test_is_true_if_the_content_is_not_on_the_page_at_all(self, session):
+        assert session.has_no_selector("//abbr", count=2)
+        assert session.has_no_selector("//p//a[@id='doesnotexist']", count=1)
+
+    def test_discards_all_matches_where_the_given_string_is_contained(self, session):
+        assert not session.has_no_selector("//p//a", text="Redirect", count=1)
+        assert session.has_no_selector("//p", text="Doesnotexist")
+
+    def test_discards_all_matches_where_the_given_regex_is_matched(self, session):
+        assert not session.has_no_selector("//p//a", text=re.compile(r"re[dab]i", re.IGNORECASE), count=1)
+        assert session.has_no_selector("//p//a", text=re.compile(r"Red$"))

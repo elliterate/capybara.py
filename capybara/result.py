@@ -1,3 +1,5 @@
+import re
+
 from capybara.helpers import declension, desc, failure_message
 
 
@@ -52,3 +54,7 @@ class Result(object):
                         " but not all filters.".format(elements))
 
         return message
+
+    @property
+    def negative_failure_message(self):
+        return re.sub(r"(to find)", r"not \1", self.failure_message)

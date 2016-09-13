@@ -44,6 +44,25 @@ class MatchersMixin(object):
         except ExpectationNotMet:
             return False
 
+    def has_no_selector(self, *args, **kwargs):
+        """
+        Checks if a given selector is not on the page or a descendant of the current node. Usage is
+        identical to :meth:`has_selector`.
+
+        Args:
+            *args: Variable length argument list for :class:`SelectorQuery`.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it doesn't exist.
+        """
+
+        try:
+            self.assert_no_selector(*args, **kwargs)
+            return True
+        except ExpectationNotMet:
+            return False
+
     def assert_selector(self, *args, **kwargs):
         """
         Asserts that a given selector is on the page or a descendant of the current node. ::
@@ -57,6 +76,9 @@ class MatchersMixin(object):
 
         This will check if the expression occurs exactly 4 times. See :meth:`find_all` for other
         available result size options.
+
+        If a ``count`` of 0 is specified, it will behave like :meth:`assert_no_selector`; however,
+        use of that method is preferred over this one.
 
         It also accepts all options that :meth:`find_all` accepts, such as ``text`` and
         ``visible``. ::
@@ -94,6 +116,47 @@ class MatchersMixin(object):
             return True
 
         return assert_selector()
+
+    def assert_no_selector(self, *args, **kwargs):
+        """
+        Asserts that a given selector is not on the page or a descendant of the current node. Usage
+        is identical to :meth:`assert_selector`.
+
+        Query options such as ``count``, ``minimum``, and ``between`` are considered to be an
+        integral part of the selector. This will return True, for example, if a page contains 4
+        anchors but the query expects 5::
+
+            session.assert_no_selector("a", minimum=1)  # Found, raises ExpectationNotMet
+            session.assert_no_selector("a", count=4)    # Found, raises ExpectationNotMet
+            session.assert_no_selector("a", count=5)    # Not Found, returns True
+
+        Args:
+            *args: Variable length argument list for :class:`SelectorQuery`.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            True
+
+        Raises:
+            ExpectationNotMet: The given selector matched.
+        """
+
+        query = SelectorQuery(*args, **kwargs)
+
+        @self.synchronize(wait=query.wait)
+        def assert_no_selector():
+            result = query.resolve_for(self)
+
+            if matches_count(len(result), query.options) and (
+                   len(result) > 0 or expects_none(query.options)):
+                raise ExpectationNotMet(result.negative_failure_message)
+
+            return True
+
+        return assert_no_selector()
+
+    refute_selector = assert_no_selector
+    """ Alias for :meth:`assert_no_selector`. """
 
     def has_xpath(self, query, **kwargs):
         """
