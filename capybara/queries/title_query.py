@@ -35,8 +35,17 @@ class TitleQuery(object):
     @property
     def failure_message(self):
         """ str: A message describing the query failure. """
+        return self._build_message()
+
+    @property
+    def negative_failure_message(self):
+        """ str: A message describing the negative query failure. """
+        return self._build_message(" not")
+
+    def _build_message(self, negated=""):
         verb = "match" if isregex(self.expected_title) else "include"
-        return "expected {actual} to {verb} {expected}".format(
+        return "expected {actual}{negated} to {verb} {expected}".format(
             actual=desc(self.actual_title),
+            negated=negated,
             verb=verb,
             expected=desc(self.expected_title))

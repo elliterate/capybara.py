@@ -20,7 +20,7 @@ from capybara.utils import cached_property, encode_string
 from capybara.window import Window
 
 
-_DOCUMENT_METHODS = ["assert_title", "has_title"]
+_DOCUMENT_METHODS = ["assert_no_title", "assert_title", "has_no_title", "has_title"]
 _DOCUMENT_PROPERTIES = ["title"]
 _NODE_METHODS = [
     "assert_no_selector", "assert_no_text", "assert_selector", "assert_text", "attach_file",
