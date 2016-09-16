@@ -147,3 +147,83 @@ class TestHasText:
             session.visit("/with_js")
             session.click_link("Click me")
             assert session.has_text("Has been clicked", wait=0.9)
+
+
+class TestHasNoText:
+    def test_is_false_if_the_given_text_is_on_the_page_at_least_once(self, session):
+        session.visit("/with_html")
+        assert not session.has_no_text("est")
+        assert not session.has_no_text("Lorem")
+        assert not session.has_no_text("Redirect")
+
+    def test_is_false_if_scoped_to_an_element_which_has_the_text(self, session):
+        session.visit("/with_html")
+        with session.scope("//a[@title='awesome title']"):
+            assert not session.has_no_text("labore")
+
+    def test_is_true_if_scoped_to_an_element_which_does_not_have_the_text(self, session):
+        session.visit("/with_html")
+        with session.scope("//a[@title='awesome title']"):
+            assert session.has_no_text("monkey")
+
+    def test_ignores_tags(self, session):
+        session.visit("/with_html")
+        assert session.has_no_text("""exercitation <a href="/foo" id="foo">ullamco</a> laboris""")
+        assert not session.has_no_text("exercitation ullamco laboris")
+
+    def test_is_true_if_the_given_text_is_not_on_the_page(self, session):
+        session.visit("/with_html")
+        assert session.has_no_text("xxxxyzzz")
+        assert session.has_no_text("monkey")
+
+    def test_handles_single_quotes_in_the_text(self, session):
+        session.visit("/with-quotes")
+        assert not session.has_no_text("can't")
+
+    def test_handles_double_quotes_in_the_text(self, session):
+        session.visit("/with-quotes")
+        assert not session.has_no_text("\"you can't do that.\"")
+
+    def test_is_true_if_text_is_in_the_title_tag_in_the_head(self, session):
+        session.visit("/with_js")
+        assert session.has_no_text("with_js")
+
+    def test_is_true_if_text_is_inside_a_script_tag_in_the_body(self, session):
+        session.visit("/with_js")
+        assert session.has_no_text("a javascript comment")
+        assert session.has_no_text("aVar")
+
+    def test_is_true_if_the_given_text_is_on_the_page_but_not_visible(self, session):
+        session.visit("/with_html")
+        assert session.has_no_text("Inside element with hidden ancestor")
+
+    def test_is_false_if_all_given_and_text_is_invisible(self, session):
+        session.visit("/with_html")
+        assert not session.has_no_text("all", "Some of this text is hidden!")
+
+    def test_is_false_if_capybara_ignore_hidden_elements_is_false_and_text_is_invisible(self, session):
+        capybara.ignore_hidden_elements = False
+        session.visit("/with_html")
+        assert not session.has_no_text("Some of this text is hidden!")
+
+    def test_is_true_if_the_text_in_the_page_does_not_match_given_regex(self, session):
+        session.visit("/with_html")
+        assert session.has_no_text(re.compile(r"xxxxyzzz"))
+
+    def test_is_false_if_the_text_in_the_page_matches_given_regex(self, session):
+        session.visit("/with_html")
+        assert not session.has_no_text(re.compile(r"Lorem"))
+
+    def test_escapes_any_characters_that_would_have_special_meaning_in_a_regex(self, session):
+        session.visit("/with_html")
+        assert session.has_no_text(".orem")
+
+    def test_waits_for_text_to_disappear(self, session):
+        session.visit("/with_js")
+        session.click_link("Click me")
+        assert session.has_no_text("I changed it")
+
+    def test_does_not_find_element_if_it_appears_after_given_wait_duration(self, session):
+        session.visit("/with_js")
+        session.click_link("Click me")
+        assert session.has_no_text("Has been clicked", wait=0.1)

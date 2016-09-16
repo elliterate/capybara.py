@@ -362,6 +362,36 @@ class MatchersMixin(object):
 
         return assert_text()
 
+    def assert_no_text(self, *args, **kwargs):
+        """
+        Asserts that the page or current node doesn't have the given text content, ignoring any
+        HTML tags.
+
+        Args:
+            *args: Variable length argument list for :class:`TextQuery`.
+            **kwargs: Arbitrary keyword arguments for :class:`TextQuery`.
+
+        Returns:
+            True
+
+        Raises:
+            ExpectationNotMet: If the assertion hasn't succeeded during the wait time.
+        """
+
+        query = TextQuery(*args, **kwargs)
+
+        @self.synchronize(wait=query.wait)
+        def assert_no_text():
+            count = query.resolve_for(self)
+
+            if matches_count(count, query.options) and (
+                   count > 0 or expects_none(query.options)):
+                raise ExpectationNotMet(query.negative_failure_message)
+
+            return True
+
+        return assert_no_text()
+
     def has_text(self, *args, **kwargs):
         """
         Checks if the page or current node has the given text content, ignoring any HTML tags.
@@ -390,3 +420,24 @@ class MatchersMixin(object):
 
     has_content = has_text
     """ Alias for :meth:`has_text`. """
+
+    def has_no_text(self, *args, **kwargs):
+        """
+        Checks if the page or current node does not have the given text content, ignoring any HTML
+        tags and normalizing whitespace.
+
+        Args:
+            *args: Variable length argument list for :class:`TextQuery`.
+            **kwargs: Arbitrary keyword arguments for :class:`TextQuery`.
+
+        Returns:
+            bool: Whether it doesn't exist.
+        """
+
+        try:
+            return self.assert_no_text(*args, **kwargs)
+        except ExpectationNotMet:
+            return False
+
+    has_no_content = has_no_text
+    """ Alias for :meth:`has_no_text`. """

@@ -115,3 +115,54 @@ class TestAssertTextCount:
 
     def test_succeeds_if_all_combined_expectations_are_met(self, session):
         session.assert_text("Header", minimum=0, maximum=5, between=range(2, 8))
+
+
+class TestAssertNoText:
+    def test_raises_error_if_the_given_text_is_on_the_page_at_least_once(self, session):
+        session.visit("/with_html")
+        with pytest.raises(ExpectationNotMet) as excinfo:
+            session.assert_no_text("Lorem")
+        assert "expected not to find text 'Lorem' in 'This is a test Header Class" in str(excinfo.value)
+
+    def test_is_true_if_scoped_to_an_element_which_does_not_have_the_text(self, session):
+        session.visit("/with_html")
+        with session.scope("//a[@title='awesome title']"):
+            assert session.assert_no_text("monkey") is True
+
+    def test_is_true_if_given_text_is_on_the_page_but_not_visible(self, session):
+        session.visit("/with_html")
+        assert session.assert_no_text("Inside element with hidden selector") is True
+
+    def test_raises_error_if_all_given_and_text_is_invisible(self, session):
+        session.visit("/with_html")
+        el = session.find("css", "#hidden-text", visible=False)
+        with pytest.raises(ExpectationNotMet) as excinfo:
+            el.assert_no_text("all", "Some of this text is hidden!")
+        assert "expected not to find text 'Some of this text is hidden!' in 'Some of this text is hidden!'" in str(excinfo.value)
+
+    def test_raises_error_if_visible_given_and_text_is_visible(self, session):
+        session.visit("/with_html")
+        el = session.find("css", "#some-hidden-text", visible=False)
+        with pytest.raises(ExpectationNotMet) as excinfo:
+            el.assert_no_text("visible", "hidden")
+        assert "expected not to find text 'hidden' in 'Some of this text is not hidden'" in str(excinfo.value)
+
+    def test_is_true_if_the_text_in_the_page_does_not_match_given_regex(self, session):
+        session.visit("/with_html")
+        session.assert_no_text(re.compile(r"xxxxyzzz"))
+
+    def test_is_true_if_the_text_does_not_occur_the_given_number_of_times(self, session):
+        session.visit("/with_count")
+        assert session.assert_no_text("count", count=3) is True
+
+    def test_raises_if_the_text_occurs_the_given_number_of_times(self, session):
+        session.visit("/with_count")
+        with pytest.raises(ExpectationNotMet) as excinfo:
+            session.assert_no_text("count", count=2)
+        assert "expected not to find text 'count' 2 times" in str(excinfo.value)
+
+    def test_does_not_find_text_if_it_appears_after_given_wait_duration(self, session):
+        session.visit("/with_js")
+        session.click_link("Click me")
+        session.find("css", "#reload-list").click()
+        session.find("css", "#the-list").assert_no_text("Foo Bar", wait=0.3)

@@ -93,7 +93,14 @@ class TextQuery(object):
     @property
     def failure_message(self):
         """ str: A message describing the query failure. """
+        return self._build_message(True)
 
+    @property
+    def negative_failure_message(self):
+        """ str: A message describing the negative query failure. """
+        return re.sub(r"(to find)", r"not \1", self._build_message(False))
+
+    def _build_message(self, report_on_invisible):
         message = failure_message(self.description, self.options)
         if any(self.options.values()):
             message += " but found {count} {times}".format(
@@ -114,7 +121,7 @@ class TextQuery(object):
                         count=insensitive_count,
                         times=declension("time", "times", insensitive_count)))
 
-        if self.node and self.query_type == "visible":
+        if self.node and self.query_type == "visible" and report_on_invisible:
             invisible_text = normalize_text(self.node.all_text)
             invisible_count = len(re.findall(self.search_regexp, invisible_text))
             if invisible_count != self.count:
