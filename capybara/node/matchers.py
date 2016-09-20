@@ -180,6 +180,21 @@ class MatchersMixin(object):
 
         return self.has_selector("xpath", query, **kwargs)
 
+    def has_no_xpath(self, path, **kwargs):
+        """
+        Checks if a given XPath expression is not on the page or a descendant of the current node.
+        Usage is identical to :meth:`has_xpath`.
+
+        Args:
+            path (str): An XPath expression.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Return:
+            bool: If the expression does not exist.
+        """
+
+        return self.has_no_selector("xpath", path, **kwargs)
+
     def has_css(self, path, **kwargs):
         """
         Checks if a given CSS selector is on the page or a descendant of the current node. ::
@@ -208,6 +223,21 @@ class MatchersMixin(object):
 
         return self.has_selector("css", path, **kwargs)
 
+    def has_no_css(self, path, **kwargs):
+        """
+        Checks if a given CSS selector is not on the page or a descendant of the current node.
+        Usage is identical to :meth:`has_css`.
+
+        Args:
+            path (str): A CSS Selector.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Return:
+            bool: If the selector does not exist.
+        """
+
+        return self.has_no_selector("css", path, **kwargs)
+
     def has_button(self, locator, **kwargs):
         """
         Checks if the page or current node has a button with the given text, value, or id.
@@ -221,6 +251,20 @@ class MatchersMixin(object):
         """
 
         return self.has_selector("button", locator, **kwargs)
+
+    def has_no_button(self, locator, **kwargs):
+        """
+        Checks if the page or current node has no button with the given text, value, or id.
+
+        Args:
+            locator (str): The text, value, or id of a button to check for.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it doesn't exist.
+        """
+
+        return self.has_no_selector("button", locator, **kwargs)
 
     def has_checked_field(self, locator, **kwargs):
         """
@@ -237,6 +281,22 @@ class MatchersMixin(object):
 
         kwargs["checked"] = True
         return self.has_selector("field", locator, **kwargs)
+
+    def has_no_checked_field(self, locator, **kwargs):
+        """
+        Checks if the page or current node has no radio button or checkbox with the given label,
+        value, or id that is currently checked.
+
+        Args:
+            locator (str): The label, name, or id of a checked field.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it doesn't exist.
+        """
+
+        kwargs["checked"] = True
+        return self.has_no_selector("field", locator, **kwargs)
 
     def has_field(self, locator, **kwargs):
         """
@@ -257,6 +317,21 @@ class MatchersMixin(object):
 
         return self.has_selector("field", locator, **kwargs)
 
+    def has_no_field(self, locator, **kwargs):
+        """
+        Checks if the page or current node has no form field with the given label, name, or id. See
+        :meth:`has_field`.
+
+        Args:
+            locator (str): The label, name, or id of a field to check for.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it doesn't exist.
+        """
+
+        return self.has_no_selector("field", locator, **kwargs)
+
     def has_link(self, locator, **kwargs):
         """
         Checks if the page or current node has a link with the given text or id.
@@ -270,6 +345,20 @@ class MatchersMixin(object):
         """
 
         return self.has_selector("link", locator, **kwargs)
+
+    def has_no_link(self, locator, **kwargs):
+        """
+        Checks if the page or current node has no link with the given text or id.
+
+        Args:
+            locator (str): The text or id of a link to check for.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it doesn't exist.
+        """
+
+        return self.has_no_selector("link", locator, **kwargs)
 
     def has_select(self, locator, **kwargs):
         """
@@ -301,6 +390,21 @@ class MatchersMixin(object):
 
         return self.has_selector("select", locator, **kwargs)
 
+    def has_no_select(self, locator, **kwargs):
+        """
+        Checks if the page or current node has no select field with the given label, name, or id.
+        See :meth:`has_select`.
+
+        Args:
+            locator (str): The label, name, or id of a select box.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it doesn't exist.
+        """
+
+        return self.has_no_selector("select", locator, **kwargs)
+
     def has_table(self, locator, **kwargs):
         """
         Checks if the page or current node has a table with the given id or caption::
@@ -317,6 +421,21 @@ class MatchersMixin(object):
 
         return self.has_selector("table", locator, **kwargs)
 
+    def has_no_table(self, locator, **kwargs):
+        """
+        Checks if the page or current node has no table with the given id or caption. See
+        :meth:`has_table`.
+
+        Args:
+            locator (str): The id or caption of a table.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it doesn't exist.
+        """
+
+        return self.has_no_selector("table", locator, **kwargs)
+
     def has_unchecked_field(self, locator, **kwargs):
         """
         Checks if the page or current node has a radio button or checkbox with the given label,
@@ -332,6 +451,22 @@ class MatchersMixin(object):
 
         kwargs["checked"] = False
         return self.has_selector("field", locator, **kwargs)
+
+    def has_no_unchecked_field(self, locator, **kwargs):
+        """
+        Checks if the page or current node has no radio button or checkbox with the given label,
+        value, or id, that is currently unchecked.
+
+        Args:
+            locator (str): The label, name, or id of an unchecked field.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it doesn't exist.
+        """
+
+        kwargs["checked"] = False
+        return self.has_no_selector("field", locator, **kwargs)
 
     def assert_text(self, *args, **kwargs):
         """

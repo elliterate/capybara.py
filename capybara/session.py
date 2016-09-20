@@ -27,8 +27,10 @@ _NODE_METHODS = [
     "check", "choose", "click_button", "click_link", "click_link_or_button", "click_on", "fill_in",
     "find", "find_all", "find_button", "find_by_id", "find_field", "find_first", "find_link",
     "has_button", "has_checked_field", "has_content", "has_css", "has_field", "has_link",
-    "has_no_selector", "has_no_text", "has_select", "has_selector", "has_table", "has_text",
-    "has_unchecked_field", "has_xpath", "select", "uncheck", "unselect"]
+    "has_no_button", "has_no_checked_field", "has_no_css", "has_no_field", "has_no_link",
+    "has_no_select", "has_no_selector", "has_no_table", "has_no_text", "has_no_unchecked_field",
+    "has_no_xpath", "has_select", "has_selector", "has_table", "has_text", "has_unchecked_field",
+    "has_xpath", "select", "uncheck", "unselect"]
 _NODE_PROPERTIES = ["text"]
 
 

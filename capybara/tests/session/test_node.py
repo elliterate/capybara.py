@@ -16,6 +16,7 @@ class TestNode(NodeTestCase):
         session.visit("/form")
         form = session.find("css", "#get-form")
         assert form.has_field("Middle Name")
+        assert form.has_no_field("Languages")
         form.fill_in("Middle Name", value="Monkey")
         form.click_button("med")
         assert extract_results(session)["form[middle_name]"] == "Monkey"

@@ -293,6 +293,16 @@ is (the default is 2 seconds)::
 
     capybara.default_max_wait_time = 5
 
+Be aware that because of this behavior, the follow two statements are **not**
+equivalent, and you should **always** use the latter! ::
+
+    not session.has_xpath("a")
+    session.has_no_xpath("a")
+
+The former would immediately fail because the content has not yet been removed.
+Only the latter would wait for the asynchronous process to remove the content
+from the page.
+
 Capybara's waiting behavior is quite advanced, and can deal with situations
 such as the following line of code::
 

@@ -101,3 +101,73 @@ class TestHasSelectMultiple(HasSelectTestCase):
     def test_finds_both_if_not_specified(self, session):
         assert session.has_select("form_languages")
         assert session.has_select("form_other_title")
+
+
+class TestHasNoSelect(HasSelectTestCase):
+    def test_is_false_if_the_field_is_on_the_page(self, session):
+        assert not session.has_no_select("Locale")
+        assert not session.has_no_select("form_region")
+        assert not session.has_no_select("Languages")
+
+    def test_is_true_if_the_field_is_not_on_the_page(self, session):
+        assert session.has_no_select("Monkey")
+
+
+class TestHasNoSelectWithSelected(HasSelectTestCase):
+    def test_is_false_if_a_field_with_the_given_value_is_on_the_page(self, session):
+        assert not session.has_no_select("form_locale", selected="English")
+        assert not session.has_no_select("Region", selected="Norway")
+        assert not session.has_no_select("Underwear", selected=[
+            "Boxerbriefs", "Briefs", "Commando", "Frenchman's Pantalons", "Long Johns"])
+
+    def test_is_true_if_the_given_field_is_not_on_the_page(self, session):
+        assert session.has_no_select("Locale", selected="Swedish")
+        assert session.has_no_select("Does not exist", selected="John")
+        assert session.has_no_select("City", selected="Not there")
+        assert session.has_no_select("Underwear", selected=[
+            "Boxerbriefs", "Briefs", "Commando", "Frenchman's Pantalons", "Long Johns", "Nonexistant"])
+        assert session.has_no_select("Underwear", selected=[
+            "Boxerbriefs", "Briefs", "Boxers", "Commando", "Frenchman's Pantalons", "Long Johns"])
+        assert session.has_no_select("Underwear", selected=[
+            "Boxerbriefs", "Briefs", "Commando", "Frenchman's Pantalons"])
+
+    def test_is_false_after_the_given_value_is_selected(self, session):
+        session.select("Swedish", field="Locale")
+        assert not session.has_no_select("Locale", selected="Swedish")
+
+    def test_is_true_after_a_different_value_is_selected(self, session):
+        session.select("Swedish", field="Locale")
+        assert session.has_no_select("Locale", selected="English")
+
+    def test_is_false_after_the_given_values_are_selected(self, session):
+        session.select("Boxers", field="Underwear")
+        assert not session.has_no_select("Underwear", selected=[
+            "Boxerbriefs", "Briefs", "Boxers", "Commando", "Frenchman's Pantalons", "Long Johns"])
+
+    def test_is_true_after_one_of_the_values_is_unselected(self, session):
+        session.unselect("Briefs", field="Underwear")
+        assert session.has_no_select("Underwear", selected=[
+            "Boxerbriefs", "Briefs", "Commando", "Frenchman's Pantalons", "Long Johns"])
+
+
+class TestHasNoSelectWithExactOptions(HasSelectTestCase):
+    def test_is_false_if_a_field_with_the_given_options_is_on_the_page(self, session):
+        assert not session.has_no_select("Region", options=["Norway", "Sweden", "Finland"])
+
+    def test_is_true_if_the_given_field_is_not_on_the_page(self, session):
+        assert session.has_no_select("Locale", options=["Swedish"])
+        assert session.has_no_select("Does not exist", options=["John"])
+        assert session.has_no_select("City", options=["London", "Made up city"])
+        assert session.has_no_select("Region", options=["Norway", "Sweden"])
+        assert session.has_no_select("Region", options=["Norway", "Norway", "Norway"])
+
+
+class TestHasNoSelectWithPartialOptions(HasSelectTestCase):
+    def test_is_false_if_a_field_with_the_given_partial_options_is_on_the_page(self, session):
+        assert not session.has_no_select("Region", with_options=["Norway", "Sweden"])
+        assert not session.has_no_select("City", with_options=["London"])
+
+    def test_is_true_if_a_field_with_the_given_partial_options_is_not_on_the_page(self, session):
+        assert session.has_no_select("Locale", with_options=["Uruguayan"])
+        assert session.has_no_select("Does not exist", with_options=["John"])
+        assert session.has_no_select("Region", with_options=["Norway", "Sweden", "Finland", "Latvia"])
