@@ -63,6 +63,9 @@ _session_pool = {}
 # Dict[str, Session]: A pool of `Session` objects, keyed by driver and app.
 
 
+DSL_METHODS = ["using_session", "using_wait_time"]
+
+
 def register_server(name):
     """
     Register a server initialization function.
@@ -159,6 +162,17 @@ def using_session(name):
         yield
     finally:
         session_name = previous_session_name
+
+
+def reset_sessions():
+    """ Resets all sessions. """
+
+    for session in iter(_session_pool.values()):
+        session.reset()
+
+
+reset = reset_sessions
+""" Alias for :func:`reset_sessions`. """
 
 
 def string(html):

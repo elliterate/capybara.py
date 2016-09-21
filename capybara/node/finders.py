@@ -124,31 +124,31 @@ class FindersMixin(object):
         Both XPath and CSS expressions are supported, but Capybara does not try to automatically
         distinguish between them. The following statements are equivalent::
 
-            session.find_all("css", "a#person_123")
-            session.find_all("xpath", "//a[@id='person_123']")
+            page.find_all("css", "a#person_123")
+            page.find_all("xpath", "//a[@id='person_123']")
 
         If the type of selector is left out, Capybara uses :data:`capybara.default_selector`. It's
         set to ``"css"`` by default. ::
 
-            session.find_all("a#person_123")
+            page.find_all("a#person_123")
 
             capybara.default_selector = "xpath"
-            session.find_all("//a[@id='person_123']")
+            page.find_all("//a[@id='person_123']")
 
         The set of found elements can further be restricted by specifying options. It's possible to
         select elements by their text or visibility::
 
-            session.find_all("a", text="Home")
-            session.find_all("#menu li", visible=True)
+            page.find_all("a", text="Home")
+            page.find_all("#menu li", visible=True)
 
         By default if no elements are found, an empty list is returned; however, expectations can be
         set on the number of elements to be found which will trigger Capybara's waiting behavior for
         the expectations to match. The expectations can be set using::
 
-            session.assert_selector("p#foo", count=4)
-            session.assert_selector("p#foo", maximum=10)
-            session.assert_selector("p#foo", minimum=1)
-            session.assert_selector("p#foo", between=range(1, 11))
+            page.assert_selector("p#foo", count=4)
+            page.assert_selector("p#foo", maximum=10)
+            page.assert_selector("p#foo", minimum=1)
+            page.assert_selector("p#foo", between=range(1, 11))
 
         See :func:`matches_count` for additional information about count matching.
 

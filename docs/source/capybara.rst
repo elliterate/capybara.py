@@ -15,6 +15,14 @@ Subpackages
 Submodules
 ----------
 
+capybara.dsl module
+-------------------
+
+.. automodule:: capybara.dsl
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 capybara.exceptions module
 --------------------------
 

@@ -17,7 +17,7 @@ class ActionsMixin(object):
         Find a file field on the page and attach a file given its path. The file field can be found
         via its name, id, or label text. ::
 
-            session.attach_file(locator, "/path/to/file.png")
+            page.attach_file(locator, "/path/to/file.png")
 
         Args:
             locator (str): Which field to attach the file to.
@@ -38,7 +38,7 @@ class ActionsMixin(object):
         Find a check box and mark it as checked. The check box can be found via name, id, or label
         text. ::
 
-            session.check("German")
+            page.check("German")
 
         Args:
             locator (str): Which check box to check.
@@ -70,7 +70,7 @@ class ActionsMixin(object):
         Find a radio button and mark it as checked. The radio button can be found via name, id, or
         label text. ::
 
-            session.choose("Male")
+            page.choose("Male")
 
         Args:
             locator (str): Which radio button to choose.
@@ -161,7 +161,7 @@ class ActionsMixin(object):
         to select more than one option. The select box can be found via its name, id, or label text.
         The option can be found by its text. ::
 
-            session.select("March", field="Month")
+            page.select("March", field="Month")
 
         Args:
             value (str): Which option to select.
@@ -178,7 +178,7 @@ class ActionsMixin(object):
         """
         Find a check box and uncheck it. The check box can be found via name, id, or label text. ::
 
-            session.uncheck("German")
+            page.uncheck("German")
 
         Args:
             locator (str): Which check box to uncheck.
@@ -211,7 +211,7 @@ class ActionsMixin(object):
         a multiple select, ``unselect`` can be called multiple times to unselect more than one
         option. The select box can be found via its name, id, or label text. ::
 
-            session.unselect("March", field="Month")
+            page.unselect("March", field="Month")
 
         Args:
             value (str): Which option to unselect.

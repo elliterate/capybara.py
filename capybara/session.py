@@ -32,6 +32,15 @@ _NODE_METHODS = [
     "has_no_xpath", "has_select", "has_selector", "has_table", "has_text", "has_unchecked_field",
     "has_xpath", "select", "uncheck", "unselect"]
 _NODE_PROPERTIES = ["text"]
+_SESSION_METHODS = [
+    "accept_alert", "accept_confirm", "accept_prompt", "assert_current_path",
+    "assert_no_current_path", "dismiss_confirm", "dismiss_prompt", "evaluate_script",
+    "execute_script", "fieldset", "frame", "go_back", "go_forward", "has_current_path",
+    "has_no_current_path", "open_new_window", "reset", "save_page", "save_screenshot", "scope",
+    "switch_to_window", "table", "visit", "window", "window_opened_by"]
+_SESSION_PROPERTIES = ["current_host", "current_path", "current_url", "current_window", "windows"]
+
+DSL_METHODS = _DOCUMENT_METHODS + _NODE_METHODS + _SESSION_METHODS
 
 
 class Session(SessionMatchersMixin, object):
@@ -54,6 +63,8 @@ class Session(SessionMatchersMixin, object):
         session.fill_in("q", value="Capybara")
         session.click_button("Search")
         assert session.has_text("Capybara")
+
+    When using :mod:`capybara.dsl`, the Session is initialized automatically for you.
 
     Args:
         mode (str): The name of the driver to use.
