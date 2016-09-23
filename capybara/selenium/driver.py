@@ -60,6 +60,19 @@ class Driver(Base):
     def current_window_handle(self):
         return self.browser.current_window_handle
 
+    def window_size(self, handle):
+        with self._window(handle):
+            size = self.browser.get_window_size()
+            return [size["width"], size["height"]]
+
+    def resize_window_to(self, handle, width, height):
+        with self._window(handle):
+            self.browser.set_window_size(width, height)
+
+    def maximize_window(self, handle):
+        with self._window(handle):
+            self.browser.maximize_window()
+
     def close_window(self, handle):
         with self._window(handle):
             self.browser.close()

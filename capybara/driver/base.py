@@ -34,6 +34,26 @@ class Base(object):
         """ object: The current window handle. """
         raise NotImplementedError()
 
+    def window_size(self, handle):
+        """ List[int, int]: The size of the given window handle. """
+        raise NotImplementedError()
+
+    def resize_window_to(self, handle, width, height):
+        """
+        Resizes the given window handle to the given dimensions.
+
+        Args:
+            handle (object): The driver handle for the window.
+            width (int): The desired window width.
+            height (int): The desired window height.
+        """
+
+        raise NotImplementedError()
+
+    def maximize_window(self, handle):
+        """ Maximizes the given window handle. """
+        raise NotImplementedError()
+
     def close_window(self, handle):
         """
         Closes the window with the given handle.

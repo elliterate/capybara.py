@@ -39,6 +39,29 @@ class Window(object):
     def __hash__(self):
         return hash(self.session) ^ hash(self.handle)
 
+    @property
+    def closed(self):
+        """ bool: Whether the window is closed. """
+        return not self.exists
+
+    @property
+    def current(self):
+        """ bool: Whether this window is the window in which commands are being executed. """
+        try:
+            return self.driver.current_window_handle == self.handle
+        except self.driver.no_such_window_error:
+            return False
+
+    @property
+    def exists(self):
+        """ bool: Whether the window is not closed. """
+        return self.handle in self.driver.window_handles
+
+    @property
+    def size(self):
+        """ List[int, int]: The window size. """
+        return self.driver.window_size(self.handle)
+
     def close(self):
         """
         Close window.
@@ -52,3 +75,27 @@ class Window(object):
         """
 
         self.driver.close_window(self.handle)
+
+    def maximize(self):
+        """
+        Maximize the window.
+
+        If this method was called for a window that is not current, then after calling this method
+        the current window should remain the same as it was before calling this method.
+        """
+
+        self.driver.maximize_window(self.handle)
+
+    def resize_to(self, width, height):
+        """
+        Resizes the window to the given dimensions.
+
+        If this method was called for a window that is not current, then after calling this method
+        the current window should remain the same as it was before calling this method.
+
+        Args:
+            width (int): The new window width in pixels.
+            height (int): The new window height in pixels.
+        """
+
+        self.driver.resize_window_to(self.handle, width, height)
