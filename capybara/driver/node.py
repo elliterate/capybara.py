@@ -48,6 +48,11 @@ class Node(object):
         raise NotImplementedError()
 
     @property
+    def path(self):
+        """ str: An XPath expression describing where on the page the node can be found. """
+        raise NotImplementedError()
+
+    @property
     def all_text(self):
         """ str: All of the text of the node. """
         raise NotImplementedError()

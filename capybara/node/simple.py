@@ -44,6 +44,11 @@ class Simple(FindersMixin, MatchersMixin, DocumentMatchersMixin, object):
         return self.native.tag
 
     @property
+    def path(self):
+        """ str: An XPath expression describing where on the page the element can be found. """
+        return self.native.getroottree().getpath(self.native)
+
+    @property
     def text(self):
         """ str: The text of the element. """
         return self.native.text

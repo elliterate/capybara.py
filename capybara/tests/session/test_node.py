@@ -169,6 +169,13 @@ class TestNodeEquals(NodeTestCase):
         assert session.find("//h1") != "Not a node"
 
 
+class TestNodePath(NodeTestCase):
+    def test_returns_xpath_which_points_to_itself(self, session):
+        session.visit("/path")
+        element = session.find("link", "Second Link")
+        assert session.find("xpath", element.path) == element
+
+
 class TestNodeDragTo(NodeTestCase):
     def test_drags_and_drops_an_object(self, session):
         session.visit("/with_js")

@@ -84,6 +84,9 @@ class TestString:
     def test_allows_finding_elements_and_extracting_the_tag_name_from_them(self, string):
         assert string.find("//h1").tag_name == "h1"
 
+    def test_allows_finding_elements_and_extracting_the_path(self, string):
+        assert string.find("//h1").path == "/html/body/div/div[1]/h1"
+
     def test_allows_finding_elements_and_extracting_the_value_from_them(self, string):
         assert string.find("//div/input").value == "bar"
         assert string.find("//select").value == "Capybara"

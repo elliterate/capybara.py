@@ -33,6 +33,27 @@ class Node(Base):
         return bool(val) and val != "false"
 
     @property
+    def path(self):
+        path = [self] + list(reversed(self._find_xpath("ancestor::*")))
+
+        result = []
+        while path:
+            node = path.pop(0)
+            parent = path[0] if path else None
+
+            if parent:
+                siblings = parent._find_xpath(node.tag_name)
+                if len(siblings) == 1:
+                    result.insert(0, node.tag_name)
+                else:
+                    index = siblings.index(node)
+                    result.insert(0, "{tag}[{i}]".format(tag=node.tag_name, i=index + 1))
+            else:
+                result.insert(0, node.tag_name)
+
+        return "/" + "/".join(result)
+
+    @property
     def all_text(self):
         text = self.driver.browser.execute_script("return arguments[0].textContent", self.native)
         return normalize_text(text)

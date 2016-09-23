@@ -27,8 +27,9 @@ class Element(Base):
         self.query = query
 
     def __repr__(self):
-        return "<capybara.node.element.Element tag=\"{tag}\">".format(
-            tag=self.tag_name)
+        return "<capybara.node.element.Element tag=\"{tag}\" path=\"{path}\">".format(
+            tag=self.tag_name,
+            path=self.path)
 
     @property
     def native(self):
@@ -120,6 +121,12 @@ class Element(Base):
     def multiple(self):
         """ bool: Whether or not the element supports multiple results. """
         return self.base.multiple
+
+    @property
+    @synchronize
+    def path(self):
+        """ str: An XPath expression describing where on the page the element can be found. """
+        return self.base.path
 
     @synchronize
     def __getitem__(self, name):
