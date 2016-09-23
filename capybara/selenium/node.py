@@ -99,5 +99,10 @@ class Node(Base):
         return not self.native.is_enabled()
 
     @property
+    def readonly(self):
+        val = self["readonly"]
+        return bool(val) and val != "false"
+
+    @property
     def _select_node(self):
         return self._find_xpath("./ancestor::select")[0]

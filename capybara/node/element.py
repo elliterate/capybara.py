@@ -111,6 +111,12 @@ class Element(Base):
 
     @property
     @synchronize
+    def readonly(self):
+        """ bool: Whether or not the element is readonly. """
+        return self.base.readonly
+
+    @property
+    @synchronize
     def multiple(self):
         """ bool: Whether or not the element supports multiple results. """
         return self.base.multiple

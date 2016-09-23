@@ -1,6 +1,6 @@
 import pytest
 
-from capybara.exceptions import ElementNotFound
+from capybara.exceptions import Ambiguous, ElementNotFound
 
 
 class FindFieldTestCase:
@@ -55,3 +55,16 @@ class TestFindFieldDisabled(FindFieldTestCase):
     def test_finds_enabled_fields_when_all(self, session):
         field = session.find_field("Dog", disabled="all")
         assert field.value == "dog"
+
+
+class TestFindFieldReadonly(FindFieldTestCase):
+    def test_finds_readonly_fields_when_true(self, session):
+        assert session.find_field("form[readonly_test]", readonly=True)["id"] == "readonly"
+
+    def test_does_not_find_readonly_fields_when_false(self, session):
+        assert session.find_field("form[readonly_test]", readonly=False)["id"] == "not_readonly"
+
+    def test_ignores_readonly_by_default(self, session):
+        with pytest.raises(Ambiguous) as excinfo:
+            session.find_field("form[readonly_test]")
+        assert "found 2 elements" in str(excinfo.value)

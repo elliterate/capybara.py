@@ -106,3 +106,8 @@ class Node(object):
     def disabled(self):
         """ bool: Whether this node is disabled. """
         raise NotImplementedError()
+
+    @property
+    def readonly(self):
+        """ bool: Whether the node is read-only. """
+        raise NotImplementedError()

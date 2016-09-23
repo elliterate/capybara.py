@@ -29,6 +29,10 @@ with add_filter_set("field") as fs:
     def disabled(node, value):
         return not node.disabled ^ value
 
+    @fs.filter("readonly")
+    def readonly(node, value):
+        return not node.readonly ^ value
+
     @fs.filter("unchecked")
     def unchecked(node, value):
         return node.checked ^ value
