@@ -143,6 +143,36 @@ class Element(Base):
         self.base.click()
 
     @synchronize
+    def double_click(self):
+        """ Double-click the element. """
+        self.base.double_click()
+
+    @synchronize
+    def drag_to(self, node):
+        """
+        Drag the element to the given other element. ::
+
+            source = page.find("#foo")
+            target = page.find("#bar")
+            source.drag_to(target)
+
+        Args:
+            node (Element): The element to drag to.
+        """
+
+        self.base.drag_to(node.base)
+
+    @synchronize
+    def hover(self):
+        """ Hover on the element. """
+        self.base.hover()
+
+    @synchronize
+    def right_click(self):
+        """ Right-click the element. """
+        self.base.right_click()
+
+    @synchronize
     def select_option(self):
         """ Select this node if it is an option element inside a select tag. """
         if self.disabled:

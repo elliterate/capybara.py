@@ -74,6 +74,32 @@ class Node(object):
         """ Clicks on this node. """
         raise NotImplementedError()
 
+    def double_click(self):
+        """ Double-click the node. """
+        raise NotImplementedError()
+
+    def drag_to(self, node):
+        """
+        Drag the element to the given other element. ::
+
+            source = page.find("#foo")
+            target = page.find("#bar")
+            source.drag_to(target)
+
+        Args:
+            node (Element): The element to drag to.
+        """
+
+        raise NotImplementedError()
+
+    def hover(self):
+        """ Hover on the node. """
+        raise NotImplementedError()
+
+    def right_click(self):
+        """ Right-click the node. """
+        raise NotImplementedError()
+
     def select_option(self):
         """ Selects this option node. """
         raise NotImplementedError()

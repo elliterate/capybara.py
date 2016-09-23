@@ -1,3 +1,5 @@
+from selenium.webdriver.common.action_chains import ActionChains
+
 from capybara.exceptions import ReadOnlyElementError, UnselectNotAllowed
 from capybara.driver.node import Node as Base
 from capybara.helpers import normalize_text
@@ -52,6 +54,18 @@ class Node(Base):
 
     def click(self):
         self.native.click()
+
+    def double_click(self):
+        ActionChains(self.driver.browser).double_click(self.native).perform()
+
+    def drag_to(self, element):
+        ActionChains(self.driver.browser).drag_and_drop(self.native, element.native).perform()
+
+    def hover(self):
+        ActionChains(self.driver.browser).move_to_element(self.native).perform()
+
+    def right_click(self):
+        ActionChains(self.driver.browser).context_click(self.native).perform()
 
     def select_option(self):
         if not self.selected:

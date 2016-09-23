@@ -169,6 +169,37 @@ class TestNodeEquals(NodeTestCase):
         assert session.find("//h1") != "Not a node"
 
 
+class TestNodeDragTo(NodeTestCase):
+    def test_drags_and_drops_an_object(self, session):
+        session.visit("/with_js")
+        element = session.find("//div[@id='drag']")
+        target = session.find("//div[@id='drop']")
+        element.drag_to(target)
+        assert session.find("//div[contains(., 'Dropped!')]")
+
+
+class TestNodeHover(NodeTestCase):
+    def test_allows_hovering_on_an_element(self, session):
+        session.visit("/with_hover")
+        assert not session.find("css", ".hidden_until_hover", visible=False).visible
+        session.find("css", ".wrapper").hover()
+        assert session.find("css", ".hidden_until_hover", visible=False).visible
+
+
+class TestNodeDoubleClick(NodeTestCase):
+    def test_double_clicks_an_element(self, session):
+        session.visit("/with_js")
+        session.find("css", "#click-test").double_click()
+        assert session.find("css", "#has-been-double-clicked")
+
+
+class TestNodeRightClick(NodeTestCase):
+    def test_right_clicks_an_element(self, session):
+        session.visit("/with_js")
+        session.find("css", "#click-test").right_click()
+        assert session.find("css", "#has-been-right-clicked")
+
+
 class TestNodeReloadWithoutAutomaticReload(NodeTestCase):
     @pytest.fixture(autouse=True)
     def setup_capybara(self):
