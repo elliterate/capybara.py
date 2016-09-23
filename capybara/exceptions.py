@@ -32,3 +32,7 @@ class ScopeError(CapybaraError):
 
 class WindowError(CapybaraError):
     pass
+
+
+class ReadOnlyElementError(CapybaraError):
+    pass

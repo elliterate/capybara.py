@@ -2,6 +2,7 @@ import pytest
 from time import sleep
 
 import capybara
+from capybara.exceptions import ReadOnlyElementError
 from capybara.tests.helpers import extract_results
 
 
@@ -81,6 +82,18 @@ class TestNodeSet(NodeTestCase):
         assert session.find_first("//input").value == "monkey"
         session.find_first("//input").set("gorilla")
         assert session.find_first("//input").value == "gorilla"
+
+    def test_raises_if_the_text_field_is_readonly(self, session):
+        assert session.find_first("//input[@readonly]").value == "should not change"
+        with pytest.raises(ReadOnlyElementError):
+            session.find_first("//input[@readonly]").set("changed")
+        assert session.find_first("//input[@readonly]").value == "should not change"
+
+    def test_raises_if_the_textarea_is_readonly(self, session):
+        assert session.find_first("//textarea[@readonly]").value == "textarea should not change"
+        with pytest.raises(ReadOnlyElementError):
+            session.find_first("//textarea[@readonly]").set("changed")
+        assert session.find_first("//textarea[@readonly]").value == "textarea should not change"
 
 
 class TestNodeTagName(NodeTestCase):

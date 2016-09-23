@@ -1,4 +1,4 @@
-from capybara.exceptions import UnselectNotAllowed
+from capybara.exceptions import ReadOnlyElementError, UnselectNotAllowed
 from capybara.driver.node import Node as Base
 from capybara.helpers import normalize_text
 
@@ -69,6 +69,9 @@ class Node(Base):
             if current ^ value:
                 self.click()
         elif tag_name == "textarea" or tag_name == "input":
+            if self.readonly:
+                raise ReadOnlyElementError()
+
             # Clear field by JavaScript assignment of the value property.
             self.driver.browser.execute_script("arguments[0].value = ''", self.native)
             self.native.send_keys(value)
