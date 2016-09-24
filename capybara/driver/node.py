@@ -109,6 +109,23 @@ class Node(object):
         """ Selects this option node. """
         raise NotImplementedError()
 
+    def send_keys(self, *args):
+        """
+        Send keystrokes to the node.
+
+        Examples::
+
+            from selenium.webdriver.common.keys import Keys
+
+            element.send_keys("foo")                  # => value: "foo"
+            element.send_keys("tet", Keys.LEFT, "s")  # => value: "test"
+
+        Args:
+            *args: Variable length list of keys to send.
+        """
+
+        raise NotImplementedError()
+
     def set(self, value):
         """
         Sets the value of this node.

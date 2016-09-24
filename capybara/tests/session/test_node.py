@@ -1,4 +1,5 @@
 import pytest
+from selenium.webdriver.common.keys import Keys
 from time import sleep
 
 import capybara
@@ -215,6 +216,19 @@ class TestNodeRightClick(NodeTestCase):
         session.visit("/with_js")
         session.find("css", "#click-test").right_click()
         assert session.find("css", "#has-been-right-clicked")
+
+
+class TestNodeSendKeys(NodeTestCase):
+    def test_sends_a_string_of_keys_to_an_element(self, session):
+        session.visit("/form")
+        session.find("css", "#address1_city").send_keys("Oceanside")
+        assert session.find("css", "#address1_city").value == "Oceanside"
+
+    def test_sends_special_characters(self, session):
+        session.visit("/form")
+        session.find("css", "#address1_city").send_keys(
+            "Ocean", Keys.SPACE, "sie", Keys.LEFT, "d")
+        assert session.find("css", "#address1_city").value == "Ocean side"
 
 
 class TestNodeReloadWithoutAutomaticReload(NodeTestCase):

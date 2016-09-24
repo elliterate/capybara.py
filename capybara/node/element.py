@@ -170,6 +170,24 @@ class Element(Base):
         self.base.drag_to(node.base)
 
     @synchronize
+    def send_keys(self, *args):
+        """
+        Send keystrokes to the element.
+
+        Examples::
+
+            from selenium.webdriver.common.keys import Keys
+
+            element.send_keys("foo")                  # => value: "foo"
+            element.send_keys("tet", Keys.LEFT, "s")  # => value: "test"
+
+        Args:
+            *args: Variable length list of keys to send.
+        """
+
+        self.base.send_keys(*args)
+
+    @synchronize
     def hover(self):
         """ Hover on the element. """
         self.base.hover()

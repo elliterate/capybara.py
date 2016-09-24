@@ -92,6 +92,9 @@ class Node(Base):
         if not self.selected:
             self.native.click()
 
+    def send_keys(self, *args):
+        self.native.send_keys(*args)
+
     def set(self, value):
         tag_name = self.tag_name
         type_attr = self["type"]
