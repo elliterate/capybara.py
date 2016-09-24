@@ -19,14 +19,20 @@ class TestReset:
         assert "This is a test" not in session.body
         assert session.has_no_selector(".//h1")
 
+    def test_is_synchronous(self, session):
+        session.visit("/with_slow_unload")
+        assert session.has_selector("css", "div")
+        session.reset()
+        assert session.has_no_selector("xpath", "/html/body/*", wait=False)
+
     def test_handles_modals_during_unload(self, session):
         session.visit("/with_unload_alert")
         assert session.has_selector("css", "div")
         session.reset()
-        assert session.has_no_selector("xpath", "/html/body/*")
+        assert session.has_no_selector("xpath", "/html/body/*", wait=False)
 
     def test_handles_already_open_modals(self, session):
         session.visit("/with_unload_alert")
         session.click_link("Go away")
         session.reset()
-        assert session.has_no_selector("xpath", "/html/body/*")
+        assert session.has_no_selector("xpath", "/html/body/*", wait=False)

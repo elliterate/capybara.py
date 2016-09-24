@@ -12,7 +12,7 @@ from time import sleep, time
 
 import capybara
 from capybara.driver.base import Base
-from capybara.exceptions import ModalNotFound
+from capybara.exceptions import ExpectationNotMet, ModalNotFound
 from capybara.selenium.node import Node
 from capybara.utils import cached_property
 
@@ -135,6 +135,13 @@ class Driver(Base):
                     if not navigated:
                         self.browser.get("about:blank")
                         navigated = True
+
+                    while True:
+                        if not len(self._find_xpath("/html/body/*")):
+                            break
+                        if time() - start_time >= 10:
+                            raise ExpectationNotMet("Timed out waiting for Selenium session reset")
+                        sleep(0.05)
 
                     break
                 except UnexpectedAlertPresentException:
