@@ -110,6 +110,15 @@ class Node(Base):
             # Clear field by JavaScript assignment of the value property.
             self.driver.browser.execute_script("arguments[0].value = ''", self.native)
             self.native.send_keys(value)
+        elif self["isContentEditable"]:
+            self.native.click()
+            script = """
+                var range = document.createRange();
+                range.selectNodeContents(arguments[0]);
+                window.getSelection().addRange(range);
+            """
+            self.driver.browser.execute_script(script, self.native)
+            self.native.send_keys(value)
 
     def unselect_option(self):
         if not self._select_node.multiple:

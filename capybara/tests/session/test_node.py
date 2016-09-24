@@ -95,6 +95,16 @@ class TestNodeSet(NodeTestCase):
             session.find_first("//textarea[@readonly]").set("changed")
         assert session.find_first("//textarea[@readonly]").value == "textarea should not change"
 
+    def test_allows_me_to_change_the_contents_of_a_contenteditable_element(self, session):
+        session.visit("/with_js")
+        session.find("css", "#existing_content_editable").set("WYSIWYG")
+        assert session.find("css", "#existing_content_editable").text == "WYSIWYG"
+
+    def test_allows_me_to_set_the_contents_of_a_contenteditable_element(self, session):
+        session.visit("/with_js")
+        session.find("css", "#blank_content_editable").set("WYSIWYG")
+        assert session.find("css", "#blank_content_editable").text == "WYSIWYG"
+
 
 class TestNodeTagName(NodeTestCase):
     def test_extracts_node_tag_name(self, session):
