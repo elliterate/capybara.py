@@ -133,6 +133,7 @@ class Driver(Base):
                     # Only trigger a navigation if we haven't done it already,
                     # otherwise it can trigger an endless series of unload modals.
                     if not navigated:
+                        self.browser.delete_all_cookies()
                         self.browser.get("about:blank")
                         navigated = True
 

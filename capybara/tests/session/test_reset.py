@@ -1,4 +1,13 @@
 class TestReset:
+    def test_removes_cookies(self, session):
+        session.visit("/set_cookie")
+        session.visit("/get_cookie")
+        assert session.has_text("test_cookie")
+
+        session.reset()
+        session.visit("/get_cookie")
+        assert "test_cookie" not in session.body
+
     def test_resets_current_url_host_and_path(self, session):
         session.visit("/foo")
         assert session.current_url

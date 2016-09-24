@@ -543,7 +543,7 @@ class Session(SessionMatchersMixin, object):
 
     def reset(self):
         """
-        Reset the session (i.e., navigate to a blank page).
+        Reset the session (i.e., remove cookies and navigate to a blank page).
 
         This method does not:
         * accept modal dialogs if they are present (the Selenium driver does, but others may not),

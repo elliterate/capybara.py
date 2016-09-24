@@ -33,6 +33,11 @@ class TestVisit:
         session.visit("http://{}".format(root_uri.netloc))
         assert session.has_text("Hello world!")
 
+    def test_sets_cookie_if_a_blank_path_is_specified(self, session):
+        session.visit("")
+        session.visit("/get_cookie")
+        assert session.has_text("root cookie")
+
 
 class TestVisitWithoutApp:
     def test_does_not_instantiate_a_server(self, session):
