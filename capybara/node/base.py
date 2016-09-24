@@ -2,7 +2,7 @@ from functools import wraps
 from time import sleep, time
 
 import capybara
-from capybara.exceptions import ElementNotFound
+from capybara.exceptions import ElementNotFound, FrozenInTime
 from capybara.node.actions import ActionsMixin
 from capybara.node.finders import FindersMixin
 from capybara.node.matchers import MatchersMixin
@@ -101,7 +101,8 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
         As long as any of these exceptions are thrown, the function is re-run, until a certain
         amount of time passes. The amount of time defaults to :data:`capybara.default_max_wait_time`
         and can be overridden through the ``wait`` argument. This time is compared with the system
-        time to see how much time has passed.
+        time to see how much time has passed. If the return value of ``time.time()`` is stubbed
+        out, Capybara will raise :exc:`FrozenInTime`.
 
         Args:
             func (Callable, optional): The function to decorate.
@@ -111,6 +112,9 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
 
         Returns:
             Callable: The decorated function, or a decorator function.
+
+        Raises:
+            FrozenInTime: If the return value of ``time.time()`` appears stuck.
         """
 
         def decorator(func):
@@ -141,6 +145,11 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
 
                                 sleep(0.05)
 
+                                if time() == start_time:
+                                    raise FrozenInTime(
+                                        "time appears to be frozen, Capybara does not work with "
+                                        "libraries which freeze time, consider using time "
+                                        "traveling instead")
                                 if capybara.automatic_reload:
                                     self.reload()
                     finally:

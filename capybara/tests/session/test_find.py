@@ -1,8 +1,14 @@
 import pytest
+import sys
+import time
+if sys.version_info >= (3, 3):
+    from unittest.mock import patch
+else:
+    from mock import patch
 from xpath import dsl as x
 
 import capybara
-from capybara.exceptions import Ambiguous, ElementNotFound
+from capybara.exceptions import Ambiguous, ElementNotFound, FrozenInTime
 from capybara.selector import add_selector, remove_selector
 
 
@@ -52,6 +58,15 @@ class TestFind(FindTestCase):
         session.visit("/with_js")
         session.click_link("Click me")
         assert "Has been clicked" in session.find("css", "a#has-been-clicked", wait=0.9).text
+
+    def test_raises_an_error_suggesting_that_capybara_is_stuck_in_time(self, session):
+        session.visit("/with_js")
+        now = time.time()
+
+        import capybara.node.base
+        with patch.object(capybara.node.base, "time", return_value=now):
+            with pytest.raises(FrozenInTime):
+                session.find("//isnotthere")
 
     def test_finds_the_first_element_with_using_the_given_css_selector_locator(self, session):
         assert session.find("css", "h1").text == "This is a test"

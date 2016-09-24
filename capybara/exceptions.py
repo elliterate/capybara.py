@@ -2,6 +2,10 @@ class CapybaraError(Exception):
     pass
 
 
+class FrozenInTime(CapybaraError):
+    pass
+
+
 class ElementNotFound(CapybaraError):
     pass
 
