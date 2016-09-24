@@ -63,6 +63,43 @@ class MatchersMixin(object):
         except ExpectationNotMet:
             return False
 
+    def matches_selector(self, *args, **kwargs):
+        """
+        Checks if the current node matches the given selector.
+
+        Args:
+            *args: Variable length argument list for :class:`SelectorQuery`.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it matches.
+        """
+
+        try:
+            self.assert_matches_selector(*args, **kwargs)
+            return True
+        except ExpectationNotMet:
+            return False
+
+    def not_match_selector(self, *args, **kwargs):
+        """
+        Checks if the current node does not match the given selector. Usage is identical to
+        :meth:`has_selector`.
+
+        Args:
+            *args: Variable length argument list for :class:`SelectorQuery`.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            bool: Whether it doesn't match.
+        """
+
+        try:
+            self.assert_not_match_selector(*args, **kwargs)
+            return True
+        except ExpectationNotMet:
+            return False
+
     def assert_selector(self, *args, **kwargs):
         """
         Asserts that a given selector is on the page or a descendant of the current node. ::
@@ -157,6 +194,132 @@ class MatchersMixin(object):
 
     refute_selector = assert_no_selector
     """ Alias for :meth:`assert_no_selector`. """
+
+    def assert_matches_selector(self, *args, **kwargs):
+        """
+        Asserts that the current node matches a given selector. ::
+
+            node.assert_matches_selector("p#foo")
+            node.assert_matches_selector("xpath", "//p[@id='foo']")
+
+        It also accepts all options that :meth:`find_all` accepts, such as ``text`` and
+        ``visible``. ::
+
+            node.assert_matches_selector("li", text="Horse", visible=True)
+
+        Args:
+            *args: Variable length argument list for :class:`SelectorQuery`.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            True
+
+        Raises:
+            ExpectationNotMet: If the selector does not match.
+        """
+
+        query = SelectorQuery(*args, **kwargs)
+
+        @self.synchronize(wait=query.wait)
+        def assert_matches_selector():
+            result = query.resolve_for(self.query_scope)
+
+            if self not in result:
+                raise ExpectationNotMet("Item does not match the provided selector")
+
+            return True
+
+        return assert_matches_selector()
+
+    def assert_not_match_selector(self, *args, **kwargs):
+        """
+        Asserts that the current node does not match a given selector. See
+        :meth:`assert_matches_selector`.
+
+        Args:
+            *args: Variable length argument list for :class:`SelectorQuery`.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Returns:
+            True
+
+        Raises:
+            ExpectationNotMet: If the selector matches.
+        """
+
+        query = SelectorQuery(*args, **kwargs)
+
+        @self.synchronize(wait=query.wait)
+        def assert_not_match_selector():
+            result = query.resolve_for(self.query_scope)
+
+            if self in result:
+                raise ExpectationNotMet("Item matched the provided selector")
+
+            return True
+
+        return assert_not_match_selector()
+
+    refute_matches_selector = assert_not_match_selector
+    """ Alias for :meth:`assert_not_match_selector`. """
+
+    def matches_xpath(self, xpath, **kwargs):
+        """
+        Checks if the current node matches the given XPath expression.
+
+        Args:
+            xpath (str | xpath.expression.Expression): The XPath expression to match against the
+                current node.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Return:
+            bool: Whether it matches.
+        """
+
+        return self.matches_selector("xpath", xpath, **kwargs)
+
+    def not_match_xpath(self, xpath, **kwargs):
+        """
+        Checks if the current node does not match the given XPath expression.
+
+        Args:
+            xpath (str | xpath.expression.Expression): The XPath expression to match against the
+                current node.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Return:
+            bool: Whether it doesn't match.
+        """
+
+        return self.not_match_selector("xpath", xpath, **kwargs)
+
+    def matches_css(self, css, **kwargs):
+        """
+        Checks if the current node matches the given CSS selector.
+
+        Args:
+            css (str): The CSS selector to match against the current node.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Return:
+            bool: Whether it matches.
+        """
+
+        return self.matches_selector("css", css, **kwargs)
+
+    def not_match_css(self, css, **kwargs):
+        """
+        Checks if the current node does not match the given CSS selector.
+
+        Args:
+            css (str): The CSS selector to match against the current node.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+
+        Return:
+            bool: Whether it doesn't match.
+        """
+
+        return self.not_match_selector("css", css, **kwargs)
 
     def has_xpath(self, query, **kwargs):
         """
