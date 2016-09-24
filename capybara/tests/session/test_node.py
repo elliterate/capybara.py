@@ -84,6 +84,14 @@ class TestNodeSet(NodeTestCase):
         session.find_first("//input").set("gorilla")
         assert session.find_first("//input").value == "gorilla"
 
+    def test_fills_the_field_even_if_the_caret_was_not_at_the_end(self, session):
+        session.execute_script(
+            "var el = document.getElementById('test_field');"
+            "el.focus();"
+            "el.setSelectionRange(0, 0);")
+        session.find_first("//input").set("")
+        assert session.find_first("//input").value == ""
+
     def test_raises_if_the_text_field_is_readonly(self, session):
         assert session.find_first("//input[@readonly]").value == "should not change"
         with pytest.raises(ReadOnlyElementError):
@@ -202,6 +210,12 @@ class TestNodeHover(NodeTestCase):
         assert not session.find("css", ".hidden_until_hover", visible=False).visible
         session.find("css", ".wrapper").hover()
         assert session.find("css", ".hidden_until_hover", visible=False).visible
+
+
+class TestNodeClick(NodeTestCase):
+    def test_does_not_follow_a_link_if_no_href(self, session):
+        session.find("css", "#link_placeholder").click()
+        assert session.current_url.endswith("/with_html")
 
 
 class TestNodeDoubleClick(NodeTestCase):
