@@ -100,6 +100,14 @@ class TestClickButton(ClickButtonTestCase):
         session.click_button("Click Title")
         assert extract_results(session)["form[first_name]"] == "John"
 
+    def test_submits_form_for_button_tag_with_descendant_image_alt(self, session):
+        session.click_button("A horse eating hay")
+        assert extract_results(session)["form[first_name]"] == "John"
+
+    def test_submits_form_for_button_tag_with_partial_descendant_image_alt(self, session):
+        session.click_button("se eating h")
+        assert extract_results(session)["form[first_name]"] == "John"
+
     def test_raises_an_error_for_locator_that_does_not_exist(self, session):
         with pytest.raises(ElementNotFound) as excinfo:
             session.click_button("does not exist")

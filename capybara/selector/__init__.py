@@ -69,7 +69,8 @@ with add_selector("button") as s:
             x.attr("id").equals(locator) |
             x.attr("value").is_(locator) |
             x.attr("title").is_(locator) |
-            x.string.n.is_(locator)]
+            x.string.n.is_(locator) |
+            x.descendant("img")[x.attr("alt").is_(locator)]]
         image_button_expr = image_button_expr[
             x.attr("alt").is_(locator)]
 
