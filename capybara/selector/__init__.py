@@ -21,19 +21,19 @@ with add_selector("id") as s:
         return x.descendant()[x.attr("id") == id]
 
 with add_filter_set("field") as fs:
-    @fs.filter("checked")
+    @fs.filter("checked", boolean=True)
     def checked(node, value):
         return not node.checked ^ value
 
-    @fs.filter("disabled", default=False, skip_if="all")
+    @fs.filter("disabled", boolean=True, default=False, skip_if="all")
     def disabled(node, value):
         return not node.disabled ^ value
 
-    @fs.filter("readonly")
+    @fs.filter("readonly", boolean=True)
     def readonly(node, value):
         return not node.readonly ^ value
 
-    @fs.filter("unchecked")
+    @fs.filter("unchecked", boolean=True)
     def unchecked(node, value):
         return node.checked ^ value
 
@@ -75,7 +75,7 @@ with add_selector("button") as s:
 
         return input_button_expr + button_expr + image_button_expr
 
-    @s.filter("disabled", default=False, skip_if="all")
+    @s.filter("disabled", boolean=True, default=False, skip_if="all")
     def disabled(node, value):
         return not node.disabled ^ value
 
@@ -206,7 +206,7 @@ with add_selector("link_or_button") as s:
     def xpath(locator):
         return selectors["link"](locator) + selectors["button"](locator)
 
-    @s.filter("disabled", default=False, skip_if="all")
+    @s.filter("disabled", boolean=True, default=False, skip_if="all")
     def disabled(node, value):
         return (
             node.tag_name == "a" or
@@ -248,7 +248,7 @@ with add_selector("select") as s:
 
     s.filter_set("field")
 
-    @s.filter("multiple")
+    @s.filter("multiple", boolean=True)
     def multiple(node, value):
         return not node.multiple ^ value
 

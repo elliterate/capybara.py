@@ -1,3 +1,6 @@
+from warnings import warn
+
+
 class Filter(object):
     """
     A rule to apply to identify desired nodes.
@@ -6,16 +9,19 @@ class Filter(object):
         name (str): The name of this filter.
         func (Callable[[Element, Any], bool]): A function that determines whether a given node
             matches a desired value.
+        boolean (bool, optional): Whether the filter evaluates boolean values. Defaults to False.
         default (object, optional): A default desired value, if any. Defaults to None.
         skip_if (object, optional): A value which, if provided, signifies that this rule
             should be skipped.
+        valid_values (List[Any], optional): The values the filter supports.
     """
 
-    def __init__(self, name, func, default=None, skip_if=None):
+    def __init__(self, name, func, boolean=None, default=None, skip_if=None, valid_values=None):
         self.name = name
         self.func = func
         self.default = default
         self.skip_if = skip_if
+        self.valid_values = [True, False] if boolean else valid_values
 
     @property
     def has_default(self):
@@ -42,6 +48,18 @@ class Filter(object):
         if self.skip(value):
             return True
 
+        if not self._valid_value(value):
+            msg = "Invalid value {value} passed to filter {name} - ".format(
+                value=repr(value),
+                name=self.name)
+
+            if self.default is not None:
+                warn(msg + "defaulting to {}".format(self.default))
+                value = self.default
+            else:
+                warn(msg + "skipping")
+                return True
+
         return self.func(node, value)
 
     def skip(self, value):
@@ -56,3 +74,13 @@ class Filter(object):
         """
 
         return self.has_skip_if and value == self.skip_if
+
+    def _valid_value(self, value):
+        """ bool: Whether the given value is valid. """
+
+        if not self.valid_values:
+            return True
+
+        valid_values = (self.valid_values if isinstance(self.valid_values, list)
+                        else list(self.valid_values))
+        return value in valid_values

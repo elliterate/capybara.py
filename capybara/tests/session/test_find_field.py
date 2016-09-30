@@ -19,6 +19,12 @@ class TestFindField(FindFieldTestCase):
         with pytest.raises(ElementNotFound):
             session.find_field("Does not exist")
 
+    def test_warns_if_filter_option_is_invalid(self, session):
+        with pytest.warns(None) as record:
+            session.find_field("Dog", disabled=None)
+        assert len(record) == 1
+        assert "Invalid value None passed to filter disabled - defaulting to False" in record[0].message.args[0]
+
     def test_raises_an_error_if_the_field_is_disabled(self, session):
         with pytest.raises(ElementNotFound):
             session.find_field("Disabled Checkbox")
