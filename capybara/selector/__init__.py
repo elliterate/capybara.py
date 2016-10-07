@@ -1,5 +1,6 @@
 from xpath import dsl as x
 
+import capybara
 from capybara.helpers import desc
 from capybara.selector.filter_set import add_filter_set, remove_filter_set, filter_sets
 from capybara.selector.selector import add_selector, remove_selector, selectors
@@ -61,18 +62,22 @@ with add_selector("button") as s:
         button_expr = x.descendant("button")
         image_button_expr = x.descendant("input")[x.attr("type").equals("image")]
 
-        input_button_expr = input_button_expr[
+        attr_matchers = (
             x.attr("id").equals(locator) |
             x.attr("value").is_(locator) |
-            x.attr("title").is_(locator)]
+            x.attr("title").is_(locator))
+        image_attr_matchers = x.attr("alt").is_(locator)
+
+        if capybara.enable_aria_label:
+            attr_matchers |= x.attr("aria-label").is_(locator)
+            image_attr_matchers |= x.attr("aria-label").is_(locator)
+
+        input_button_expr = input_button_expr[attr_matchers]
         button_expr = button_expr[
-            x.attr("id").equals(locator) |
-            x.attr("value").is_(locator) |
-            x.attr("title").is_(locator) |
+            attr_matchers |
             x.string.n.is_(locator) |
             x.descendant("img")[x.attr("alt").is_(locator)]]
-        image_button_expr = image_button_expr[
-            x.attr("alt").is_(locator)]
+        image_button_expr = image_button_expr[image_attr_matchers]
 
         return input_button_expr + button_expr + image_button_expr
 
@@ -176,11 +181,19 @@ with add_selector("link") as s:
     @s.xpath
     def xpath(locator):
         expr = x.descendant("a")[x.attr("href")]
-        expr = expr[
+
+        attr_matchers = (
             x.attr("id").equals(locator) |
             x.attr("title").is_(locator) |
-            x.string.n.is_(locator) |
+            x.string.n.is_(locator))
+
+        if capybara.enable_aria_label:
+            attr_matchers |= x.attr("aria-label").is_(locator)
+
+        expr = expr[
+            attr_matchers |
             x.descendant("img")[x.attr("alt").is_(locator)]]
+
         return expr
 
     @s.filter("href")
@@ -312,11 +325,16 @@ with add_selector("table") as s:
 
 
 def _locate_field(field_expr, locator):
-    expr = field_expr[
+    attr_matchers = (
         x.attr("id").equals(locator) |
         x.attr("name").equals(locator) |
         x.attr("placeholder").equals(locator) |
-        x.attr("id").equals(x.anywhere("label")[x.string.n.is_(locator)].attr("for"))]
+        x.attr("id").equals(x.anywhere("label")[x.string.n.is_(locator)].attr("for")))
+
+    if capybara.enable_aria_label:
+        attr_matchers |= x.attr("aria-label").is_(locator)
+
+    expr = field_expr[attr_matchers]
     expr += x.descendant("label")[x.string.n.is_(locator)].descendant(field_expr)
 
     return expr

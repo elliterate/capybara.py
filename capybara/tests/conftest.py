@@ -17,6 +17,7 @@ def setup_capybara():
     original_automatic_reload = capybara.automatic_reload
     original_default_max_wait_time = capybara.default_max_wait_time
     original_default_selector = capybara.default_selector
+    original_enable_aria_label = capybara.enable_aria_label
     original_exact = capybara.exact
     original_ignore_hidden_elements = capybara.ignore_hidden_elements
     original_match = capybara.match
@@ -34,6 +35,7 @@ def setup_capybara():
         capybara.automatic_reload = original_automatic_reload
         capybara.default_max_wait_time = original_default_max_wait_time
         capybara.default_selector = original_default_selector
+        capybara.enable_aria_label = original_enable_aria_label
         capybara.exact = original_exact
         capybara.ignore_hidden_elements = original_ignore_hidden_elements
         capybara.match = original_match

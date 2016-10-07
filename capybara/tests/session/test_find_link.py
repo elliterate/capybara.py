@@ -1,6 +1,7 @@
 import pytest
 import re
 
+import capybara
 from capybara.exceptions import ElementNotFound
 
 
@@ -23,3 +24,12 @@ class TestFindLink:
     def test_raises_an_error_for_partial_match_when_exact_is_true(self, session):
         with pytest.raises(ElementNotFound):
             session.find_link("abo", exact=True)
+
+    def test_finds_by_aria_label_attribute_when_enable_aria_label_is_true(self, session):
+        capybara.enable_aria_label = True
+        assert session.find_link("Go to simple")["href"].endswith("/with_simple_html")
+
+    def test_does_not_find_by_aria_label_attribute_when_enable_aria_label_is_false(self, session):
+        capybara.enable_aria_label = False
+        with pytest.raises(ElementNotFound):
+            session.find_link("Go to simple")

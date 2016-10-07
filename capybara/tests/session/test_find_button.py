@@ -1,5 +1,6 @@
 import pytest
 
+import capybara
 from capybara.exceptions import ElementNotFound
 
 
@@ -21,6 +22,15 @@ class TestFindButton(FindButtonTestCase):
     def test_raises_an_error_if_the_button_is_disabled(self, session):
         with pytest.raises(ElementNotFound):
             session.find_button("Disabled button")
+
+    def test_finds_by_aria_label_attribute_when_enable_aria_label_is_true(self, session):
+        capybara.enable_aria_label = True
+        assert session.find_button("Mediocre Button")["id"] == "mediocre"
+
+    def test_does_not_find_by_aria_label_attribute_when_enable_aria_label_is_false(self, session):
+        capybara.enable_aria_label = False
+        with pytest.raises(ElementNotFound):
+            session.find_button("Mediocre Button")
 
 
 class TestFindButtonDisabled(FindButtonTestCase):

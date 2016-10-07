@@ -26,6 +26,9 @@ automatic_label_click = False
 automatic_reload = True
 """ bool: Whether to automatically reload elements as Capybara is waiting. """
 
+enable_aria_label = False
+""" bool: Whether fields, links, and buttons will match against aria-label attributes. """
+
 exact = False
 """ bool: Whether to match the exact label name/contents. """
 

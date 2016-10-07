@@ -1,5 +1,6 @@
 import pytest
 
+import capybara
 from capybara.exceptions import Ambiguous, ElementNotFound
 
 
@@ -35,6 +36,15 @@ class TestFindField(FindFieldTestCase):
     def test_does_not_find_an_approximately_matching_field_when_exact_is_true(self, session):
         with pytest.raises(ElementNotFound):
             session.find_field("Explanation", exact=True)
+
+    def test_finds_by_aria_label_attribute_when_enable_aria_label_is_true(self, session):
+        capybara.enable_aria_label = True
+        assert session.find_field("Unlabelled Input")["name"] == "form[which_form]"
+
+    def test_does_not_find_by_aria_label_attribute_when_enable_aria_label_is_false(self, session):
+        capybara.enable_aria_label = False
+        with pytest.raises(ElementNotFound):
+            session.find_field("Unlabelled Input")
 
 
 class TestFindFieldDisabled(FindFieldTestCase):
