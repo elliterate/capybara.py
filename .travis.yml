@@ -8,6 +8,7 @@ addons:
     packages:
       - awesome
 before_script:
+  - pip uninstall -y setuptools
   - pip uninstall -y pytest
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
