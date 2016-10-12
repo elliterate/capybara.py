@@ -41,7 +41,7 @@ def get_version():
 
 
 setup(
-    name="capybara",
+    name="capybara-py",
     version=get_version(),
     description="Acceptance test framework for web applications",
     long_description=read("README.rst"),
