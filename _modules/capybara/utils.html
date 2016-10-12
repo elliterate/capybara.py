@@ -1,0 +1,298 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>capybara.utils &#8212; Capybara 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="Capybara 0.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="capybara" href="../capybara.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for capybara.utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+<span class="kn">import</span> <span class="nn">signal</span>
+<span class="kn">from</span> <span class="nn">socket</span> <span class="k">import</span> <span class="n">socket</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+
+
+<span class="n">_missing</span> <span class="o">=</span> <span class="nb">object</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="n">_bytes</span> <span class="o">=</span> <span class="nb">bytes</span>
+    <span class="n">_bytes_decode_attr_name</span> <span class="o">=</span> <span class="s2">&quot;decode&quot;</span>
+    <span class="n">_string_encode_attr_name</span> <span class="o">=</span> <span class="s2">&quot;encode&quot;</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">_bytes</span> <span class="o">=</span> <span class="n">unicode</span>
+    <span class="n">_bytes_decode_attr_name</span> <span class="o">=</span> <span class="s2">&quot;encode&quot;</span>
+    <span class="n">_string_encode_attr_name</span> <span class="o">=</span> <span class="s2">&quot;decode&quot;</span>
+
+
+<div class="viewcode-block" id="cached_property"><a class="viewcode-back" href="../../capybara.html#capybara.utils.cached_property">[docs]</a><span class="k">class</span> <span class="nc">cached_property</span><span class="p">(</span><span class="nb">property</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Decorates an instance method, turning it into a property whose value is cached. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__name__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__name__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__module__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__module__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__doc__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__doc__</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+
+    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">__dict__</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">_missing</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="n">_missing</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">return</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="decode_bytes"><a class="viewcode-back" href="../../capybara.html#capybara.utils.decode_bytes">[docs]</a><span class="k">def</span> <span class="nf">decode_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; str: Decodes the given byte sequence. &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_bytes_decode_attr_name</span><span class="p">)(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="encode_string"><a class="viewcode-back" href="../../capybara.html#capybara.utils.encode_string">[docs]</a><span class="k">def</span> <span class="nf">encode_string</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; bytes: Encodes the given string. &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_string_encode_attr_name</span><span class="p">)(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span></div>
+
+
+<div class="viewcode-block" id="find_available_port"><a class="viewcode-back" href="../../capybara.html#capybara.utils.find_available_port">[docs]</a><span class="k">def</span> <span class="nf">find_available_port</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; int: A random available port. &quot;&quot;&quot;</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="p">()</span>
+    <span class="n">s</span><span class="o">.</span><span class="n">bind</span><span class="p">((</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">s</span><span class="o">.</span><span class="n">getsockname</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="inner_content"><a class="viewcode-back" href="../../capybara.html#capybara.utils.inner_content">[docs]</a><span class="k">def</span> <span class="nf">inner_content</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the inner content of a given XML node, including tags.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        node (lxml.etree.Element): The node whose inner content is desired.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The inner content of the node.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">lxml</span> <span class="k">import</span> <span class="n">etree</span>
+
+    <span class="c1"># Include text content at the start of the node.</span>
+    <span class="n">parts</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">getchildren</span><span class="p">():</span>
+        <span class="c1"># Include the child serialized to raw XML.</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">etree</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">))</span>
+
+        <span class="c1"># Include any text following the child.</span>
+        <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">child</span><span class="o">.</span><span class="n">tail</span><span class="p">)</span>
+
+    <span class="c1"># Discard any non-existent text parts and return.</span>
+    <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">parts</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="isbytes"><a class="viewcode-back" href="../../capybara.html#capybara.utils.isbytes">[docs]</a><span class="k">def</span> <span class="nf">isbytes</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; bool: Whether the given value is a sequence of bytes. &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_bytes</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="isregex"><a class="viewcode-back" href="../../capybara.html#capybara.utils.isregex">[docs]</a><span class="k">def</span> <span class="nf">isregex</span><span class="p">(</span><span class="n">possible_regex</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns whether the given object is (probably) a regular expression object.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        possible_regex (object): An object which may or may not be a regular expression.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Whether the given object is (probably) a regular expression object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">possible_regex</span><span class="p">,</span> <span class="s2">&quot;search&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="n">possible_regex</span><span class="o">.</span><span class="n">search</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="setter_decorator"><a class="viewcode-back" href="../../capybara.html#capybara.utils.setter_decorator">[docs]</a><span class="k">def</span> <span class="nf">setter_decorator</span><span class="p">(</span><span class="n">fset</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Define a write-only property that, in addition to the given setter function, also</span>
+<span class="sd">    provides a setter decorator defined as the property&#39;s getter function.</span>
+
+<span class="sd">    This allows one to set the property either through traditional assignment, as a</span>
+<span class="sd">    method argument, or through decoration::</span>
+
+<span class="sd">        class Widget(object):</span>
+<span class="sd">            @setter_decorator</span>
+<span class="sd">            def handler(self, value):</span>
+<span class="sd">                self._handler = value</span>
+
+<span class="sd">        widget = Widget()</span>
+
+<span class="sd">        # Method 1: Traditional assignment</span>
+<span class="sd">        widget.handler = lambda input: process(input)</span>
+
+<span class="sd">        # Method 2: Assignment via method argument</span>
+<span class="sd">        widget.handler(lambda input: process(input))</span>
+
+<span class="sd">        # Method 3: Assignment via decoration</span>
+<span class="sd">        @widget.handler</span>
+<span class="sd">        def handler(input):</span>
+<span class="sd">            return process(input)</span>
+
+<span class="sd">        # Method 3b: Assignment via decoration with extraneous parens</span>
+<span class="sd">        @widget.handler()</span>
+<span class="sd">        def handler(input):</span>
+<span class="sd">            return process(input)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">fget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">fset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">outer</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">value</span><span class="p">:</span>
+                <span class="c1"># We are being called with the desired value, either directly or</span>
+                <span class="c1"># as a decorator.</span>
+                <span class="n">inner</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Assume we are being called as a decorator with extraneous parens,</span>
+                <span class="c1"># so return the setter as the actual decorator.</span>
+                <span class="k">return</span> <span class="n">inner</span>
+
+        <span class="k">return</span> <span class="n">outer</span>
+
+    <span class="n">fdoc</span> <span class="o">=</span> <span class="n">fset</span><span class="o">.</span><span class="n">__doc__</span>
+
+    <span class="k">return</span> <span class="nb">property</span><span class="p">(</span><span class="n">fget</span><span class="p">,</span> <span class="n">fset</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fdoc</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="TimeoutError"><a class="viewcode-back" href="../../capybara.html#capybara.utils.TimeoutError">[docs]</a><span class="k">class</span> <span class="nc">TimeoutError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="timeout"><a class="viewcode-back" href="../../capybara.html#capybara.utils.timeout">[docs]</a><span class="k">def</span> <span class="nf">timeout</span><span class="p">(</span><span class="n">seconds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Raises an exception if the wrapped code fails to return within the given number of seconds.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        seconds (int | float): The number of seconds to wait before timing out.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        TimeoutError: The wrapped code failed to return within the given timeout.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">handler</span><span class="p">(</span><span class="n">signum</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">()</span>
+
+    <span class="n">old_seconds</span><span class="p">,</span> <span class="n">start_time</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="n">old_handler</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="n">handler</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+        <span class="n">old_seconds</span> <span class="o">=</span> <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="n">seconds</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">old_seconds</span> <span class="o">&lt;</span> <span class="n">seconds</span><span class="p">:</span>
+            <span class="c1"># Someone else cares about a shorter timeout, so restore it.</span>
+            <span class="n">handler</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="c1"># Give ourselves a moment to restore before re-activating the alarm.</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="c1"># Restore the original handler.</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="n">old_handler</span><span class="p">)</span>
+            <span class="n">old_handler</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="c1"># Restore the original alarm.</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="n">old_seconds</span><span class="p">)</span>
+            <span class="n">old_seconds</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">yield</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">handler</span><span class="p">:</span>
+                <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="c1"># If another handler was registered, restore it.</span>
+        <span class="k">if</span> <span class="n">old_handler</span><span class="p">:</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGALRM</span><span class="p">,</span> <span class="n">old_handler</span><span class="p">)</span>
+
+        <span class="c1"># If another alarm was already scheduled, restore it.</span>
+        <span class="k">if</span> <span class="n">old_seconds</span><span class="p">:</span>
+            <span class="n">elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span>
+            <span class="n">signal</span><span class="o">.</span><span class="n">alarm</span><span class="p">(</span><span class="n">old_seconds</span> <span class="o">-</span> <span class="n">elapsed</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  <li><a href="../capybara.html">capybara</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Ian Lesperance.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

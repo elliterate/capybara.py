@@ -1,0 +1,326 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>capybara.queries.selector_query &#8212; Capybara 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="Capybara 0.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="capybara" href="../../capybara.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for capybara.queries.selector_query</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">xpath.expression</span> <span class="k">import</span> <span class="n">ExpressionType</span>
+<span class="kn">from</span> <span class="nn">xpath.renderer</span> <span class="k">import</span> <span class="n">to_xpath</span>
+
+<span class="kn">import</span> <span class="nn">capybara</span>
+<span class="kn">from</span> <span class="nn">capybara.helpers</span> <span class="k">import</span> <span class="n">desc</span><span class="p">,</span> <span class="n">normalize_text</span><span class="p">,</span> <span class="n">toregex</span>
+<span class="kn">from</span> <span class="nn">capybara.result</span> <span class="k">import</span> <span class="n">Result</span>
+<span class="kn">from</span> <span class="nn">capybara.selector</span> <span class="k">import</span> <span class="n">selectors</span>
+
+
+<span class="n">VALID_MATCH</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;first&quot;</span><span class="p">,</span> <span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="s2">&quot;prefer_exact&quot;</span><span class="p">,</span> <span class="s2">&quot;smart&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="SelectorQuery"><a class="viewcode-back" href="../../../capybara.queries.html#capybara.queries.selector_query.SelectorQuery">[docs]</a><span class="k">class</span> <span class="nc">SelectorQuery</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Queries for elements using a selector.</span>
+
+<span class="sd">    If no locator is provided and the given selector is not a valid selector, the first</span>
+<span class="sd">    argument is assumed to be the locator and the default selector will be used.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        selector (str): The name of the selector to use.</span>
+<span class="sd">        locator (str): An identifying string to use to locate desired elements.</span>
+<span class="sd">        between (Iterable[int], optional): A range of acceptable counts.</span>
+<span class="sd">        count (int, optional): The number of times the selector should match. Defaults to any number</span>
+<span class="sd">            of times greater than zero.</span>
+<span class="sd">        exact (bool, optional): Whether to exactly match the locator string. Defaults to</span>
+<span class="sd">            :data:`capybara.exact`.</span>
+<span class="sd">        match (str, optional): The matching strategy to use. Defaults to :data:`capybara.match`.</span>
+<span class="sd">        maximum (int, optional): The maximum number of times the selector should match. Defaults to</span>
+<span class="sd">            infinite.</span>
+<span class="sd">        minimum (int, optional): The minimum number of times the selector should match. Defaults to</span>
+<span class="sd">            1.</span>
+<span class="sd">        text (str | RegexObject, optional): Text that should be contained in matched elements.</span>
+<span class="sd">        visible (bool | str, optional): The desired element visibility. Defaults to</span>
+<span class="sd">            :data:`capybara.ignore_hidden_elements`.</span>
+<span class="sd">        wait (bool | int | float, optional): Whether and how long to wait for synchronization.</span>
+<span class="sd">            Defaults to :data:`capybara.default_max_wait_time`.</span>
+<span class="sd">        **filter_options: Arbitrary keyword arguments for the selector&#39;s filters.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selector</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">between</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">maximum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">minimum</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">filter_options</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">locator</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">selector</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">selectors</span><span class="p">:</span>
+            <span class="n">locator</span> <span class="o">=</span> <span class="n">selector</span>
+            <span class="n">selector</span> <span class="o">=</span> <span class="n">capybara</span><span class="o">.</span><span class="n">default_selector</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">selector</span> <span class="o">=</span> <span class="n">selectors</span><span class="p">[</span><span class="n">selector</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">expression</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="p">(</span><span class="n">locator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locator</span> <span class="o">=</span> <span class="n">locator</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;between&quot;</span><span class="p">:</span> <span class="n">between</span><span class="p">,</span>
+            <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="n">count</span><span class="p">,</span>
+            <span class="s2">&quot;exact&quot;</span><span class="p">:</span> <span class="n">exact</span><span class="p">,</span>
+            <span class="s2">&quot;match&quot;</span><span class="p">:</span> <span class="n">match</span><span class="p">,</span>
+            <span class="s2">&quot;maximum&quot;</span><span class="p">:</span> <span class="n">maximum</span><span class="p">,</span>
+            <span class="s2">&quot;minimum&quot;</span><span class="p">:</span> <span class="n">minimum</span><span class="p">,</span>
+            <span class="s2">&quot;text&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">,</span>
+            <span class="s2">&quot;visible&quot;</span><span class="p">:</span> <span class="n">visible</span><span class="p">,</span>
+            <span class="s2">&quot;wait&quot;</span><span class="p">:</span> <span class="n">wait</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter_options</span> <span class="o">=</span> <span class="n">filter_options</span>
+
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">match</span> <span class="ow">in</span> <span class="n">VALID_MATCH</span><span class="p">,</span> \
+            <span class="s2">&quot;invalid option </span><span class="si">{match}</span><span class="s2"> for match, should be one of </span><span class="si">{valid_values}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">match</span><span class="o">=</span><span class="n">desc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">match</span><span class="p">),</span>
+                <span class="n">valid_values</span><span class="o">=</span><span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="n">VALID_MATCH</span><span class="p">)))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; str: The name of selector. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">label</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; str: A short description of the selector. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">label</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">kwargs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Dict[str, Any]: The keyword arguments with which this query was initialized. &quot;&quot;&quot;</span>
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filter_options</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">kwargs</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; str: A long description of this query. &quot;&quot;&quot;</span>
+
+        <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">locator</span><span class="p">:</span>
+            <span class="n">description</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">locator</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">description</span> <span class="o">+=</span> <span class="s2">&quot; with text </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">desc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]))</span>
+
+        <span class="n">description</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">description</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filter_options</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">description</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">exact</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; bool: Whether to exactly match the locator string. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;exact&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;exact&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">capybara</span><span class="o">.</span><span class="n">exact</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; str: The matching strategy to use. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;match&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;match&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">capybara</span><span class="o">.</span><span class="n">match</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">visible</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; str: The desired element visibility. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;visible&quot;</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;all&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">capybara</span><span class="o">.</span><span class="n">ignore_hidden_elements</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;visible&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="s2">&quot;all&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; int | float: How long to wait for synchronization. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;wait&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;wait&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">capybara</span><span class="o">.</span><span class="n">default_max_wait_time</span>
+
+<div class="viewcode-block" id="SelectorQuery.css"><a class="viewcode-back" href="../../../capybara.queries.html#capybara.queries.selector_query.SelectorQuery.css">[docs]</a>    <span class="k">def</span> <span class="nf">css</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; str: The CSS query for this selector. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">expression</span></div>
+
+<div class="viewcode-block" id="SelectorQuery.xpath"><a class="viewcode-back" href="../../../capybara.queries.html#capybara.queries.selector_query.SelectorQuery.xpath">[docs]</a>    <span class="k">def</span> <span class="nf">xpath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the XPath query for this selector.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            exact (bool, optional): Whether to exactly match text.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The XPath query for this selector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">exact</span> <span class="o">=</span> <span class="n">exact</span> <span class="k">if</span> <span class="n">exact</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">exact</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expression</span><span class="p">,</span> <span class="n">ExpressionType</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">to_xpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expression</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="n">exact</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expression</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SelectorQuery.resolve_for"><a class="viewcode-back" href="../../../capybara.queries.html#capybara.queries.selector_query.SelectorQuery.resolve_for">[docs]</a>    <span class="k">def</span> <span class="nf">resolve_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Resolves this query relative to the given node.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            node (node.Base): The node relative to which this query should be resolved.</span>
+<span class="sd">            exact (bool, optional): Whether to exactly match text.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[Element]: A list of elements matched by this query.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="kn">from</span> <span class="nn">capybara.driver.node</span> <span class="k">import</span> <span class="n">Node</span>
+        <span class="kn">from</span> <span class="nn">capybara.node.element</span> <span class="k">import</span> <span class="n">Element</span>
+        <span class="kn">from</span> <span class="nn">capybara.node.simple</span> <span class="k">import</span> <span class="n">Simple</span>
+
+        <span class="nd">@node</span><span class="o">.</span><span class="n">synchronize</span>
+        <span class="k">def</span> <span class="nf">resolve</span><span class="p">():</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">&quot;css&quot;</span><span class="p">:</span>
+                <span class="n">children</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">_find_css</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">css</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">children</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">_find_xpath</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">exact</span><span class="p">))</span>
+
+            <span class="k">def</span> <span class="nf">wrap</span><span class="p">(</span><span class="n">child</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">Node</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="n">Element</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">session</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">Simple</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+
+            <span class="n">children</span> <span class="o">=</span> <span class="p">[</span><span class="n">wrap</span><span class="p">(</span><span class="n">child</span><span class="p">)</span> <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">Result</span><span class="p">(</span><span class="n">children</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">resolve</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SelectorQuery.matches_filters"><a class="viewcode-back" href="../../../capybara.queries.html#capybara.queries.selector_query.SelectorQuery.matches_filters">[docs]</a>    <span class="k">def</span> <span class="nf">matches_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns whether the given node matches all filters.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            node (Element): The node to evaluate.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Whether the given node matches.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">visible</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">visible</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]:</span>
+            <span class="n">regex</span> <span class="o">=</span> <span class="n">toregex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">])</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">normalize_text</span><span class="p">(</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">all_text</span> <span class="k">if</span> <span class="n">visible</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span> <span class="k">else</span> <span class="n">node</span><span class="o">.</span><span class="n">visible_text</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">regex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">visible</span> <span class="o">==</span> <span class="s2">&quot;visible&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="o">.</span><span class="n">visible</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">elif</span> <span class="n">visible</span> <span class="o">==</span> <span class="s2">&quot;hidden&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">visible</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">query_filter</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_query_filters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_options</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">query_filter</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter_options</span><span class="p">[</span><span class="n">name</span><span class="p">]):</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">elif</span> <span class="n">query_filter</span><span class="o">.</span><span class="n">has_default</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">query_filter</span><span class="o">.</span><span class="n">matches</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">query_filter</span><span class="o">.</span><span class="n">default</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_query_filters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">custom_filters</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../capybara.html">capybara</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Ian Lesperance.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

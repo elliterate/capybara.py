@@ -1,0 +1,315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>capybara.node.actions &#8212; Capybara 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="Capybara 0.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="capybara" href="../../capybara.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for capybara.node.actions</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os.path</span>
+
+<span class="kn">import</span> <span class="nn">capybara</span>
+<span class="kn">from</span> <span class="nn">capybara.exceptions</span> <span class="k">import</span> <span class="n">ElementNotFound</span><span class="p">,</span> <span class="n">FileNotFound</span>
+
+
+<div class="viewcode-block" id="ActionsMixin"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin">[docs]</a><span class="k">class</span> <span class="nc">ActionsMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If the driver is capable of executing JavaScript, actions will wait for a set amount of time and</span>
+<span class="sd">    continuously retry finding the element until either the element is found or the time expires.</span>
+<span class="sd">    The length of time :meth:`find` will wait is controlled through</span>
+<span class="sd">    :data:`capybara.default_max_wait_time`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ActionsMixin.attach_file"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.attach_file">[docs]</a>    <span class="k">def</span> <span class="nf">attach_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find a file field on the page and attach a file given its path. The file field can be found</span>
+<span class="sd">        via its name, id, or label text. ::</span>
+
+<span class="sd">            page.attach_file(locator, &quot;/path/to/file.png&quot;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): Which field to attach the file to.</span>
+<span class="sd">            path (str): The path of the file that will be attached.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            FileNotFound: No file exists at the given path.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="n">FileNotFound</span><span class="p">(</span><span class="s2">&quot;cannot attach file, </span><span class="si">{0}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;file_field&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ActionsMixin.check"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.check">[docs]</a>    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="n">allow_label_click</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find a check box and mark it as checked. The check box can be found via name, id, or label</span>
+<span class="sd">        text. ::</span>
+
+<span class="sd">            page.check(&quot;German&quot;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): Which check box to check.</span>
+<span class="sd">            allow_label_click (bool, optional): Attempt to click the label to toggle state if</span>
+<span class="sd">                element is non-visible. Defaults to :data:`capybara.automatic_label_click`.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">allow_label_click</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">allow_label_click</span> <span class="o">=</span> <span class="n">capybara</span><span class="o">.</span><span class="n">automatic_label_click</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;checkbox&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ElementNotFound</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_label_click</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hidden&quot;</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;wait&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">checkbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;checkbox&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">checkbox</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">checkbox</span><span class="o">.</span><span class="n">checked</span><span class="p">:</span>
+                    <span class="n">label</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span></div>
+
+<div class="viewcode-block" id="ActionsMixin.choose"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.choose">[docs]</a>    <span class="k">def</span> <span class="nf">choose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="n">allow_label_click</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find a radio button and mark it as checked. The radio button can be found via name, id, or</span>
+<span class="sd">        label text. ::</span>
+
+<span class="sd">            page.choose(&quot;Male&quot;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): Which radio button to choose.</span>
+<span class="sd">            allow_label_click (bool, optional): Attempt to click the label to toggle state if</span>
+<span class="sd">                element is non-visible. Defaults to :data:`capybara.automatic_label_click`.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">allow_label_click</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">allow_label_click</span> <span class="o">=</span> <span class="n">capybara</span><span class="o">.</span><span class="n">automatic_label_click</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;radio_button&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ElementNotFound</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_label_click</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hidden&quot;</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;wait&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">radio_button</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;radio_button&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">radio_button</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">radio_button</span><span class="o">.</span><span class="n">checked</span><span class="p">:</span>
+                    <span class="n">label</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span></div>
+
+<div class="viewcode-block" id="ActionsMixin.click_button"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.click_button">[docs]</a>    <span class="k">def</span> <span class="nf">click_button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds a button on the page and clicks it. This can be any ``&lt;input&gt;`` element of type</span>
+<span class="sd">        submit, reset, image, or button, or it can be any ``&lt;button&gt;`` element. All buttons can be</span>
+<span class="sd">        found by their id, value, or title. ``&lt;button&gt;`` elements can also be found by their text</span>
+<span class="sd">        content, and image ``&lt;input&gt;`` elements by their alt attribute.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): Which button to find.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;button&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ActionsMixin.click_link"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.click_link">[docs]</a>    <span class="k">def</span> <span class="nf">click_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds a link by id, text, or title and clicks it. Also looks at image alt text inside the</span>
+<span class="sd">        link.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): Text, id, title, or nested image&#39;s alt attribute.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;link&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ActionsMixin.click_link_or_button"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.click_link_or_button">[docs]</a>    <span class="k">def</span> <span class="nf">click_link_or_button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Finds a button or link by id, text or value and clicks it. Also looks at image alt text</span>
+<span class="sd">        inside the link.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): Text, id, or value of link or button.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;link_or_button&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span></div>
+
+    <span class="n">click_on</span> <span class="o">=</span> <span class="n">click_link_or_button</span>
+    <span class="sd">&quot;&quot;&quot; Alias for :meth:`click_link_or_button`. &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ActionsMixin.fill_in"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.fill_in">[docs]</a>    <span class="k">def</span> <span class="nf">fill_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Locate a text field or text area and fill it in with the given text. The field can be found</span>
+<span class="sd">        via its name, id, or label text. ::</span>
+
+<span class="sd">            page.fill_in(&quot;Name&quot;, value=&quot;Bob&quot;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): Which field to fill in.</span>
+<span class="sd">            value (str, optional): The value to fill in. Defaults to None.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;fillable_field&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ActionsMixin.select"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.select">[docs]</a>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If the ``field`` argument is present, ``select`` finds a select box on the page and selects</span>
+<span class="sd">        a particular option from it. Otherwise it finds an option inside the current scope and</span>
+<span class="sd">        selects it. If the select box is a multiple select, ``select`` can be called multiple times</span>
+<span class="sd">        to select more than one option. The select box can be found via its name, id, or label text.</span>
+<span class="sd">        The option can be found by its text. ::</span>
+
+<span class="sd">            page.select(&quot;March&quot;, field=&quot;Month&quot;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (str): Which option to select.</span>
+<span class="sd">            field (str, optional): The id, name, or label of the select box.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">field</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;select&quot;</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;option&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">select_option</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;option&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">select_option</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ActionsMixin.uncheck"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.uncheck">[docs]</a>    <span class="k">def</span> <span class="nf">uncheck</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="n">allow_label_click</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find a check box and uncheck it. The check box can be found via name, id, or label text. ::</span>
+
+<span class="sd">            page.uncheck(&quot;German&quot;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): Which check box to uncheck.</span>
+<span class="sd">            allow_label_click (bool, optional): Attempt to click the label to toggle state if</span>
+<span class="sd">                element is non-visible. Defaults to :data:`capybara.automatic_label_click`.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">allow_label_click</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">allow_label_click</span> <span class="o">=</span> <span class="n">capybara</span><span class="o">.</span><span class="n">automatic_label_click</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;checkbox&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">ElementNotFound</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_label_click</span><span class="p">:</span>
+                <span class="k">raise</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hidden&quot;</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;wait&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">checkbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;checkbox&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">checkbox</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">checkbox</span><span class="o">.</span><span class="n">checked</span><span class="p">:</span>
+                    <span class="n">label</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span></div>
+
+<div class="viewcode-block" id="ActionsMixin.unselect"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.unselect">[docs]</a>    <span class="k">def</span> <span class="nf">unselect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find a select box on the page and unselect a particular option from it. If the select box is</span>
+<span class="sd">        a multiple select, ``unselect`` can be called multiple times to unselect more than one</span>
+<span class="sd">        option. The select box can be found via its name, id, or label text. ::</span>
+
+<span class="sd">            page.unselect(&quot;March&quot;, field=&quot;Month&quot;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            value (str): Which option to unselect.</span>
+<span class="sd">            field (str, optional): The id, name, or label of the select box.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">field</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;select&quot;</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;option&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">unselect_option</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;option&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">unselect_option</span><span class="p">()</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../capybara.html">capybara</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Ian Lesperance.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

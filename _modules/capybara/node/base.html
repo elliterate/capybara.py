@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>capybara.node.base &#8212; Capybara 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="Capybara 0.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="capybara" href="../../capybara.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for capybara.node.base</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">time</span>
+
+<span class="kn">import</span> <span class="nn">capybara</span>
+<span class="kn">from</span> <span class="nn">capybara.exceptions</span> <span class="k">import</span> <span class="n">ElementNotFound</span><span class="p">,</span> <span class="n">FrozenInTime</span>
+<span class="kn">from</span> <span class="nn">capybara.node.actions</span> <span class="k">import</span> <span class="n">ActionsMixin</span>
+<span class="kn">from</span> <span class="nn">capybara.node.finders</span> <span class="k">import</span> <span class="n">FindersMixin</span>
+<span class="kn">from</span> <span class="nn">capybara.node.matchers</span> <span class="k">import</span> <span class="n">MatchersMixin</span>
+
+
+<div class="viewcode-block" id="Base"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.base.Base">[docs]</a><span class="k">class</span> <span class="nc">Base</span><span class="p">(</span><span class="n">FindersMixin</span><span class="p">,</span> <span class="n">ActionsMixin</span><span class="p">,</span> <span class="n">MatchersMixin</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A :class:`Base` represents either an element on a page through the subclass :class:`Element` or</span>
+<span class="sd">    a document through :class:`Document`.</span>
+
+<span class="sd">    Both types of Node share the same methods, used for interacting with the elements on the page.</span>
+<span class="sd">    These methods are divided into three categories: finders, actions, and matchers. These are found</span>
+<span class="sd">    in the classes :class:`FindersMixin`, :class:`ActionsMixin`, and :class:`MatchersMixin`</span>
+<span class="sd">    respectively.</span>
+
+<span class="sd">    A :class:`Session` exposes all methods from :class:`Document` directly::</span>
+
+<span class="sd">        session = Session(&quot;selenium&quot;, my_app)</span>
+<span class="sd">        session.visit(&quot;/&quot;)</span>
+<span class="sd">        session.fill_in(&quot;Foo&quot;, value=&quot;Bar&quot;)  # from capybara.node.actions.ActionsMixin</span>
+<span class="sd">        bar = session.find(&quot;#bar&quot;)           # from capybara.node.finders.FindersMixin</span>
+<span class="sd">        bar.select(&quot;Baz&quot;, field=&quot;Quox&quot;)      # from capybara.node.actions.ActionsMixin</span>
+<span class="sd">        session.has_css(&quot;#foobar&quot;)           # from capybara.node.matchers.MatchersMixin</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        session (Session): The session from which this node originated.</span>
+<span class="sd">        base (driver.Node): The underlying driver node.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">base</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span> <span class="o">=</span> <span class="n">session</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span> <span class="o">=</span> <span class="n">base</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">allow_reload</span> <span class="o">=</span> <span class="kc">False</span>
+
+<div class="viewcode-block" id="Base.reload"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.base.Base.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reloads the underlying driver node.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            node.Base: This node.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="nb">id</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="s2">&quot;base&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">base</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__hash__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">hash</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve the given attribute.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The attribute to retrieve.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The value of the attribute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; str: The text of the node. &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">all_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; str: All of the text of the node. &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">visible_text</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; str: Only the visible text of the node. &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+<div class="viewcode-block" id="Base.synchronize"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.base.Base.synchronize">[docs]</a>    <span class="k">def</span> <span class="nf">synchronize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="p">()):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method is Capybara&#39;s primary defense against asynchronicity problems. It works by</span>
+<span class="sd">        attempting to run a given decorated function until it succeeds. The exact behavior of this</span>
+<span class="sd">        method depends on a number of factors. Basically there are certain exceptions which, when</span>
+<span class="sd">        raised from the decorated function, instead of bubbling up, are caught, and the function is</span>
+<span class="sd">        re-run.</span>
+
+<span class="sd">        Certain drivers have no support for asynchronous processes. These drivers run the function,</span>
+<span class="sd">        and any error raised bubbles up immediately. This allows faster turn around in the case</span>
+<span class="sd">        where an expectation fails.</span>
+
+<span class="sd">        Only exceptions that are :exc:`ElementNotFound` or any subclass thereof cause the block to</span>
+<span class="sd">        be rerun. Drivers may specify additional exceptions which also cause reruns. This usually</span>
+<span class="sd">        occurs when a node is manipulated which no longer exists on the page. For example, the</span>
+<span class="sd">        Selenium driver specifies ``selenium.common.exceptions.StateElementReferenceException``.</span>
+
+<span class="sd">        As long as any of these exceptions are thrown, the function is re-run, until a certain</span>
+<span class="sd">        amount of time passes. The amount of time defaults to :data:`capybara.default_max_wait_time`</span>
+<span class="sd">        and can be overridden through the ``wait`` argument. This time is compared with the system</span>
+<span class="sd">        time to see how much time has passed. If the return value of ``time.time()`` is stubbed</span>
+<span class="sd">        out, Capybara will raise :exc:`FrozenInTime`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            func (Callable, optional): The function to decorate.</span>
+<span class="sd">            wait (int, optional): Number of seconds to retry this function.</span>
+<span class="sd">            errors (Tuple[Type[Exception]], optional): Exception types that cause the function to be</span>
+<span class="sd">                rerun. Defaults to ``driver.invalid_element_errors`` + :exc:`ElementNotFound`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Callable: The decorated function, or a decorator function.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            FrozenInTime: If the return value of ``time.time()`` appears stuck.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+            <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+            <span class="k">def</span> <span class="nf">outer</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="n">caught_errors</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="n">errors</span> <span class="ow">or</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">invalid_element_errors</span> <span class="o">+</span> <span class="p">(</span><span class="n">ElementNotFound</span><span class="p">,))</span>
+                <span class="n">seconds</span> <span class="o">=</span> <span class="n">wait</span> <span class="k">if</span> <span class="n">wait</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">capybara</span><span class="o">.</span><span class="n">default_max_wait_time</span>
+
+                <span class="k">def</span> <span class="nf">inner</span><span class="p">():</span>
+                    <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">synchronized</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="n">inner</span><span class="p">()</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="k">return</span> <span class="n">inner</span><span class="p">()</span>
+                            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">caught_errors</span><span class="p">):</span>
+                                    <span class="k">raise</span>
+                                <span class="k">if</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span> <span class="o">&gt;=</span> <span class="n">seconds</span><span class="p">:</span>
+                                    <span class="k">raise</span>
+
+                                <span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+
+                                <span class="k">if</span> <span class="n">time</span><span class="p">()</span> <span class="o">==</span> <span class="n">start_time</span><span class="p">:</span>
+                                    <span class="k">raise</span> <span class="n">FrozenInTime</span><span class="p">(</span>
+                                        <span class="s2">&quot;time appears to be frozen, Capybara does not work with &quot;</span>
+                                        <span class="s2">&quot;libraries which freeze time, consider using time &quot;</span>
+                                        <span class="s2">&quot;traveling instead&quot;</span><span class="p">)</span>
+                                <span class="k">if</span> <span class="n">capybara</span><span class="o">.</span><span class="n">automatic_reload</span><span class="p">:</span>
+                                    <span class="bp">self</span><span class="o">.</span><span class="n">reload</span><span class="p">()</span>
+                    <span class="k">finally</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="k">return</span> <span class="n">outer</span>
+
+        <span class="k">if</span> <span class="n">func</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">decorator</span></div>
+
+    <span class="k">def</span> <span class="nf">_find_css</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">css</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">_find_css</span><span class="p">(</span><span class="n">css</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_find_xpath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpath</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">_find_xpath</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="synchronize"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.base.synchronize">[docs]</a><span class="k">def</span> <span class="nf">synchronize</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Decorator for :meth:`synchronize`. &quot;&quot;&quot;</span>
+
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">outer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">synchronize</span>
+        <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">outer</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../capybara.html">capybara</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Ian Lesperance.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

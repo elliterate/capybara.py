@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>capybara.selector.filter_set &#8212; Capybara 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="Capybara 0.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="capybara" href="../../capybara.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for capybara.selector.filter_set</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+
+<span class="kn">from</span> <span class="nn">capybara.selector.filter</span> <span class="k">import</span> <span class="n">Filter</span>
+
+
+<span class="n">filter_sets</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c1"># Dict[str, FilterSet]: A dictionary of global filter sets keyed by name.</span>
+
+
+<div class="viewcode-block" id="FilterSet"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.filter_set.FilterSet">[docs]</a><span class="k">class</span> <span class="nc">FilterSet</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A group of filters for use by :class:`Selector` objects.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): The name of this set of filters.</span>
+<span class="sd">        descriptions (List[Callable[[Dict[str, Any]], str]]): Functions that generate descriptions</span>
+<span class="sd">            for options.</span>
+<span class="sd">        filters (Dict[str, Filter], optional): The filters in this set. Defaults to {}.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">descriptions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span> <span class="o">=</span> <span class="n">descriptions</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="n">filters</span> <span class="ow">or</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="FilterSet.description"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.filter_set.FilterSet.description">[docs]</a>    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a description of the given filter options relevant to this filter set.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            options (Dict[str, Any]): The filter options to describe.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: A description of the filter options.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">describe</span><span class="p">(</span><span class="n">options</span><span class="p">)</span> <span class="k">for</span> <span class="n">describe</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span><span class="p">])</span></div></div>
+
+
+<div class="viewcode-block" id="FilterSetFactory"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.filter_set.FilterSetFactory">[docs]</a><span class="k">class</span> <span class="nc">FilterSetFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; A factory for configuring and building :class:`FilterSet` instances. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="FilterSetFactory.describe"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.filter_set.FilterSetFactory.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Decorates a function that builds a description of some filter set options.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            func (Callable[[Dict[str, Any]], str]): The description builder function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FilterSetFactory.filter"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.filter_set.FilterSetFactory.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a decorator function for adding filters to built sets.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The name of the filter.</span>
+<span class="sd">            **kwargs: Variable keyword arguments for the filter.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Callable[[Callable[[Element, Any], bool]]]: A decorator function for adding filters to</span>
+<span class="sd">                built sets.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Filter</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">decorator</span></div>
+
+<div class="viewcode-block" id="FilterSetFactory.build_filter_set"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.filter_set.FilterSetFactory.build_filter_set">[docs]</a>    <span class="k">def</span> <span class="nf">build_filter_set</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; FilterSet: Returns a new :class:`FilterSet` with the current factory config. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">FilterSet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">filters</span><span class="p">)</span></div></div>
+
+
+<span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="add_filter_set"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.filter_set.add_filter_set">[docs]</a><span class="k">def</span> <span class="nf">add_filter_set</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Builds and registers a global :class:`FilterSet`.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): The name of the set.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        FilterSetFactory: A configurable factory for building a :class:`FilterSet`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">factory</span> <span class="o">=</span> <span class="n">FilterSetFactory</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">factory</span>
+    <span class="n">filter_sets</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">build_filter_set</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="remove_filter_set"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.filter_set.remove_filter_set">[docs]</a><span class="k">def</span> <span class="nf">remove_filter_set</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Unregisters filter set with the given name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): The name of the filter set.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">filter_sets</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../capybara.html">capybara</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Ian Lesperance.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>capybara.exceptions &#8212; Capybara 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="Capybara 0.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="capybara" href="../capybara.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for capybara.exceptions</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="CapybaraError"><a class="viewcode-back" href="../../capybara.html#capybara.exceptions.CapybaraError">[docs]</a><span></span><span class="k">class</span> <span class="nc">CapybaraError</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="FrozenInTime"><a class="viewcode-back" href="../../capybara.html#capybara.exceptions.FrozenInTime">[docs]</a><span class="k">class</span> <span class="nc">FrozenInTime</span><span class="p">(</span><span class="n">CapybaraError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ElementNotFound"><a class="viewcode-back" href="../../capybara.html#capybara.exceptions.ElementNotFound">[docs]</a><span class="k">class</span> <span class="nc">ElementNotFound</span><span class="p">(</span><span class="n">CapybaraError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ModalNotFound"><a class="viewcode-back" href="../../capybara.html#capybara.exceptions.ModalNotFound">[docs]</a><span class="k">class</span> <span class="nc">ModalNotFound</span><span class="p">(</span><span class="n">CapybaraError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="Ambiguous"><a class="viewcode-back" href="../../capybara.html#capybara.exceptions.Ambiguous">[docs]</a><span class="k">class</span> <span class="nc">Ambiguous</span><span class="p">(</span><span class="n">ElementNotFound</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ExpectationNotMet"><a class="viewcode-back" href="../../capybara.html#capybara.exceptions.ExpectationNotMet">[docs]</a><span class="k">class</span> <span class="nc">ExpectationNotMet</span><span class="p">(</span><span class="n">ElementNotFound</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="FileNotFound"><a class="viewcode-back" href="../../capybara.html#capybara.exceptions.FileNotFound">[docs]</a><span class="k">class</span> <span class="nc">FileNotFound</span><span class="p">(</span><span class="n">CapybaraError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="UnselectNotAllowed"><a class="viewcode-back" href="../../capybara.html#capybara.exceptions.UnselectNotAllowed">[docs]</a><span class="k">class</span> <span class="nc">UnselectNotAllowed</span><span class="p">(</span><span class="n">CapybaraError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ScopeError"><a class="viewcode-back" href="../../capybara.html#capybara.exceptions.ScopeError">[docs]</a><span class="k">class</span> <span class="nc">ScopeError</span><span class="p">(</span><span class="n">CapybaraError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="WindowError"><a class="viewcode-back" href="../../capybara.html#capybara.exceptions.WindowError">[docs]</a><span class="k">class</span> <span class="nc">WindowError</span><span class="p">(</span><span class="n">CapybaraError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="ReadOnlyElementError"><a class="viewcode-back" href="../../capybara.html#capybara.exceptions.ReadOnlyElementError">[docs]</a><span class="k">class</span> <span class="nc">ReadOnlyElementError</span><span class="p">(</span><span class="n">CapybaraError</span><span class="p">):</span>
+    <span class="k">pass</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  <li><a href="../capybara.html">capybara</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Ian Lesperance.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

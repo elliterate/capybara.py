@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>capybara.helpers &#8212; Capybara 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="Capybara 0.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="capybara" href="../capybara.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for capybara.helpers</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+
+<span class="kn">from</span> <span class="nn">capybara.utils</span> <span class="k">import</span> <span class="n">decode_bytes</span><span class="p">,</span> <span class="n">isbytes</span><span class="p">,</span> <span class="n">isregex</span>
+
+
+<div class="viewcode-block" id="declension"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.declension">[docs]</a><span class="k">def</span> <span class="nf">declension</span><span class="p">(</span><span class="n">singular</span><span class="p">,</span> <span class="n">plural</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the appropriate word variation for the given quantity.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        singular (str): The singular variation.</span>
+<span class="sd">        plural (str): The plural variation.</span>
+<span class="sd">        count (int): The count.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The appropriate variation for the quantity.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">singular</span> <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">plural</span></div>
+
+
+<div class="viewcode-block" id="desc"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.desc">[docs]</a><span class="k">def</span> <span class="nf">desc</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; str | List[str]: A normalized representation for a user-provided value. &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="n">desc</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">isbytes</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">decode_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">isregex</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">pattern</span>
+
+    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="expects_none"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.expects_none">[docs]</a><span class="k">def</span> <span class="nf">expects_none</span><span class="p">(</span><span class="n">options</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns whether the given query options expect a possible count of zero.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        options (Dict[str, int | Iterable[int]]): A dictionary of query options.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Whether a possible count of zero is expected.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="s2">&quot;maximum&quot;</span><span class="p">,</span> <span class="s2">&quot;minimum&quot;</span><span class="p">,</span> <span class="s2">&quot;between&quot;</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="n">matches_count</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="failure_message"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.failure_message">[docs]</a><span class="k">def</span> <span class="nf">failure_message</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a expectation failure message for the given query description.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        description (str): A description of the failed query.</span>
+<span class="sd">        options (Dict[str, Any]): The query options.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: A message describing the failure.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">message</span> <span class="o">=</span> <span class="s2">&quot;expected to find </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">+=</span> <span class="s2">&quot; </span><span class="si">{count}</span><span class="s2"> </span><span class="si">{times}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">count</span><span class="o">=</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">],</span>
+            <span class="n">times</span><span class="o">=</span><span class="n">declension</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;times&quot;</span><span class="p">,</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">]))</span>
+    <span class="k">elif</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;between&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">between</span> <span class="o">=</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;between&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">between</span><span class="p">:</span>
+            <span class="n">first</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="n">between</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">between</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">first</span><span class="p">,</span> <span class="n">last</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+        <span class="n">message</span> <span class="o">+=</span> <span class="s2">&quot; between </span><span class="si">{first}</span><span class="s2"> and </span><span class="si">{last}</span><span class="s2"> times&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">first</span><span class="o">=</span><span class="n">first</span><span class="p">,</span>
+            <span class="n">last</span><span class="o">=</span><span class="n">last</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;maximum&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">+=</span> <span class="s2">&quot; at most </span><span class="si">{maximum}</span><span class="s2"> </span><span class="si">{times}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">maximum</span><span class="o">=</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;maximum&quot;</span><span class="p">],</span>
+            <span class="n">times</span><span class="o">=</span><span class="n">declension</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;times&quot;</span><span class="p">,</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;maximum&quot;</span><span class="p">]))</span>
+    <span class="k">elif</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;minimum&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">message</span> <span class="o">+=</span> <span class="s2">&quot; at least </span><span class="si">{minimum}</span><span class="s2"> </span><span class="si">{times}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">minimum</span><span class="o">=</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;minimum&quot;</span><span class="p">],</span>
+            <span class="n">times</span><span class="o">=</span><span class="n">declension</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;times&quot;</span><span class="p">,</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;minimum&quot;</span><span class="p">]))</span>
+
+    <span class="k">return</span> <span class="n">message</span></div>
+
+
+<div class="viewcode-block" id="matches_count"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.matches_count">[docs]</a><span class="k">def</span> <span class="nf">matches_count</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns whether the given count matches the given query options.</span>
+
+<span class="sd">    If no quantity options are specified, any count is considered acceptable.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        count (int): The count to be validated.</span>
+<span class="sd">        options (Dict[str, int | Iterable[int]]): A dictionary of query options.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Whether the count matches the options.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;count&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">count</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;maximum&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;maximum&quot;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">count</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;minimum&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;minimum&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">count</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;between&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">count</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;between&quot;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="normalize_text"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.normalize_text">[docs]</a><span class="k">def</span> <span class="nf">normalize_text</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Normalizes the given value to a string of text with extra whitespace removed.</span>
+
+<span class="sd">    Byte sequences are decoded. ``None`` is converted to an empty string. Everything else</span>
+<span class="sd">    is simply cast to a string.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        value (Any): The data to normalize.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The normalized text.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">text</span> <span class="o">=</span> <span class="n">decode_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">isbytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">normalize_whitespace</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="normalize_whitespace"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.normalize_whitespace">[docs]</a><span class="k">def</span> <span class="nf">normalize_whitespace</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the given text with outer whitespace removed and inner whitespace collapsed.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text (str): The text to normalize.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: The normalized text.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s2">r&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="toregex"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.toregex">[docs]</a><span class="k">def</span> <span class="nf">toregex</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns a compiled regular expression for the given text.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        text (str | RegexObject): The text to match.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        RegexObject: A compiled regular expression that will match the text.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">text</span> <span class="k">if</span> <span class="n">isregex</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="k">else</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">normalize_text</span><span class="p">(</span><span class="n">text</span><span class="p">))))</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  <li><a href="../capybara.html">capybara</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Ian Lesperance.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

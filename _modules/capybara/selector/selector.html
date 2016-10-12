@@ -1,0 +1,267 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>capybara.selector.selector &#8212; Capybara 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="Capybara 0.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="capybara" href="../../capybara.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for capybara.selector.selector</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+
+<span class="kn">from</span> <span class="nn">capybara.selector.filter</span> <span class="k">import</span> <span class="n">Filter</span>
+<span class="kn">from</span> <span class="nn">capybara.selector.filter_set</span> <span class="k">import</span> <span class="n">filter_sets</span>
+<span class="kn">from</span> <span class="nn">capybara.utils</span> <span class="k">import</span> <span class="n">setter_decorator</span>
+
+
+<span class="n">selectors</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c1"># Dict[str, Selector]: A dictionary of :class:`Selector` objects keyed by name. &quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="Selector"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.selector.Selector">[docs]</a><span class="k">class</span> <span class="nc">Selector</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A callable object used for selecting elements in a document or node.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): The name of the selector.</span>
+<span class="sd">        label (str, optional): The label to use when describing this selector.</span>
+<span class="sd">        descriptions (List[Callable[[Dict[str, Any]], str]]): Functions that build a description of</span>
+<span class="sd">            the given filter options.</span>
+<span class="sd">        css (Callable[[str], str], optional): A function to generate a CSS selector given a locator</span>
+<span class="sd">            string.</span>
+<span class="sd">        xpath (Callable[[str], str], optional): A function to generate an XPath query given a</span>
+<span class="sd">            locator string.</span>
+<span class="sd">        custom_filters (Dict[str, Filter]): A dictionary of filters this selector should use</span>
+<span class="sd">            to identify matching elements. Defaults to {}.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">descriptions</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">css</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xpath</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                 <span class="n">custom_filters</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">label</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span> <span class="o">=</span> <span class="n">descriptions</span> <span class="ow">or</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">css</span> <span class="o">=</span> <span class="n">css</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xpath</span> <span class="o">=</span> <span class="n">xpath</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;xpath&quot;</span> <span class="k">if</span> <span class="n">xpath</span> <span class="k">else</span> <span class="s2">&quot;css&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_filters</span> <span class="o">=</span> <span class="n">custom_filters</span> <span class="ow">or</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">,</span> <span class="s2">&quot;selector has no format&quot;</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span><span class="p">)(</span><span class="n">locator</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Selector.description"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.selector.Selector.description">[docs]</a>    <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a description of the given filter options relevant to this selector.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            options (Dict[str, Any]): The filter options to describe.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: A description of the filter options.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">describe</span><span class="p">(</span><span class="n">options</span><span class="p">)</span> <span class="k">for</span> <span class="n">describe</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span><span class="p">])</span></div></div>
+
+
+<div class="viewcode-block" id="SelectorFactory"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.selector.SelectorFactory">[docs]</a><span class="k">class</span> <span class="nc">SelectorFactory</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A factory for configuring and building :class:`Selector` instances.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): The name of the selector.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">custom_filters</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="SelectorFactory.describe"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.selector.SelectorFactory.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Decorates a function that builds a description of some selector options.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            func (Callable[[Dict[str, Any]], str]): The description builder function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
+
+    <span class="nd">@setter_decorator</span>
+    <span class="k">def</span> <span class="nf">css</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the given function as the CSS selector generation function.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            func (Callable[[str], str]): The CSS selector generation function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;css&quot;</span>
+
+    <span class="nd">@setter_decorator</span>
+    <span class="k">def</span> <span class="nf">xpath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the given function as the XPath query generation function.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            func (Callable[[str], str]): The XPath query generation function.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">func</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">=</span> <span class="s2">&quot;xpath&quot;</span>
+
+<div class="viewcode-block" id="SelectorFactory.filter"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.selector.SelectorFactory.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a decorator function for adding afilter.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The name of the filter.</span>
+<span class="sd">            **kwargs: Variable keyword arguments for the filter.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Callable[[Callable[[Element, Any], bool]]]: A decorator function for adding a filter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">custom_filters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">Filter</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">decorator</span></div>
+
+<div class="viewcode-block" id="SelectorFactory.filter_set"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.selector.SelectorFactory.filter_set">[docs]</a>    <span class="k">def</span> <span class="nf">filter_set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Adds filters from a particular global :class:`FilterSet`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The name of the set whose filters should be added.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">filter_set</span> <span class="o">=</span> <span class="n">filter_sets</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">filter_</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">filter_set</span><span class="o">.</span><span class="n">filters</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">custom_filters</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">filter_</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span> <span class="o">+=</span> <span class="n">filter_set</span><span class="o">.</span><span class="n">descriptions</span></div>
+
+<div class="viewcode-block" id="SelectorFactory.build_selector"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.selector.SelectorFactory.build_selector">[docs]</a>    <span class="k">def</span> <span class="nf">build_selector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Selector: Returns a new :class:`Selector` instance with the current configuration. &quot;&quot;&quot;</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
+            <span class="s1">&#39;descriptions&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">descriptions</span><span class="p">,</span>
+            <span class="s1">&#39;custom_filters&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">custom_filters</span><span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">&quot;xpath&quot;</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;xpath&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">format</span> <span class="o">==</span> <span class="s2">&quot;css&quot;</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;css&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">func</span>
+
+        <span class="k">return</span> <span class="n">Selector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+
+<span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="add_selector"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.selector.add_selector">[docs]</a><span class="k">def</span> <span class="nf">add_selector</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Builds and registers a :class:`Selector` object with the given name and configuration.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): The name of the selector.</span>
+
+<span class="sd">    Yields:</span>
+<span class="sd">        SelectorFactory: The factory that will build the :class:`Selector`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">factory</span> <span class="o">=</span> <span class="n">SelectorFactory</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">yield</span> <span class="n">factory</span>
+    <span class="n">selectors</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">build_selector</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="remove_selector"><a class="viewcode-back" href="../../../capybara.selector.html#capybara.selector.selector.remove_selector">[docs]</a><span class="k">def</span> <span class="nf">remove_selector</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Unregisters selector with the given name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): The name of the selector.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">selectors</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../capybara.html">capybara</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Ian Lesperance.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

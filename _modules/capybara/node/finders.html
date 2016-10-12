@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>capybara.node.finders &#8212; Capybara 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="top" title="Capybara 0.0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="capybara" href="../../capybara.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for capybara.node.finders</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">capybara</span>
+<span class="kn">from</span> <span class="nn">capybara.exceptions</span> <span class="k">import</span> <span class="n">Ambiguous</span><span class="p">,</span> <span class="n">ElementNotFound</span><span class="p">,</span> <span class="n">ExpectationNotMet</span>
+<span class="kn">from</span> <span class="nn">capybara.helpers</span> <span class="k">import</span> <span class="n">matches_count</span>
+<span class="kn">from</span> <span class="nn">capybara.queries.selector_query</span> <span class="k">import</span> <span class="n">SelectorQuery</span>
+
+
+<div class="viewcode-block" id="FindersMixin"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin">[docs]</a><span class="k">class</span> <span class="nc">FindersMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If the driver is capable of executing JavaScript, finders will wait for a set amount of time and</span>
+<span class="sd">    continuously retry finding the element until either the element is found or the time expires.</span>
+<span class="sd">    The length of time :meth:`find` will wait is controlled through</span>
+<span class="sd">    :data:`capybara.default_max_wait_time` and defaults to 2 seconds.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="FindersMixin.find"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.find">[docs]</a>    <span class="k">def</span> <span class="nf">find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find an :class:`Element` based on the given arguments. ``find`` will raise an error if the</span>
+<span class="sd">        element is not found.</span>
+
+<span class="sd">        ``find`` takes the same options as :meth:`find_all`. ::</span>
+
+<span class="sd">            page.find(&quot;#foo&quot;).find(&quot;.bar&quot;)</span>
+<span class="sd">            page.find(&quot;xpath&quot;, &quot;//div[contains(., &#39;bar&#39;)]&quot;)</span>
+<span class="sd">            page.find(&quot;li&quot;, text=&quot;Quox&quot;).click_link(&quot;Delete&quot;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            *args: Variable length argument list for :class:`SelectorQuery`.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Element: The found element.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Ambiguous: If more than one element matching element is found.</span>
+<span class="sd">            ElementNotFound: If the element can&#39;t be found before time expires.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="n">SelectorQuery</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="nd">@self</span><span class="o">.</span><span class="n">synchronize</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">wait</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">find</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">match</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;prefer_exact&quot;</span><span class="p">,</span> <span class="s2">&quot;smart&quot;</span><span class="p">]:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">resolve_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">query</span><span class="o">.</span><span class="n">exact</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">resolve_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">resolve_for</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">match</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="s2">&quot;smart&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">Ambiguous</span><span class="p">(</span><span class="s2">&quot;Ambiguous match, found </span><span class="si">{count}</span><span class="s2"> elements matching </span><span class="si">{query}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ElementNotFound</span><span class="p">(</span><span class="s2">&quot;Unable to find </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+
+            <span class="n">element</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">element</span><span class="o">.</span><span class="n">allow_reload</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="n">element</span>
+
+        <span class="k">return</span> <span class="n">find</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FindersMixin.find_button"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.find_button">[docs]</a>    <span class="k">def</span> <span class="nf">find_button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find a button on the page. This can be any ``&lt;input&gt;`` element of type submit, reset, image,</span>
+<span class="sd">        or button, or it can be a ``&lt;button&gt;`` element. All buttons can be found by their id, value,</span>
+<span class="sd">        or title. ``&lt;button&gt;`` elements can also be found by their text content, and image</span>
+<span class="sd">        ``&lt;input&gt;`` elements by their alt attribute.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): The id, value, title, text content, alt of image.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Element: The found element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;button&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FindersMixin.find_by_id"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.find_by_id">[docs]</a>    <span class="k">def</span> <span class="nf">find_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find an element on the page, given its id.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            id (str): The id of the element.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Element: The found element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FindersMixin.find_field"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.find_field">[docs]</a>    <span class="k">def</span> <span class="nf">find_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find a form field on the page. The field can be found by its name, id, or label text.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): Name, id, placeholder, or text of associated label element.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Element: The found element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;field&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FindersMixin.find_link"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.find_link">[docs]</a>    <span class="k">def</span> <span class="nf">find_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find a link on the page. The link can be found by its id or text.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): ID, title, text, or alt of enclosed img element.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Element: The found element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;link&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FindersMixin.find_all"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.find_all">[docs]</a>    <span class="k">def</span> <span class="nf">find_all</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find all elements on the page matching the given selector and options.</span>
+
+<span class="sd">        Both XPath and CSS expressions are supported, but Capybara does not try to automatically</span>
+<span class="sd">        distinguish between them. The following statements are equivalent::</span>
+
+<span class="sd">            page.find_all(&quot;css&quot;, &quot;a#person_123&quot;)</span>
+<span class="sd">            page.find_all(&quot;xpath&quot;, &quot;//a[@id=&#39;person_123&#39;]&quot;)</span>
+
+<span class="sd">        If the type of selector is left out, Capybara uses :data:`capybara.default_selector`. It&#39;s</span>
+<span class="sd">        set to ``&quot;css&quot;`` by default. ::</span>
+
+<span class="sd">            page.find_all(&quot;a#person_123&quot;)</span>
+
+<span class="sd">            capybara.default_selector = &quot;xpath&quot;</span>
+<span class="sd">            page.find_all(&quot;//a[@id=&#39;person_123&#39;]&quot;)</span>
+
+<span class="sd">        The set of found elements can further be restricted by specifying options. It&#39;s possible to</span>
+<span class="sd">        select elements by their text or visibility::</span>
+
+<span class="sd">            page.find_all(&quot;a&quot;, text=&quot;Home&quot;)</span>
+<span class="sd">            page.find_all(&quot;#menu li&quot;, visible=True)</span>
+
+<span class="sd">        By default if no elements are found, an empty list is returned; however, expectations can be</span>
+<span class="sd">        set on the number of elements to be found which will trigger Capybara&#39;s waiting behavior for</span>
+<span class="sd">        the expectations to match. The expectations can be set using::</span>
+
+<span class="sd">            page.assert_selector(&quot;p#foo&quot;, count=4)</span>
+<span class="sd">            page.assert_selector(&quot;p#foo&quot;, maximum=10)</span>
+<span class="sd">            page.assert_selector(&quot;p#foo&quot;, minimum=1)</span>
+<span class="sd">            page.assert_selector(&quot;p#foo&quot;, between=range(1, 11))</span>
+
+<span class="sd">        See :func:`matches_count` for additional information about count matching.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            *args: Variable length argument list for :class:`SelectorQuery`.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Result: A collection of found elements.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ExpectationNotMet: The matched results did not meet the expected criteria.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">query</span> <span class="o">=</span> <span class="n">SelectorQuery</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="nd">@self</span><span class="o">.</span><span class="n">synchronize</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">wait</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">find_all</span><span class="p">():</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">resolve_for</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">matches_count</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="n">query</span><span class="o">.</span><span class="n">options</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="n">ExpectationNotMet</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">failure_message</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">result</span>
+
+        <span class="k">return</span> <span class="n">find_all</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="FindersMixin.find_first"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.find_first">[docs]</a>    <span class="k">def</span> <span class="nf">find_first</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find the first element on the page matching the given selector and options, or None if no</span>
+<span class="sd">        element matches.</span>
+
+<span class="sd">        By default, no waiting behavior occurs. However, if ``capybara.wait_on_first_by_default``</span>
+<span class="sd">        is set to true, it will trigger Capybara&#39;s waiting behavior for a minimum of 1 matching</span>
+<span class="sd">        element to be found.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            *args: Variable length argument list for :class:`SelectorQuery`.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Element: The found element or None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">capybara</span><span class="o">.</span><span class="n">wait_on_first_by_default</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s2">&quot;minimum&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">except</span> <span class="n">ExpectationNotMet</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  <li><a href="../../capybara.html">capybara</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Ian Lesperance.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>capybara &#8212; Capybara 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="top" title="Capybara 0.0.1 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for capybara</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+
+
+<span class="n">app</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="sd">&quot;&quot;&quot; object: The WSGI-compliant app to test. &quot;&quot;&quot;</span>
+
+<span class="n">app_host</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="sd">&quot;&quot;&quot; str: The default host to use when giving a relative URL to visit. Must be a valid URL. &quot;&quot;&quot;</span>
+
+<span class="n">current_driver</span> <span class="o">=</span> <span class="s2">&quot;selenium&quot;</span>
+<span class="sd">&quot;&quot;&quot; str: The name of the driver currently in use. &quot;&quot;&quot;</span>
+
+<span class="n">server_name</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
+<span class="sd">&quot;&quot;&quot; str: The name of the server to use to serve the app. &quot;&quot;&quot;</span>
+
+<span class="n">server_host</span> <span class="o">=</span> <span class="s2">&quot;127.0.0.1&quot;</span>
+<span class="sd">&quot;&quot;&quot; str: The IP address bound by the default server. &quot;&quot;&quot;</span>
+
+<span class="n">server_port</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="sd">&quot;&quot;&quot; int, optional: The port bound by the default server. &quot;&quot;&quot;</span>
+
+<span class="n">automatic_label_click</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="sd">&quot;&quot;&quot; bool: Whether checkbox/radio actions will try to click the label of invisible elements. &quot;&quot;&quot;</span>
+
+<span class="n">automatic_reload</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="sd">&quot;&quot;&quot; bool: Whether to automatically reload elements as Capybara is waiting. &quot;&quot;&quot;</span>
+
+<span class="n">enable_aria_label</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="sd">&quot;&quot;&quot; bool: Whether fields, links, and buttons will match against aria-label attributes. &quot;&quot;&quot;</span>
+
+<span class="n">exact</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="sd">&quot;&quot;&quot; bool: Whether to match the exact label name/contents. &quot;&quot;&quot;</span>
+
+<span class="n">default_max_wait_time</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="sd">&quot;&quot;&quot; int: The maximum number of seconds to wait for asynchronous processes to finish. &quot;&quot;&quot;</span>
+
+<span class="n">default_selector</span> <span class="o">=</span> <span class="s2">&quot;css&quot;</span>
+<span class="sd">&quot;&quot;&quot; str: The name of the default selector used to find elements. &quot;&quot;&quot;</span>
+
+<span class="n">ignore_hidden_elements</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="sd">&quot;&quot;&quot; bool: Whether to ignore hidden elements on the page. &quot;&quot;&quot;</span>
+
+<span class="n">match</span> <span class="o">=</span> <span class="s2">&quot;smart&quot;</span>
+<span class="sd">&quot;&quot;&quot; str: The matching strategy to use. &quot;&quot;&quot;</span>
+
+<span class="n">save_path</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="sd">&quot;&quot;&quot; str, optional: Where to put saved pages and screenshots. &quot;&quot;&quot;</span>
+
+<span class="n">visible_text_only</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="sd">&quot;&quot;&quot; bool: Whether to only consider visible text. &quot;&quot;&quot;</span>
+
+<span class="n">wait_on_first_by_default</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="sd">&quot;&quot;&quot; bool: Whether :meth:`find_first` should wait for at least one element to appear. &quot;&quot;&quot;</span>
+
+<span class="n">servers</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c1"># Dict[str, Callable[[object, str, int], None]]: A dictionary of server initialization functions.</span>
+
+<span class="n">drivers</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c1"># Dict[str, Callable[[object], object]]: A dictionary of driver initialization functions.</span>
+
+<span class="n">session_name</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
+<span class="sd">&quot;&quot;&quot; str: The current session name. &quot;&quot;&quot;</span>
+
+<span class="n">_session_pool</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="c1"># Dict[str, Session]: A pool of `Session` objects, keyed by driver and app.</span>
+
+
+<span class="n">DSL_METHODS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;using_session&quot;</span><span class="p">,</span> <span class="s2">&quot;using_wait_time&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="register_server"><a class="viewcode-back" href="../capybara.html#capybara.dsl.register_server">[docs]</a><span class="k">def</span> <span class="nf">register_server</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Register a server initialization function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): The name of the server.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Callable[[Callable[[object, str, int], None]], None]: A decorator that takes a function</span>
+<span class="sd">            that initializes a server for the given WSGI-compliant app, host, and port.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">init_func</span><span class="p">):</span>
+        <span class="n">servers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_func</span>
+
+    <span class="k">return</span> <span class="n">register</span></div>
+
+
+<div class="viewcode-block" id="register_driver"><a class="viewcode-back" href="../capybara.html#capybara.dsl.register_driver">[docs]</a><span class="k">def</span> <span class="nf">register_driver</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Register a driver initialization function.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): The name of the driver.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Callable[[Callable[[object], object], None]: A decorator that takes a function that</span>
+<span class="sd">            initializes a driver for the given WSGI-compliant app.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">init_func</span><span class="p">):</span>
+        <span class="n">drivers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_func</span>
+
+    <span class="k">return</span> <span class="n">register</span></div>
+
+
+<div class="viewcode-block" id="run_default_server"><a class="viewcode-back" href="../capybara.html#capybara.dsl.run_default_server">[docs]</a><span class="k">def</span> <span class="nf">run_default_server</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+    <span class="n">servers</span><span class="p">[</span><span class="s2">&quot;werkzeug&quot;</span><span class="p">](</span><span class="n">app</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">server_host</span><span class="p">)</span></div>
+
+
+<span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="using_wait_time"><a class="viewcode-back" href="../capybara.html#capybara.dsl.using_wait_time">[docs]</a><span class="k">def</span> <span class="nf">using_wait_time</span><span class="p">(</span><span class="n">seconds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Execute a context using a specific wait time.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        seconds (int | float): The new wait time.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">global</span> <span class="n">default_max_wait_time</span>
+
+    <span class="n">original_max_wait_time</span> <span class="o">=</span> <span class="n">default_max_wait_time</span>
+    <span class="n">default_max_wait_time</span> <span class="o">=</span> <span class="n">seconds</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">default_max_wait_time</span> <span class="o">=</span> <span class="n">original_max_wait_time</span></div>
+
+
+<div class="viewcode-block" id="current_session"><a class="viewcode-back" href="../capybara.html#capybara.dsl.current_session">[docs]</a><span class="k">def</span> <span class="nf">current_session</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns the :class:`Session` for the current driver and app, instantiating one if needed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Session: The :class:`Session` for the current driver and app.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">session_key</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{driver}</span><span class="s2">:</span><span class="si">{session}</span><span class="s2">:</span><span class="si">{app}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">driver</span><span class="o">=</span><span class="n">current_driver</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session_name</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">app</span><span class="p">)))</span>
+    <span class="n">session</span> <span class="o">=</span> <span class="n">_session_pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">session_key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">capybara.session</span> <span class="k">import</span> <span class="n">Session</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="n">current_driver</span><span class="p">,</span> <span class="n">app</span><span class="p">)</span>
+        <span class="n">_session_pool</span><span class="p">[</span><span class="n">session_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">session</span>
+
+    <span class="k">return</span> <span class="n">session</span></div>
+
+
+<span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="using_session"><a class="viewcode-back" href="../capybara.html#capybara.dsl.using_session">[docs]</a><span class="k">def</span> <span class="nf">using_session</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Execute the wrapped code using a specific session name.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): The name of the session to use.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">global</span> <span class="n">session_name</span>
+
+    <span class="n">previous_session_name</span> <span class="o">=</span> <span class="n">session_name</span>
+    <span class="n">session_name</span> <span class="o">=</span> <span class="n">name</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">session_name</span> <span class="o">=</span> <span class="n">previous_session_name</span></div>
+
+
+<div class="viewcode-block" id="reset_sessions"><a class="viewcode-back" href="../capybara.html#capybara.dsl.reset_sessions">[docs]</a><span class="k">def</span> <span class="nf">reset_sessions</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Resets all sessions. &quot;&quot;&quot;</span>
+
+    <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">_session_pool</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+
+
+<span class="n">reset</span> <span class="o">=</span> <span class="n">reset_sessions</span>
+<span class="sd">&quot;&quot;&quot; Alias for :func:`reset_sessions`. &quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="string"><a class="viewcode-back" href="../capybara.html#capybara.dsl.string">[docs]</a><span class="k">def</span> <span class="nf">string</span><span class="p">(</span><span class="n">html</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wraps the given string, which should contain an HTML document or fragment in a :class:`Simple`</span>
+<span class="sd">    which exposes :class:`MatchersMixin`, :class:`FindersMixin`, and :class:`DocumentMatchersMixin`.</span>
+<span class="sd">    This allows you to query any string containing HTML in the exact same way you would query the</span>
+<span class="sd">    current document in a Capybara session.</span>
+
+<span class="sd">    Example: A single element ::</span>
+
+<span class="sd">        node = Capybara.string(\&quot;&quot;&quot;</span><span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">&quot;foo&quot;</span><span class="o">&gt;</span><span class="n">bar</span><span class="o">&lt;/</span><span class="n">a</span><span class="o">&gt;</span>\<span class="s2">&quot;&quot;&quot;)</span>
+<span class="s2">        anchor = node.find_first(&quot;a&quot;)</span>
+<span class="s2">        anchor[&quot;href&quot;]  # =&gt; &quot;foo&quot;</span>
+<span class="s2">        anchor.text  # =&gt; &quot;bar&quot;</span>
+
+<span class="s2">    Example: Multiple elements ::</span>
+
+<span class="s2">        node = Capybara.string(</span><span class="se">\&quot;</span><span class="s2">&quot;&quot;</span>
+<span class="s2">          &lt;ul&gt;</span>
+<span class="s2">            &lt;li id=&quot;home&quot;&gt;Home&lt;/li&gt;</span>
+<span class="s2">            &lt;li id=&quot;projects&quot;&gt;Projects&lt;/li&gt;</span>
+<span class="s2">          &lt;/ul&gt;</span>
+<span class="s2">        </span><span class="se">\&quot;</span><span class="s2">&quot;&quot;)</span>
+
+<span class="s2">        node.find(&quot;#projects&quot;).text  # =&gt; &quot;Projects&quot;</span>
+<span class="s2">        node.has_selector(&quot;li#home&quot;, text=&quot;Home&quot;)</span>
+<span class="s2">        node.has_selector(&quot;#projects&quot;)</span>
+<span class="s2">        node.find(&quot;ul&quot;).find(&quot;li:first-child&quot;).text  # =&gt; &quot;Home&quot;</span>
+
+<span class="s2">    Args:</span>
+<span class="s2">        html (str | lxml.etree.Element): An HTML fragment or document.</span>
+
+<span class="s2">    Returns:</span>
+<span class="s2">        Simple: A node which has Capybara&#39;s finders and matchers.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="kn">from</span> <span class="nn">capybara.node.simple</span> <span class="k">import</span> <span class="n">Simple</span>
+
+    <span class="k">return</span> <span class="n">Simple</span><span class="p">(</span><span class="n">html</span><span class="p">)</span></div>
+
+
+<span class="nd">@register_server</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">init_default_server</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">host</span><span class="p">):</span>
+    <span class="n">run_default_server</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+
+
+<span class="nd">@register_server</span><span class="p">(</span><span class="s2">&quot;werkzeug&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">init_werkzeug_server</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">host</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">werkzeug.serving</span> <span class="k">import</span> <span class="n">run_simple</span>
+    <span class="kn">from</span> <span class="nn">logging</span> <span class="k">import</span> <span class="n">getLogger</span>
+
+    <span class="c1"># Mute the server.</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;werkzeug&#39;</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">run_simple</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">app</span><span class="p">)</span>
+
+
+<span class="nd">@register_driver</span><span class="p">(</span><span class="s2">&quot;selenium&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">init_selenium_driver</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">capybara.selenium.driver</span> <span class="k">import</span> <span class="n">Driver</span>
+
+    <span class="k">return</span> <span class="n">Driver</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Ian Lesperance.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

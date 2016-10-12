@@ -1,0 +1,715 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>capybara.session &#8212; Capybara 0.0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="top" title="Capybara 0.0.1 documentation" href="../../index.html" />
+    <link rel="up" title="capybara" href="../capybara.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for capybara.session</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="k">import</span> <span class="n">ParseResult</span><span class="p">,</span> <span class="n">urlparse</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">urlparse</span> <span class="k">import</span> <span class="n">ParseResult</span><span class="p">,</span> <span class="n">urlparse</span>
+
+<span class="kn">import</span> <span class="nn">capybara</span>
+<span class="kn">from</span> <span class="nn">capybara.exceptions</span> <span class="k">import</span> <span class="n">ScopeError</span><span class="p">,</span> <span class="n">WindowError</span>
+<span class="kn">from</span> <span class="nn">capybara.node.base</span> <span class="k">import</span> <span class="n">Base</span>
+<span class="kn">from</span> <span class="nn">capybara.node.document</span> <span class="k">import</span> <span class="n">Document</span>
+<span class="kn">from</span> <span class="nn">capybara.node.element</span> <span class="k">import</span> <span class="n">Element</span>
+<span class="kn">from</span> <span class="nn">capybara.server</span> <span class="k">import</span> <span class="n">Server</span>
+<span class="kn">from</span> <span class="nn">capybara.session_matchers</span> <span class="k">import</span> <span class="n">SessionMatchersMixin</span>
+<span class="kn">from</span> <span class="nn">capybara.utils</span> <span class="k">import</span> <span class="n">cached_property</span><span class="p">,</span> <span class="n">encode_string</span>
+<span class="kn">from</span> <span class="nn">capybara.window</span> <span class="k">import</span> <span class="n">Window</span>
+
+
+<span class="n">_DOCUMENT_METHODS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;assert_no_title&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_title&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_title&quot;</span><span class="p">,</span> <span class="s2">&quot;has_title&quot;</span><span class="p">]</span>
+<span class="n">_DOCUMENT_PROPERTIES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
+<span class="n">_NODE_METHODS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;assert_no_selector&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_no_text&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_selector&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_text&quot;</span><span class="p">,</span> <span class="s2">&quot;attach_file&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check&quot;</span><span class="p">,</span> <span class="s2">&quot;choose&quot;</span><span class="p">,</span> <span class="s2">&quot;click_button&quot;</span><span class="p">,</span> <span class="s2">&quot;click_link&quot;</span><span class="p">,</span> <span class="s2">&quot;click_link_or_button&quot;</span><span class="p">,</span> <span class="s2">&quot;click_on&quot;</span><span class="p">,</span> <span class="s2">&quot;fill_in&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;find&quot;</span><span class="p">,</span> <span class="s2">&quot;find_all&quot;</span><span class="p">,</span> <span class="s2">&quot;find_button&quot;</span><span class="p">,</span> <span class="s2">&quot;find_by_id&quot;</span><span class="p">,</span> <span class="s2">&quot;find_field&quot;</span><span class="p">,</span> <span class="s2">&quot;find_first&quot;</span><span class="p">,</span> <span class="s2">&quot;find_link&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;has_button&quot;</span><span class="p">,</span> <span class="s2">&quot;has_checked_field&quot;</span><span class="p">,</span> <span class="s2">&quot;has_content&quot;</span><span class="p">,</span> <span class="s2">&quot;has_css&quot;</span><span class="p">,</span> <span class="s2">&quot;has_field&quot;</span><span class="p">,</span> <span class="s2">&quot;has_link&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;has_no_button&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_checked_field&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_css&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_field&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_link&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;has_no_select&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_selector&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_table&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_text&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_unchecked_field&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;has_no_xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;has_select&quot;</span><span class="p">,</span> <span class="s2">&quot;has_selector&quot;</span><span class="p">,</span> <span class="s2">&quot;has_table&quot;</span><span class="p">,</span> <span class="s2">&quot;has_text&quot;</span><span class="p">,</span> <span class="s2">&quot;has_unchecked_field&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;has_xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;select&quot;</span><span class="p">,</span> <span class="s2">&quot;uncheck&quot;</span><span class="p">,</span> <span class="s2">&quot;unselect&quot;</span><span class="p">]</span>
+<span class="n">_NODE_PROPERTIES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
+<span class="n">_SESSION_METHODS</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;accept_alert&quot;</span><span class="p">,</span> <span class="s2">&quot;accept_confirm&quot;</span><span class="p">,</span> <span class="s2">&quot;accept_prompt&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_current_path&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;assert_no_current_path&quot;</span><span class="p">,</span> <span class="s2">&quot;dismiss_confirm&quot;</span><span class="p">,</span> <span class="s2">&quot;dismiss_prompt&quot;</span><span class="p">,</span> <span class="s2">&quot;evaluate_script&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;execute_script&quot;</span><span class="p">,</span> <span class="s2">&quot;fieldset&quot;</span><span class="p">,</span> <span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="s2">&quot;go_back&quot;</span><span class="p">,</span> <span class="s2">&quot;go_forward&quot;</span><span class="p">,</span> <span class="s2">&quot;has_current_path&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;has_no_current_path&quot;</span><span class="p">,</span> <span class="s2">&quot;open_new_window&quot;</span><span class="p">,</span> <span class="s2">&quot;reset&quot;</span><span class="p">,</span> <span class="s2">&quot;save_page&quot;</span><span class="p">,</span> <span class="s2">&quot;save_screenshot&quot;</span><span class="p">,</span> <span class="s2">&quot;scope&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;switch_to_window&quot;</span><span class="p">,</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;visit&quot;</span><span class="p">,</span> <span class="s2">&quot;window&quot;</span><span class="p">,</span> <span class="s2">&quot;window_opened_by&quot;</span><span class="p">]</span>
+<span class="n">_SESSION_PROPERTIES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;current_host&quot;</span><span class="p">,</span> <span class="s2">&quot;current_path&quot;</span><span class="p">,</span> <span class="s2">&quot;current_url&quot;</span><span class="p">,</span> <span class="s2">&quot;current_window&quot;</span><span class="p">,</span> <span class="s2">&quot;windows&quot;</span><span class="p">]</span>
+
+<span class="n">DSL_METHODS</span> <span class="o">=</span> <span class="n">_DOCUMENT_METHODS</span> <span class="o">+</span> <span class="n">_NODE_METHODS</span> <span class="o">+</span> <span class="n">_SESSION_METHODS</span>
+
+
+<div class="viewcode-block" id="Session"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session">[docs]</a><span class="k">class</span> <span class="nc">Session</span><span class="p">(</span><span class="n">SessionMatchersMixin</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Session class represents a single user&#39;s interaction with the system. The Session can use</span>
+<span class="sd">    any of the underlying drivers. A session can be initialized manually like this::</span>
+
+<span class="sd">        session = Session(&quot;selenium&quot;, MyWSGIApp)</span>
+
+<span class="sd">    The application given as the second argument is optional. When running Capybara against an</span>
+<span class="sd">    external page, you might want to leave it out::</span>
+
+<span class="sd">        session = Session(&quot;selenium&quot;)</span>
+<span class="sd">        session.visit(&quot;http://www.google.com&quot;)</span>
+
+<span class="sd">    Session provides a number of methods and properties for controlling the navigation of the page,</span>
+<span class="sd">    such as :meth:`visit`, :attr:`current_path`, and so on. It also delegates a number of methods to</span>
+<span class="sd">    a :class:`Document`, representing the current HTML document. This allows interaction::</span>
+
+<span class="sd">        session.fill_in(&quot;q&quot;, value=&quot;Capybara&quot;)</span>
+<span class="sd">        session.click_button(&quot;Search&quot;)</span>
+<span class="sd">        assert session.has_text(&quot;Capybara&quot;)</span>
+
+<span class="sd">    When using :mod:`capybara.dsl`, the Session is initialized automatically for you.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mode (str): The name of the driver to use.</span>
+<span class="sd">        app (object): The WSGI-compliant app with which to interact.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="o">=</span> <span class="n">Server</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">boot</span><span class="p">()</span> <span class="k">if</span> <span class="n">app</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">synchronized</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+
+    <span class="nd">@cached_property</span>
+<div class="viewcode-block" id="Session.driver"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.driver">[docs]</a>    <span class="k">def</span> <span class="nf">driver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; driver.Base: The driver for the current session. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">capybara</span><span class="o">.</span><span class="n">drivers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span></div>
+
+    <span class="nd">@cached_property</span>
+<div class="viewcode-block" id="Session.document"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.document">[docs]</a>    <span class="k">def</span> <span class="nf">document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Document: The document for the current page. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_scope</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; node.Base: The current node relative to which all interaction will be scoped. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">document</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">html</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; str: A snapshot of the DOM of the current document, as it looks right now. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">html</span>
+
+    <span class="n">body</span> <span class="o">=</span> <span class="n">html</span>
+    <span class="sd">&quot;&quot;&quot; Alias for :attr:`html`. &quot;&quot;&quot;</span>
+
+    <span class="n">source</span> <span class="o">=</span> <span class="n">html</span>
+    <span class="sd">&quot;&quot;&quot; Alias for :attr:`html`. &quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; str: Path of the current page, without any domain information. &quot;&quot;&quot;</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">)</span><span class="o">.</span><span class="n">path</span>
+        <span class="k">return</span> <span class="n">path</span> <span class="k">if</span> <span class="n">path</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_host</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; str: Host of the current page. &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">)</span>
+        <span class="n">scheme</span><span class="p">,</span> <span class="n">netloc</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">scheme</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">netloc</span>
+        <span class="n">host</span> <span class="o">=</span> <span class="n">netloc</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">netloc</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{0}</span><span class="s2">://</span><span class="si">{1}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scheme</span><span class="p">,</span> <span class="n">host</span><span class="p">)</span> <span class="k">if</span> <span class="n">host</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; str: Fully qualified URL of the current page. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">current_url</span>
+
+<div class="viewcode-block" id="Session.visit"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.visit">[docs]</a>    <span class="k">def</span> <span class="nf">visit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">visit_uri</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Navigate to the given URL. The URL can either be a relative URL or an absolute URL. The</span>
+<span class="sd">        behavior of either depends on the driver. ::</span>
+
+<span class="sd">            session.visit(&quot;/foo&quot;)</span>
+<span class="sd">            session.visit(&quot;http://google.com&quot;)</span>
+
+<span class="sd">        For drivers which can run against an external application, such as the Selenium driver,</span>
+<span class="sd">        giving an absolute URL will navigate to that page. This allows testing applications running</span>
+<span class="sd">        on remote servers. For these drivers, setting :data:`capybara.app_host` will make the</span>
+<span class="sd">        remote server the default. For example::</span>
+
+<span class="sd">            capybara.app_host = &quot;http://google.com&quot;</span>
+<span class="sd">            session.visit(&quot;/&quot;)  # visits the Google homepage</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            visit_uri (str): The URL to navigate to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">visit_uri</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">visit_uri</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">capybara</span><span class="o">.</span><span class="n">app_host</span><span class="p">:</span>
+            <span class="n">uri_base</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">capybara</span><span class="o">.</span><span class="n">app_host</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+            <span class="n">uri_base</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="s2">&quot;http://</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">port</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">uri_base</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">visit_uri</span> <span class="o">=</span> <span class="n">ParseResult</span><span class="p">(</span>
+            <span class="n">scheme</span><span class="o">=</span><span class="n">visit_uri</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">or</span> <span class="p">(</span><span class="n">uri_base</span><span class="o">.</span><span class="n">scheme</span> <span class="k">if</span> <span class="n">uri_base</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">netloc</span><span class="o">=</span><span class="n">visit_uri</span><span class="o">.</span><span class="n">netloc</span> <span class="ow">or</span> <span class="p">(</span><span class="n">uri_base</span><span class="o">.</span><span class="n">netloc</span> <span class="k">if</span> <span class="n">uri_base</span> <span class="k">else</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">visit_uri</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">params</span><span class="o">=</span><span class="n">visit_uri</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
+            <span class="n">query</span><span class="o">=</span><span class="n">visit_uri</span><span class="o">.</span><span class="n">query</span><span class="p">,</span>
+            <span class="n">fragment</span><span class="o">=</span><span class="n">visit_uri</span><span class="o">.</span><span class="n">fragment</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">visit_uri</span><span class="o">.</span><span class="n">geturl</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Session.go_back"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.go_back">[docs]</a>    <span class="k">def</span> <span class="nf">go_back</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Move back a single entry in the browser&#39;s history. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">go_back</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Session.go_forward"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.go_forward">[docs]</a>    <span class="k">def</span> <span class="nf">go_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Move forward a single entry in the browser&#39;s history. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">go_forward</span><span class="p">()</span></div>
+
+    <span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="Session.scope"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.scope">[docs]</a>    <span class="k">def</span> <span class="nf">scope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Executes the wrapped code within the context of a node. ``scope`` takes the same options</span>
+<span class="sd">        as :meth:`find`. For the duration of the context, any command to Capybara will be handled</span>
+<span class="sd">        as though it were scoped to the given element. ::</span>
+
+<span class="sd">            with scope(&quot;xpath&quot;, &quot;//div[@id=&#39;delivery-address&#39;]&quot;):</span>
+<span class="sd">                fill_in(&quot;Street&quot;, value=&quot;12 Main Street&quot;)</span>
+
+<span class="sd">        Just as with :meth:`find`, if multiple elements match the selector given to ``scope``, an</span>
+<span class="sd">        error will be raised, and just as with :meth:`find`, this behavior can be controlled</span>
+<span class="sd">        through the ``match`` and ``exact`` options.</span>
+
+<span class="sd">        It is possible to omit the first argument, in that case, the selector is assumed to be of</span>
+<span class="sd">        the type set in :data:`capybara.default_selector`. ::</span>
+
+<span class="sd">            with scope(&quot;div#delivery-address&quot;):</span>
+<span class="sd">                fill_in(&quot;Street&quot;, value=&quot;12 Main Street&quot;)</span>
+
+<span class="sd">        Note that a lot of uses of ``scope`` can be replaced more succinctly with chaining::</span>
+
+<span class="sd">            find(&quot;div#delivery-address&quot;).fill_in(&quot;Street&quot;, value=&quot;12 Main Street&quot;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            *args: Variable length argument list for the call to :meth:`find`.</span>
+<span class="sd">            **kwargs: Arbitrary keywords arguments for the call to :meth:`find`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">new_scope</span> <span class="o">=</span> <span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">Base</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_scope</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">yield</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span></div>
+
+    <span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="Session.fieldset"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.fieldset">[docs]</a>    <span class="k">def</span> <span class="nf">fieldset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the wrapped code within a specific fieldset given the id or legend of that</span>
+<span class="sd">        fieldset.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): The id or legend of the fieldset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">&quot;fieldset&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+            <span class="k">yield</span></div>
+
+    <span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="Session.table"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.table">[docs]</a>    <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the wrapped code within a specific table given the id or caption of that table.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str): The id or caption of the table.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+            <span class="k">yield</span></div>
+
+    <span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="Session.frame"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.frame">[docs]</a>    <span class="k">def</span> <span class="nf">frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the wrapped code within the given iframe using the given frame or frame name/id.</span>
+<span class="sd">        May not be supported by all drivers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            locator (str | Element): The name/id of the frame or the frame&#39;s element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">new_frame</span> <span class="o">=</span> <span class="n">locator</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">Element</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="n">new_frame</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">yield</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="s2">&quot;parent&quot;</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">current_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Window: The current window. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">current_window_handle</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">windows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get all opened windows. The order of the windows in the returned list is not defined. The</span>
+<span class="sd">        driver may sort windows by their creation time but it&#39;s not required.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[Window]: A list of all windows.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">Window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window_handle</span><span class="p">)</span> <span class="k">for</span> <span class="n">window_handle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">window_handles</span><span class="p">]</span>
+
+<div class="viewcode-block" id="Session.open_new_window"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.open_new_window">[docs]</a>    <span class="k">def</span> <span class="nf">open_new_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Open new window. The current window doesn&#39;t change as a result of this call. It should be</span>
+<span class="sd">        switched explicitly.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Window: The window that has been opened.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_opened_by</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">open_new_window</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Session.switch_to_window"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.switch_to_window">[docs]</a>    <span class="k">def</span> <span class="nf">switch_to_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        If ``window`` is a lambda, it switches to the first window for which ``window`` returns a</span>
+<span class="sd">        value other than False or None. If a window that matches can&#39;t be found, the window will be</span>
+<span class="sd">        switched back and :exc:`WindowError` will be raised.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            window (Window | lambda): The window that should be switched to, or a filtering lambda.</span>
+<span class="sd">            wait (int | float, optional): The number of seconds to wait to find the window.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Window: The new current window.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ScopeError: If this method is invoked inside :meth:`scope, :meth:`frame`, or</span>
+<span class="sd">                :meth:`window`.</span>
+<span class="sd">            WindowError: If no window matches the given lambda.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ScopeError</span><span class="p">(</span>
+                <span class="s2">&quot;`switch_to_window` is not supposed to be invoked from &quot;</span>
+                <span class="s2">&quot;within `scope`s, `frame`s, or other `window`s.&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">Window</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">window</span><span class="o">.</span><span class="n">handle</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">window</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nd">@self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">synchronize</span><span class="p">(</span><span class="n">errors</span><span class="o">=</span><span class="p">(</span><span class="n">WindowError</span><span class="p">,),</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">)</span>
+            <span class="k">def</span> <span class="nf">switch_and_get_matching_window</span><span class="p">():</span>
+                <span class="n">original_window_handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">current_window_handle</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">handle</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">window_handles</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+                        <span class="n">result</span> <span class="o">=</span> <span class="n">window</span><span class="p">()</span>
+                        <span class="k">if</span> <span class="n">result</span><span class="p">:</span>
+                            <span class="k">return</span> <span class="n">Window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">handle</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">original_window_handle</span><span class="p">)</span>
+                    <span class="k">raise</span>
+
+                <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">original_window_handle</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="n">WindowError</span><span class="p">(</span><span class="s2">&quot;Could not find a window matching lambda&quot;</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">switch_and_get_matching_window</span><span class="p">()</span></div>
+
+    <span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="Session.window"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.window">[docs]</a>    <span class="k">def</span> <span class="nf">window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        This method does the following:</span>
+
+<span class="sd">        1. Switches to the given window (it can be located by window instance/lambda/string).</span>
+<span class="sd">        2. Executes the given block (within window located at previous step).</span>
+<span class="sd">        3. Switches back (this step will be invoked even if exception happens at second step).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            window (Window | lambda): The desired :class:`Window`, or a lambda that will be run in</span>
+<span class="sd">                the context of each open window and returns ``True`` for the desired window.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">original</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_window</span>
+        <span class="k">if</span> <span class="n">window</span> <span class="o">!=</span> <span class="n">original</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">yield</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">original</span> <span class="o">!=</span> <span class="n">window</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">original</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Session.window_opened_by"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.window_opened_by">[docs]</a>    <span class="k">def</span> <span class="nf">window_opened_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trigger_func</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the window that has been opened by the passed lambda. It will wait for it to be opened</span>
+<span class="sd">        (in the same way as other Capybara methods wait). It&#39;s better to use this method than</span>
+<span class="sd">        ``windows[-1]`` `as order of windows isn&#39;t defined in some drivers`__.</span>
+
+<span class="sd">        __ https://dvcs.w3.org/hg/webdriver/raw-file/default/webdriver-spec.html#h_note_10</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            trigger_func (func): The function that should trigger the opening of a new window.</span>
+<span class="sd">            wait (int | float, optional): Maximum wait time. Defaults to</span>
+<span class="sd">                :data:`capybara.default_max_wait_time`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Window: The window that has been opened within the lambda.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            WindowError: If lambda passed to window hasn&#39;t opened window or opened more than one</span>
+<span class="sd">                window.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">old_handles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">window_handles</span><span class="p">)</span>
+        <span class="n">trigger_func</span><span class="p">()</span>
+
+        <span class="nd">@self</span><span class="o">.</span><span class="n">document</span><span class="o">.</span><span class="n">synchronize</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="p">(</span><span class="n">WindowError</span><span class="p">,))</span>
+        <span class="k">def</span> <span class="nf">get_new_window</span><span class="p">():</span>
+            <span class="n">opened_handles</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">window_handles</span><span class="p">)</span> <span class="o">-</span> <span class="n">old_handles</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">opened_handles</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">WindowError</span><span class="p">(</span><span class="s2">&quot;lambda passed to `window_opened_by` &quot;</span>
+                                  <span class="s2">&quot;opened </span><span class="si">{0}</span><span class="s2"> windows instead of 1&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">opened_handles</span><span class="p">)))</span>
+            <span class="k">return</span> <span class="n">Window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">opened_handles</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">get_new_window</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Session.execute_script"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.execute_script">[docs]</a>    <span class="k">def</span> <span class="nf">execute_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the given script, not returning a result. This is useful for scripts that return</span>
+<span class="sd">        complex objects, such as jQuery statements. ``execute_script`` should be used over</span>
+<span class="sd">        :meth:`evaluate_script` whenever possible.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            script (str): A string of JavaScript to execute.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="n">script</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Session.evaluate_script"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.evaluate_script">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate the given JavaScript and return the result. Be careful when using this with</span>
+<span class="sd">        scripts that return complex objects, such as jQuery statements. :meth:`execute_script`</span>
+<span class="sd">        might be a better alternative.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            script (str): A string of JavaScript to evaluate.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            object: The result of the evaluated JavaScript (may be driver specific).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">evaluate_script</span><span class="p">(</span><span class="n">script</span><span class="p">)</span></div>
+
+    <span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="Session.accept_alert"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.accept_alert">[docs]</a>    <span class="k">def</span> <span class="nf">accept_alert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the wrapped code, accepting an alert.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            text (str, optional): Text to match against the text in the modal.</span>
+<span class="sd">            wait (int | float, optional): Maximum time to wait for the modal to appear after</span>
+<span class="sd">                executing the wrapped code.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ModalNotFound: If a modal dialog hasn&#39;t been found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">wait</span> <span class="o">=</span> <span class="n">wait</span> <span class="ow">or</span> <span class="n">capybara</span><span class="o">.</span><span class="n">default_max_wait_time</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">accept_modal</span><span class="p">(</span><span class="s2">&quot;alert&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span>
+            <span class="k">yield</span></div>
+
+    <span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="Session.accept_confirm"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.accept_confirm">[docs]</a>    <span class="k">def</span> <span class="nf">accept_confirm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the wrapped code, accepting a confirm.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            text (str, optional): Text to match against the text in the modal.</span>
+<span class="sd">            wait (int | float, optional): Maximum time to wait for the modal to appear after</span>
+<span class="sd">                executing the wrapped code.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ModalNotFound: If a modal dialog hasn&#39;t been found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">accept_modal</span><span class="p">(</span><span class="s2">&quot;confirm&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span>
+            <span class="k">yield</span></div>
+
+    <span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="Session.dismiss_confirm"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.dismiss_confirm">[docs]</a>    <span class="k">def</span> <span class="nf">dismiss_confirm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the wrapped code, dismissing a confirm.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            text (str, optional): Text to match against the text in the modal.</span>
+<span class="sd">            wait (int | float, optional): Maximum time to wait for the modal to appear after</span>
+<span class="sd">                executing the wrapped code.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ModalNotFound: If a modal dialog hasn&#39;t been found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">dismiss_modal</span><span class="p">(</span><span class="s2">&quot;confirm&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span>
+            <span class="k">yield</span></div>
+
+    <span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="Session.accept_prompt"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.accept_prompt">[docs]</a>    <span class="k">def</span> <span class="nf">accept_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the wrapped code, accepting a prompt, optionally responding to the prompt.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            text (str, optional): Text to match against the text in the modal.</span>
+<span class="sd">            response (str, optional): Response to provide to the prompt.</span>
+<span class="sd">            wait (int | float, optional): Maximum time to wait for the modal to appear after</span>
+<span class="sd">                executing the wrapped code.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ModalNotFound: If a modal dialog hasn&#39;t been found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">accept_modal</span><span class="p">(</span><span class="s2">&quot;prompt&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span>
+            <span class="k">yield</span></div>
+
+    <span class="nd">@contextmanager</span>
+<div class="viewcode-block" id="Session.dismiss_prompt"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.dismiss_prompt">[docs]</a>    <span class="k">def</span> <span class="nf">dismiss_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Execute the wrapped code, dismissing a prompt.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            text (str, optional): Text to match against the text in the modal.</span>
+<span class="sd">            wait (int | float, optional): Maximum time to wait for the modal to appear after</span>
+<span class="sd">                executing the wrapped code.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            ModalNotFound: If a modal dialog hasn&#39;t been found.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">dismiss_modal</span><span class="p">(</span><span class="s2">&quot;prompt&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span>
+            <span class="k">yield</span></div>
+
+<div class="viewcode-block" id="Session.save_page"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.save_page">[docs]</a>    <span class="k">def</span> <span class="nf">save_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save a snapshot of the page.</span>
+
+<span class="sd">        If invoked without arguments, it will save a file to :data:`capybara.save_path` and the</span>
+<span class="sd">        file will be given a randomly generated filename. If invoked with a relative path, the path</span>
+<span class="sd">        will be relative to :data:`capybara.save_path`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str, optional): The path to where it should be saved.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The path to which the file was saved.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="n">_prepare_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">encode_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">path</span></div>
+
+<div class="viewcode-block" id="Session.save_screenshot"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.save_screenshot">[docs]</a>    <span class="k">def</span> <span class="nf">save_screenshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Save a screenshot of the page.</span>
+
+<span class="sd">        If invoked without arguments, it will save a file to :data:`capybara.save_path` and the</span>
+<span class="sd">        file will be given a randomly generated filename. If invoked with a relative path, the path</span>
+<span class="sd">        will be relative to :data:`capybara.save_path`.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            path (str, optional): The path to where it should be saved.</span>
+<span class="sd">            **kwargs: Arbitrary keywords arguments for the driver.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The path to which the file was saved.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">path</span> <span class="o">=</span> <span class="n">_prepare_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">path</span></div>
+
+<div class="viewcode-block" id="Session.reset"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Reset the session (i.e., remove cookies and navigate to a blank page).</span>
+
+<span class="sd">        This method does not:</span>
+<span class="sd">        * accept modal dialogs if they are present (the Selenium driver does, but others may not),</span>
+<span class="sd">        * clear the browser cache/HTML 5 local storage/IndexedDB/Web SQL database/etc., or</span>
+<span class="sd">        * modify the state of the driver/underlying browser in any other way</span>
+
+<span class="sd">        as doing so would result in performance downsides and it&#39;s not needed to do everything</span>
+<span class="sd">        from the list above for most apps.</span>
+
+<span class="sd">        If you want to do anything from the list above on a general basis you can write a test</span>
+<span class="sd">        teardown method.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+
+    <span class="n">cleanup</span> <span class="o">=</span> <span class="n">reset</span>
+    <span class="sd">&quot;&quot;&quot; Alias for :meth:`reset`. &quot;&quot;&quot;</span>
+
+    <span class="n">reset_session</span> <span class="o">=</span> <span class="n">reset</span>
+    <span class="sd">&quot;&quot;&quot; Alias for :meth:`reset`. &quot;&quot;&quot;</span></div>
+
+
+<span class="k">def</span> <span class="nf">_define_document_method</span><span class="p">(</span><span class="n">method_name</span><span class="p">):</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="n">method_name</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="p">,</span> <span class="n">method_name</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">Session</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_define_document_property</span><span class="p">(</span><span class="n">property_name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">document</span><span class="p">,</span> <span class="n">property_name</span><span class="p">)</span>
+    <span class="n">fdoc</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Document</span><span class="p">,</span> <span class="n">property_name</span><span class="p">)</span><span class="o">.</span><span class="n">__doc__</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">Session</span><span class="p">,</span> <span class="n">property_name</span><span class="p">,</span> <span class="nb">property</span><span class="p">(</span><span class="n">fget</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fdoc</span><span class="p">))</span>
+
+
+<span class="k">def</span> <span class="nf">_define_node_method</span><span class="p">(</span><span class="n">method_name</span><span class="p">):</span>
+    <span class="nd">@wraps</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">Base</span><span class="p">,</span> <span class="n">method_name</span><span class="p">))</span>
+    <span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_scope</span><span class="p">,</span> <span class="n">method_name</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">Session</span><span class="p">,</span> <span class="n">method_name</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_define_node_property</span><span class="p">(</span><span class="n">property_name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">fget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_scope</span><span class="p">,</span> <span class="n">property_name</span><span class="p">)</span>
+    <span class="n">fdoc</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">Base</span><span class="p">,</span> <span class="n">property_name</span><span class="p">)</span><span class="o">.</span><span class="n">__doc__</span>
+    <span class="nb">setattr</span><span class="p">(</span><span class="n">Session</span><span class="p">,</span> <span class="n">property_name</span><span class="p">,</span> <span class="nb">property</span><span class="p">(</span><span class="n">fget</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fdoc</span><span class="p">))</span>
+
+
+<span class="k">for</span> <span class="n">method_name</span> <span class="ow">in</span> <span class="n">_DOCUMENT_METHODS</span><span class="p">:</span>
+    <span class="n">_define_document_method</span><span class="p">(</span><span class="n">method_name</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">property_name</span> <span class="ow">in</span> <span class="n">_DOCUMENT_PROPERTIES</span><span class="p">:</span>
+    <span class="n">_define_document_property</span><span class="p">(</span><span class="n">property_name</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">method_name</span> <span class="ow">in</span> <span class="n">_NODE_METHODS</span><span class="p">:</span>
+    <span class="n">_define_node_method</span><span class="p">(</span><span class="n">method_name</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">property_name</span> <span class="ow">in</span> <span class="n">_NODE_PROPERTIES</span><span class="p">:</span>
+    <span class="n">_define_node_property</span><span class="p">(</span><span class="n">property_name</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_prepare_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">extension</span><span class="p">):</span>
+    <span class="n">save_path</span> <span class="o">=</span> <span class="n">capybara</span><span class="o">.</span><span class="n">save_path</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">path</span> <span class="ow">or</span> <span class="n">_default_fn</span><span class="p">(</span><span class="n">extension</span><span class="p">)))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">)):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">path</span>
+
+
+<span class="k">def</span> <span class="nf">_default_fn</span><span class="p">(</span><span class="n">extension</span><span class="p">):</span>
+    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">%H%M%S&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;capybara-</span><span class="si">{timestamp}{random}</span><span class="s2">.</span><span class="si">{extension}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
+        <span class="n">random</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="o">**</span><span class="mi">10</span><span class="p">),</span>
+        <span class="n">extension</span><span class="o">=</span><span class="n">extension</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  <li><a href="../capybara.html">capybara</a><ul>
+  </ul></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Ian Lesperance.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
