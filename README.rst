@@ -14,3 +14,12 @@ Documentation
 ~~~~~~~~~~~~~
 
 See https://elliterate.github.io/capybara.py/.
+
+Credits
+~~~~~~~
+
+Ported to Python by `Ian Lesperance`_, from the `original Ruby library`_ by `Jonas Nicklas`_.
+
+.. _Ian Lesperance: https://github.com/elliterate
+.. _Jonas Nicklas: https://github.com/jnicklas
+.. _original Ruby library: https://github.com/jnicklas/capybara
