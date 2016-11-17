@@ -6,6 +6,7 @@ from selenium.common.exceptions import (
     NoSuchWindowException,
     StaleElementReferenceException,
     UnexpectedAlertPresentException)
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from time import sleep, time
@@ -24,9 +25,10 @@ class Driver(Base):
 
     @cached_property
     def browser(self):
-        browser = webdriver.Firefox(
-            # Auto-accept unload alerts triggered by navigating away.
-            capabilities={"unexpectedAlertBehaviour": "ignore"})
+        capabilities = DesiredCapabilities.FIREFOX.copy()
+        # Auto-accept unload alerts triggered by navigating away.
+        capabilities["unexpectedAlertBehaviour"] = "ignore"
+        browser = webdriver.Firefox(capabilities=capabilities)
         atexit.register(browser.quit)
         return browser
 
