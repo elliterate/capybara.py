@@ -7,8 +7,8 @@ if PY2:
     from urlparse import ParseResult, urlparse
 
     bytes_ = unicode
-    bytes_decode_attr_name = "encode"
-    string_encode_attr_name = "decode"
+    bytes_decode = unicode.encode
+    str_encode = str.decode
 
     def wsgi_decode_body(body):
         return body
@@ -21,8 +21,8 @@ else:
     from urllib.parse import ParseResult, urlparse
 
     bytes_ = bytes
-    bytes_decode_attr_name = "decode"
-    string_encode_attr_name = "encode"
+    bytes_decode = bytes.decode
+    str_encode = str.encode
 
     def wsgi_decode_body(body):
         return body.decode()

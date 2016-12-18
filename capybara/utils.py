@@ -3,7 +3,7 @@ import signal
 from socket import socket
 from time import time
 
-from capybara.compat import bytes_, bytes_decode_attr_name, string_encode_attr_name
+from capybara.compat import bytes_, bytes_decode, str_encode
 
 
 _missing = object()
@@ -30,12 +30,12 @@ class cached_property(property):
 
 def decode_bytes(value):
     """ str: Decodes the given byte sequence. """
-    return getattr(value, bytes_decode_attr_name)("utf-8")
+    return bytes_decode(value, "utf-8")
 
 
 def encode_string(value):
     """ bytes: Encodes the given string. """
-    return getattr(value, string_encode_attr_name)("utf-8") if isinstance(value, str) else value
+    return str_encode(value, "utf-8") if isinstance(value, str) else value
 
 
 def find_available_port():
