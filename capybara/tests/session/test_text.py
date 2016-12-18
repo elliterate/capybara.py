@@ -1,3 +1,6 @@
+# coding=utf-8
+import sys
+
 import capybara
 
 
@@ -30,6 +33,11 @@ class TestText:
     def test_strips_whitespace(self, session):
         session.visit("/with_html")
         assert "text with whitespace" in session.find("xpath", "//*[@id='second']").text
+
+    def test_returns_unicode_text(self, session):
+        expected_text = "이름" if sys.version_info >= (3, 0) else u"이름"
+        session.visit("/with_html")
+        assert session.find("id", "unicode-text").text == expected_text
 
 
 class TestAllText:

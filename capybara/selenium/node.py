@@ -2,7 +2,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 
 from capybara.exceptions import ReadOnlyElementError, UnselectNotAllowed
 from capybara.driver.node import Node as Base
-from capybara.helpers import normalize_text
+from capybara.helpers import normalize_whitespace
 
 
 class Node(Base):
@@ -56,11 +56,11 @@ class Node(Base):
     @property
     def all_text(self):
         text = self.driver.browser.execute_script("return arguments[0].textContent", self.native)
-        return normalize_text(text)
+        return normalize_whitespace(text)
 
     @property
     def visible_text(self):
-        return normalize_text(self.native.text)
+        return normalize_whitespace(self.native.text)
 
     def __getitem__(self, name):
         return self.native.get_attribute(name)
