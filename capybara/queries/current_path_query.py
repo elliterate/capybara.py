@@ -1,9 +1,4 @@
-import sys
-if sys.version_info >= (3, 0):
-    from urllib.parse import urlparse
-else:
-    from urlparse import urlparse
-
+from capybara.compat import urlparse
 from capybara.helpers import desc
 from capybara.utils import isregex
 

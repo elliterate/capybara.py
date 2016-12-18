@@ -2,13 +2,9 @@ import os
 import pytest
 import re
 import shutil
-import sys
-if sys.version_info >= (3, 3):
-    from unittest.mock import patch
-else:
-    from mock import patch
 
 import capybara
+from capybara.tests.compat import patch
 
 
 class TestSaveScreenshot:

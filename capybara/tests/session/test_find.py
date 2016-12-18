@@ -1,15 +1,11 @@
 import pytest
-import sys
 import time
-if sys.version_info >= (3, 3):
-    from unittest.mock import patch
-else:
-    from mock import patch
 from xpath import dsl as x
 
 import capybara
 from capybara.exceptions import Ambiguous, ElementNotFound, FrozenInTime
 from capybara.selector import add_selector, remove_selector
+from capybara.tests.compat import patch
 
 
 class FindTestCase:

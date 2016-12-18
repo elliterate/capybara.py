@@ -1,10 +1,5 @@
-import sys
-if sys.version_info >= (3, 0):
-    from urllib.parse import urlparse
-else:
-    from urlparse import urlparse
-
 import capybara
+from capybara.compat import urlparse
 from capybara.session import Session
 
 

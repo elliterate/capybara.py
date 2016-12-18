@@ -3,13 +3,9 @@ from datetime import datetime
 from functools import wraps
 import os
 import random
-import sys
-if sys.version_info >= (3, 0):
-    from urllib.parse import ParseResult, urlparse
-else:
-    from urlparse import ParseResult, urlparse
 
 import capybara
+from capybara.compat import ParseResult, urlparse
 from capybara.exceptions import ScopeError, WindowError
 from capybara.node.base import Base
 from capybara.node.document import Document

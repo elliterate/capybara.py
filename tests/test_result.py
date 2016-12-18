@@ -1,11 +1,7 @@
 import pytest
-import sys
-if sys.version_info >= (3, 3):
-    from unittest.mock import NonCallableMock
-else:
-    from mock import NonCallableMock
 
 from capybara.result import Result
+from capybara.tests.compat import NonCallableMock
 
 
 class TestResult:

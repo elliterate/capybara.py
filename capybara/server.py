@@ -1,13 +1,8 @@
 from contextlib import closing
-import sys
 from threading import Thread
-if sys.version_info >= (3, 0):
-    from urllib.error import URLError
-    from urllib.request import urlopen
-else:
-    from urllib2 import URLError, urlopen
 
 import capybara
+from capybara.compat import URLError, urlopen, wsgi_decode_body, wsgi_encode_body
 from capybara.utils import cached_property, find_available_port, timeout
 
 
@@ -92,7 +87,7 @@ class Server(object):
                 body, status_code = response.read(), response.getcode()
 
                 if str(status_code)[0] == "2" or str(status_code)[0] == "3":
-                    return decode_body(body) == str(id(self.app))
+                    return wsgi_decode_body(body) == str(id(self.app))
         except URLError:
             pass
 
@@ -111,18 +106,4 @@ class Middleware(object):
 
     def identify(self, environ, start_response):
         start_response("200 OK", [("Content-Type", "text/plain")])
-        return [encode_body(str(id(self.app)))]
-
-
-if sys.version_info >= (3, 0):
-    def decode_body(body):
-        return body.decode()
-
-    def encode_body(body):
-        return body.encode()
-else:
-    def decode_body(body):
-        return body
-
-    def encode_body(body):
-        return body
+        return [wsgi_encode_body(str(id(self.app)))]
