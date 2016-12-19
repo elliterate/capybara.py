@@ -1,5 +1,5 @@
 # coding=utf-8
-import sys
+from __future__ import unicode_literals
 
 import capybara
 
@@ -35,9 +35,8 @@ class TestText:
         assert "text with whitespace" in session.find("xpath", "//*[@id='second']").text
 
     def test_returns_unicode_text(self, session):
-        expected_text = "이름" if sys.version_info >= (3, 0) else u"이름"
         session.visit("/with_html")
-        assert session.find("id", "unicode-text").text == expected_text
+        assert session.find("id", "unicode-text").text == "이름"
 
 
 class TestAllText:

@@ -1,7 +1,8 @@
 # coding=utf-8
+from __future__ import unicode_literals
+
 import pytest
 import re
-import sys
 
 import capybara
 from capybara.exceptions import ExpectationNotMet
@@ -22,15 +23,13 @@ class TestAssertText:
             session.assert_text("thisisnotonthepage")
 
     def test_is_true_if_the_given_unicode_text_is_on_the_page(self, session):
-        expected_text = "이름" if sys.version_info >= (3, 0) else u"이름"
         session.visit("/with_html")
-        assert session.assert_text(expected_text) is True
+        assert session.assert_text("이름") is True
 
     def test_raises_an_error_if_the_given_unicode_text_is_not_on_the_page(self, session):
-        expected_text = "论坛" if sys.version_info >= (3, 0) else u"论坛"
         session.visit("/with_html")
         with pytest.raises(ExpectationNotMet):
-            session.assert_text(expected_text)
+            session.assert_text("论坛")
 
     def test_takes_scopes_into_account(self, session):
         session.visit("/with_html")

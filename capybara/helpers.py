@@ -25,10 +25,11 @@ def desc(value):
     if isinstance(value, list):
         return map(desc, value)
 
-    if isbytes(value):
-        value = decode_bytes(value)
     if isregex(value):
         value = value.pattern
+
+    if isbytes(value):
+        value = decode_bytes(value)
 
     return repr(value)
 
