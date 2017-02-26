@@ -29,10 +29,10 @@ make html
 cd build/html
 
 git init
-git config user.name "Ofek Lev"
-git config user.email "ofekmeister@gmail.com"
+git config user.name "Ian Lesperance"
+git config user.email "ian@elliterate.com"
 
-git remote add upstream "https://$GH_TOKEN@github.com/ofek/bit.git"
+git remote add upstream "https://$GH_TOKEN@github.com/elliterate/capybara.py.git"
 git fetch upstream
 git reset upstream/gh-pages
 
