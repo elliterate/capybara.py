@@ -15,3 +15,6 @@ before_script:
   - echo "require('awful'); tags = {}; tags[1] = awful.tag({'name'})" > ~/.config/awesome/rc.lua
   - "awesome &"
 script: python setup.py test
+after_success:
+  - chmod a+x ./.travis/deploy_docs.sh
+  - ./.travis/deploy_docs.sh
