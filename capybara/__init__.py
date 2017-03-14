@@ -225,6 +225,13 @@ def init_default_server(app, port, host):
 
 @register_server("werkzeug")
 def init_werkzeug_server(app, port, host):
+    try:
+        import werkzeug
+    except ImportError:
+        raise ImportError(
+            'Capybara\'s werkzeug server is unable to load `werkzeug`, please install the package '
+            'and add `werkzeug` to your requirements.txt file.')
+
     from werkzeug.serving import run_simple
     from logging import getLogger
 
