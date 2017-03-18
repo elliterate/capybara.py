@@ -110,11 +110,12 @@ class Driver(Base):
     def go_forward(self):
         self.browser.forward()
 
-    def execute_script(self, script):
-        self.browser.execute_script(script)
+    def execute_script(self, script, *args):
+        args = [arg.native if isinstance(arg, Node) else arg for arg in args]
+        return self.browser.execute_script(script, *args)
 
-    def evaluate_script(self, script):
-        return self.browser.execute_script("return {0}".format(script))
+    def evaluate_script(self, script, *args):
+        return self.execute_script("return {0}".format(script), *args)
 
     def save_screenshot(self, path, **kwargs):
         self.browser.get_screenshot_as_file(path)
