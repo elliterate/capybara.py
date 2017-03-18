@@ -67,11 +67,13 @@ class Node(Base):
 
     def _find_css(self, css):
         cls = type(self)
-        return [cls(self.driver, element) for element in self.native.find_elements_by_css_selector(css)]
+        return [cls(self.driver, element)
+                for element in self.native.find_elements_by_css_selector(css)]
 
     def _find_xpath(self, xpath):
         cls = type(self)
-        return [cls(self.driver, element) for element in self.native.find_elements_by_xpath(xpath)]
+        return [cls(self.driver, element)
+                for element in self.native.find_elements_by_xpath(xpath)]
 
     def click(self):
         self.native.click()

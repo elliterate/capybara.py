@@ -7,7 +7,8 @@ from capybara.selector.selector import add_selector, remove_selector, selectors
 from capybara.utils import isregex
 
 
-__all__ = ["add_filter_set", "add_selector", "filter_sets", "remove_filter_set", "remove_selector", "selectors"]
+__all__ = ["add_filter_set", "add_selector", "filter_sets", "remove_filter_set", "remove_selector",
+           "selectors"]
 
 
 with add_selector("css") as s:

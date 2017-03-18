@@ -83,7 +83,9 @@ class Server(object):
 
         try:
             # Try to fetch the endpoint added by the middleware.
-            with closing(urlopen("http://{0}:{1}/__identify__".format(self.host, self.port))) as response:
+            identify_url = "http://{0}:{1}/__identify__".format(self.host, self.port)
+
+            with closing(urlopen(identify_url)) as response:
                 body, status_code = response.read(), response.getcode()
 
                 if str(status_code)[0] == "2" or str(status_code)[0] == "3":
