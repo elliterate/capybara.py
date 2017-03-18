@@ -6,6 +6,7 @@ import random
 
 import capybara
 from capybara.compat import ParseResult, urlparse
+from capybara.driver.node import Node
 from capybara.exceptions import ScopeError, WindowError
 from capybara.node.base import Base
 from capybara.node.document import Document
@@ -410,7 +411,8 @@ class Session(SessionMatchersMixin, object):
         """
 
         args = [arg.base if isinstance(arg, Base) else arg for arg in args]
-        return self.driver.evaluate_script(script, *args)
+        result = self.driver.evaluate_script(script, *args)
+        return self._wrap_element_script_result(result)
 
     @contextmanager
     def accept_alert(self, text=None, wait=None):
@@ -564,6 +566,14 @@ class Session(SessionMatchersMixin, object):
 
     reset_session = reset
     """ Alias for :meth:`reset`. """
+
+    def _wrap_element_script_result(self, arg):
+        if isinstance(arg, list):
+            return [self._wrap_element_script_result(e) for e in arg]
+        elif isinstance(arg, Node):
+            return Element(self, arg, None, None)
+        else:
+            return arg
 
 
 def _define_document_method(method_name):

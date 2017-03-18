@@ -15,6 +15,7 @@ from selenium.common.exceptions import (
     StaleElementReferenceException,
     UnexpectedAlertPresentException)
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from time import sleep, time
@@ -115,7 +116,8 @@ class Driver(Base):
         return self.browser.execute_script(script, *args)
 
     def evaluate_script(self, script, *args):
-        return self.execute_script("return {0}".format(script), *args)
+        result = self.execute_script("return {0}".format(script), *args)
+        return self._wrap_element_script_result(result)
 
     def save_screenshot(self, path, **kwargs):
         self.browser.get_screenshot_as_file(path)
@@ -201,3 +203,11 @@ class Driver(Base):
                 yield
             finally:
                 self.switch_to_window(original_handle)
+
+    def _wrap_element_script_result(self, arg):
+        if isinstance(arg, list):
+            return [self._wrap_element_script_result(e) for e in arg]
+        elif isinstance(arg, WebElement):
+            return Node(self, arg)
+        else:
+            return arg

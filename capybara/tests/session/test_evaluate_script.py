@@ -1,3 +1,6 @@
+from capybara.node.element import Element
+
+
 class TestEvaluateScript:
     def test_evaluates_the_given_script_and_returns_whatever_it_produces(self, session):
         session.visit("/with_js")
@@ -13,3 +16,16 @@ class TestEvaluateScript:
         el = session.find("css", "#change")
         session.evaluate_script("arguments[1].textContent = arguments[0]", "Doodle Funk", el)
         assert session.has_css("#change", text="Doodle Funk")
+
+    def test_supports_returning_elements(self, session):
+        session.visit("/with_js")
+        el = session.evaluate_script("document.getElementById('change')")
+        assert isinstance(el, Element)
+        assert el == session.find("css", "#change")
+
+    def test_supports_returning_arrays_of_elements(self, session):
+        session.visit("/form")
+        elements = session.evaluate_script("document.querySelectorAll('#form_city option')")
+        for element in elements:
+            assert isinstance(element, Element)
+        assert elements == list(session.find("css", "#form_city").find_all("css", "option"))
