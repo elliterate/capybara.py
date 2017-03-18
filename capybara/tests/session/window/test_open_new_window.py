@@ -1,6 +1,7 @@
 import pytest
 
 
+@pytest.mark.requires("windows")
 class TestOpenNewWindow:
     @pytest.fixture(autouse=True)
     def setup_session(self, session):

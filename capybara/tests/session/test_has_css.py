@@ -21,6 +21,7 @@ class TestHasCSS:
             assert session.has_css("a#foo")
             assert not session.has_css("a#red")
 
+    @pytest.mark.requires("js")
     def test_waits_for_content_to_appear(self, session):
         session.visit("/with_js")
         session.click_link("Click me")
@@ -108,6 +109,7 @@ class TestHasNoCSS:
             assert not session.has_no_css("a#foo")
             assert session.has_no_css("a#red")
 
+    @pytest.mark.requires("js")
     def test_waits_for_content_to_disappear(self, session):
         session.visit("/with_js")
         session.click_link("Click me")

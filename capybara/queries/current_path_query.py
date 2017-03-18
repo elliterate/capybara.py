@@ -1,6 +1,6 @@
 from capybara.compat import urlparse
 from capybara.helpers import desc
-from capybara.utils import isregex
+from capybara.utils import isregex, normalize_url
 
 
 class CurrentPathQuery(object):
@@ -51,7 +51,7 @@ class CurrentPathQuery(object):
         if isregex(self.expected_path):
             return self.expected_path.search(self.actual_path)
         else:
-            return self.actual_path == self.expected_path
+            return normalize_url(self.actual_path) == normalize_url(self.expected_path)
 
     @property
     def failure_message(self):

@@ -3,13 +3,15 @@ Capybara
 
 Capybara helps you test web applications by simulating how a real user would
 interact with your app. It is agnostic about the driver running your tests and
-comes with Selenium support built in.
+comes with Werkzeug and Selenium support built in.
 
 _`Key benefits`
 ~~~~~~~~~~~~~~~
 
 - **No setup** necessary for WSGI-compliant applications. Works out of the box.
 - **Intuitive API** which mimics the language an actual user would use.
+- **Switch the backend** your tests run against from fast headless mode to an
+  actual browser with no changes to your tests.
 - **Powerful synchronization** features mean you never have to manually wait
   for asynchronous processes to complete.
 
@@ -67,7 +69,41 @@ _`Drivers`
 ~~~~~~~~~~
 
 Capybara uses the same DSL to drive a variety of browser and headless drivers.
-By default, Capybara uses the ``"selenium"`` driver.
+
+_`Selecting the Driver`
+-----------------------
+
+By default, Capybara uses the ``"werkzeug"`` driver, which is fast but limited:
+it does not support JavaScript, nor is it able to access HTTP resources outside
+of your WSGI application, such as remote APIs and OAuth services. To get around
+these limitations, you can set up a different default driver for your features.
+For example if you'd prefer to run everything in Selenium, you could do::
+
+    import capybara
+
+    capybara.default_driver = "selenium"
+
+You can also change the driver temporarily (typically in the setup and teardown
+functions)::
+
+    import capybara
+
+    capybara.current_driver = "selenium" # temporarily select different driver
+    # tests here
+    capybara.use_default_driver()        # switch back to default driver
+
+_`Werkzeug`
+-----------
+
+Werkzeug is Capybara's default driver. It is written in pure Python and does
+not have any support for executing JavaScript. Since the Werkzeug driver
+interacts directly with WSGI interfaces, it does not require a server to be
+started. However, this means that if your application is not a WSGI application
+(Django, Flask, and most other Python frameworks are WSGI applications) then
+you cannot use this driver. Furthermore, you cannot use the Werkzeug driver to
+test a remote application, or to access remote URLs (e.g., redirects to
+external sites, external APIs, or OAuth services) that your application might
+interact with.
 
 _`Selenium`
 -----------

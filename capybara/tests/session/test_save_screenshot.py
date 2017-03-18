@@ -7,6 +7,7 @@ import capybara
 from capybara.tests.compat import patch
 
 
+@pytest.mark.requires("screenshot")
 class TestSaveScreenshot:
     @pytest.fixture
     def alternative_path(self):

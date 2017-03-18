@@ -19,6 +19,7 @@ class TestCheck(CheckTestCase):
     def test_checked_attribute_is_false_if_unchecked(self, session):
         assert not session.find("xpath", "//input[@id='form_terms_of_use']").checked
 
+    @pytest.mark.requires("js")
     def test_triggers_associated_events(self, session):
         session.visit("/with_js")
         session.check("checkbox_with_event")

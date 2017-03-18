@@ -3,6 +3,7 @@ import pytest
 from capybara.exceptions import ModalNotFound
 
 
+@pytest.mark.requires("modals")
 class TestAcceptConfirm:
     @pytest.fixture(autouse=True)
     def setup_session(self, session):

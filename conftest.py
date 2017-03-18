@@ -1,11 +1,14 @@
 import pytest
 
 import capybara
+from capybara.tests.driver import Driver, build_driver_fixture
 
 
-@pytest.fixture(scope="session", params=["selenium"])
-def driver(request):
-    return request.param
+# Test the built-in drivers.
+driver = build_driver_fixture(
+    Driver("selenium"),
+    Driver("werkzeug", skip=[
+        "frames", "hover", "js", "modals", "screenshot", "send_keys", "server", "windows"]))
 
 
 @pytest.fixture(autouse=True)

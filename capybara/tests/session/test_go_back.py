@@ -1,3 +1,7 @@
+import pytest
+
+
+@pytest.mark.requires("js")
 class TestGoBack:
     def test_fetches_a_response_from_the_driver_from_the_previous_page(self, session):
         session.visit("/")

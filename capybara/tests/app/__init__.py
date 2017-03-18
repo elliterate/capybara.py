@@ -165,7 +165,9 @@ def view(name):
 
 @app.route("/upload_empty", methods=["POST"])
 def upload_empty():
-    if not request.files.get("form[file]").read():
+    f = request.files.get("form[file]")
+
+    if not f:
         return "Successfully ignored empty file field."
     else:
         return "Something went wrong."
@@ -175,7 +177,7 @@ def upload_empty():
 def upload():
     document = request.files.get("form[document]")
 
-    if document.filename:
+    if document and document.filename:
         buf = []
         buf.append("Content-type: {0}".format(document.mimetype))
         buf.append("File content: {0}".format(document.read()))

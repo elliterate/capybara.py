@@ -84,6 +84,7 @@ class TestNodeSet(NodeTestCase):
         session.find_first("//input").set("gorilla")
         assert session.find_first("//input").value == "gorilla"
 
+    @pytest.mark.requires("js")
     def test_fills_the_field_even_if_the_caret_was_not_at_the_end(self, session):
         session.execute_script(
             "var el = document.getElementById('test_field');"
@@ -104,11 +105,13 @@ class TestNodeSet(NodeTestCase):
             session.find_first("//textarea[@readonly]").set("changed")
         assert session.find_first("//textarea[@readonly]").value == "textarea should not change"
 
+    @pytest.mark.requires("js")
     def test_allows_me_to_change_the_contents_of_a_contenteditable_element(self, session):
         session.visit("/with_js")
         session.find("css", "#existing_content_editable").set("WYSIWYG")
         assert session.find("css", "#existing_content_editable").text == "WYSIWYG"
 
+    @pytest.mark.requires("js")
     def test_allows_me_to_set_the_contents_of_a_contenteditable_element(self, session):
         session.visit("/with_js")
         session.find("css", "#blank_content_editable").set("WYSIWYG")
@@ -195,6 +198,7 @@ class TestNodePath(NodeTestCase):
         assert session.find("xpath", element.path) == element
 
 
+@pytest.mark.requires("js", "drag")
 class TestNodeDragTo(NodeTestCase):
     def test_drags_and_drops_an_object(self, session):
         session.visit("/with_js")
@@ -204,6 +208,7 @@ class TestNodeDragTo(NodeTestCase):
         assert session.find("//div[contains(., 'Dropped!')]")
 
 
+@pytest.mark.requires("hover")
 class TestNodeHover(NodeTestCase):
     def test_allows_hovering_on_an_element(self, session):
         session.visit("/with_hover")
@@ -218,6 +223,7 @@ class TestNodeClick(NodeTestCase):
         assert session.current_url.endswith("/with_html")
 
 
+@pytest.mark.requires("js")
 class TestNodeDoubleClick(NodeTestCase):
     def test_double_clicks_an_element(self, session):
         session.visit("/with_js")
@@ -225,6 +231,7 @@ class TestNodeDoubleClick(NodeTestCase):
         assert session.find("css", "#has-been-double-clicked")
 
 
+@pytest.mark.requires("js")
 class TestNodeRightClick(NodeTestCase):
     def test_right_clicks_an_element(self, session):
         session.visit("/with_js")
@@ -232,6 +239,7 @@ class TestNodeRightClick(NodeTestCase):
         assert session.find("css", "#has-been-right-clicked")
 
 
+@pytest.mark.requires("send_keys")
 class TestNodeSendKeys(NodeTestCase):
     def test_sends_a_string_of_keys_to_an_element(self, session):
         session.visit("/form")
@@ -245,6 +253,7 @@ class TestNodeSendKeys(NodeTestCase):
         assert session.find("css", "#address1_city").value == "Ocean side"
 
 
+@pytest.mark.requires("js")
 class TestNodeReloadWithoutAutomaticReload(NodeTestCase):
     @pytest.fixture(autouse=True)
     def setup_capybara(self):
@@ -276,6 +285,7 @@ class TestNodeReloadWithoutAutomaticReload(NodeTestCase):
         assert isinstance(excinfo.value, session.driver.invalid_element_errors)
 
 
+@pytest.mark.requires("js")
 class TestNodeReloadWithAutomaticReload(NodeTestCase):
     @pytest.fixture(autouse=True)
     def setup_capybara(self):

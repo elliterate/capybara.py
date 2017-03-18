@@ -8,6 +8,7 @@ import capybara.dsl
 
 def pytest_runtest_teardown():
     capybara.reset_sessions()
+    capybara.use_default_driver()
 
 
 @pytest.fixture

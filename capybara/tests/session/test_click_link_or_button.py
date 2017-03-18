@@ -25,6 +25,7 @@ class TestClickLinkOrButton:
         session.click_on("awe123")
         assert extract_results(session)["form[first_name]"] == "John"
 
+    @pytest.mark.requires("js")
     def test_waits_for_asynchronous_load(self, session):
         session.visit("/with_js")
         session.click_link("Click me")

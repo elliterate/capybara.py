@@ -1,3 +1,6 @@
+import pytest
+
+
 class TestReset:
     def test_removes_cookies(self, session):
         session.visit("/set_cookie")
@@ -34,12 +37,14 @@ class TestReset:
         session.reset()
         assert session.has_no_selector("xpath", "/html/body/*", wait=False)
 
+    @pytest.mark.requires("modals")
     def test_handles_modals_during_unload(self, session):
         session.visit("/with_unload_alert")
         assert session.has_selector("css", "div")
         session.reset()
         assert session.has_no_selector("xpath", "/html/body/*", wait=False)
 
+    @pytest.mark.requires("modals")
     def test_handles_already_open_modals(self, session):
         session.visit("/with_unload_alert")
         session.click_link("Go away")

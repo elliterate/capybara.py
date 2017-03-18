@@ -84,6 +84,7 @@ class TestFillIn:
         session.click_button("awesome")
         assert extract_results(session)["form[zipcode]"] == "52071"
 
+    @pytest.mark.requires("js")
     def test_waits_for_asynchronous_load(self, session):
         session.visit("/with_js")
         session.click_link("Click me")

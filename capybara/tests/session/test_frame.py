@@ -1,6 +1,7 @@
 import pytest
 
 
+@pytest.mark.requires("frames")
 class TestFrame:
     @pytest.fixture(autouse=True)
     def setup_session(self, session):

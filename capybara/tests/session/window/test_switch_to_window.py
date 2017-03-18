@@ -4,6 +4,7 @@ from time import sleep
 from capybara.exceptions import ScopeError, WindowError
 
 
+@pytest.mark.requires("windows")
 class SwitchToWindowTestCase:
     @pytest.fixture(autouse=True)
     def setup_session(self, session):

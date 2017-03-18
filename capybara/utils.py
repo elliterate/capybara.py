@@ -3,7 +3,16 @@ import signal
 from socket import socket
 from time import time
 
-from capybara.compat import bytes_, bytes_decode, str_encode
+from capybara.compat import (
+    ParseResult,
+    bytes_,
+    bytes_decode,
+    parse_qsl,
+    quote,
+    str_encode,
+    unquote,
+    urlencode,
+    urlparse)
 
 
 _missing = object()
@@ -30,7 +39,7 @@ class cached_property(property):
 
 def decode_bytes(value):
     """ str: Decodes the given byte sequence. """
-    return bytes_decode(value, "utf-8")
+    return bytes_decode(value, "utf-8") if isinstance(value, bytes_) else value
 
 
 def encode_string(value):
@@ -72,6 +81,33 @@ def inner_content(node):
     return "".join(filter(None, parts))
 
 
+def inner_text(node):
+    """
+    Returns the inner text of a given XML node, excluding tags.
+
+    Args:
+        node: (lxml.etree.Element): The node whose inner text is desired.
+
+    Returns:
+        str: The inner text of the node.
+    """
+
+    from lxml import etree
+
+    # Include text content at the start of the node.
+    parts = [node.text]
+
+    for child in node.getchildren():
+        # Include the raw text content of the child.
+        parts.append(etree.tostring(child, encoding="utf-8", method="text"))
+
+        # Include any text following the child.
+        parts.append(child.tail)
+
+    # Discard any non-existent text parts and return.
+    return "".join(map(decode_bytes, filter(None, parts)))
+
+
 def isbytes(value):
     """ bool: Whether the given value is a sequence of bytes. """
     return isinstance(value, bytes_)
@@ -89,6 +125,34 @@ def isregex(possible_regex):
     """
 
     return hasattr(possible_regex, "search") and callable(possible_regex.search)
+
+
+def normalize_url(url):
+    """
+    Returns the given URL with all query keys properly escaped.
+
+    Args:
+        url (str): The URL to normalize.
+
+    Returns:
+        str: The normalized URL.
+    """
+
+    uri = urlparse(url)
+    query = uri.query or ""
+
+    pairs = parse_qsl(query)
+    decoded_pairs = [(unquote(key), value) for key, value in pairs]
+    encoded_pairs = [(quote(key), value) for key, value in decoded_pairs]
+    normalized_query = urlencode(encoded_pairs)
+
+    return ParseResult(
+        scheme=uri.scheme,
+        netloc=uri.netloc,
+        path=uri.path,
+        params=uri.params,
+        query=normalized_query,
+        fragment=uri.fragment).geturl()
 
 
 def setter_decorator(fset):

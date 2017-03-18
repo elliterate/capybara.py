@@ -7,14 +7,48 @@ class DSLTestCase:
     @pytest.fixture(autouse=True)
     def teardown_capybara(self):
         original_app = capybara.app
+        original_current_driver = capybara.current_driver
         original_default_max_wait_time = capybara.default_max_wait_time
         original_session_name = capybara.session_name
         try:
             yield
         finally:
             capybara.app = original_app
+            capybara.current_driver = original_current_driver
             capybara.default_max_wait_time = original_default_max_wait_time
             capybara.session_name = original_session_name
+
+
+class TestUseDefaultDriver(DSLTestCase):
+    def test_restores_the_default_driver(self):
+        capybara.current_driver = "selenium"
+        capybara.use_default_driver()
+        assert capybara.current_driver is None
+
+
+class TestUsingDriver(DSLTestCase):
+    def test_sets_the_driver_using_current_driver(self):
+        with capybara.using_driver("selenium"):
+            assert capybara.current_driver == "selenium"
+
+    def test_resets_the_driver(self):
+        with capybara.using_driver("selenium"):
+            pass
+        assert capybara.current_driver is None
+
+    def test_resets_the_driver_even_if_an_exception_occurs(self):
+        with pytest.raises(RuntimeError):
+            with capybara.using_driver("selenium"):
+                raise RuntimeError("ohnoes!")
+        assert capybara.current_driver is None
+
+    def test_returns_the_driver_to_what_it_was_previously(self):
+        capybara.current_driver = "selenium"
+        with capybara.using_driver("webtest"):
+            with capybara.using_driver("werkzeug"):
+                assert capybara.current_driver == "werkzeug"
+            assert capybara.current_driver == "webtest"
+        assert capybara.current_driver == "selenium"
 
 
 class TestUsingWaitTime(DSLTestCase):
@@ -44,6 +78,22 @@ class TestCurrentSession(DSLTestCase):
     def test_uses_app_as_the_application(self):
         capybara.app = lambda: None
         assert capybara.current_session().app == capybara.app
+
+    def test_changes_with_the_current_driver(self):
+        assert capybara.current_session().mode == "werkzeug"
+        capybara.current_driver = "selenium"
+        assert capybara.current_session().mode == "selenium"
+
+    def test_persists_event_across_driver_changes(self):
+        object_id = id(capybara.current_session())
+        assert id(capybara.current_session()) == object_id
+
+        capybara.current_driver = "selenium"
+        assert capybara.current_session().mode == "selenium"
+        assert id(capybara.current_session()) != object_id
+
+        capybara.current_driver = "werkzeug"
+        assert id(capybara.current_session()) == object_id
 
     def test_changes_when_changing_the_application(self):
         object_id = id(capybara.current_session())

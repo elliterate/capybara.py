@@ -64,6 +64,7 @@ class TestFindFirstVisible(FindFirstTestCase):
         assert session.find_first("css", "a#visible", visible="visible") is not None
 
 
+@pytest.mark.requires("js")
 class TestFindFirstWithWaitOnFirstByDefault(FindFirstTestCase):
     @pytest.fixture(autouse=True)
     def setup_session(self, session):

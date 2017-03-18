@@ -9,6 +9,7 @@ class TestHasTitle:
     def test_is_true_if_the_page_has_the_given_title(self, session):
         assert session.has_title("with_js")
 
+    @pytest.mark.requires("js")
     def test_waits_for_title(self, session):
         session.click_link("Change title")
         assert session.has_title("changed title")
@@ -25,6 +26,7 @@ class TestHasNoTitle:
     def test_is_false_if_the_page_has_the_given_title(self, session):
         assert session.has_no_title("with_js") is False
 
+    @pytest.mark.requires("js")
     def test_waits_for_title_to_disappear(self, session):
         session.click_link("Change title")
         assert session.has_no_title("with_js") is True

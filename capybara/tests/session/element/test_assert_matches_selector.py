@@ -21,6 +21,7 @@ class TestAssertMatchesSelector(AssertMatchesSelectorTestCase):
         with pytest.raises(ElementNotFound):
             element.assert_matches_selector("css", ".not_number")
 
+    @pytest.mark.requires("js")
     def test_waits_for_match_to_occur(self, session):
         session.visit("/with_js")
         field = session.find("css", "#disable-on-click")
@@ -38,6 +39,7 @@ class TestAssertNotMatchSelector(AssertMatchesSelectorTestCase):
     def test_is_true_if_the_given_selector_does_not_match_the_element(self, element):
         assert element.assert_not_match_selector("css", ".not_number") is True
 
+    @pytest.mark.requires("js")
     def test_waits_for_match_to_fail(self, session):
         session.visit("/with_js")
         field = session.find("css", "#disable-on-click")

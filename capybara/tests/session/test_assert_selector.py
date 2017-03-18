@@ -64,6 +64,7 @@ class TestAssertSelector:
         with pytest.raises(ElementNotFound):
             session.assert_selector("//p//a", text=re.compile("Red$"))
 
+    @pytest.mark.requires("js")
     def test_finds_element_if_it_appears_before_given_wait_duration(self, session):
         with capybara.using_wait_time(0.1):
             session.visit("/with_js")
@@ -128,6 +129,7 @@ class TestAssertNoSelector:
             session.assert_no_selector("//p//a", text=re.compile(r"re[dab]i", re.IGNORECASE), count=1)
         session.assert_no_selector("//p//a", text=re.compile(r"Red$"))
 
+    @pytest.mark.requires("js")
     def test_does_not_find_element_if_it_appears_after_given_wait_duration(self, session):
         session.visit("/with_js")
         session.click_link("Click me")

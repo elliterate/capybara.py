@@ -5,6 +5,11 @@ class Base(object):
     """ The base class for drivers used by sessions. """
 
     @property
+    def needs_server(self):
+        """ bool: Whether this driver needs to communicate with a real HTTP server. """
+        return False
+
+    @property
     def current_url(self):
         """ str: The current URL. """
         raise NotImplementedError()

@@ -1,6 +1,7 @@
 # coding=utf-8
 from __future__ import unicode_literals
 
+import pytest
 import re
 
 import capybara
@@ -93,6 +94,7 @@ class TestHasText:
         session.visit("/with_html")
         assert session.has_text(None)
 
+    @pytest.mark.requires("js")
     def test_waits_for_text_to_appear(self, session):
         session.visit("/with_js")
         session.click_link("Click me")
@@ -153,6 +155,7 @@ class TestHasText:
         assert session.has_text("count", minimum="2")
         assert not session.has_text("count", minimum="3")
 
+    @pytest.mark.requires("js")
     def test_finds_element_if_it_appears_before_given_wait_duration(self, session):
         with capybara.using_wait_time(0.1):
             session.visit("/with_js")
@@ -229,11 +232,13 @@ class TestHasNoText:
         session.visit("/with_html")
         assert session.has_no_text(".orem")
 
+    @pytest.mark.requires("js")
     def test_waits_for_text_to_disappear(self, session):
         session.visit("/with_js")
         session.click_link("Click me")
         assert session.has_no_text("I changed it")
 
+    @pytest.mark.requires("js")
     def test_does_not_find_element_if_it_appears_after_given_wait_duration(self, session):
         session.visit("/with_js")
         session.click_link("Click me")

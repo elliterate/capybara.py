@@ -8,7 +8,10 @@ app = None
 app_host = None
 """ str: The default host to use when giving a relative URL to visit. Must be a valid URL. """
 
-current_driver = "selenium"
+default_driver = "werkzeug"
+""" str: The name of the driver default driver to use. """
+
+current_driver = None
 """ str: The name of the driver currently in use. """
 
 server_name = "default"
@@ -109,6 +112,31 @@ def run_default_server(app, port):
     servers["werkzeug"](app, port, server_host)
 
 
+def use_default_driver():
+    """ Use the default driver as the current driver. """
+    global current_driver
+    current_driver = None
+
+
+@contextmanager
+def using_driver(driver):
+    """
+    Execute the wrapped code using a specific driver.
+
+    Args:
+        driver (str): The name of the desired driver.
+    """
+
+    global current_driver
+
+    original_current_driver = current_driver
+    current_driver = driver
+    try:
+        yield
+    finally:
+        current_driver = original_current_driver
+
+
 @contextmanager
 def using_wait_time(seconds):
     """
@@ -136,13 +164,15 @@ def current_session():
         Session: The :class:`Session` for the current driver and app.
     """
 
+    driver = current_driver or default_driver
+
     session_key = "{driver}:{session}:{app}".format(
-        driver=current_driver, session=session_name, app=str(id(app)))
+        driver=driver, session=session_name, app=str(id(app)))
     session = _session_pool.get(session_key, None)
 
     if session is None:
         from capybara.session import Session
-        session = Session(current_driver, app)
+        session = Session(driver, app)
         _session_pool[session_key] = session
 
     return session
@@ -245,5 +275,12 @@ def init_werkzeug_server(app, port, host):
 @register_driver("selenium")
 def init_selenium_driver(app):
     from capybara.selenium.driver import Driver
+
+    return Driver(app)
+
+
+@register_driver("werkzeug")
+def init_werkzeug_driver(app):
+    from capybara.werkzeug.driver import Driver
 
     return Driver(app)

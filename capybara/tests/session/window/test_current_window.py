@@ -3,6 +3,7 @@ import pytest
 from capybara.window import Window
 
 
+@pytest.mark.requires("windows")
 class TestCurrentWindow:
     @pytest.fixture(autouse=True)
     def setup_session(self, session):

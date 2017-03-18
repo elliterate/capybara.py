@@ -21,6 +21,7 @@ class TestAssertTitle:
             session.assert_title(re.compile(r"w[a-z]{10}_js"))
         assert "expected 'with_js' to match 'w[a-z]{10}_js'" in str(excinfo.value)
 
+    @pytest.mark.requires("js")
     def test_waits_for_title(self, session):
         session.click_link("Change title")
         assert session.assert_title("changed title") is True
@@ -55,6 +56,7 @@ class TestAssertNoTitle:
         assert "expected 'with_js' not to match 'w[a-z]{3}_js'" in str(excinfo.value)
         session.assert_no_title(re.compile(r"monkey"))
 
+    @pytest.mark.requires("js")
     def test_waits_for_title_to_disappear(self, session):
         session.click_link("Change title")
         assert session.assert_no_title("with_js") is True

@@ -8,6 +8,7 @@ from capybara.window import Window
 from capybara.tests.assertions import assert_windows_open
 
 
+@pytest.mark.requires("windows")
 class TestWindowOpenedBy:
     @pytest.fixture(autouse=True)
     def setup_session(self, session):

@@ -75,6 +75,7 @@ class TestAssertText:
         with pytest.raises(ExpectationNotMet):
             session.assert_text(".orem")
 
+    @pytest.mark.requires("js")
     def test_waits_for_text_to_appear(self, session):
         session.visit("/with_js")
         session.click_link("Click me")
@@ -90,12 +91,14 @@ class TestAssertText:
             session.assert_text("count", between=range(0, 2))
         assert "expected to find text 'count' between 0 and 1 times but found 2 times" in str(excinfo.value)
 
+    @pytest.mark.requires("js")
     def test_finds_element_if_it_appears_before_given_wait_duration(self, session):
         with capybara.using_wait_time(0):
             session.visit("/with_js")
             session.find("css", "#reload-list").click()
             session.find("css", "#the-list").assert_text("Foo Bar", wait=0.9)
 
+    @pytest.mark.requires("js")
     def test_raises_error_if_it_appears_after_given_wait_duration(self, session):
         with capybara.using_wait_time(0):
             session.visit("/with_js")
@@ -173,6 +176,7 @@ class TestAssertNoText:
             session.assert_no_text("count", count=2)
         assert "expected not to find text 'count' 2 times" in str(excinfo.value)
 
+    @pytest.mark.requires("js")
     def test_does_not_find_text_if_it_appears_after_given_wait_duration(self, session):
         session.visit("/with_js")
         session.click_link("Click me")

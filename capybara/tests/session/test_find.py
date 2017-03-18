@@ -30,6 +30,7 @@ class TestFind(FindTestCase):
         with pytest.raises(Ambiguous):
             session.find("//a")
 
+    @pytest.mark.requires("js")
     def test_waits_for_asynchronous_load(self, session):
         session.visit("/with_js")
         session.click_link("Click me")
@@ -38,18 +39,21 @@ class TestFind(FindTestCase):
     def test_casts_text_argument_to_string(self, session):
         assert session.find("css", ".number", text=42).has_text("42")
 
+    @pytest.mark.requires("js")
     def test_does_not_wait_for_asynchronous_load_when_false_given(self, session):
         session.visit("/with_js")
         session.click_link("Click me")
         with pytest.raises(ElementNotFound):
             session.find("css", "a#has-been-clicked", wait=False)
 
+    @pytest.mark.requires("js")
     def test_does_not_find_element_if_it_appears_after_given_wait_duration(self, session):
         session.visit("/with_js")
         session.click_link("Slowly")
         with pytest.raises(ElementNotFound):
             session.find("css", "a#slow-clicked", wait=0.2)
 
+    @pytest.mark.requires("js")
     def test_finds_element_if_it_appears_before_given_wait_duration(self, session):
         session.visit("/with_js")
         session.click_link("Click me")

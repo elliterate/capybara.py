@@ -71,7 +71,7 @@ class Session(SessionMatchersMixin, object):
     def __init__(self, mode, app):
         self.mode = mode
         self.app = app
-        self.server = Server(app).boot() if app else None
+        self.server = Server(app).boot() if app and self.driver.needs_server else None
         self.synchronized = False
         self._scopes = [None]
 
@@ -104,12 +104,20 @@ class Session(SessionMatchersMixin, object):
     @property
     def current_path(self):
         """ str: Path of the current page, without any domain information. """
+
+        if not self.current_url:
+            return
+
         path = urlparse(self.current_url).path
         return path if path else None
 
     @property
     def current_host(self):
         """ str: Host of the current page. """
+
+        if not self.current_url:
+            return
+
         result = urlparse(self.current_url)
         scheme, netloc = result.scheme, result.netloc
         host = netloc.split(":")[0] if netloc else None
@@ -150,8 +158,8 @@ class Session(SessionMatchersMixin, object):
             uri_base = None
 
         visit_uri = ParseResult(
-            scheme=visit_uri.scheme or (uri_base.scheme if uri_base else None),
-            netloc=visit_uri.netloc or (uri_base.netloc if uri_base else None),
+            scheme=visit_uri.scheme or (uri_base.scheme if uri_base else ""),
+            netloc=visit_uri.netloc or (uri_base.netloc if uri_base else ""),
             path=visit_uri.path,
             params=visit_uri.params,
             query=visit_uri.query,

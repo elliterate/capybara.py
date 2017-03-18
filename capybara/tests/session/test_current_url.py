@@ -83,11 +83,13 @@ class TestCurrentURL:
         session.visit("{0}/redirect".format(bases[0]))
         self.assert_on_server(session, servers[0], path="/landed")
 
+    @pytest.mark.requires("js")
     def test_affected_by_push_state(self, session):
         session.visit("/with_js")
         session.execute_script("window.history.pushState({}, '', '/pushed')")
         assert session.current_path == "/pushed"
 
+    @pytest.mark.requires("js")
     def test_affected_by_replace_state(self, session):
         session.visit("/with_js")
         session.execute_script("window.history.replaceState({}, '', '/replaced')")

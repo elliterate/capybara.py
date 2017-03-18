@@ -1,3 +1,4 @@
+import re
 from xpath import dsl as x
 from xpath.renderer import to_xpath
 
@@ -76,18 +77,7 @@ class Simple(FindersMixin, MatchersMixin, DocumentMatchersMixin, object):
     @property
     def visible(self):
         """ bool: Whether or not the element is visible. """
-
-        if self.tag_name == "input" and self.native.get("type") == "hidden":
-            return False
-
-        return not self.native.xpath(
-            "./ancestor-or-self::*["
-            "contains(@style, 'display:none') or "
-            "contains(@style, 'display: none') or "
-            "@hidden or "
-            "name()='script' or "
-            "name()='head'"
-            "]")
+        return self._visible()
 
     @property
     def checked(self):
@@ -98,6 +88,16 @@ class Simple(FindersMixin, MatchersMixin, DocumentMatchersMixin, object):
     def disabled(self):
         """ bool: Whether or not the element is disabled. """
         return "disabled" in self.native.attrib
+
+    @property
+    def readonly(self):
+        """ bool: Whether or not the element is readonly. """
+        return "readonly" in self.native.attrib
+
+    @property
+    def multiple(self):
+        """ bool: Whether or not the select supports multiple values. """
+        return "multiple" in self.native.attrib
 
     @property
     def selected(self):
@@ -121,6 +121,29 @@ class Simple(FindersMixin, MatchersMixin, DocumentMatchersMixin, object):
     def synchronize(self, func=None, **kwargs):
         # Simple nodes don't need to wait.
         return func if func else lambda func: func
+
+    def _visible(self, check_ancestor_visibility=True):
+        if self.tag_name == "input" and self.native.get("type") == "hidden":
+            return False
+
+        if check_ancestor_visibility:
+            return not self.native.xpath(
+                "./ancestor-or-self::*["
+                "contains(@style, 'display:none') or "
+                "contains(@style, 'display: none') or "
+                "@hidden or "
+                "name()='script' or "
+                "name()='head'"
+                "]")
+
+        if "hidden" in self.native.attrib:
+            return False
+        if re.compile(r"display:\s?none").search(self.native.get("style", "")):
+            return False
+        if self.tag_name in ["script", "head"]:
+            return False
+
+        return True
 
     def _find_xpath(self, xpath):
         return self.native.xpath(xpath)

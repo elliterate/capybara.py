@@ -3,8 +3,9 @@ import sys
 PY2 = sys.version_info[0] == 2
 
 if PY2:
+    from urllib import quote, unquote, urlencode
     from urllib2 import URLError, urlopen
-    from urlparse import ParseResult, urlparse
+    from urlparse import ParseResult, urlparse, parse_qsl
 
     bytes_ = unicode
     bytes_decode = unicode.encode
@@ -18,7 +19,7 @@ if PY2:
 else:
     from urllib.error import URLError
     from urllib.request import urlopen
-    from urllib.parse import ParseResult, urlparse
+    from urllib.parse import ParseResult, urlparse, parse_qsl, quote, unquote, urlencode
 
     bytes_ = bytes
     bytes_decode = bytes.decode

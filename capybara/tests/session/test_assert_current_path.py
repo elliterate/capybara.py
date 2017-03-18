@@ -23,6 +23,7 @@ class TestAssertCurrentPath:
         session.click_link("Escaped query options")
         session.assert_current_path("/with_html?options%5B%5D=things")
 
+    @pytest.mark.requires("js")
     def test_waits_for_current_path(self, session):
         session.click_link("Change page")
         session.assert_current_path("/with_html")
@@ -57,6 +58,7 @@ class TestAssertNoCurrentPath:
     def test_allows_regex_matches(self, session):
         session.assert_no_current_path(re.compile(r"monkey"))
 
+    @pytest.mark.requires("js")
     def test_waits_for_current_path_to_disappear(self, session):
         session.click_link("Change page")
         session.assert_no_current_path("/with_js")

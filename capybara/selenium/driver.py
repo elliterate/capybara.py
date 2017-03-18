@@ -32,6 +32,10 @@ class Driver(Base):
         self.app = app
         self._frame_handles = []
 
+    @property
+    def needs_server(self):
+        return True
+
     @cached_property
     def browser(self):
         capabilities = DesiredCapabilities.FIREFOX.copy()

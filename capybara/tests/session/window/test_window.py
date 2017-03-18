@@ -2,6 +2,7 @@ import pytest
 from time import sleep
 
 
+@pytest.mark.requires("windows")
 class WindowTestCase:
     @pytest.fixture(autouse=True)
     def setup_session(self, session):

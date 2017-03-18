@@ -1,3 +1,5 @@
+import pytest
+
 import capybara
 from capybara.compat import urlparse
 from capybara.session import Session
@@ -39,12 +41,14 @@ class TestVisitWithoutApp:
         serverless_session = Session(session.mode, None)
         assert serverless_session.server is None
 
+    @pytest.mark.requires("server")
     def test_respects_app_host(self, session):
         serverless_session = Session(session.mode, None)
         capybara.app_host = "http://{}:{}".format(session.server.host, session.server.port)
         serverless_session.visit("/foo")
         assert serverless_session.has_text("Another World")
 
+    @pytest.mark.requires("server")
     def test_visits_a_fully_qualified_url(self, session):
         serverless_session = Session(session.mode, None)
         serverless_session.visit(

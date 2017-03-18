@@ -22,6 +22,7 @@ class TestHasCurrentPath:
         session.click_link("Escaped query options")
         assert session.has_current_path("/with_html?options%5B%5D=things")
 
+    @pytest.mark.requires("js")
     def test_waits_for_current_path(self, session):
         session.click_link("Change page")
         assert session.has_current_path("/with_html")
@@ -58,6 +59,7 @@ class TestHasNoCurrentPath:
         assert not session.has_no_current_path(re.compile(r"w[a-z]{3}_js"))
         assert session.has_no_current_path(re.compile(r"monkey"))
 
+    @pytest.mark.requires("js")
     def test_waits_for_current_path_to_disappear(self, session):
         session.click_link("Change page")
         assert session.has_no_current_path("/with_js")

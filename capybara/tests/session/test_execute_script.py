@@ -1,3 +1,7 @@
+import pytest
+
+
+@pytest.mark.requires("js")
 class TestExecuteScript:
     def test_executes_the_given_script_and_returns_nothing(self, session):
         session.visit("/with_js")
