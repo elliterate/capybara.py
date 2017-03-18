@@ -222,6 +222,27 @@ class TestNodeClick(NodeTestCase):
         session.find("css", "#link_placeholder").click()
         assert session.current_url.endswith("/with_html")
 
+    def test_is_able_to_check_a_checkbox(self, session):
+        session.visit("/form")
+        checkbox = session.find("checkbox", "form_terms_of_use")
+        assert not checkbox.checked
+        checkbox.click()
+        assert checkbox.checked
+
+    def test_is_able_to_uncheck_a_checkbox(self, session):
+        session.visit("/form")
+        checkbox = session.find("checkbox", "form_pets_dog")
+        assert checkbox.checked
+        checkbox.click()
+        assert not checkbox.checked
+
+    def test_is_able_to_select_a_radio_button(self, session):
+        session.visit("/form")
+        radio = session.find("radio_button", "gender_male")
+        assert not radio.checked
+        radio.click()
+        assert radio.checked
+
 
 @pytest.mark.requires("js")
 class TestNodeDoubleClick(NodeTestCase):

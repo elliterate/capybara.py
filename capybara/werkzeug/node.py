@@ -87,6 +87,8 @@ class Node(Base):
             if associated_form is not None:
                 from capybara.werkzeug.form import Form
                 Form(self.driver, associated_form).submit(self)
+        elif self.tag_name == "input" and self["type"] in ["checkbox", "radio"]:
+            self.set(not self.checked)
         elif self.tag_name == "label":
             labeled_controls = (
                 self._find_xpath("//input[@id='{}']".format(self["for"])) if self["for"]
