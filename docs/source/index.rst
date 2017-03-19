@@ -25,23 +25,6 @@ In your test setup, set :data:`capybara.app` to your WSGI-compliant app::
 
     capybara.app = app
 
-_`Drivers`
-~~~~~~~~~~
-
-Capybara uses the same DSL to drive a variety of browser and headless drivers.
-By default, Capybara uses the ``"selenium"`` driver.
-
-_`Selenium`
------------
-
-At the moment, Capybara supports |selenium_2.0_webdriver|_, *not* Selenium RC.
-In order to use Selenium, you'll need to install the ``selenium-webdriver``
-package. Provided Firefox is installed, everything is set up for you, and you
-should be able to start using Selenium right away.
-
-.. |selenium_2.0_webdriver| replace:: Selenium 2.0 (Webdriver)
-.. _selenium_2.0_webdriver: http://seleniumhq.org/docs/01_introducing_selenium.html#selenium-2-aka-selenium-webdriver
-
 _`Using Capybara with pytest`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -95,6 +78,23 @@ up between tests::
             capybara.reset_sessions()
 
 (Remember to call ``super`` in any subclasses that override ``setUp`` or ``tearDown``!)
+
+_`Drivers`
+~~~~~~~~~~
+
+Capybara uses the same DSL to drive a variety of browser and headless drivers.
+By default, Capybara uses the ``"selenium"`` driver.
+
+_`Selenium`
+-----------
+
+At the moment, Capybara supports |selenium_2.0_webdriver|_, *not* Selenium RC.
+In order to use Selenium, you'll need to install the ``selenium-webdriver``
+package. Provided Firefox is installed, everything is set up for you, and you
+should be able to start using Selenium right away.
+
+.. |selenium_2.0_webdriver| replace:: Selenium 2.0 (Webdriver)
+.. _selenium_2.0_webdriver: http://seleniumhq.org/docs/01_introducing_selenium.html#selenium-2-aka-selenium-webdriver
 
 _`The DSL`
 ~~~~~~~~~~
