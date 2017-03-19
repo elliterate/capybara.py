@@ -1,30 +1,39 @@
-from tests.compat import urljoin
-
-
 pytest_plugins = ["pytester"]
 
 
 def test_resets_sessions_between_tests(testdir):
-    file_a = testdir.maketxtfile(file_a="File A")
-    file_b = testdir.maketxtfile(file_b="File B")
+    testdir.makepyfile(test_app="""
+        from flask import Flask
 
-    file_a_url = urljoin("file:", str(file_a))
-    file_b_url = urljoin("file:", str(file_b))
+        app = Flask(__name__)
 
+        @app.route("/a")
+        def a():
+            return "Page A"
+
+        @app.route("/b")
+        def b():
+            return "Page B"
+    """)
     testdir.makeconftest("""
+        import capybara
+        import test_app
+
         pytest_plugins = ["capybara.pytest"]
+
+        capybara.app = test_app.app
     """)
     testdir.makepyfile("""
         def test_request_a(page):
-            page.assert_no_text("File B")
-            page.visit({file_a})
-            page.assert_text("File A")
+            page.assert_no_text("Page B")
+            page.visit("/a")
+            page.assert_text("Page A")
 
         def test_request_b(page):
-            page.assert_no_text("File A")
-            page.visit({file_b})
-            page.assert_text("File B")
-    """.format(file_a=repr(file_a_url), file_b=repr(file_b_url)))
+            page.assert_no_text("Page A")
+            page.visit("/b")
+            page.assert_text("Page B")
+    """)
 
     result = testdir.runpytest()
     result.assert_outcomes(passed=2)
