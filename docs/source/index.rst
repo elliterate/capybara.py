@@ -28,17 +28,13 @@ In your test setup, set :data:`capybara.app` to your WSGI-compliant app::
 _`Using Capybara with pytest`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Define a fixture in your ``conftest.py`` that exposes the :data:`page <capybara.dsl.page>` session
-proxy::
+Load pytest support by adding it to the ``pytest_plugins`` in your
+``conftest.py``::
 
-    import capybara.dsl
-    import pytest
+    pytest_plugins = ["capybara.pytest"]
 
-    @pytest.fixture
-    def page():
-        return capybara.dsl.page
-
-Then use the fixture in your tests::
+The plugin provides a :data:`page <capybara.dsl.page>` fixture for use in your
+tests::
 
     def test_user_signs_in(page):
         page.visit("/")
@@ -47,18 +43,6 @@ Then use the fixture in your tests::
         page.fill_in("Username", value="user@example.com")
         page.fill_in("Password", value="password")
         page.click_button("Sign in")
-
-You can also use a fixture to clean up between tests::
-
-    import capybara
-    import pytest
-
-    @pytest.yield_fixture(autouse=True)
-    def teardown_capybara():
-        try:
-            yield
-        finally:
-            capybara.reset_sessions()
 
 _`Using Capybara with unittest`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
