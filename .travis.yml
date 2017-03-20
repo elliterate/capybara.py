@@ -19,3 +19,4 @@ before_script:
   - echo "require('awful'); tags = {}; tags[1] = awful.tag({'name'})" > ~/.config/awesome/rc.lua
   - "awesome &"
 script: py.test
+cache: pip
