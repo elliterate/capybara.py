@@ -64,4 +64,7 @@ setup(
     packages=find_packages(exclude=["tests", "tests.*", "*.tests.*", "*.tests"]),
     install_requires=["xpath-py >= 0.0.4"],
     setup_requires=["pytest-runner"],
-    tests_require=tests_require)
+    tests_require=tests_require,
+    extras_require={
+        # Expose test dependencies for external scripts, like pip.
+        "test": tests_require})
