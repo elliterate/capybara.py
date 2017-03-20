@@ -46,6 +46,20 @@ tests::
         page.fill_in("Password", value="password")
         page.click_button("Sign in")
 
+Use the ``js`` mark to switch to the :data:`capybara.javascript_driver`
+(``"selenium"`` by default), or use the ``driver`` mark to switch to one
+specific driver. For example::
+
+    import pytest
+
+    @pytest.mark.js
+    def test_uses_the_default_js_driver():
+        # ...
+
+    @pytest.mark.driver("selenium")
+    def test_switches_to_one_specific_driver():
+        # ...
+
 _`Using Capybara with unittest`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

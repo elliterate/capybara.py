@@ -11,6 +11,9 @@ app_host = None
 default_driver = "werkzeug"
 """ str: The name of the driver default driver to use. """
 
+javascript_driver = "selenium"
+""" str: The name of the driver to use when JavaScript is required. """
+
 current_driver = None
 """ str: The name of the driver currently in use. """
 

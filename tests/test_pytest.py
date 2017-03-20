@@ -11,6 +11,21 @@ def make_test_app(testdir):
 
         app = Flask(__name__)
 
+        @app.route("/js")
+        def home():
+            return \"\"\"
+              <html><body>
+                <script type="text/javascript">
+                  document.write(
+                    "Th" + "is i" + "s fo" + "r " + "Java" + "Script browsers."
+                  );
+                </script>
+                <noscript>
+                  This is for non-JavaScript browsers.
+                </noscript>
+              </body></html>
+            \"\"\"
+
         @app.route("/a")
         def a():
             return "Page A"
@@ -31,6 +46,45 @@ def make_conftest(testdir):
 
         capybara.app = test_app.app
     """)
+
+
+def test_switches_to_the_javascript_driver_when_marked(testdir):
+    testdir.makepyfile("""
+        import capybara
+        import pytest
+
+        @pytest.mark.js
+        def test_uses_javascript_driver(page):
+            assert capybara.current_driver == capybara.javascript_driver
+            page.visit("/js")
+            page.assert_text("This is for JavaScript browsers.")
+            page.assert_no_text("This is for non-JavaScript browsers.")
+
+        def test_uses_default_driver(page):
+            assert capybara.current_driver is None
+            page.visit("/js")
+            page.assert_no_text("This is for JavaScript browsers.")
+            page.assert_text("This is for non-JavaScript browsers.")
+    """)
+    result = testdir.runpytest()
+    result.assert_outcomes(passed=2)
+
+
+def test_switches_to_the_specified_driver_when_marked(testdir):
+    testdir.makepyfile("""
+        import capybara
+        import pytest
+
+        @pytest.mark.driver("selenium")
+        def test_uses_selenium_driver():
+            assert capybara.current_driver == "selenium"
+
+        @pytest.mark.driver("werkzeug")
+        def test_uses_werkzeug_driver():
+            assert capybara.current_driver == "werkzeug"
+    """)
+    result = testdir.runpytest()
+    result.assert_outcomes(passed=2)
 
 
 def test_resets_sessions_between_tests(testdir):
