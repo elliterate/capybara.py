@@ -277,6 +277,13 @@ def init_werkzeug_server(app, port, host):
 
 @register_driver("selenium")
 def init_selenium_driver(app):
+    try:
+        import selenium
+    except ImportError:
+        raise ImportError(
+            'Capybara\'s selenium driver is unable to load `selenium`, please install the package '
+            'and add `selenium` to your requirements.txt file.')
+
     from capybara.selenium.driver import Driver
 
     return Driver(app)
@@ -284,6 +291,13 @@ def init_selenium_driver(app):
 
 @register_driver("werkzeug")
 def init_werkzeug_driver(app):
+    try:
+        import werkzeug
+    except ImportError:
+        raise ImportError(
+            'Capybara\'s werkzeug driver is unable to load `werkzeug`, please install the package '
+            'and add `werkzeug` to your requirements.txt file.')
+
     from capybara.werkzeug.driver import Driver
 
     return Driver(app)

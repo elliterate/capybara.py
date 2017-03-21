@@ -1,13 +1,5 @@
 import atexit
 from contextlib import contextmanager
-
-try:
-    import selenium
-except ImportError:
-    raise ImportError(
-        'Capybara\'s selenium driver is unable to load `selenium`, please install the package and '
-        'add `selenium` to your requirements.txt file.')
-
 from selenium import webdriver
 from selenium.common.exceptions import (
     NoAlertPresentException,

@@ -1,10 +1,3 @@
-try:
-    import werkzeug
-except ImportError:
-    raise ImportError(
-        'Capybara\'s werkzeug driver is unable to load `werkzeug`, please install the package and '
-        'add `werkzeug` to your requirements.txt file.')
-
 from xpath import dsl as x
 from xpath.renderer import to_xpath
 
