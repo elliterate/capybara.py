@@ -123,7 +123,7 @@ _`Selenium`
 -----------
 
 At the moment, Capybara supports |selenium_2.0_webdriver|_, *not* Selenium RC.
-In order to use Selenium, you'll need to install the ``selenium-webdriver``
+In order to use Selenium, you'll need to install the ``selenium``
 package. Provided Firefox is installed, everything is set up for you, and you
 should be able to start using Selenium right away.
 
