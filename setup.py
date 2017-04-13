@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 import sys
 
 
-tests_require = ["flask", "lxml", "pytest >= 3", "selenium < 3", "werkzeug"]
+tests_require = ["flask", "lxml", "pytest >= 3", "selenium < 4", "werkzeug"]
 if sys.version_info < (3, 3):
     tests_require.append("mock")
 

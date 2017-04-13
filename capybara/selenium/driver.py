@@ -20,8 +20,19 @@ from capybara.utils import cached_property
 
 
 class Driver(Base):
-    def __init__(self, app):
+    """
+    A Capybara driver that uses Selenium WebDriver to drive a real browser.
+
+    Args:
+        app (object): The WSGI-compliant app to drive.
+        desired_capabilities (Dict[str, str | bool], optional): Desired
+            capabilities of the underlying browser. Defaults to a set of
+            reasonable defaults provided by Selenium.
+    """
+
+    def __init__(self, app, desired_capabilities=None):
         self.app = app
+        self._desired_capabilities = desired_capabilities
         self._frame_handles = []
 
     @property
@@ -30,7 +41,7 @@ class Driver(Base):
 
     @cached_property
     def browser(self):
-        capabilities = DesiredCapabilities.FIREFOX.copy()
+        capabilities = (self._desired_capabilities or DesiredCapabilities.FIREFOX).copy()
         # Auto-accept unload alerts triggered by navigating away.
         capabilities["unexpectedAlertBehaviour"] = "ignore"
         browser = webdriver.Firefox(capabilities=capabilities)

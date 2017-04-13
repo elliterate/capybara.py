@@ -5,6 +5,32 @@ Capybara helps you test web applications by simulating how a real user would
 interact with your app. It is agnostic about the driver running your tests and
 comes with Werkzeug and Selenium support built in.
 
+**Note: Firefox 48+** If you're using Firefox with ``selenium`` and want full
+functionality stay on either Firefox |ff45|_ or |ff47|_. If using ``selenium``
+3.0+ this will require configuring your driver with the ``"marionette": False``
+capability as shown below::
+
+    import capybara
+
+    @capybara.register_driver("selenium")
+    def init_selenium_driver(app):
+        from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
+        from capybara.selenium.driver import Driver
+
+        capabilities = DesiredCapabilities.FIREFOX.copy()
+        capabilities["marionette"] = False
+
+        return Driver(app, desired_capabilities=capabilities)
+
+Using Firefox 48+ requires ``geckodriver`` and ``selenium`` v3, the combo of
+which currently has multiple issues and is feature incomplete.
+
+.. |ff45| replace:: 45.0esr
+.. _ff45: https://ftp.mozilla.org/pub/firefox/releases/45.0esr/
+.. |ff47| replace:: 47.0.1
+.. _ff47: https://ftp.mozilla.org/pub/firefox/releases/47.0.1/
+
 _`Key benefits`
 ~~~~~~~~~~~~~~~
 
@@ -123,9 +149,9 @@ _`Selenium`
 -----------
 
 At the moment, Capybara supports |selenium_2.0_webdriver|_, *not* Selenium RC.
-In order to use Selenium, you'll need to install the ``selenium``
-package. Provided Firefox is installed, everything is set up for you, and you
-should be able to start using Selenium right away.
+In order to use Selenium, you'll need to install the ``selenium`` package.
+Provided Firefox is installed, everything is set up for you, and you should be
+able to start using Selenium right away.
 
 .. |selenium_2.0_webdriver| replace:: Selenium 2.0 (Webdriver)
 .. _selenium_2.0_webdriver: http://seleniumhq.org/docs/01_introducing_selenium.html#selenium-2-aka-selenium-webdriver

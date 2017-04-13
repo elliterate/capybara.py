@@ -10,6 +10,10 @@ addons:
 before_install:
   # Upgrade pip to a version that supports `pip install .[test]`.
   - pip install --upgrade pip
+  - mkdir -p ~/drivers; export PATH=~/drivers:$PATH;
+  - GECKODRIVER_URL="https://github.com/mozilla/geckodriver/releases/download/v0.15.0/geckodriver-v0.15.0-linux64.tar.gz";
+    FILE=`mktemp`; wget "$GECKODRIVER_URL" -qO $FILE && tar xz -C ~/drivers -f $FILE geckodriver; rm $FILE; chmod 777 ~/drivers/geckodriver;
+    ~/drivers/geckodriver --version;
 install:
   - pip install .[test]
 before_script:
