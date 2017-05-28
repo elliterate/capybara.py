@@ -7,7 +7,7 @@ tests_require = ["selenium < 4", "werkzeug"]
 if sys.version_info < (3, 3):
     tests_require.append("mock")
 
-driver_verification_tests_require = ["flask", "py", "pytest >= 3", "werkzeug"]
+driver_verification_tests_require = ["flaky", "flask", "py", "pytest >= 3", "werkzeug"]
 if sys.version_info < (3, 3):
     driver_verification_tests_require.append("mock")
 

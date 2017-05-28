@@ -1,3 +1,4 @@
+from flaky import flaky
 import pytest
 from time import sleep
 
@@ -75,6 +76,7 @@ class TestWindowSize(WindowTestCase):
     def test_returns_size_of_whole_window(self, session):
         assert session.current_window.size == self.win_size(session)
 
+    @flaky
     def test_switches_to_original_window_if_invoked_not_for_current_window(self, session, initial_window, other_window):
         with session.window(other_window):
             size = self.win_size(session)

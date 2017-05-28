@@ -47,4 +47,4 @@ these dependencies in the ``tests_require`` configuration of your ``setup.py``::
 
     setup(
         # ...
-        tests_require=["flask", "mock", "py", "pytest >= 3", "werkzeug"])  # as of writing
+        tests_require=["flaky", "flask", "mock", "py", "pytest >= 3", "werkzeug"])  # as of writing
