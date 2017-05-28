@@ -1,5 +1,4 @@
 import pytest
-from selenium.webdriver.common.keys import Keys
 from time import sleep
 
 import capybara
@@ -268,6 +267,8 @@ class TestNodeSendKeys(NodeTestCase):
         assert session.find("css", "#address1_city").value == "Oceanside"
 
     def test_sends_special_characters(self, session):
+        from selenium.webdriver.common.keys import Keys
+
         session.visit("/form")
         session.find("css", "#address1_city").send_keys(
             "Ocean", Keys.SPACE, "sie", Keys.LEFT, "d")

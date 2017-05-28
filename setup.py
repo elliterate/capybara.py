@@ -3,9 +3,15 @@ from setuptools import setup, find_packages
 import sys
 
 
-tests_require = ["flask", "lxml", "pytest >= 3", "selenium < 4", "werkzeug"]
+tests_require = ["selenium < 4", "werkzeug"]
 if sys.version_info < (3, 3):
     tests_require.append("mock")
+
+driver_verification_tests_require = ["flask", "py", "pytest >= 3", "werkzeug"]
+if sys.version_info < (3, 3):
+    driver_verification_tests_require.append("mock")
+
+tests_require += driver_verification_tests_require
 
 
 def read(filename):
@@ -61,8 +67,8 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
         "Topic :: Software Development :: Quality Assurance",
         "Topic :: Software Development :: Testing"],
-    packages=find_packages(exclude=["tests", "tests.*", "*.tests.*", "*.tests"]),
-    install_requires=["xpath-py >= 0.0.4"],
+    packages=find_packages(exclude=["tests", "tests.*"]),
+    install_requires=["lxml", "xpath-py >= 0.0.4"],
     setup_requires=["pytest-runner"],
     tests_require=tests_require,
     extras_require={
