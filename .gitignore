@@ -3,6 +3,7 @@
 *.pyc
 .cache/
 .eggs/
+.tox/
 build/
 dist/
 ghostdriver.log
