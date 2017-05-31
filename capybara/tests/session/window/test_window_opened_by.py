@@ -2,7 +2,7 @@ import pytest
 from time import sleep
 
 import capybara
-from capybara.exceptions import CapybaraError, WindowError
+from capybara.exceptions import WindowError
 from capybara.window import Window
 
 from capybara.tests.assertions import assert_windows_open
