@@ -1,3 +1,4 @@
+from flaky import flaky
 import pytest
 from time import sleep
 
@@ -37,6 +38,7 @@ class TestWindowOpenedBy:
                 session.window_opened_by(lambda: button.click(), wait=0.8)
         assert_windows_open(session, 2)
 
+    @flaky
     def test_finds_window_if_value_of_wait_is_more_than_timeout(self, session):
         button = session.find("css", "#openWindowWithTimeout")
         with capybara.using_wait_time(0.1):
@@ -50,6 +52,7 @@ class TestWindowOpenedBy:
                 session.window_opened_by(lambda: button.click())
         assert_windows_open(session, 2)
 
+    @flaky
     def test_finds_window_if_default_max_wait_time_is_more_than_timeout(self, session):
         button = session.find("css", "#openWindowWithTimeout")
         with capybara.using_wait_time(1.5):
