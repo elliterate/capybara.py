@@ -4,6 +4,8 @@ from werkzeug.datastructures import ImmutableMultiDict
 
 
 def extract_results(session):
+    session.assert_selector("//pre[@id='results']")
+
     tree = etree.HTML(session.body)
     element = tree.xpath("//pre[@id='results']")[0]
 

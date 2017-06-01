@@ -1,6 +1,5 @@
 import atexit
 from contextlib import contextmanager
-from selenium import webdriver
 from selenium.common.exceptions import (
     NoAlertPresentException,
     NoSuchWindowException,
@@ -15,6 +14,7 @@ from time import sleep, time
 import capybara
 from capybara.driver.base import Base
 from capybara.exceptions import ExpectationNotMet, ModalNotFound
+from capybara.selenium.browser import get_browser
 from capybara.selenium.node import Node
 from capybara.utils import cached_property
 
@@ -25,13 +25,15 @@ class Driver(Base):
 
     Args:
         app (object): The WSGI-compliant app to drive.
+        browser (str, optional): The name of the browser to use. Defaults to "firefox".
         desired_capabilities (Dict[str, str | bool], optional): Desired
             capabilities of the underlying browser. Defaults to a set of
             reasonable defaults provided by Selenium.
     """
 
-    def __init__(self, app, desired_capabilities=None):
+    def __init__(self, app, browser="firefox", desired_capabilities=None):
         self.app = app
+        self._browser_name = browser
         self._desired_capabilities = desired_capabilities
         self._frame_handles = []
 
@@ -41,10 +43,14 @@ class Driver(Base):
 
     @cached_property
     def browser(self):
-        capabilities = (self._desired_capabilities or DesiredCapabilities.FIREFOX).copy()
-        # Auto-accept unload alerts triggered by navigating away.
-        capabilities["unexpectedAlertBehaviour"] = "ignore"
-        browser = webdriver.Firefox(capabilities=capabilities)
+        capabilities = self._desired_capabilities
+
+        if self._browser_name in ["ff", "firefox"]:
+            capabilities = (capabilities or DesiredCapabilities.FIREFOX).copy()
+            # Auto-accept unload alerts triggered by navigating away.
+            capabilities["unexpectedAlertBehaviour"] = "ignore"
+
+        browser = get_browser(self._browser_name, capabilities=capabilities)
         atexit.register(browser.quit)
         return browser
 

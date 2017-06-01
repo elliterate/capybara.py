@@ -119,8 +119,10 @@ class Node(Base):
             self.native.click()
             script = """
                 var range = document.createRange();
+                var sel = window.getSelection();
                 range.selectNodeContents(arguments[0]);
-                window.getSelection().addRange(range);
+                sel.removeAllRanges();
+                sel.addRange(range);
             """
             self.driver.browser.execute_script(script, self.native)
             self.native.send_keys(value)

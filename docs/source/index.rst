@@ -21,7 +21,7 @@ capability as shown below::
         capabilities = DesiredCapabilities.FIREFOX.copy()
         capabilities["marionette"] = False
 
-        return Driver(app, desired_capabilities=capabilities)
+        return Driver(app, browser="firefox", desired_capabilities=capabilities)
 
 Using Firefox 48+ requires ``geckodriver`` and ``selenium`` v3, the combo of
 which currently has multiple issues and is feature incomplete.
@@ -578,6 +578,44 @@ The same thing goes for :meth:`scope <capybara.session.Session.scope>`::
         page.find("xpath", ".//script")
         with scope("xpath", ".//table/tbody"):
             # ...
+
+_`Configuring and adding drivers`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Capybara makes it convenient to switch between different drivers. It also
+exposes an API to tweak those drivers with whatever settings you want, or to
+add your own drivers. This is how to override the Selenium driver
+configuration to use Chrome::
+
+    import capybara
+
+    @capybara.register_driver("selenium")
+    def init_selenium_driver(app):
+        from capybara.selenium.driver import Driver
+
+        return Driver(app, browser="chrome")
+
+However, it's also possible to give this configuration a different name. ::
+
+    @capybara.register_driver("selenium_chrome")
+    def init_selenium_chrome_driver(app):
+        from capybara.selenium.driver import Driver
+
+        return Driver(app, browser="chrome")
+
+Then tests can switch between using different browsers effortlessly::
+
+    capybara.current_driver = "selenium_chrome"
+
+Whatever is returned from the initialization function should conform to the API
+described by :class:`capybara.driver.base.Base`, it does not however have to
+inherit from this class.
+
+The |selenium_wiki|_ has additional info about how the underlying driver can be
+configured.
+
+.. |selenium_wiki| replace:: Selenium wiki
+.. _selenium_wiki: https://github.com/SeleniumHQ/selenium/wiki/Python-Bindings
 
 Indices and tables
 ==================

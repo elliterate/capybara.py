@@ -265,14 +265,20 @@ def init_werkzeug_server(app, port, host):
             'Capybara\'s werkzeug server is unable to load `werkzeug`, please install the package '
             'and add `werkzeug` to your requirements.txt file.')
 
-    from werkzeug.serving import run_simple
+    from werkzeug.serving import make_server
     from logging import getLogger
 
     # Mute the server.
     log = getLogger('werkzeug')
     log.disabled = True
 
-    run_simple(host, port, app)
+    server = make_server(host, port, app, threaded=True)
+
+    # Inform Python that it shouldn't wait for request threads to terminate before
+    # exiting. (They will still be appropriately terminated when the process exits.)
+    server.daemon_threads = True
+
+    server.serve_forever()
 
 
 @register_driver("selenium")
