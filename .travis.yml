@@ -23,6 +23,8 @@ matrix:
 before_install:
   # Upgrade pip to a version that supports `pip install .[test]`.
   - pip install --upgrade pip
+  # Avoid setuptools 36.x until https://github.com/pypa/setuptools/issues/1042 is fixed.
+  - pip install --upgrade "setuptools < 36"
   - mkdir -p ~/drivers; export PATH=~/drivers:$PATH;
   - GECKODRIVER_URL="https://github.com/mozilla/geckodriver/releases/download/v0.15.0/geckodriver-v0.15.0-linux64.tar.gz";
     FILE=`mktemp`; wget "$GECKODRIVER_URL" -qO $FILE && tar xz -C ~/drivers -f $FILE geckodriver; rm $FILE; chmod 777 ~/drivers/geckodriver;
