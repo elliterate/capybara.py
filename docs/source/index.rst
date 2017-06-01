@@ -59,7 +59,7 @@ _`Using Capybara with pytest`
 Load pytest support by adding it to the ``pytest_plugins`` in your
 ``conftest.py``::
 
-    pytest_plugins = ["capybara.pytest"]
+    pytest_plugins = ["capybara.pytest_plugin"]
 
 The plugin provides a :data:`page <capybara.dsl.page>` fixture for use in your
 tests::

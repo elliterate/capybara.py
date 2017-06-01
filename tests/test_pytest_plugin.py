@@ -42,7 +42,7 @@ def make_conftest(testdir):
         import capybara
         import test_app
 
-        pytest_plugins = ["capybara.pytest"]
+        pytest_plugins = ["capybara.pytest_plugin"]
 
         capybara.app = test_app.app
     """)
