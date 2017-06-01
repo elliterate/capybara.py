@@ -1,7 +1,7 @@
-Driver Verification Suite
-=========================
+capybara.tests package
+======================
 
-A test suite for verifying the implementation of a third-party driver, exposed as
+This is a test suite for verifying the implementation of a third-party driver, exposed as
 `a pytest plugin`_.
 
 .. _a pytest plugin: https://docs.pytest.org/en/latest/plugins.html
@@ -48,3 +48,23 @@ these dependencies in the ``tests_require`` configuration of your ``setup.py``::
     setup(
         # ...
         tests_require=["flaky", "flask", "mock", "py", "pytest >= 3", "werkzeug"])  # as of writing
+
+Submodules
+----------
+
+capybara.tests.suite module
+---------------------------
+
+.. automodule:: capybara.tests.suite
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: capybara.tests
+    :members:
+    :undoc-members:
+    :show-inheritance:

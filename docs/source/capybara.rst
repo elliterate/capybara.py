@@ -11,6 +11,7 @@ Subpackages
     capybara.queries
     capybara.selector
     capybara.selenium
+    capybara.tests
     capybara.werkzeug
 
 Submodules
