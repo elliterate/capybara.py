@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>capybara.node.element &#8212; Capybara 0.0.2 documentation</title>
+    <title>capybara.node.element &#8212; Capybara 0.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,10 +14,11 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.0.2',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
@@ -25,8 +26,6 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="top" title="Capybara 0.0.2 documentation" href="../../../index.html" />
-    <link rel="up" title="capybara" href="../../capybara.html" />
    
   <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
   
@@ -34,7 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -67,7 +66,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">base</span><span class="p">,</span> <span class="n">query_scope</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="n">base</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query_scope</span> <span class="o">=</span> <span class="n">query_scope</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">query</span> <span class="o">=</span> <span class="n">query</span>
 
@@ -189,18 +188,18 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
-    <span class="nd">@synchronize</span>
-<div class="viewcode-block" id="Element.click"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.click">[docs]</a>    <span class="k">def</span> <span class="nf">click</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Element.click"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.click">[docs]</a>    <span class="nd">@synchronize</span>
+    <span class="k">def</span> <span class="nf">click</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Click the element. &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">click</span><span class="p">()</span></div>
 
-    <span class="nd">@synchronize</span>
-<div class="viewcode-block" id="Element.double_click"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.double_click">[docs]</a>    <span class="k">def</span> <span class="nf">double_click</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Element.double_click"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.double_click">[docs]</a>    <span class="nd">@synchronize</span>
+    <span class="k">def</span> <span class="nf">double_click</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Double-click the element. &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">double_click</span><span class="p">()</span></div>
 
-    <span class="nd">@synchronize</span>
-<div class="viewcode-block" id="Element.drag_to"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.drag_to">[docs]</a>    <span class="k">def</span> <span class="nf">drag_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<div class="viewcode-block" id="Element.drag_to"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.drag_to">[docs]</a>    <span class="nd">@synchronize</span>
+    <span class="k">def</span> <span class="nf">drag_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Drag the element to the given other element. ::</span>
 
@@ -214,8 +213,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">drag_to</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">base</span><span class="p">)</span></div>
 
-    <span class="nd">@synchronize</span>
-<div class="viewcode-block" id="Element.send_keys"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.send_keys">[docs]</a>    <span class="k">def</span> <span class="nf">send_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+<div class="viewcode-block" id="Element.send_keys"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.send_keys">[docs]</a>    <span class="nd">@synchronize</span>
+    <span class="k">def</span> <span class="nf">send_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Send keystrokes to the element.</span>
 
@@ -232,25 +231,25 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
-    <span class="nd">@synchronize</span>
-<div class="viewcode-block" id="Element.hover"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.hover">[docs]</a>    <span class="k">def</span> <span class="nf">hover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Element.hover"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.hover">[docs]</a>    <span class="nd">@synchronize</span>
+    <span class="k">def</span> <span class="nf">hover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Hover on the element. &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">hover</span><span class="p">()</span></div>
 
-    <span class="nd">@synchronize</span>
-<div class="viewcode-block" id="Element.right_click"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.right_click">[docs]</a>    <span class="k">def</span> <span class="nf">right_click</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Element.right_click"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.right_click">[docs]</a>    <span class="nd">@synchronize</span>
+    <span class="k">def</span> <span class="nf">right_click</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Right-click the element. &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">right_click</span><span class="p">()</span></div>
 
-    <span class="nd">@synchronize</span>
-<div class="viewcode-block" id="Element.select_option"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.select_option">[docs]</a>    <span class="k">def</span> <span class="nf">select_option</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Element.select_option"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.select_option">[docs]</a>    <span class="nd">@synchronize</span>
+    <span class="k">def</span> <span class="nf">select_option</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Select this node if it is an option element inside a select tag. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">disabled</span><span class="p">:</span>
             <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Attempt to select disabled option: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">select_option</span><span class="p">()</span></div>
 
-    <span class="nd">@synchronize</span>
-<div class="viewcode-block" id="Element.set"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="Element.set"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.set">[docs]</a>    <span class="nd">@synchronize</span>
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the value of the form element to the given value.</span>
 
@@ -260,8 +259,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
-    <span class="nd">@synchronize</span>
-<div class="viewcode-block" id="Element.unselect_option"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.unselect_option">[docs]</a>    <span class="k">def</span> <span class="nf">unselect_option</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Element.unselect_option"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.unselect_option">[docs]</a>    <span class="nd">@synchronize</span>
+    <span class="k">def</span> <span class="nf">unselect_option</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Unselect this node if it is an option element inside a multiple select tag. &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">unselect_option</span><span class="p">()</span></div></div>
 </pre></div>
@@ -299,8 +298,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>
 

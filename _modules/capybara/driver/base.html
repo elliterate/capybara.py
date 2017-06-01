@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>capybara.driver.base &#8212; Capybara 0.0.2 documentation</title>
+    <title>capybara.driver.base &#8212; Capybara 0.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,10 +14,11 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.0.2',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
@@ -25,8 +26,6 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="top" title="Capybara 0.0.2 documentation" href="../../../index.html" />
-    <link rel="up" title="capybara" href="../../capybara.html" />
    
   <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
   
@@ -34,7 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -48,6 +47,11 @@
 
 <div class="viewcode-block" id="Base"><a class="viewcode-back" href="../../../capybara.driver.html#capybara.driver.base.Base">[docs]</a><span class="k">class</span> <span class="nc">Base</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; The base class for drivers used by sessions. &quot;&quot;&quot;</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">needs_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; bool: Whether this driver needs to communicate with a real HTTP server. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">False</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -151,22 +155,24 @@
         <span class="sd">&quot;&quot;&quot; Move forward a single entry in the browser&#39;s history. &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Base.execute_script"><a class="viewcode-back" href="../../../capybara.driver.html#capybara.driver.base.Base.execute_script">[docs]</a>    <span class="k">def</span> <span class="nf">execute_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">):</span>
+<div class="viewcode-block" id="Base.execute_script"><a class="viewcode-back" href="../../../capybara.driver.html#capybara.driver.base.Base.execute_script">[docs]</a>    <span class="k">def</span> <span class="nf">execute_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Executes the given script.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            script (str): A JavaScript string to execute.</span>
+<span class="sd">            *args: Variable length argument list to pass to the executed JavaScript string.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Base.evaluate_script"><a class="viewcode-back" href="../../../capybara.driver.html#capybara.driver.base.Base.evaluate_script">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">):</span>
+<div class="viewcode-block" id="Base.evaluate_script"><a class="viewcode-back" href="../../../capybara.driver.html#capybara.driver.base.Base.evaluate_script">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Evaluates and returns the result of the given JavaScript.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            script (str): A string of JavaScript to evaluate.</span>
+<span class="sd">            *args: Variable length argument list to pass to the executed JavaScript string.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            object: The result of the evaluated JavaScript.</span>
@@ -185,8 +191,8 @@
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-    <span class="nd">@contextmanager</span>
-<div class="viewcode-block" id="Base.accept_modal"><a class="viewcode-back" href="../../../capybara.driver.html#capybara.driver.base.Base.accept_modal">[docs]</a>    <span class="k">def</span> <span class="nf">accept_modal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modal_type</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Base.accept_modal"><a class="viewcode-back" href="../../../capybara.driver.html#capybara.driver.base.Base.accept_modal">[docs]</a>    <span class="nd">@contextmanager</span>
+    <span class="k">def</span> <span class="nf">accept_modal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modal_type</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Accepts the modal that appears matching the given type and, optionally, text.</span>
 
@@ -199,8 +205,8 @@
 
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span></div>
 
-    <span class="nd">@contextmanager</span>
-<div class="viewcode-block" id="Base.dismiss_modal"><a class="viewcode-back" href="../../../capybara.driver.html#capybara.driver.base.Base.dismiss_modal">[docs]</a>    <span class="k">def</span> <span class="nf">dismiss_modal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modal_type</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Base.dismiss_modal"><a class="viewcode-back" href="../../../capybara.driver.html#capybara.driver.base.Base.dismiss_modal">[docs]</a>    <span class="nd">@contextmanager</span>
+    <span class="k">def</span> <span class="nf">dismiss_modal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modal_type</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Dismisses the modal that appears matching the given type and, optionally, text.</span>
 
@@ -281,8 +287,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>
 

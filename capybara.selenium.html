@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>capybara.selenium package &#8212; Capybara 0.0.2 documentation</title>
+    <title>capybara.selenium package &#8212; Capybara 0.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,10 +14,11 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.2',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
@@ -25,7 +26,6 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Capybara 0.0.2 documentation" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -33,7 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -46,12 +46,55 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-capybara.selenium.browser">
+<span id="capybara-selenium-browser-module"></span><h2>capybara.selenium.browser module<a class="headerlink" href="#module-capybara.selenium.browser" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="capybara.selenium.browser.get_browser">
+<code class="descclassname">capybara.selenium.browser.</code><code class="descname">get_browser</code><span class="sig-paren">(</span><em>browser_name</em>, <em>capabilities=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/browser.html#get_browser"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.browser.get_browser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns an instance of the given browser with the given capabilities.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>browser_name</strong> (<em>str</em>) – The name of the desired browser.</li>
+<li><strong>capabilities</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str | bool</em><em>]</em><em>, </em><em>optional</em>) – The desired capabilities of the browser. Defaults to None.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">An instance of the desired browser.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">WebDriver</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-capybara.selenium.driver">
 <span id="capybara-selenium-driver-module"></span><h2>capybara.selenium.driver module<a class="headerlink" href="#module-capybara.selenium.driver" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="capybara.selenium.driver.Driver">
-<em class="property">class </em><code class="descclassname">capybara.selenium.driver.</code><code class="descname">Driver</code><span class="sig-paren">(</span><em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">capybara.selenium.driver.</code><code class="descname">Driver</code><span class="sig-paren">(</span><em>app</em>, <em>browser=’firefox’</em>, <em>desired_capabilities=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="capybara.driver.html#capybara.driver.base.Base" title="capybara.driver.base.Base"><code class="xref py py-class docutils literal"><span class="pre">capybara.driver.base.Base</span></code></a></p>
+<p>A Capybara driver that uses Selenium WebDriver to drive a real browser.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>app</strong> (<em>object</em>) – The WSGI-compliant app to drive.</li>
+<li><strong>browser</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the browser to use. Defaults to “firefox”.</li>
+<li><strong>desired_capabilities</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str | bool</em><em>]</em><em>, </em><em>optional</em>) – Desired
+capabilities of the underlying browser. Defaults to a set of
+reasonable defaults provided by Selenium.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="capybara.selenium.driver.Driver.accept_modal">
 <code class="descname">accept_modal</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver.accept_modal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver.accept_modal" title="Permalink to this definition">¶</a></dt>
@@ -84,12 +127,12 @@
 
 <dl class="method">
 <dt id="capybara.selenium.driver.Driver.evaluate_script">
-<code class="descname">evaluate_script</code><span class="sig-paren">(</span><em>script</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver.evaluate_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver.evaluate_script" title="Permalink to this definition">¶</a></dt>
+<code class="descname">evaluate_script</code><span class="sig-paren">(</span><em>script</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver.evaluate_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver.evaluate_script" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="capybara.selenium.driver.Driver.execute_script">
-<code class="descname">execute_script</code><span class="sig-paren">(</span><em>script</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver.execute_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver.execute_script" title="Permalink to this definition">¶</a></dt>
+<code class="descname">execute_script</code><span class="sig-paren">(</span><em>script</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver.execute_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver.execute_script" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -115,6 +158,11 @@
 <dl class="method">
 <dt id="capybara.selenium.driver.Driver.maximize_window">
 <code class="descname">maximize_window</code><span class="sig-paren">(</span><em>handle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver.maximize_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver.maximize_window" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="capybara.selenium.driver.Driver.needs_server">
+<code class="descname">needs_server</code><a class="headerlink" href="#capybara.selenium.driver.Driver.needs_server" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -304,6 +352,7 @@
   <ul>
 <li><a class="reference internal" href="#">capybara.selenium package</a><ul>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-capybara.selenium.browser">capybara.selenium.browser module</a></li>
 <li><a class="reference internal" href="#module-capybara.selenium.driver">capybara.selenium.driver module</a></li>
 <li><a class="reference internal" href="#module-capybara.selenium.node">capybara.selenium.node module</a></li>
 <li><a class="reference internal" href="#module-capybara.selenium">Module contents</a></li>
@@ -320,7 +369,7 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/capybara.selenium.txt"
+      <li><a href="_sources/capybara.selenium.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -342,11 +391,11 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="_sources/capybara.selenium.txt"
+      <a href="_sources/capybara.selenium.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

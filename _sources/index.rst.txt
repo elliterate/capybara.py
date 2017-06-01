@@ -3,13 +3,41 @@ Capybara
 
 Capybara helps you test web applications by simulating how a real user would
 interact with your app. It is agnostic about the driver running your tests and
-comes with Selenium support built in.
+comes with Werkzeug and Selenium support built in.
+
+**Note: Firefox 48+** If you're using Firefox with ``selenium`` and want full
+functionality stay on either Firefox |ff45|_ or |ff47|_. If using ``selenium``
+3.0+ this will require configuring your driver with the ``"marionette": False``
+capability as shown below::
+
+    import capybara
+
+    @capybara.register_driver("selenium")
+    def init_selenium_driver(app):
+        from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
+        from capybara.selenium.driver import Driver
+
+        capabilities = DesiredCapabilities.FIREFOX.copy()
+        capabilities["marionette"] = False
+
+        return Driver(app, browser="firefox", desired_capabilities=capabilities)
+
+Using Firefox 48+ requires ``geckodriver`` and ``selenium`` v3, the combo of
+which currently has multiple issues and is feature incomplete.
+
+.. |ff45| replace:: 45.0esr
+.. _ff45: https://ftp.mozilla.org/pub/firefox/releases/45.0esr/
+.. |ff47| replace:: 47.0.1
+.. _ff47: https://ftp.mozilla.org/pub/firefox/releases/47.0.1/
 
 _`Key benefits`
 ~~~~~~~~~~~~~~~
 
 - **No setup** necessary for WSGI-compliant applications. Works out of the box.
 - **Intuitive API** which mimics the language an actual user would use.
+- **Switch the backend** your tests run against from fast headless mode to an
+  actual browser with no changes to your tests.
 - **Powerful synchronization** features mean you never have to manually wait
   for asynchronous processes to complete.
 
@@ -25,37 +53,16 @@ In your test setup, set :data:`capybara.app` to your WSGI-compliant app::
 
     capybara.app = app
 
-_`Drivers`
-~~~~~~~~~~
-
-Capybara uses the same DSL to drive a variety of browser and headless drivers.
-By default, Capybara uses the ``"selenium"`` driver.
-
-_`Selenium`
------------
-
-At the moment, Capybara supports |selenium_2.0_webdriver|_, *not* Selenium RC.
-In order to use Selenium, you'll need to install the ``selenium-webdriver``
-package. Provided Firefox is installed, everything is set up for you, and you
-should be able to start using Selenium right away.
-
-.. |selenium_2.0_webdriver| replace:: Selenium 2.0 (Webdriver)
-.. _selenium_2.0_webdriver: http://seleniumhq.org/docs/01_introducing_selenium.html#selenium-2-aka-selenium-webdriver
-
 _`Using Capybara with pytest`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Define a fixture in your ``conftest.py`` that exposes the :data:`page <capybara.dsl.page>` session
-proxy::
+Load pytest support by adding it to the ``pytest_plugins`` in your
+``conftest.py``::
 
-    import capybara.dsl
-    import pytest
+    pytest_plugins = ["capybara.pytest_plugin"]
 
-    @pytest.fixture
-    def page():
-        return capybara.dsl.page
-
-Then use the fixture in your tests::
+The plugin provides a :data:`page <capybara.dsl.page>` fixture for use in your
+tests::
 
     def test_user_signs_in(page):
         page.visit("/")
@@ -65,17 +72,19 @@ Then use the fixture in your tests::
         page.fill_in("Password", value="password")
         page.click_button("Sign in")
 
-You can also use a fixture to clean up between tests::
+Use the ``js`` mark to switch to the :data:`capybara.javascript_driver`
+(``"selenium"`` by default), or use the ``driver`` mark to switch to one
+specific driver. For example::
 
-    import capybara
     import pytest
 
-    @pytest.yield_fixture(autouse=True)
-    def teardown_capybara():
-        try:
-            yield
-        finally:
-            capybara.reset_sessions()
+    @pytest.mark.js
+    def test_uses_the_default_js_driver():
+        # ...
+
+    @pytest.mark.driver("selenium")
+    def test_switches_to_one_specific_driver():
+        # ...
 
 _`Using Capybara with unittest`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -95,6 +104,57 @@ up between tests::
             capybara.reset_sessions()
 
 (Remember to call ``super`` in any subclasses that override ``setUp`` or ``tearDown``!)
+
+_`Drivers`
+~~~~~~~~~~
+
+Capybara uses the same DSL to drive a variety of browser and headless drivers.
+
+_`Selecting the Driver`
+-----------------------
+
+By default, Capybara uses the ``"werkzeug"`` driver, which is fast but limited:
+it does not support JavaScript, nor is it able to access HTTP resources outside
+of your WSGI application, such as remote APIs and OAuth services. To get around
+these limitations, you can set up a different default driver for your features.
+For example if you'd prefer to run everything in Selenium, you could do::
+
+    import capybara
+
+    capybara.default_driver = "selenium"
+
+You can also change the driver temporarily (typically in the setup and teardown
+functions)::
+
+    import capybara
+
+    capybara.current_driver = "selenium" # temporarily select different driver
+    # tests here
+    capybara.use_default_driver()        # switch back to default driver
+
+_`Werkzeug`
+-----------
+
+Werkzeug is Capybara's default driver. It is written in pure Python and does
+not have any support for executing JavaScript. Since the Werkzeug driver
+interacts directly with WSGI interfaces, it does not require a server to be
+started. However, this means that if your application is not a WSGI application
+(Django, Flask, and most other Python frameworks are WSGI applications) then
+you cannot use this driver. Furthermore, you cannot use the Werkzeug driver to
+test a remote application, or to access remote URLs (e.g., redirects to
+external sites, external APIs, or OAuth services) that your application might
+interact with.
+
+_`Selenium`
+-----------
+
+At the moment, Capybara supports |selenium_2.0_webdriver|_, *not* Selenium RC.
+In order to use Selenium, you'll need to install the ``selenium`` package.
+Provided Firefox is installed, everything is set up for you, and you should be
+able to start using Selenium right away.
+
+.. |selenium_2.0_webdriver| replace:: Selenium 2.0 (Webdriver)
+.. _selenium_2.0_webdriver: http://seleniumhq.org/docs/01_introducing_selenium.html#selenium-2-aka-selenium-webdriver
 
 _`The DSL`
 ~~~~~~~~~~
@@ -518,6 +578,44 @@ The same thing goes for :meth:`scope <capybara.session.Session.scope>`::
         page.find("xpath", ".//script")
         with scope("xpath", ".//table/tbody"):
             # ...
+
+_`Configuring and adding drivers`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Capybara makes it convenient to switch between different drivers. It also
+exposes an API to tweak those drivers with whatever settings you want, or to
+add your own drivers. This is how to override the Selenium driver
+configuration to use Chrome::
+
+    import capybara
+
+    @capybara.register_driver("selenium")
+    def init_selenium_driver(app):
+        from capybara.selenium.driver import Driver
+
+        return Driver(app, browser="chrome")
+
+However, it's also possible to give this configuration a different name. ::
+
+    @capybara.register_driver("selenium_chrome")
+    def init_selenium_chrome_driver(app):
+        from capybara.selenium.driver import Driver
+
+        return Driver(app, browser="chrome")
+
+Then tests can switch between using different browsers effortlessly::
+
+    capybara.current_driver = "selenium_chrome"
+
+Whatever is returned from the initialization function should conform to the API
+described by :class:`capybara.driver.base.Base`, it does not however have to
+inherit from this class.
+
+The |selenium_wiki|_ has additional info about how the underlying driver can be
+configured.
+
+.. |selenium_wiki| replace:: Selenium wiki
+.. _selenium_wiki: https://github.com/SeleniumHQ/selenium/wiki/Python-Bindings
 
 Indices and tables
 ==================

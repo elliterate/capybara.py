@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>capybara.selenium.driver &#8212; Capybara 0.0.2 documentation</title>
+    <title>capybara.selenium.driver &#8212; Capybara 0.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,10 +14,11 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.0.2',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
@@ -25,8 +26,6 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="top" title="Capybara 0.0.2 documentation" href="../../../index.html" />
-    <link rel="up" title="capybara" href="../../capybara.html" />
    
   <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
   
@@ -34,7 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -45,13 +44,13 @@
   <h1>Source code for capybara.selenium.driver</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">atexit</span>
 <span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
-<span class="kn">from</span> <span class="nn">selenium</span> <span class="k">import</span> <span class="n">webdriver</span>
 <span class="kn">from</span> <span class="nn">selenium.common.exceptions</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">NoAlertPresentException</span><span class="p">,</span>
     <span class="n">NoSuchWindowException</span><span class="p">,</span>
     <span class="n">StaleElementReferenceException</span><span class="p">,</span>
     <span class="n">UnexpectedAlertPresentException</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">selenium.webdriver.common.desired_capabilities</span> <span class="k">import</span> <span class="n">DesiredCapabilities</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.remote.webelement</span> <span class="k">import</span> <span class="n">WebElement</span>
 <span class="kn">from</span> <span class="nn">selenium.webdriver.support</span> <span class="k">import</span> <span class="n">expected_conditions</span> <span class="k">as</span> <span class="n">EC</span>
 <span class="kn">from</span> <span class="nn">selenium.webdriver.support.ui</span> <span class="k">import</span> <span class="n">WebDriverWait</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">sleep</span><span class="p">,</span> <span class="n">time</span>
@@ -59,21 +58,43 @@
 <span class="kn">import</span> <span class="nn">capybara</span>
 <span class="kn">from</span> <span class="nn">capybara.driver.base</span> <span class="k">import</span> <span class="n">Base</span>
 <span class="kn">from</span> <span class="nn">capybara.exceptions</span> <span class="k">import</span> <span class="n">ExpectationNotMet</span><span class="p">,</span> <span class="n">ModalNotFound</span>
+<span class="kn">from</span> <span class="nn">capybara.selenium.browser</span> <span class="k">import</span> <span class="n">get_browser</span>
 <span class="kn">from</span> <span class="nn">capybara.selenium.node</span> <span class="k">import</span> <span class="n">Node</span>
 <span class="kn">from</span> <span class="nn">capybara.utils</span> <span class="k">import</span> <span class="n">cached_property</span>
 
 
 <div class="viewcode-block" id="Driver"><a class="viewcode-back" href="../../../capybara.selenium.html#capybara.selenium.driver.Driver">[docs]</a><span class="k">class</span> <span class="nc">Driver</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A Capybara driver that uses Selenium WebDriver to drive a real browser.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        app (object): The WSGI-compliant app to drive.</span>
+<span class="sd">        browser (str, optional): The name of the browser to use. Defaults to &quot;firefox&quot;.</span>
+<span class="sd">        desired_capabilities (Dict[str, str | bool], optional): Desired</span>
+<span class="sd">            capabilities of the underlying browser. Defaults to a set of</span>
+<span class="sd">            reasonable defaults provided by Selenium.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">browser</span><span class="o">=</span><span class="s2">&quot;firefox&quot;</span><span class="p">,</span> <span class="n">desired_capabilities</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_browser_name</span> <span class="o">=</span> <span class="n">browser</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_desired_capabilities</span> <span class="o">=</span> <span class="n">desired_capabilities</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_frame_handles</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="nd">@cached_property</span>
-<div class="viewcode-block" id="Driver.browser"><a class="viewcode-back" href="../../../capybara.selenium.html#capybara.selenium.driver.Driver.browser">[docs]</a>    <span class="k">def</span> <span class="nf">browser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">capabilities</span> <span class="o">=</span> <span class="n">DesiredCapabilities</span><span class="o">.</span><span class="n">FIREFOX</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="c1"># Auto-accept unload alerts triggered by navigating away.</span>
-        <span class="n">capabilities</span><span class="p">[</span><span class="s2">&quot;unexpectedAlertBehaviour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ignore&quot;</span>
-        <span class="n">browser</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Firefox</span><span class="p">(</span><span class="n">capabilities</span><span class="o">=</span><span class="n">capabilities</span><span class="p">)</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">needs_server</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+<div class="viewcode-block" id="Driver.browser"><a class="viewcode-back" href="../../../capybara.selenium.html#capybara.selenium.driver.Driver.browser">[docs]</a>    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">browser</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">capabilities</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_desired_capabilities</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_browser_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;ff&quot;</span><span class="p">,</span> <span class="s2">&quot;firefox&quot;</span><span class="p">]:</span>
+            <span class="n">capabilities</span> <span class="o">=</span> <span class="p">(</span><span class="n">capabilities</span> <span class="ow">or</span> <span class="n">DesiredCapabilities</span><span class="o">.</span><span class="n">FIREFOX</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="c1"># Auto-accept unload alerts triggered by navigating away.</span>
+            <span class="n">capabilities</span><span class="p">[</span><span class="s2">&quot;unexpectedAlertBehaviour&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;ignore&quot;</span>
+
+        <span class="n">browser</span> <span class="o">=</span> <span class="n">get_browser</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_browser_name</span><span class="p">,</span> <span class="n">capabilities</span><span class="o">=</span><span class="n">capabilities</span><span class="p">)</span>
         <span class="n">atexit</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">browser</span><span class="o">.</span><span class="n">quit</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">browser</span></div>
 
@@ -147,32 +168,34 @@
 <div class="viewcode-block" id="Driver.go_forward"><a class="viewcode-back" href="../../../capybara.selenium.html#capybara.selenium.driver.Driver.go_forward">[docs]</a>    <span class="k">def</span> <span class="nf">go_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">forward</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Driver.execute_script"><a class="viewcode-back" href="../../../capybara.selenium.html#capybara.selenium.driver.Driver.execute_script">[docs]</a>    <span class="k">def</span> <span class="nf">execute_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="n">script</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Driver.execute_script"><a class="viewcode-back" href="../../../capybara.selenium.html#capybara.selenium.driver.Driver.execute_script">[docs]</a>    <span class="k">def</span> <span class="nf">execute_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">arg</span><span class="o">.</span><span class="n">native</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">Node</span><span class="p">)</span> <span class="k">else</span> <span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Driver.evaluate_script"><a class="viewcode-back" href="../../../capybara.selenium.html#capybara.selenium.driver.Driver.evaluate_script">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;return </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">script</span><span class="p">))</span></div>
+<div class="viewcode-block" id="Driver.evaluate_script"><a class="viewcode-back" href="../../../capybara.selenium.html#capybara.selenium.driver.Driver.evaluate_script">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;return </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">script</span><span class="p">),</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_element_script_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Driver.save_screenshot"><a class="viewcode-back" href="../../../capybara.selenium.html#capybara.selenium.driver.Driver.save_screenshot">[docs]</a>    <span class="k">def</span> <span class="nf">save_screenshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">browser</span><span class="o">.</span><span class="n">get_screenshot_as_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
 
-    <span class="nd">@contextmanager</span>
-<div class="viewcode-block" id="Driver.accept_modal"><a class="viewcode-back" href="../../../capybara.selenium.html#capybara.selenium.driver.Driver.accept_modal">[docs]</a>    <span class="k">def</span> <span class="nf">accept_modal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modal_type</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.accept_modal"><a class="viewcode-back" href="../../../capybara.selenium.html#capybara.selenium.driver.Driver.accept_modal">[docs]</a>    <span class="nd">@contextmanager</span>
+    <span class="k">def</span> <span class="nf">accept_modal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modal_type</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">yield</span>
         <span class="n">modal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_modal</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">response</span><span class="p">:</span>
             <span class="n">modal</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="n">response</span><span class="p">)</span>
         <span class="n">modal</span><span class="o">.</span><span class="n">accept</span><span class="p">()</span></div>
 
-    <span class="nd">@contextmanager</span>
-<div class="viewcode-block" id="Driver.dismiss_modal"><a class="viewcode-back" href="../../../capybara.selenium.html#capybara.selenium.driver.Driver.dismiss_modal">[docs]</a>    <span class="k">def</span> <span class="nf">dismiss_modal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modal_type</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Driver.dismiss_modal"><a class="viewcode-back" href="../../../capybara.selenium.html#capybara.selenium.driver.Driver.dismiss_modal">[docs]</a>    <span class="nd">@contextmanager</span>
+    <span class="k">def</span> <span class="nf">dismiss_modal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">modal_type</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">yield</span>
         <span class="n">modal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_modal</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">)</span>
         <span class="n">modal</span><span class="o">.</span><span class="n">dismiss</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Driver.reset"><a class="viewcode-back" href="../../../capybara.selenium.html#capybara.selenium.driver.Driver.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Avoid starting the browser just to reset the session.</span>
-        <span class="k">if</span> <span class="s2">&quot;browser&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dict__</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;browser&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
             <span class="n">navigated</span> <span class="o">=</span> <span class="kc">False</span>
             <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span>
             <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
@@ -236,7 +259,15 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">yield</span>
             <span class="k">finally</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">original_handle</span><span class="p">)</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">original_handle</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_wrap_element_script_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_wrap_element_script_result</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">WebElement</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">Node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">arg</span></div>
 </pre></div>
 
           </div>
@@ -272,8 +303,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>
 

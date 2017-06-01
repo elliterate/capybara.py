@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>capybara.queries package &#8212; Capybara 0.0.2 documentation</title>
+    <title>capybara.queries package &#8212; Capybara 0.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,10 +14,11 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.2',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
@@ -25,7 +26,6 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Capybara 0.0.2 documentation" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -33,7 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -58,9 +58,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>expected_path</strong> (<em>str | RegexObject</em>) &#8211; The expected path.</li>
-<li><strong>url</strong> (<em>bool, optional</em>) &#8211; Whether the complete URL should match. Defaults to False.</li>
-<li><strong>only_path</strong> (<em>bool, optional</em>) &#8211; Whether only the path (excluding the query string) should
+<li><strong>expected_path</strong> (<em>str | RegexObject</em>) – The expected path.</li>
+<li><strong>url</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the complete URL should match. Defaults to False.</li>
+<li><strong>only_path</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether only the path (excluding the query string) should
 match. Defaults to False.</li>
 </ul>
 </td>
@@ -70,13 +70,13 @@ match. Defaults to False.</li>
 <dl class="attribute">
 <dt id="capybara.queries.current_path_query.CurrentPathQuery.failure_message">
 <code class="descname">failure_message</code><a class="headerlink" href="#capybara.queries.current_path_query.CurrentPathQuery.failure_message" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; A description of this query&#8217;s failure.</p>
+<dd><p><em>str</em> – A description of this query’s failure.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.queries.current_path_query.CurrentPathQuery.negative_failure_message">
 <code class="descname">negative_failure_message</code><a class="headerlink" href="#capybara.queries.current_path_query.CurrentPathQuery.negative_failure_message" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; A description of this query&#8217;s negative failure.</p>
+<dd><p><em>str</em> – A description of this query’s negative failure.</p>
 </dd></dl>
 
 <dl class="method">
@@ -87,7 +87,7 @@ match. Defaults to False.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="capybara.html#capybara.session.Session" title="capybara.session.Session"><em>Session</em></a>) &#8211; The session for which this query should be executed.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="capybara.html#capybara.session.Session" title="capybara.session.Session"><em>Session</em></a>) – The session for which this query should be executed.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Whether this query resolves.</td>
 </tr>
@@ -114,24 +114,24 @@ argument is assumed to be the locator and the default selector will be used.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>selector</strong> (<em>str</em>) &#8211; The name of the selector to use.</li>
-<li><strong>locator</strong> (<em>str</em>) &#8211; An identifying string to use to locate desired elements.</li>
-<li><strong>between</strong> (<em>Iterable[int], optional</em>) &#8211; A range of acceptable counts.</li>
-<li><strong>count</strong> (<em>int, optional</em>) &#8211; The number of times the selector should match. Defaults to any number
+<li><strong>selector</strong> (<em>str</em>) – The name of the selector to use.</li>
+<li><strong>locator</strong> (<em>str</em>) – An identifying string to use to locate desired elements.</li>
+<li><strong>between</strong> (<em>Iterable</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – A range of acceptable counts.</li>
+<li><strong>count</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of times the selector should match. Defaults to any number
 of times greater than zero.</li>
-<li><strong>exact</strong> (<em>bool, optional</em>) &#8211; Whether to exactly match the locator string. Defaults to
+<li><strong>exact</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to exactly match the locator string. Defaults to
 <a class="reference internal" href="capybara.html#capybara.exact" title="capybara.exact"><code class="xref py py-data docutils literal"><span class="pre">capybara.exact</span></code></a>.</li>
-<li><strong>match</strong> (<em>str, optional</em>) &#8211; The matching strategy to use. Defaults to <a class="reference internal" href="capybara.html#capybara.match" title="capybara.match"><code class="xref py py-data docutils literal"><span class="pre">capybara.match</span></code></a>.</li>
-<li><strong>maximum</strong> (<em>int, optional</em>) &#8211; The maximum number of times the selector should match. Defaults to
+<li><strong>match</strong> (<em>str</em><em>, </em><em>optional</em>) – The matching strategy to use. Defaults to <a class="reference internal" href="capybara.html#capybara.match" title="capybara.match"><code class="xref py py-data docutils literal"><span class="pre">capybara.match</span></code></a>.</li>
+<li><strong>maximum</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of times the selector should match. Defaults to
 infinite.</li>
-<li><strong>minimum</strong> (<em>int, optional</em>) &#8211; The minimum number of times the selector should match. Defaults to
+<li><strong>minimum</strong> (<em>int</em><em>, </em><em>optional</em>) – The minimum number of times the selector should match. Defaults to
 1.</li>
-<li><strong>text</strong> (<em>str | RegexObject, optional</em>) &#8211; Text that should be contained in matched elements.</li>
-<li><strong>visible</strong> (<em>bool | str, optional</em>) &#8211; The desired element visibility. Defaults to
+<li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text that should be contained in matched elements.</li>
+<li><strong>visible</strong> (<em>bool | str</em><em>, </em><em>optional</em>) – The desired element visibility. Defaults to
 <a class="reference internal" href="capybara.html#capybara.ignore_hidden_elements" title="capybara.ignore_hidden_elements"><code class="xref py py-data docutils literal"><span class="pre">capybara.ignore_hidden_elements</span></code></a>.</li>
-<li><strong>wait</strong> (<em>bool | int | float, optional</em>) &#8211; Whether and how long to wait for synchronization.
+<li><strong>wait</strong> (<em>bool | int | float</em><em>, </em><em>optional</em>) – Whether and how long to wait for synchronization.
 Defaults to <a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal"><span class="pre">capybara.default_max_wait_time</span></code></a>.</li>
-<li><strong>**filter_options</strong> &#8211; Arbitrary keyword arguments for the selector&#8217;s filters.</li>
+<li><strong>**filter_options</strong> – Arbitrary keyword arguments for the selector’s filters.</li>
 </ul>
 </td>
 </tr>
@@ -146,31 +146,31 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <dl class="attribute">
 <dt id="capybara.queries.selector_query.SelectorQuery.description">
 <code class="descname">description</code><a class="headerlink" href="#capybara.queries.selector_query.SelectorQuery.description" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; A long description of this query.</p>
+<dd><p><em>str</em> – A long description of this query.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.queries.selector_query.SelectorQuery.exact">
 <code class="descname">exact</code><a class="headerlink" href="#capybara.queries.selector_query.SelectorQuery.exact" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> &#8211; Whether to exactly match the locator string.</p>
+<dd><p><em>bool</em> – Whether to exactly match the locator string.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.queries.selector_query.SelectorQuery.kwargs">
 <code class="descname">kwargs</code><a class="headerlink" href="#capybara.queries.selector_query.SelectorQuery.kwargs" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>Dict[str, Any]</em> &#8211; The keyword arguments with which this query was initialized.</p>
+<dd><p><em>Dict[str, Any]</em> – The keyword arguments with which this query was initialized.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.queries.selector_query.SelectorQuery.label">
 <code class="descname">label</code><a class="headerlink" href="#capybara.queries.selector_query.SelectorQuery.label" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; A short description of the selector.</p>
+<dd><p><em>str</em> – A short description of the selector.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.queries.selector_query.SelectorQuery.match">
 <code class="descname">match</code><a class="headerlink" href="#capybara.queries.selector_query.SelectorQuery.match" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The matching strategy to use.</p>
+<dd><p><em>str</em> – The matching strategy to use.</p>
 </dd></dl>
 
 <dl class="method">
@@ -181,7 +181,7 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> (<a class="reference internal" href="capybara.node.html#capybara.node.element.Element" title="capybara.node.element.Element"><em>Element</em></a>) &#8211; The node to evaluate.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> (<a class="reference internal" href="capybara.node.html#capybara.node.element.Element" title="capybara.node.element.Element"><em>Element</em></a>) – The node to evaluate.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Whether the given node matches.</td>
 </tr>
@@ -194,7 +194,7 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <dl class="attribute">
 <dt id="capybara.queries.selector_query.SelectorQuery.name">
 <code class="descname">name</code><a class="headerlink" href="#capybara.queries.selector_query.SelectorQuery.name" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The name of selector.</p>
+<dd><p><em>str</em> – The name of selector.</p>
 </dd></dl>
 
 <dl class="method">
@@ -206,15 +206,15 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>node</strong> (<em>node.Base</em>) &#8211; The node relative to which this query should be resolved.</li>
-<li><strong>exact</strong> (<em>bool, optional</em>) &#8211; Whether to exactly match text.</li>
+<li><strong>node</strong> (<em>node.Base</em>) – The node relative to which this query should be resolved.</li>
+<li><strong>exact</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to exactly match text.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of elements matched by this query.</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list[Element]</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list[<a class="reference internal" href="capybara.node.html#capybara.node.element.Element" title="capybara.node.element.Element">Element</a>]</p>
 </td>
 </tr>
 </tbody>
@@ -224,13 +224,13 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <dl class="attribute">
 <dt id="capybara.queries.selector_query.SelectorQuery.visible">
 <code class="descname">visible</code><a class="headerlink" href="#capybara.queries.selector_query.SelectorQuery.visible" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The desired element visibility.</p>
+<dd><p><em>str</em> – The desired element visibility.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.queries.selector_query.SelectorQuery.wait">
 <code class="descname">wait</code><a class="headerlink" href="#capybara.queries.selector_query.SelectorQuery.wait" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int | float</em> &#8211; How long to wait for synchronization.</p>
+<dd><p><em>int | float</em> – How long to wait for synchronization.</p>
 </dd></dl>
 
 <dl class="method">
@@ -241,7 +241,7 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>exact</strong> (<em>bool, optional</em>) &#8211; Whether to exactly match text.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>exact</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to exactly match text.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The XPath query for this selector.</td>
 </tr>
@@ -267,16 +267,16 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>query_type</strong> (<em>str, optional</em>) &#8211; One of &#8220;visible&#8221; or &#8220;all&#8221;. Defaults to &#8220;visible&#8221;.</li>
-<li><strong>expected_text</strong> (<em>str | RegexObject</em>) &#8211; The desired text.</li>
-<li><strong>between</strong> (<em>Iterable[int], optional</em>) &#8211; A range of acceptable counts.</li>
-<li><strong>count</strong> (<em>int, optional</em>) &#8211; The number of times the text should match. Defaults to any number of
+<li><strong>query_type</strong> (<em>str</em><em>, </em><em>optional</em>) – One of “visible” or “all”. Defaults to “visible”.</li>
+<li><strong>expected_text</strong> (<em>str | RegexObject</em>) – The desired text.</li>
+<li><strong>between</strong> (<em>Iterable</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – A range of acceptable counts.</li>
+<li><strong>count</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of times the text should match. Defaults to any number of
 times greater than zero.</li>
-<li><strong>maximum</strong> (<em>int, optional</em>) &#8211; The maximum number of times the selector should match. Defaults to
+<li><strong>maximum</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of times the selector should match. Defaults to
 infinite.</li>
-<li><strong>minimum</strong> (<em>int, optional</em>) &#8211; The minimum number of times the selector should match. Defaults to
+<li><strong>minimum</strong> (<em>int</em><em>, </em><em>optional</em>) – The minimum number of times the selector should match. Defaults to
 1.</li>
-<li><strong>wait</strong> (<em>bool | int | float, optional</em>) &#8211; Whether and how long to wait for synchronization.
+<li><strong>wait</strong> (<em>bool | int | float</em><em>, </em><em>optional</em>) – Whether and how long to wait for synchronization.
 Defaults to <a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal"><span class="pre">capybara.default_max_wait_time</span></code></a>.</li>
 </ul>
 </td>
@@ -291,13 +291,13 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <dl class="attribute">
 <dt id="capybara.queries.text_query.TextQuery.failure_message">
 <code class="descname">failure_message</code><a class="headerlink" href="#capybara.queries.text_query.TextQuery.failure_message" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; A message describing the query failure.</p>
+<dd><p><em>str</em> – A message describing the query failure.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.queries.text_query.TextQuery.negative_failure_message">
 <code class="descname">negative_failure_message</code><a class="headerlink" href="#capybara.queries.text_query.TextQuery.negative_failure_message" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; A message describing the negative query failure.</p>
+<dd><p><em>str</em> – A message describing the negative query failure.</p>
 </dd></dl>
 
 <dl class="method">
@@ -308,7 +308,7 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> (<em>node.Base</em>) &#8211; The node to be evaluated.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> (<em>node.Base</em>) – The node to be evaluated.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The number of matches found.</td>
 </tr>
@@ -321,7 +321,7 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <dl class="attribute">
 <dt id="capybara.queries.text_query.TextQuery.wait">
 <code class="descname">wait</code><a class="headerlink" href="#capybara.queries.text_query.TextQuery.wait" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>int | float</em> &#8211; How long to wait for synchronization.</p>
+<dd><p><em>int | float</em> – How long to wait for synchronization.</p>
 </dd></dl>
 
 </dd></dl>
@@ -338,20 +338,20 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>expected_title</strong> (<em>str | RegexObject</em>) &#8211; The desired title.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>expected_title</strong> (<em>str | RegexObject</em>) – The desired title.</td>
 </tr>
 </tbody>
 </table>
 <dl class="attribute">
 <dt id="capybara.queries.title_query.TitleQuery.failure_message">
 <code class="descname">failure_message</code><a class="headerlink" href="#capybara.queries.title_query.TitleQuery.failure_message" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; A message describing the query failure.</p>
+<dd><p><em>str</em> – A message describing the query failure.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.queries.title_query.TitleQuery.negative_failure_message">
 <code class="descname">negative_failure_message</code><a class="headerlink" href="#capybara.queries.title_query.TitleQuery.negative_failure_message" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; A message describing the negative query failure.</p>
+<dd><p><em>str</em> – A message describing the negative query failure.</p>
 </dd></dl>
 
 <dl class="method">
@@ -362,7 +362,7 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> (<em>node.Document</em>) &#8211; The node to be evaluated.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> (<em>node.Document</em>) – The node to be evaluated.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Whether the given node matches this query.</td>
 </tr>
@@ -408,7 +408,7 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/capybara.queries.txt"
+      <li><a href="_sources/capybara.queries.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -430,11 +430,11 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="_sources/capybara.queries.txt"
+      <a href="_sources/capybara.queries.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>capybara.node.simple &#8212; Capybara 0.0.2 documentation</title>
+    <title>capybara.node.simple &#8212; Capybara 0.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
@@ -14,10 +14,11 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.0.2',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
@@ -25,8 +26,6 @@
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="top" title="Capybara 0.0.2 documentation" href="../../../index.html" />
-    <link rel="up" title="capybara" href="../../capybara.html" />
    
   <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
   
@@ -34,7 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -43,7 +42,8 @@
           <div class="body" role="main">
             
   <h1>Source code for capybara.node.simple</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">xpath</span> <span class="k">import</span> <span class="n">dsl</span> <span class="k">as</span> <span class="n">x</span>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">xpath</span> <span class="k">import</span> <span class="n">dsl</span> <span class="k">as</span> <span class="n">x</span>
 <span class="kn">from</span> <span class="nn">xpath.renderer</span> <span class="k">import</span> <span class="n">to_xpath</span>
 
 <span class="kn">from</span> <span class="nn">capybara.node.document_matchers</span> <span class="k">import</span> <span class="n">DocumentMatchersMixin</span>
@@ -121,18 +121,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">visible</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; bool: Whether or not the element is visible. &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag_name</span> <span class="o">==</span> <span class="s2">&quot;input&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;hidden&quot;</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">False</span>
-
-        <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span>
-            <span class="s2">&quot;./ancestor-or-self::*[&quot;</span>
-            <span class="s2">&quot;contains(@style, &#39;display:none&#39;) or &quot;</span>
-            <span class="s2">&quot;contains(@style, &#39;display: none&#39;) or &quot;</span>
-            <span class="s2">&quot;@hidden or &quot;</span>
-            <span class="s2">&quot;name()=&#39;script&#39; or &quot;</span>
-            <span class="s2">&quot;name()=&#39;head&#39;&quot;</span>
-            <span class="s2">&quot;]&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_visible</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">checked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -143,6 +132,16 @@
     <span class="k">def</span> <span class="nf">disabled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; bool: Whether or not the element is disabled. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;disabled&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">attrib</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">readonly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; bool: Whether or not the element is readonly. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;readonly&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">attrib</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">multiple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; bool: Whether or not the select supports multiple values. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;multiple&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">attrib</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">selected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -166,6 +165,29 @@
 <div class="viewcode-block" id="Simple.synchronize"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.simple.Simple.synchronize">[docs]</a>    <span class="k">def</span> <span class="nf">synchronize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># Simple nodes don&#39;t need to wait.</span>
         <span class="k">return</span> <span class="n">func</span> <span class="k">if</span> <span class="n">func</span> <span class="k">else</span> <span class="k">lambda</span> <span class="n">func</span><span class="p">:</span> <span class="n">func</span></div>
+
+    <span class="k">def</span> <span class="nf">_visible</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">check_ancestor_visibility</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag_name</span> <span class="o">==</span> <span class="s2">&quot;input&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;hidden&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">check_ancestor_visibility</span><span class="p">:</span>
+            <span class="k">return</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span>
+                <span class="s2">&quot;./ancestor-or-self::*[&quot;</span>
+                <span class="s2">&quot;contains(@style, &#39;display:none&#39;) or &quot;</span>
+                <span class="s2">&quot;contains(@style, &#39;display: none&#39;) or &quot;</span>
+                <span class="s2">&quot;@hidden or &quot;</span>
+                <span class="s2">&quot;name()=&#39;script&#39; or &quot;</span>
+                <span class="s2">&quot;name()=&#39;head&#39;&quot;</span>
+                <span class="s2">&quot;]&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;hidden&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;display:\s?none&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;style&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;script&quot;</span><span class="p">,</span> <span class="s2">&quot;head&quot;</span><span class="p">]:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
 
     <span class="k">def</span> <span class="nf">_find_xpath</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">xpath</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="n">xpath</span><span class="p">)</span>
@@ -212,8 +234,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>
 

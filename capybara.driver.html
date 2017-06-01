@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>capybara.driver package &#8212; Capybara 0.0.2 documentation</title>
+    <title>capybara.driver package &#8212; Capybara 0.1.0 documentation</title>
     
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -14,10 +14,11 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.0.2',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="_static/jquery.js"></script>
@@ -25,7 +26,6 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="top" title="Capybara 0.0.2 documentation" href="index.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -33,7 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -62,10 +62,10 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>modal_type</strong> (<em>str</em>) &#8211; The type of modal that should be accepted.</li>
-<li><strong>text</strong> (<em>str, optional</em>) &#8211; Text that is expected to appear in the modal.</li>
-<li><strong>response</strong> (<em>str, optional</em>) &#8211; Text to enter for a response, if applicable.</li>
-<li><strong>wait</strong> (<em>int, optional</em>) &#8211; The number of seconds to wait for the modal to appear.</li>
+<li><strong>modal_type</strong> (<em>str</em>) – The type of modal that should be accepted.</li>
+<li><strong>text</strong> (<em>str</em><em>, </em><em>optional</em>) – Text that is expected to appear in the modal.</li>
+<li><strong>response</strong> (<em>str</em><em>, </em><em>optional</em>) – Text to enter for a response, if applicable.</li>
+<li><strong>wait</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of seconds to wait for the modal to appear.</li>
 </ul>
 </td>
 </tr>
@@ -81,7 +81,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>handle</strong> (<em>object</em>) &#8211; The handle for the desired window.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>handle</strong> (<em>object</em>) – The handle for the desired window.</td>
 </tr>
 </tbody>
 </table>
@@ -90,13 +90,13 @@
 <dl class="attribute">
 <dt id="capybara.driver.base.Base.current_url">
 <code class="descname">current_url</code><a class="headerlink" href="#capybara.driver.base.Base.current_url" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The current URL.</p>
+<dd><p><em>str</em> – The current URL.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.driver.base.Base.current_window_handle">
 <code class="descname">current_window_handle</code><a class="headerlink" href="#capybara.driver.base.Base.current_window_handle" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>object</em> &#8211; The current window handle.</p>
+<dd><p><em>object</em> – The current window handle.</p>
 </dd></dl>
 
 <dl class="method">
@@ -108,9 +108,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>modal_type</strong> (<em>str</em>) &#8211; The type of modal that should be dismissed.</li>
-<li><strong>text</strong> (<em>str, optional</em>) &#8211; Text that is expected to appear in the modal.</li>
-<li><strong>wait</strong> (<em>int, optional</em>) &#8211; The number of seconds to wait for the modal to appear.</li>
+<li><strong>modal_type</strong> (<em>str</em>) – The type of modal that should be dismissed.</li>
+<li><strong>text</strong> (<em>str</em><em>, </em><em>optional</em>) – Text that is expected to appear in the modal.</li>
+<li><strong>wait</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of seconds to wait for the modal to appear.</li>
 </ul>
 </td>
 </tr>
@@ -120,17 +120,23 @@
 
 <dl class="method">
 <dt id="capybara.driver.base.Base.evaluate_script">
-<code class="descname">evaluate_script</code><span class="sig-paren">(</span><em>script</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/driver/base.html#Base.evaluate_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.driver.base.Base.evaluate_script" title="Permalink to this definition">¶</a></dt>
+<code class="descname">evaluate_script</code><span class="sig-paren">(</span><em>script</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/driver/base.html#Base.evaluate_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.driver.base.Base.evaluate_script" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluates and returns the result of the given JavaScript.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>script</strong> (<em>str</em>) &#8211; A string of JavaScript to evaluate.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>script</strong> (<em>str</em>) – A string of JavaScript to evaluate.</li>
+<li><strong>*args</strong> – Variable length argument list to pass to the executed JavaScript string.</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The result of the evaluated JavaScript.</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The result of the evaluated JavaScript.</p>
+</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">object</td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">object</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -138,13 +144,17 @@
 
 <dl class="method">
 <dt id="capybara.driver.base.Base.execute_script">
-<code class="descname">execute_script</code><span class="sig-paren">(</span><em>script</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/driver/base.html#Base.execute_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.driver.base.Base.execute_script" title="Permalink to this definition">¶</a></dt>
+<code class="descname">execute_script</code><span class="sig-paren">(</span><em>script</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/driver/base.html#Base.execute_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.driver.base.Base.execute_script" title="Permalink to this definition">¶</a></dt>
 <dd><p>Executes the given script.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>script</strong> (<em>str</em>) &#8211; A JavaScript string to execute.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>script</strong> (<em>str</em>) – A JavaScript string to execute.</li>
+<li><strong>*args</strong> – Variable length argument list to pass to the executed JavaScript string.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -153,25 +163,25 @@
 <dl class="method">
 <dt id="capybara.driver.base.Base.go_back">
 <code class="descname">go_back</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/driver/base.html#Base.go_back"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.driver.base.Base.go_back" title="Permalink to this definition">¶</a></dt>
-<dd><p>Move back a single entry in the browser&#8217;s history.</p>
+<dd><p>Move back a single entry in the browser’s history.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="capybara.driver.base.Base.go_forward">
 <code class="descname">go_forward</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/driver/base.html#Base.go_forward"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.driver.base.Base.go_forward" title="Permalink to this definition">¶</a></dt>
-<dd><p>Move forward a single entry in the browser&#8217;s history.</p>
+<dd><p>Move forward a single entry in the browser’s history.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.driver.base.Base.html">
 <code class="descname">html</code><a class="headerlink" href="#capybara.driver.base.Base.html" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; A snapshot of the DOM of the current document, as it looks right now.</p>
+<dd><p><em>str</em> – A snapshot of the DOM of the current document, as it looks right now.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.driver.base.Base.invalid_element_errors">
 <code class="descname">invalid_element_errors</code><a class="headerlink" href="#capybara.driver.base.Base.invalid_element_errors" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>Tuple[Exception]</em> &#8211; A tuple of exceptions that indicate an element is invalid.</p>
+<dd><p><em>Tuple[Exception]</em> – A tuple of exceptions that indicate an element is invalid.</p>
 </dd></dl>
 
 <dl class="method">
@@ -181,9 +191,15 @@
 </dd></dl>
 
 <dl class="attribute">
+<dt id="capybara.driver.base.Base.needs_server">
+<code class="descname">needs_server</code><a class="headerlink" href="#capybara.driver.base.Base.needs_server" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>bool</em> – Whether this driver needs to communicate with a real HTTP server.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="capybara.driver.base.Base.no_such_window_error">
 <code class="descname">no_such_window_error</code><a class="headerlink" href="#capybara.driver.base.Base.no_such_window_error" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>Exception</em> &#8211; The error that is thrown when a window cannot be found.</p>
+<dd><p><em>Exception</em> – The error that is thrown when a window cannot be found.</p>
 </dd></dl>
 
 <dl class="method">
@@ -207,9 +223,9 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>handle</strong> (<em>object</em>) &#8211; The driver handle for the window.</li>
-<li><strong>width</strong> (<em>int</em>) &#8211; The desired window width.</li>
-<li><strong>height</strong> (<em>int</em>) &#8211; The desired window height.</li>
+<li><strong>handle</strong> (<em>object</em>) – The driver handle for the window.</li>
+<li><strong>width</strong> (<em>int</em>) – The desired window width.</li>
+<li><strong>height</strong> (<em>int</em>) – The desired window height.</li>
 </ul>
 </td>
 </tr>
@@ -226,8 +242,8 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>path</strong> (<em>str</em>) &#8211; The path to where it should be saved.</li>
-<li><strong>**kwargs</strong> &#8211; Arbitrary keywords arguments for the driver.</li>
+<li><strong>path</strong> (<em>str</em>) – The path to where it should be saved.</li>
+<li><strong>**kwargs</strong> – Arbitrary keywords arguments for the driver.</li>
 </ul>
 </td>
 </tr>
@@ -243,7 +259,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>frame</strong> (<em>Element | str</em>) &#8211; The element of the desired frame, or &#8220;parent&#8221;.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>frame</strong> (<em>Element | str</em>) – The element of the desired frame, or “parent”.</td>
 </tr>
 </tbody>
 </table>
@@ -257,7 +273,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>handle</strong> (<em>object</em>) &#8211; The handle for the desired window.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>handle</strong> (<em>object</em>) – The handle for the desired window.</td>
 </tr>
 </tbody>
 </table>
@@ -266,7 +282,7 @@
 <dl class="attribute">
 <dt id="capybara.driver.base.Base.title">
 <code class="descname">title</code><a class="headerlink" href="#capybara.driver.base.Base.title" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The current page title.</p>
+<dd><p><em>str</em> – The current page title.</p>
 </dd></dl>
 
 <dl class="method">
@@ -277,7 +293,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em>) &#8211; The path to visit.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em>) – The path to visit.</td>
 </tr>
 </tbody>
 </table>
@@ -286,7 +302,7 @@
 <dl class="attribute">
 <dt id="capybara.driver.base.Base.window_handles">
 <code class="descname">window_handles</code><a class="headerlink" href="#capybara.driver.base.Base.window_handles" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>List[object]</em> &#8211; The handles for all opened windows.</p>
+<dd><p><em>List[object]</em> – The handles for all opened windows.</p>
 </dd></dl>
 
 <dl class="method">
@@ -310,8 +326,8 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>driver</strong> (<em>driver.Base</em>) &#8211; The driver used to find this node.</li>
-<li><strong>native</strong> (<em>object</em>) &#8211; The native element object returned by the driver&#8217;s browser.</li>
+<li><strong>driver</strong> (<em>driver.Base</em>) – The driver used to find this node.</li>
+<li><strong>native</strong> (<em>object</em>) – The native element object returned by the driver’s browser.</li>
 </ul>
 </td>
 </tr>
@@ -320,13 +336,13 @@
 <dl class="attribute">
 <dt id="capybara.driver.node.Node.all_text">
 <code class="descname">all_text</code><a class="headerlink" href="#capybara.driver.node.Node.all_text" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; All of the text of the node.</p>
+<dd><p><em>str</em> – All of the text of the node.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.driver.node.Node.checked">
 <code class="descname">checked</code><a class="headerlink" href="#capybara.driver.node.Node.checked" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> &#8211; Whether this node is checked.</p>
+<dd><p><em>bool</em> – Whether this node is checked.</p>
 </dd></dl>
 
 <dl class="method">
@@ -338,7 +354,7 @@
 <dl class="attribute">
 <dt id="capybara.driver.node.Node.disabled">
 <code class="descname">disabled</code><a class="headerlink" href="#capybara.driver.node.Node.disabled" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> &#8211; Whether this node is disabled.</p>
+<dd><p><em>bool</em> – Whether this node is disabled.</p>
 </dd></dl>
 
 <dl class="method">
@@ -360,7 +376,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> (<a class="reference internal" href="capybara.node.html#capybara.node.element.Element" title="capybara.node.element.Element"><em>Element</em></a>) &#8211; The element to drag to.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> (<a class="reference internal" href="capybara.node.html#capybara.node.element.Element" title="capybara.node.element.Element"><em>Element</em></a>) – The element to drag to.</td>
 </tr>
 </tbody>
 </table>
@@ -375,19 +391,19 @@
 <dl class="attribute">
 <dt id="capybara.driver.node.Node.multiple">
 <code class="descname">multiple</code><a class="headerlink" href="#capybara.driver.node.Node.multiple" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> &#8211; Whether this is a multi-select node.</p>
+<dd><p><em>bool</em> – Whether this is a multi-select node.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.driver.node.Node.path">
 <code class="descname">path</code><a class="headerlink" href="#capybara.driver.node.Node.path" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; An XPath expression describing where on the page the node can be found.</p>
+<dd><p><em>str</em> – An XPath expression describing where on the page the node can be found.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.driver.node.Node.readonly">
 <code class="descname">readonly</code><a class="headerlink" href="#capybara.driver.node.Node.readonly" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> &#8211; Whether the node is read-only.</p>
+<dd><p><em>bool</em> – Whether the node is read-only.</p>
 </dd></dl>
 
 <dl class="method">
@@ -405,7 +421,7 @@
 <dl class="attribute">
 <dt id="capybara.driver.node.Node.selected">
 <code class="descname">selected</code><a class="headerlink" href="#capybara.driver.node.Node.selected" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> &#8211; Whether this node is selected.</p>
+<dd><p><em>bool</em> – Whether this node is selected.</p>
 </dd></dl>
 
 <dl class="method">
@@ -423,7 +439,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>*args</strong> &#8211; Variable length list of keys to send.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>*args</strong> – Variable length list of keys to send.</td>
 </tr>
 </tbody>
 </table>
@@ -437,7 +453,7 @@
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>bool | str</em>) &#8211; The desired value.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>bool | str</em>) – The desired value.</td>
 </tr>
 </tbody>
 </table>
@@ -446,13 +462,13 @@
 <dl class="attribute">
 <dt id="capybara.driver.node.Node.tag_name">
 <code class="descname">tag_name</code><a class="headerlink" href="#capybara.driver.node.Node.tag_name" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The tag name of the node.</p>
+<dd><p><em>str</em> – The tag name of the node.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.driver.node.Node.text">
 <code class="descname">text</code><a class="headerlink" href="#capybara.driver.node.Node.text" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The text of the node.</p>
+<dd><p><em>str</em> – The text of the node.</p>
 </dd></dl>
 
 <dl class="method">
@@ -464,19 +480,19 @@
 <dl class="attribute">
 <dt id="capybara.driver.node.Node.value">
 <code class="descname">value</code><a class="headerlink" href="#capybara.driver.node.Node.value" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; The value of the node.</p>
+<dd><p><em>str</em> – The value of the node.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.driver.node.Node.visible">
 <code class="descname">visible</code><a class="headerlink" href="#capybara.driver.node.Node.visible" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>bool</em> &#8211; Whether or not the node is visible.</p>
+<dd><p><em>bool</em> – Whether or not the node is visible.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.driver.node.Node.visible_text">
 <code class="descname">visible_text</code><a class="headerlink" href="#capybara.driver.node.Node.visible_text" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> &#8211; Only the visible text of the node.</p>
+<dd><p><em>str</em> – Only the visible text of the node.</p>
 </dd></dl>
 
 </dd></dl>
@@ -513,7 +529,7 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/capybara.driver.txt"
+      <li><a href="_sources/capybara.driver.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -535,11 +551,11 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
-      <a href="_sources/capybara.driver.txt"
+      <a href="_sources/capybara.driver.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>capybara &#8212; Capybara 0.0.2 documentation</title>
+    <title>capybara &#8212; Capybara 0.1.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -14,10 +14,11 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '0.0.2',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
@@ -25,8 +26,6 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="top" title="Capybara 0.0.2 documentation" href="../index.html" />
-    <link rel="up" title="Module code" href="index.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -34,7 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -53,7 +52,13 @@
 <span class="n">app_host</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="sd">&quot;&quot;&quot; str: The default host to use when giving a relative URL to visit. Must be a valid URL. &quot;&quot;&quot;</span>
 
-<span class="n">current_driver</span> <span class="o">=</span> <span class="s2">&quot;selenium&quot;</span>
+<span class="n">default_driver</span> <span class="o">=</span> <span class="s2">&quot;werkzeug&quot;</span>
+<span class="sd">&quot;&quot;&quot; str: The name of the driver default driver to use. &quot;&quot;&quot;</span>
+
+<span class="n">javascript_driver</span> <span class="o">=</span> <span class="s2">&quot;selenium&quot;</span>
+<span class="sd">&quot;&quot;&quot; str: The name of the driver to use when JavaScript is required. &quot;&quot;&quot;</span>
+
+<span class="n">current_driver</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="sd">&quot;&quot;&quot; str: The name of the driver currently in use. &quot;&quot;&quot;</span>
 
 <span class="n">server_name</span> <span class="o">=</span> <span class="s2">&quot;default&quot;</span>
@@ -154,8 +159,33 @@
     <span class="n">servers</span><span class="p">[</span><span class="s2">&quot;werkzeug&quot;</span><span class="p">](</span><span class="n">app</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">server_host</span><span class="p">)</span></div>
 
 
-<span class="nd">@contextmanager</span>
-<div class="viewcode-block" id="using_wait_time"><a class="viewcode-back" href="../capybara.html#capybara.dsl.using_wait_time">[docs]</a><span class="k">def</span> <span class="nf">using_wait_time</span><span class="p">(</span><span class="n">seconds</span><span class="p">):</span>
+<div class="viewcode-block" id="use_default_driver"><a class="viewcode-back" href="../capybara.html#capybara.dsl.use_default_driver">[docs]</a><span class="k">def</span> <span class="nf">use_default_driver</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; Use the default driver as the current driver. &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">current_driver</span>
+    <span class="n">current_driver</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="using_driver"><a class="viewcode-back" href="../capybara.html#capybara.dsl.using_driver">[docs]</a><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">using_driver</span><span class="p">(</span><span class="n">driver</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Execute the wrapped code using a specific driver.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        driver (str): The name of the desired driver.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">global</span> <span class="n">current_driver</span>
+
+    <span class="n">original_current_driver</span> <span class="o">=</span> <span class="n">current_driver</span>
+    <span class="n">current_driver</span> <span class="o">=</span> <span class="n">driver</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">current_driver</span> <span class="o">=</span> <span class="n">original_current_driver</span></div>
+
+
+<div class="viewcode-block" id="using_wait_time"><a class="viewcode-back" href="../capybara.html#capybara.dsl.using_wait_time">[docs]</a><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">using_wait_time</span><span class="p">(</span><span class="n">seconds</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Execute a context using a specific wait time.</span>
 
@@ -181,20 +211,22 @@
 <span class="sd">        Session: The :class:`Session` for the current driver and app.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">current_driver</span> <span class="ow">or</span> <span class="n">default_driver</span>
+
     <span class="n">session_key</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{driver}</span><span class="s2">:</span><span class="si">{session}</span><span class="s2">:</span><span class="si">{app}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-        <span class="n">driver</span><span class="o">=</span><span class="n">current_driver</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session_name</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">app</span><span class="p">)))</span>
+        <span class="n">driver</span><span class="o">=</span><span class="n">driver</span><span class="p">,</span> <span class="n">session</span><span class="o">=</span><span class="n">session_name</span><span class="p">,</span> <span class="n">app</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="n">app</span><span class="p">)))</span>
     <span class="n">session</span> <span class="o">=</span> <span class="n">_session_pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">session_key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">session</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="kn">from</span> <span class="nn">capybara.session</span> <span class="k">import</span> <span class="n">Session</span>
-        <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="n">current_driver</span><span class="p">,</span> <span class="n">app</span><span class="p">)</span>
+        <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">app</span><span class="p">)</span>
         <span class="n">_session_pool</span><span class="p">[</span><span class="n">session_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">session</span>
 
     <span class="k">return</span> <span class="n">session</span></div>
 
 
-<span class="nd">@contextmanager</span>
-<div class="viewcode-block" id="using_session"><a class="viewcode-back" href="../capybara.html#capybara.dsl.using_session">[docs]</a><span class="k">def</span> <span class="nf">using_session</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+<div class="viewcode-block" id="using_session"><a class="viewcode-back" href="../capybara.html#capybara.dsl.using_session">[docs]</a><span class="nd">@contextmanager</span>
+<span class="k">def</span> <span class="nf">using_session</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Execute the wrapped code using a specific session name.</span>
 
@@ -270,19 +302,53 @@
 
 <span class="nd">@register_server</span><span class="p">(</span><span class="s2">&quot;werkzeug&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">init_werkzeug_server</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">host</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">werkzeug.serving</span> <span class="k">import</span> <span class="n">run_simple</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">werkzeug</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s1">&#39;Capybara</span><span class="se">\&#39;</span><span class="s1">s werkzeug server is unable to load `werkzeug`, please install the package &#39;</span>
+            <span class="s1">&#39;and add `werkzeug` to your requirements.txt file.&#39;</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">werkzeug.serving</span> <span class="k">import</span> <span class="n">make_server</span>
     <span class="kn">from</span> <span class="nn">logging</span> <span class="k">import</span> <span class="n">getLogger</span>
 
     <span class="c1"># Mute the server.</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;werkzeug&#39;</span><span class="p">)</span>
     <span class="n">log</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="n">run_simple</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">app</span><span class="p">)</span>
+    <span class="n">server</span> <span class="o">=</span> <span class="n">make_server</span><span class="p">(</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">app</span><span class="p">,</span> <span class="n">threaded</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Inform Python that it shouldn&#39;t wait for request threads to terminate before</span>
+    <span class="c1"># exiting. (They will still be appropriately terminated when the process exits.)</span>
+    <span class="n">server</span><span class="o">.</span><span class="n">daemon_threads</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="n">server</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span>
 
 
 <span class="nd">@register_driver</span><span class="p">(</span><span class="s2">&quot;selenium&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">init_selenium_driver</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">selenium</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s1">&#39;Capybara</span><span class="se">\&#39;</span><span class="s1">s selenium driver is unable to load `selenium`, please install the package &#39;</span>
+            <span class="s1">&#39;and add `selenium` to your requirements.txt file.&#39;</span><span class="p">)</span>
+
     <span class="kn">from</span> <span class="nn">capybara.selenium.driver</span> <span class="k">import</span> <span class="n">Driver</span>
+
+    <span class="k">return</span> <span class="n">Driver</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+
+<span class="nd">@register_driver</span><span class="p">(</span><span class="s2">&quot;werkzeug&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">init_werkzeug_driver</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">werkzeug</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
+            <span class="s1">&#39;Capybara</span><span class="se">\&#39;</span><span class="s1">s werkzeug driver is unable to load `werkzeug`, please install the package &#39;</span>
+            <span class="s1">&#39;and add `werkzeug` to your requirements.txt file.&#39;</span><span class="p">)</span>
+
+    <span class="kn">from</span> <span class="nn">capybara.werkzeug.driver</span> <span class="k">import</span> <span class="n">Driver</span>
 
     <span class="k">return</span> <span class="n">Driver</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
 </pre></div>
@@ -318,8 +384,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>
 

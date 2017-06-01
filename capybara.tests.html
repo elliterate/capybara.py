@@ -1,0 +1,194 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>capybara.tests package &#8212; Capybara 0.1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="capybara-tests-package">
+<h1>capybara.tests package<a class="headerlink" href="#capybara-tests-package" title="Permalink to this headline">¶</a></h1>
+<p>This is a test suite for verifying the implementation of a third-party driver, exposed as
+<a class="reference external" href="https://docs.pytest.org/en/latest/plugins.html">a pytest plugin</a>.</p>
+<div class="section" id="id1">
+<h2><span class="target" id="using">Using</span><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>To use, add the pytest plugin in your <code class="docutils literal"><span class="pre">conftest.py</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pytest_plugins</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;capybara.tests.pytest_plugin&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Then, add a test file (e.g., <code class="docutils literal"><span class="pre">tests/test_my_custom_driver.py</span></code>) that registers your driver and
+instantiates a test suite:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
+<span class="kn">from</span> <span class="nn">capybara.tests.suite</span> <span class="k">import</span> <span class="n">DriverSuite</span>
+
+
+<span class="nd">@capybara</span><span class="o">.</span><span class="n">register_driver</span><span class="p">(</span><span class="s2">&quot;my_custom_driver&quot;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">init_my_custom_driver</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">my_custom_driver.driver</span> <span class="k">import</span> <span class="n">Driver</span>
+
+    <span class="k">return</span> <span class="n">Driver</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+
+
+<span class="n">MyCustomDriverSuite</span> <span class="o">=</span> <span class="n">DriverSuite</span><span class="p">(</span>
+    <span class="c1"># The name used to register your driver.</span>
+    <span class="s2">&quot;my_custom_driver&quot;</span><span class="p">,</span>
+
+    <span class="c1"># Features not supported by your driver.</span>
+    <span class="n">skip</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;modals&quot;</span><span class="p">,</span> <span class="s2">&quot;windows&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Now, whenever this file is collected by a pytest session, the tests in the verification suite will
+be included and run against your registered driver.</p>
+</div>
+<div class="section" id="id2">
+<h2><span class="target" id="including-implicit-test-dependencies">Including implicit test dependencies</span><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>This test suite relies on a number of third-party dependencies that, because they are not needed
+for the operation of Capybara itself, are not included in its <code class="docutils literal"><span class="pre">requires</span></code> configuration and thus
+will <em>not</em> be automatically pulled in by your package. You will need to manually add and maintain
+these dependencies in the <code class="docutils literal"><span class="pre">tests_require</span></code> configuration of your <code class="docutils literal"><span class="pre">setup.py</span></code>:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span>
+    <span class="c1"># ...</span>
+    <span class="n">tests_require</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;flaky&quot;</span><span class="p">,</span> <span class="s2">&quot;flask&quot;</span><span class="p">,</span> <span class="s2">&quot;mock&quot;</span><span class="p">,</span> <span class="s2">&quot;py&quot;</span><span class="p">,</span> <span class="s2">&quot;pytest &gt;= 3&quot;</span><span class="p">,</span> <span class="s2">&quot;werkzeug&quot;</span><span class="p">])</span>  <span class="c1"># as of writing</span>
+</pre></div>
+</div>
+<div class="section" id="submodules">
+<h3>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="module-capybara.tests.suite">
+<span id="capybara-tests-suite-module"></span><h3>capybara.tests.suite module<a class="headerlink" href="#module-capybara.tests.suite" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="capybara.tests.suite.DriverSuite">
+<em class="property">class </em><code class="descclassname">capybara.tests.suite.</code><code class="descname">DriverSuite</code><span class="sig-paren">(</span><em>driver_name</em>, <em>skip=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/tests/suite.html#DriverSuite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.tests.suite.DriverSuite" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Represents a suite of tests that should be run against a particular driver.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>driver_name</strong> (<em>str</em>) – The registered name of the driver to test.</li>
+<li><strong>skip</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – A list of features not supported by the driver. Tests in
+the suite marked as requiring these features will be skipped.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="capybara.tests.suite.DriverSuite.reset_session">
+<code class="descname">reset_session</code><span class="sig-paren">(</span><em>session</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/tests/suite.html#DriverSuite.reset_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.tests.suite.DriverSuite.reset_session" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="capybara.tests.suite.DriverSuite.session">
+<code class="descname">session</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/tests/suite.html#DriverSuite.session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.tests.suite.DriverSuite.session" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-capybara.tests">
+<span id="module-contents"></span><h3>Module contents<a class="headerlink" href="#module-capybara.tests" title="Permalink to this headline">¶</a></h3>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">capybara.tests package</a><ul>
+<li><a class="reference internal" href="#id1">Using</a></li>
+<li><a class="reference internal" href="#id2">Including implicit test dependencies</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-capybara.tests.suite">capybara.tests.suite module</a></li>
+<li><a class="reference internal" href="#module-capybara.tests">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/capybara.tests.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Ian Lesperance.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/capybara.tests.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

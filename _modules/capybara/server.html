@@ -1,12 +1,12 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>capybara.server &#8212; Capybara 0.0.2 documentation</title>
+    <title>capybara.server &#8212; Capybara 0.1.0 documentation</title>
     
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -14,10 +14,11 @@
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.0.2',
+        VERSION:     '0.1.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
@@ -25,8 +26,6 @@
     <script type="text/javascript" src="../../_static/doctools.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="top" title="Capybara 0.0.2 documentation" href="../../index.html" />
-    <link rel="up" title="capybara" href="../capybara.html" />
    
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
@@ -34,7 +33,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head>
-  <body role="document">
+  <body>
   
 
     <div class="document">
@@ -44,15 +43,10 @@
             
   <h1>Source code for capybara.server</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">closing</span>
-<span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
-<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
-    <span class="kn">from</span> <span class="nn">urllib.error</span> <span class="k">import</span> <span class="n">URLError</span>
-    <span class="kn">from</span> <span class="nn">urllib.request</span> <span class="k">import</span> <span class="n">urlopen</span>
-<span class="k">else</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">urllib2</span> <span class="k">import</span> <span class="n">URLError</span><span class="p">,</span> <span class="n">urlopen</span>
 
 <span class="kn">import</span> <span class="nn">capybara</span>
+<span class="kn">from</span> <span class="nn">capybara.compat</span> <span class="k">import</span> <span class="n">URLError</span><span class="p">,</span> <span class="n">urlopen</span><span class="p">,</span> <span class="n">wsgi_decode_body</span><span class="p">,</span> <span class="n">wsgi_encode_body</span>
 <span class="kn">from</span> <span class="nn">capybara.utils</span> <span class="k">import</span> <span class="n">cached_property</span><span class="p">,</span> <span class="n">find_available_port</span><span class="p">,</span> <span class="n">timeout</span>
 
 
@@ -90,8 +84,8 @@
     <span class="k">def</span> <span class="nf">port_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">))</span>
 
-    <span class="nd">@cached_property</span>
-<div class="viewcode-block" id="Server.middleware"><a class="viewcode-back" href="../../capybara.html#capybara.server.Server.middleware">[docs]</a>    <span class="k">def</span> <span class="nf">middleware</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Server.middleware"><a class="viewcode-back" href="../../capybara.html#capybara.server.Server.middleware">[docs]</a>    <span class="nd">@cached_property</span>
+    <span class="k">def</span> <span class="nf">middleware</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">Middleware</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Server.boot"><a class="viewcode-back" href="../../capybara.html#capybara.server.Server.boot">[docs]</a>    <span class="k">def</span> <span class="nf">boot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -133,11 +127,13 @@
 
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># Try to fetch the endpoint added by the middleware.</span>
-            <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">urlopen</span><span class="p">(</span><span class="s2">&quot;http://</span><span class="si">{0}</span><span class="s2">:</span><span class="si">{1}</span><span class="s2">/__identify__&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)))</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
+            <span class="n">identify_url</span> <span class="o">=</span> <span class="s2">&quot;http://</span><span class="si">{0}</span><span class="s2">:</span><span class="si">{1}</span><span class="s2">/__identify__&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">port</span><span class="p">)</span>
+
+            <span class="k">with</span> <span class="n">closing</span><span class="p">(</span><span class="n">urlopen</span><span class="p">(</span><span class="n">identify_url</span><span class="p">))</span> <span class="k">as</span> <span class="n">response</span><span class="p">:</span>
                 <span class="n">body</span><span class="p">,</span> <span class="n">status_code</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">read</span><span class="p">(),</span> <span class="n">response</span><span class="o">.</span><span class="n">getcode</span><span class="p">()</span>
 
                 <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">status_code</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;2&quot;</span> <span class="ow">or</span> <span class="nb">str</span><span class="p">(</span><span class="n">status_code</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span>
-                    <span class="k">return</span> <span class="n">decode_body</span><span class="p">(</span><span class="n">body</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">))</span>
+                    <span class="k">return</span> <span class="n">wsgi_decode_body</span><span class="p">(</span><span class="n">body</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">))</span>
         <span class="k">except</span> <span class="n">URLError</span><span class="p">:</span>
             <span class="k">pass</span>
 
@@ -156,21 +152,7 @@
 
 <div class="viewcode-block" id="Middleware.identify"><a class="viewcode-back" href="../../capybara.html#capybara.server.Middleware.identify">[docs]</a>    <span class="k">def</span> <span class="nf">identify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
         <span class="n">start_response</span><span class="p">(</span><span class="s2">&quot;200 OK&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)])</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">encode_body</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)))]</span></div></div>
-
-
-<span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">decode_body</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">body</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">encode_body</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">body</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
-<span class="k">else</span><span class="p">:</span>
-<div class="viewcode-block" id="decode_body"><a class="viewcode-back" href="../../capybara.html#capybara.server.decode_body">[docs]</a>    <span class="k">def</span> <span class="nf">decode_body</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">body</span></div>
-
-<div class="viewcode-block" id="encode_body"><a class="viewcode-back" href="../../capybara.html#capybara.server.encode_body">[docs]</a>    <span class="k">def</span> <span class="nf">encode_body</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">body</span></div>
+        <span class="k">return</span> <span class="p">[</span><span class="n">wsgi_encode_body</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)))]</span></div></div>
 </pre></div>
 
           </div>
@@ -206,8 +188,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.4.8</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>
 

@@ -4,6 +4,14 @@ capybara.selenium package
 Submodules
 ----------
 
+capybara.selenium.browser module
+--------------------------------
+
+.. automodule:: capybara.selenium.browser
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 capybara.selenium.driver module
 -------------------------------
 
