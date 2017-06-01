@@ -11,7 +11,7 @@ def init_selenium_firefox_driver(app):
     capabilities = DesiredCapabilities.FIREFOX.copy()
     capabilities["marionette"] = False
 
-    return Driver(app, desired_capabilities=capabilities)
+    return Driver(app, browser="firefox", desired_capabilities=capabilities)
 
 
 SeleniumFirefoxDriverSuite = DriverSuite("selenium_firefox")

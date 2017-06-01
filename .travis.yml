@@ -27,9 +27,17 @@ matrix:
           packages:
             - google-chrome-stable
             - awesome
+    - env: TOXENV=marionette
+      addons:
+        firefox: latest
+        apt:
+          packages:
+            - awesome
     - env: TOXENV=selenium2
   allow_failures:
     - env: TOXENV=chrome-headless
+    - env: TOXENV=marionette
+  fast_finish: true
 before_install:
   # Upgrade pip to a version that supports `pip install .[test]`.
   - pip install --upgrade pip
