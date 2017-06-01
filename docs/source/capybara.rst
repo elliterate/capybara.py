@@ -11,9 +11,18 @@ Subpackages
     capybara.queries
     capybara.selector
     capybara.selenium
+    capybara.werkzeug
 
 Submodules
 ----------
+
+capybara.compat module
+----------------------
+
+.. automodule:: capybara.compat
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 capybara.dsl module
 -------------------
@@ -35,6 +44,14 @@ capybara.helpers module
 -----------------------
 
 .. automodule:: capybara.helpers
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+capybara.html module
+--------------------
+
+.. automodule:: capybara.html
     :members:
     :undoc-members:
     :show-inheritance:
