@@ -1,6 +1,7 @@
 import atexit
 from contextlib import contextmanager
 from selenium.common.exceptions import (
+    InvalidElementStateException,
     NoAlertPresentException,
     NoSuchWindowException,
     StaleElementReferenceException,
@@ -193,7 +194,7 @@ class Driver(Base):
 
     @property
     def invalid_element_errors(self):
-        return (StaleElementReferenceException,)
+        return InvalidElementStateException, StaleElementReferenceException
 
     def _find_css(self, css):
         return [Node(self, element) for element in self.browser.find_elements_by_css_selector(css)]
