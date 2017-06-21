@@ -5,6 +5,7 @@ from selenium.common.exceptions import (
     NoSuchWindowException,
     StaleElementReferenceException,
     UnexpectedAlertPresentException)
+from selenium.webdriver import ChromeOptions
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
@@ -29,12 +30,15 @@ class Driver(Base):
         desired_capabilities (Dict[str, str | bool], optional): Desired
             capabilities of the underlying browser. Defaults to a set of
             reasonable defaults provided by Selenium.
+        config_obj (object, optional): An additional configuration object instance appropriate for the requested browser. (ChromeOptions, FirefoxProfile)
     """
 
-    def __init__(self, app, browser="firefox", desired_capabilities=None):
+    def __init__(self, app, browser="firefox", desired_capabilities=None,
+                 config_obj=None):
         self.app = app
         self._browser_name = browser
         self._desired_capabilities = desired_capabilities
+        self._config_obj = config_obj
         self._frame_handles = []
 
     @property
@@ -49,8 +53,11 @@ class Driver(Base):
             capabilities = (capabilities or DesiredCapabilities.FIREFOX).copy()
             # Auto-accept unload alerts triggered by navigating away.
             capabilities["unexpectedAlertBehaviour"] = "ignore"
+        elif self._browser_name == "chrome":
+            capabilities = (capabilities or DesiredCapabilities.CHROME).copy()
 
-        browser = get_browser(self._browser_name, capabilities=capabilities)
+        browser = get_browser(self._browser_name, capabilities=capabilities,
+                              config_obj=self._config_obj)
         atexit.register(browser.quit)
         return browser
 
