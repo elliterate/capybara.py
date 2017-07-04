@@ -2,7 +2,7 @@ from functools import wraps
 from time import sleep, time
 
 import capybara
-from capybara.exceptions import ElementNotFound, FrozenInTime
+from capybara.exceptions import ElementNotFound, FrozenInTime, ScopeError
 from capybara.node.actions import ActionsMixin
 from capybara.node.finders import FindersMixin
 from capybara.node.matchers import MatchersMixin
@@ -36,6 +36,7 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
         self.session = session
         self.base = base
         self.allow_reload = False
+        self._scopes = []
 
     def reload(self):
         """
@@ -65,6 +66,15 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
         """
 
         raise NotImplementedError()
+
+    def __enter__(self):
+        scope = self.session.scope(self)
+        self._scopes.append(scope)
+        return scope.__enter__()
+
+    def __exit__(self, *args):
+        scope = self._scopes.pop()
+        scope.__exit__(*args)
 
     @property
     def text(self):

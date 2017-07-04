@@ -25,6 +25,7 @@ class Element(Base):
         super(type(self), self).__init__(session, base)
         self.query_scope = query_scope
         self.query = query
+        self._scope = None
 
     def __repr__(self):
         return "<capybara.node.element.Element tag=\"{tag}\" path=\"{path}\">".format(
