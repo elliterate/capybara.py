@@ -29,12 +29,14 @@ class Driver(Base):
         desired_capabilities (Dict[str, str | bool], optional): Desired
             capabilities of the underlying browser. Defaults to a set of
             reasonable defaults provided by Selenium.
+        options: Arbitrary keyword arguments for the underlying Selenium driver.
     """
 
-    def __init__(self, app, browser="firefox", desired_capabilities=None):
+    def __init__(self, app, browser="firefox", desired_capabilities=None, **options):
         self.app = app
         self._browser_name = browser
         self._desired_capabilities = desired_capabilities
+        self._options = options
         self._frame_handles = []
 
     @property
@@ -50,7 +52,7 @@ class Driver(Base):
             # Auto-accept unload alerts triggered by navigating away.
             capabilities["unexpectedAlertBehaviour"] = "ignore"
 
-        browser = get_browser(self._browser_name, capabilities=capabilities)
+        browser = get_browser(self._browser_name, capabilities=capabilities, **self._options)
         atexit.register(browser.quit)
         return browser
 
