@@ -73,7 +73,10 @@ class Driver(Base):
         return self.browser.text
 
     def switch_to_frame(self, frame):
-        if frame == "parent":
+        if frame == "top":
+            self._frame_handles = []
+            self.browser.switch_to.default_content()
+        elif frame == "parent":
             self._frame_handles.pop()
             self.browser.switch_to.default_content()
             for frame_handle in self._frame_handles:

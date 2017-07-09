@@ -2,7 +2,7 @@ import pytest
 
 
 @pytest.mark.requires("frames")
-class TestFrame:
+class TestWithFrame:
     @pytest.fixture(autouse=True)
     def setup_session(self, session):
         session.visit("/within_frames")

@@ -34,7 +34,7 @@ _SESSION_METHODS = [
     "assert_no_current_path", "dismiss_confirm", "dismiss_prompt", "evaluate_script",
     "execute_script", "fieldset", "frame", "go_back", "go_forward", "has_current_path",
     "has_no_current_path", "open_new_window", "reset", "save_page", "save_screenshot", "scope",
-    "switch_to_window", "table", "visit", "window", "window_opened_by"]
+    "switch_to_frame", "switch_to_window", "table", "visit", "window", "window_opened_by"]
 _SESSION_PROPERTIES = ["current_host", "current_path", "current_url", "current_window", "windows"]
 
 DSL_METHODS = _DOCUMENT_METHODS + _NODE_METHODS + _SESSION_METHODS
@@ -88,7 +88,10 @@ class Session(SessionMatchersMixin, object):
     @property
     def current_scope(self):
         """ node.Base: The current node relative to which all interaction will be scoped. """
-        return self._scopes[-1] or self.document
+        scope = self._scopes[-1]
+        if scope in [None, "frame"]:
+            scope = self.document
+        return scope
 
     @property
     def html(self):
@@ -246,16 +249,12 @@ class Session(SessionMatchersMixin, object):
             locator (str | Element): The name/id of the frame or the frame's element.
         """
 
-        self._scopes.append(None)
+        new_frame = locator if isinstance(locator, Element) else self.find("frame", locator)
+        self.switch_to_frame(new_frame)
         try:
-            new_frame = locator if isinstance(locator, Element) else self.find("frame", locator)
-            self.driver.switch_to_frame(new_frame)
-            try:
-                yield
-            finally:
-                self.driver.switch_to_frame("parent")
+            yield
         finally:
-            self._scopes.pop()
+            self.switch_to_frame("parent")
 
     @property
     def current_window(self):
@@ -284,6 +283,36 @@ class Session(SessionMatchersMixin, object):
         """
 
         return self.window_opened_by(lambda: self.driver.open_new_window())
+
+    def switch_to_frame(self, frame):
+        """
+        Switch to the given frame.
+
+        If you use this method you are responsible for making sure you switch back to the parent
+        frame when done in the frame changed to. :meth:`frame` is preferred over this method and
+        should be used when possible. May not be supported by all drivers.
+
+        Args:
+            frame (Element | str): The iframe/frame element to switch to.
+        """
+
+        if isinstance(frame, Element):
+            self.driver.switch_to_frame(frame)
+            self._scopes.append("frame")
+        elif frame == "parent":
+            if self._scopes[-1] != "frame":
+                raise ScopeError("`switch_to_frame(\"parent\")` cannot be called "
+                                 "from inside a descendant frame's `scope` context.")
+            self._scopes.pop()
+            self.driver.switch_to_frame("parent")
+        elif frame == "top":
+            if "frame" in self._scopes:
+                idx = self._scopes.index("frame")
+                if any([scope not in ["frame", None] for scope in self._scopes[idx:]]):
+                    raise ScopeError("`switch_to_frame(\"top\")` cannot be called "
+                                     "from inside a descendant frame's `scope` context.")
+                self._scopes = self._scopes[:idx]
+                self.driver.switch_to_frame("top")
 
     def switch_to_window(self, window, wait=None):
         """
