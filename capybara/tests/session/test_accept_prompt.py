@@ -14,6 +14,11 @@ class TestAcceptPrompt:
             session.click_link("Open prompt")
         assert session.has_xpath("//a[@id='open-prompt' and @response='']")
 
+    def test_raises_an_error_if_no_prompt_found(self, session):
+        with pytest.raises(ModalNotFound):
+            with session.accept_prompt():
+                pass
+
     def test_accepts_the_prompt_with_a_response(self, session):
         with session.accept_prompt(response="the response"):
             session.click_link("Open prompt")

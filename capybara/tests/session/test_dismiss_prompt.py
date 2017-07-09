@@ -14,6 +14,11 @@ class TestDismissPrompt:
             session.click_link("Open prompt")
         assert session.has_xpath("//a[@id='open-prompt' and @response='dismissed']")
 
+    def test_raises_an_error_if_no_prompt_found(self, session):
+        with pytest.raises(ModalNotFound):
+            with session.dismiss_prompt():
+                pass
+
     def test_dismisses_the_prompt_if_the_message_matches(self, session):
         with session.dismiss_prompt("Prompt opened"):
             session.click_link("Open prompt")
