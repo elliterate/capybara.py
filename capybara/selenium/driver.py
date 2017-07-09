@@ -4,6 +4,7 @@ from selenium.common.exceptions import (
     NoAlertPresentException,
     NoSuchWindowException,
     StaleElementReferenceException,
+    TimeoutException,
     UnexpectedAlertPresentException)
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.remote.webelement import WebElement
@@ -202,13 +203,13 @@ class Driver(Base):
 
     def _find_modal(self, text=None, wait=None):
         wait = wait or capybara.default_max_wait_time
-        WebDriverWait(self.browser, wait).until(EC.alert_is_present())
-        alert = self.browser.switch_to.alert
-        if alert is None:
+        try:
+            alert = WebDriverWait(self.browser, wait).until(EC.alert_is_present())
+            if text and text not in alert.text:
+                raise ModalNotFound("Unable to find modal dialog with {0}".format(text))
+            return alert
+        except TimeoutException:
             raise ModalNotFound("Unable to find modal dialog")
-        if text and text not in alert.text:
-            raise ModalNotFound("Unable to find modal dialog with {0}".format(text))
-        return alert
 
     @contextmanager
     def _window(self, handle):

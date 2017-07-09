@@ -14,6 +14,11 @@ class TestAcceptAlert:
             session.click_link("Open alert")
         assert session.has_xpath("//a[@id='open-alert' and @opened='true']")
 
+    def test_raises_an_error_if_no_alert_found(self, session):
+        with pytest.raises(ModalNotFound):
+            with session.accept_alert():
+                pass
+
     def test_accepts_the_alert_if_the_text_matches(self, session):
         with session.accept_alert("Alert opened"):
             session.click_link("Open alert")
