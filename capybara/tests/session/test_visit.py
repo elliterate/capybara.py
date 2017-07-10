@@ -3,6 +3,7 @@ import pytest
 import capybara
 from capybara.compat import urlparse
 from capybara.session import Session
+from capybara.tests.app import AppError
 
 
 class TestVisit:
@@ -29,6 +30,12 @@ class TestVisit:
 
         session.visit("http://{}".format(root_uri.netloc))
         assert session.has_text("Hello world!")
+
+    @pytest.mark.requires("server")
+    def test_raises_any_errors_caught_inside_the_server(self, session):
+        session.visit("/error")
+        with pytest.raises(AppError):
+            session.visit("/")
 
     def test_sets_cookie_if_a_blank_path_is_specified(self, session):
         session.visit("")

@@ -2,12 +2,19 @@ import pytest
 import re
 
 from capybara.exceptions import ElementNotFound
+from capybara.tests.app import AppError
 
 
 class TestClickLink:
     @pytest.fixture(autouse=True)
     def setup_session(self, session):
         session.visit("/with_html")
+
+    @pytest.mark.requires("server")
+    def test_raises_any_errors_caught_inside_the_server(self, session):
+        session.visit("/error")
+        with pytest.raises(AppError):
+            session.click_link("foo")
 
     def test_follows_links_by_id(self, session):
         session.click_link("foo")

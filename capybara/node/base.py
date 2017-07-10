@@ -148,6 +148,8 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
                             try:
                                 return inner()
                             except Exception as e:
+                                self.session.raise_server_error()
+
                                 if not isinstance(e, caught_errors):
                                     raise
                                 if time() - start_time >= seconds:

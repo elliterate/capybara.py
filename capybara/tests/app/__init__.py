@@ -6,8 +6,11 @@ import time
 
 app = Flask(__name__)
 
+# Ensure application exceptions are raised.
+app.debug = True
 
-class TestAppError(Exception):
+
+class AppError(Exception):
     pass
 
 
@@ -140,7 +143,7 @@ def get_header_via_redirect():
 
 @app.route("/error")
 def error():
-    raise TestAppError()
+    raise AppError()
 
 
 @app.route("/import_error")

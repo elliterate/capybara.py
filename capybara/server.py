@@ -37,6 +37,13 @@ class Server(object):
         self.server_thread = None
 
     @property
+    def error(self):
+        return self.middleware.error
+
+    def reset_error(self):
+        self.middleware.error = None
+
+    @property
     def port_key(self):
         return str(id(self.app))
 
@@ -99,12 +106,17 @@ class Server(object):
 class Middleware(object):
     def __init__(self, app):
         self.app = app
+        self.error = None
 
     def __call__(self, environ, start_response):
         if environ["PATH_INFO"] == "/__identify__":
             return self.identify(environ, start_response)
         else:
-            return self.app(environ, start_response)
+            try:
+                return self.app(environ, start_response)
+            except Exception as e:
+                self.error = e
+                raise
 
     def identify(self, environ, start_response):
         start_response("200 OK", [("Content-Type", "text/plain")])
