@@ -1,5 +1,7 @@
 import pytest
 
+from capybara.tests.app import AppError
+
 
 class TestReset:
     def test_removes_cookies(self, session):
@@ -50,3 +52,11 @@ class TestReset:
         session.click_link("Go away")
         session.reset()
         assert session.has_no_selector("xpath", "/html/body/*", wait=False)
+
+    @pytest.mark.requires("server")
+    def test_raises_any_errors_caught_inside_the_server(self, session):
+        session.visit("/error")
+        with pytest.raises(AppError):
+            session.reset()
+        session.visit("/")
+        assert session.current_path == "/"

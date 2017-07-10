@@ -617,6 +617,14 @@ configured.
 .. |selenium_wiki| replace:: Selenium wiki
 .. _selenium_wiki: https://github.com/SeleniumHQ/selenium/wiki/Python-Bindings
 
+_`Gotchas:`
+~~~~~~~~~~~
+
+* Server errors will only be raised in the session that initiates the server
+  thread. If you are testing for specific server errors and using multiple
+  sessions make sure to test for the errors using the initial session (usually
+  ``"default"``).
+
 Indices and tables
 ==================
 

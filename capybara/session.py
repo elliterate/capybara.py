@@ -151,6 +151,8 @@ class Session(SessionMatchersMixin, object):
             visit_uri (str): The URL to navigate to.
         """
 
+        self.raise_server_error()
+
         visit_uri = urlparse(visit_uri)
 
         if capybara.app_host:
@@ -597,6 +599,15 @@ class Session(SessionMatchersMixin, object):
         """
 
         self.driver.reset()
+        self.raise_server_error()
+
+    def raise_server_error(self):
+        """ Raise errors encountered by the server. """
+        if self.server and self.server.error:
+            try:
+                raise self.server.error
+            finally:
+                self.server.reset_error()
 
     cleanup = reset
     """ Alias for :meth:`reset`. """
