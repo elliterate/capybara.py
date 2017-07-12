@@ -1,5 +1,6 @@
 import pytest
 
+import capybara
 from capybara.tests.app import AppError
 
 
@@ -58,5 +59,13 @@ class TestReset:
         session.visit("/error")
         with pytest.raises(AppError):
             session.reset()
+        session.visit("/")
+        assert session.current_path == "/"
+
+    @pytest.mark.requires("server")
+    def test_ignores_server_errors_when_raise_server_errors_is_false(self, session):
+        capybara.raise_server_errors = False
+        session.visit("/error")
+        session.reset()
         session.visit("/")
         assert session.current_path == "/"

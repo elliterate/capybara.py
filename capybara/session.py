@@ -605,7 +605,8 @@ class Session(SessionMatchersMixin, object):
         """ Raise errors encountered by the server. """
         if self.server and self.server.error:
             try:
-                raise self.server.error
+                if capybara.raise_server_errors:
+                    raise self.server.error
             finally:
                 self.server.reset_error()
 

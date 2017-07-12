@@ -50,6 +50,9 @@ ignore_hidden_elements = True
 match = "smart"
 """ str: The matching strategy to use. """
 
+raise_server_errors = True
+""" bool: Whether errors raised in the server should be raised in the tests. """
+
 save_path = None
 """ str, optional: Where to put saved pages and screenshots. """
 
