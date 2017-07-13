@@ -52,7 +52,10 @@ class Driver(Base):
         if self._browser_name in ["ff", "firefox"]:
             capabilities = (capabilities or DesiredCapabilities.FIREFOX).copy()
             # Auto-accept unload alerts triggered by navigating away.
-            capabilities["unexpectedAlertBehaviour"] = "ignore"
+            if capabilities.get("marionette"):
+                capabilities["unhandledPromptBehavior"] = "ignore"
+            else:
+                capabilities["unexpectedAlertBehaviour"] = "ignore"
 
         browser = get_browser(self._browser_name, capabilities=capabilities, **self._options)
         atexit.register(browser.quit)
