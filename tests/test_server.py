@@ -1,9 +1,12 @@
 from contextlib import closing
 import pytest
+import socket
+from time import sleep
 
 import capybara
 from capybara.compat import decode_socket_data, encode_socket_data, urlopen
 from capybara.server import Server
+from capybara.utils import Counter
 
 
 class TestServer:
@@ -80,3 +83,28 @@ class TestServer:
             assert "Hello Server" in decode_socket_data(response2.read())
 
         assert server1.port == server2.port
+
+    def test_waits_for_pending_requests(self):
+        counter = Counter()
+
+        def app(environ, start_response):
+            with counter:
+                sleep(0.2)
+                start_response("200 OK", [])
+                return [encode_socket_data("Hello Server!")]
+
+        server = Server(app).boot()
+
+        # Start request, but don't wait for it to finish
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.connect((server.host, server.port))
+        s.send(encode_socket_data("GET / HTTP/1.0\r\n\r\n"))
+        sleep(0.1)
+
+        assert counter.value == 1
+
+        server.wait_for_pending_requests()
+
+        assert counter.value == 0
+
+        s.close()

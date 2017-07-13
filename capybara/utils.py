@@ -1,6 +1,7 @@
 from contextlib import contextmanager
 import signal
 from socket import socket
+from threading import Lock
 from time import time
 
 from capybara.compat import (
@@ -35,6 +36,27 @@ class cached_property(property):
             value = self.func(obj)
             obj.__dict__[self.__name__] = value
         return value
+
+
+class Counter(object):
+    """ Keeps track of a running count. """
+
+    def __init__(self):
+        self._lock = Lock()
+        self._value = 0
+
+    @property
+    def value(self):
+        """ int: The current value of the counter. """
+        return self._value
+
+    def __enter__(self):
+        with self._lock:
+            self._value += 1
+
+    def __exit__(self, *args):
+        with self._lock:
+            self._value -= 1
 
 
 def decode_bytes(value):

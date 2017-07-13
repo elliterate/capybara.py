@@ -599,6 +599,8 @@ class Session(SessionMatchersMixin, object):
         """
 
         self.driver.reset()
+        if self.server:
+            self.server.wait_for_pending_requests()
         self.raise_server_error()
 
     def raise_server_error(self):

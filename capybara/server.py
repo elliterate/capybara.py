@@ -1,9 +1,10 @@
 from contextlib import closing
 from threading import Thread
+from time import sleep
 
 import capybara
 from capybara.compat import URLError, decode_socket_data, encode_socket_data, urlopen
-from capybara.utils import cached_property, find_available_port, timeout
+from capybara.utils import Counter, TimeoutError, cached_property, find_available_port, timeout
 
 
 class Server(object):
@@ -50,6 +51,14 @@ class Server(object):
     @cached_property
     def middleware(self):
         return Middleware(self.app)
+
+    def wait_for_pending_requests(self):
+        try:
+            with timeout(60):
+                while self.has_pending_requests:
+                    sleep(0.01)
+        except TimeoutError:
+            raise TimeoutError("Requests did not finish in 60 seconds")
 
     def boot(self):
         """
@@ -102,22 +111,32 @@ class Server(object):
 
         return False
 
+    @property
+    def has_pending_requests(self):
+        return self.middleware.has_pending_requests
+
 
 class Middleware(object):
     def __init__(self, app):
         self.app = app
+        self.counter = Counter()
         self.error = None
 
     def __call__(self, environ, start_response):
         if environ["PATH_INFO"] == "/__identify__":
             return self.identify(environ, start_response)
         else:
-            try:
-                return self.app(environ, start_response)
-            except Exception as e:
-                self.error = e
-                raise
+            with self.counter:
+                try:
+                    return self.app(environ, start_response)
+                except Exception as e:
+                    self.error = e
+                    raise
 
     def identify(self, environ, start_response):
         start_response("200 OK", [("Content-Type", "text/plain")])
         return [encode_socket_data(str(id(self.app)))]
+
+    @property
+    def has_pending_requests(self):
+        return self.counter.value > 0
