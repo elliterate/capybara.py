@@ -1,4 +1,5 @@
 import pytest
+import re
 
 from capybara.exceptions import ModalNotFound
 
@@ -21,6 +22,16 @@ class TestAcceptAlert:
 
     def test_accepts_the_alert_if_the_text_matches(self, session):
         with session.accept_alert("Alert opened"):
+            session.click_link("Open alert")
+        assert session.has_xpath("//a[@id='open-alert' and @opened='true']")
+
+    def test_accepts_the_alert_if_text_contains_special_regex_characters(self, session):
+        with session.accept_alert("opened [*Yay?*]"):
+            session.click_link("Open alert")
+        assert session.has_xpath("//a[@id='open-alert' and @opened='true']")
+
+    def test_accepts_the_alert_if_the_text_matches_a_regexp(self, session):
+        with session.accept_alert(re.compile(r"op.{2}ed")):
             session.click_link("Open alert")
         assert session.has_xpath("//a[@id='open-alert' and @opened='true']")
 

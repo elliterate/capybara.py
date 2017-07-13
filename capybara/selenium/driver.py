@@ -15,9 +15,10 @@ from time import sleep, time
 import capybara
 from capybara.driver.base import Base
 from capybara.exceptions import ExpectationNotMet, ModalNotFound
+from capybara.helpers import toregex, desc
 from capybara.selenium.browser import get_browser
 from capybara.selenium.node import Node
-from capybara.utils import cached_property
+from capybara.utils import cached_property, isregex
 
 
 class Driver(Base):
@@ -205,8 +206,10 @@ class Driver(Base):
         wait = wait or capybara.default_max_wait_time
         try:
             alert = WebDriverWait(self.browser, wait).until(EC.alert_is_present())
-            if text and text not in alert.text:
-                raise ModalNotFound("Unable to find modal dialog with {0}".format(text))
+            regexp = toregex(text)
+            if not regexp.search(alert.text):
+                qualifier = "matching" if isregex(text) else "with"
+                raise ModalNotFound("Unable to find modal dialog {0} {1}".format(qualifier, desc(text)))
             return alert
         except TimeoutException:
             raise ModalNotFound("Unable to find modal dialog")

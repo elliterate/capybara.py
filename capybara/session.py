@@ -459,7 +459,7 @@ class Session(SessionMatchersMixin, object):
         Execute the wrapped code, accepting an alert.
 
         Args:
-            text (str, optional): Text to match against the text in the modal.
+            text (str | RegexObject, optional): Text to match against the text in the modal.
             wait (int | float, optional): Maximum time to wait for the modal to appear after
                 executing the wrapped code.
 
@@ -477,7 +477,7 @@ class Session(SessionMatchersMixin, object):
         Execute the wrapped code, accepting a confirm.
 
         Args:
-            text (str, optional): Text to match against the text in the modal.
+            text (str | RegexObject, optional): Text to match against the text in the modal.
             wait (int | float, optional): Maximum time to wait for the modal to appear after
                 executing the wrapped code.
 
@@ -494,7 +494,7 @@ class Session(SessionMatchersMixin, object):
         Execute the wrapped code, dismissing a confirm.
 
         Args:
-            text (str, optional): Text to match against the text in the modal.
+            text (str | RegexObject, optional): Text to match against the text in the modal.
             wait (int | float, optional): Maximum time to wait for the modal to appear after
                 executing the wrapped code.
 
@@ -511,7 +511,7 @@ class Session(SessionMatchersMixin, object):
         Execute the wrapped code, accepting a prompt, optionally responding to the prompt.
 
         Args:
-            text (str, optional): Text to match against the text in the modal.
+            text (str | RegexObject, optional): Text to match against the text in the modal.
             response (str, optional): Response to provide to the prompt.
             wait (int | float, optional): Maximum time to wait for the modal to appear after
                 executing the wrapped code.
@@ -529,7 +529,7 @@ class Session(SessionMatchersMixin, object):
         Execute the wrapped code, dismissing a prompt.
 
         Args:
-            text (str, optional): Text to match against the text in the modal.
+            text (str | RegexObject, optional): Text to match against the text in the modal.
             wait (int | float, optional): Maximum time to wait for the modal to appear after
                 executing the wrapped code.
 
