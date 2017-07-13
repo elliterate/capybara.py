@@ -2,7 +2,7 @@ from contextlib import closing
 from threading import Thread
 
 import capybara
-from capybara.compat import URLError, urlopen, wsgi_decode_body, wsgi_encode_body
+from capybara.compat import URLError, decode_socket_data, encode_socket_data, urlopen
 from capybara.utils import cached_property, find_available_port, timeout
 
 
@@ -96,7 +96,7 @@ class Server(object):
                 body, status_code = response.read(), response.getcode()
 
                 if str(status_code)[0] == "2" or str(status_code)[0] == "3":
-                    return wsgi_decode_body(body) == str(id(self.app))
+                    return decode_socket_data(body) == str(id(self.app))
         except URLError:
             pass
 
@@ -120,4 +120,4 @@ class Middleware(object):
 
     def identify(self, environ, start_response):
         start_response("200 OK", [("Content-Type", "text/plain")])
-        return [wsgi_encode_body(str(id(self.app)))]
+        return [encode_socket_data(str(id(self.app)))]

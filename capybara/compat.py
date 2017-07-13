@@ -11,11 +11,11 @@ if PY2:
     bytes_decode = unicode.encode
     str_encode = str.decode
 
-    def wsgi_decode_body(body):
-        return body
+    def decode_socket_data(data):
+        return data
 
-    def wsgi_encode_body(body):
-        return body
+    def encode_socket_data(data):
+        return data
 else:
     from urllib.error import URLError
     from urllib.request import urlopen
@@ -25,8 +25,8 @@ else:
     bytes_decode = bytes.decode
     str_encode = str.encode
 
-    def wsgi_decode_body(body):
-        return body.decode()
+    def decode_socket_data(data):
+        return data.decode()
 
-    def wsgi_encode_body(body):
-        return body.encode()
+    def encode_socket_data(data):
+        return data.encode()
