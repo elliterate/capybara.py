@@ -154,7 +154,7 @@ class Base(object):
 
         Args:
             modal_type (str): The type of modal that should be accepted.
-            text (str, optional): Text that is expected to appear in the modal.
+            text (str | RegexObject, optional): Text that is expected to appear in the modal.
             response (str, optional): Text to enter for a response, if applicable.
             wait (int, optional): The number of seconds to wait for the modal to appear.
         """
@@ -168,7 +168,7 @@ class Base(object):
 
         Args:
             modal_type (str): The type of modal that should be dismissed.
-            text (str, optional): Text that is expected to appear in the modal.
+            text (str | RegexObject, optional): Text that is expected to appear in the modal.
             wait (int, optional): The number of seconds to wait for the modal to appear.
         """
 
