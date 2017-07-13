@@ -621,6 +621,8 @@ class Session(SessionMatchersMixin, object):
     def _wrap_element_script_result(self, arg):
         if isinstance(arg, list):
             return [self._wrap_element_script_result(e) for e in arg]
+        elif isinstance(arg, dict):
+            return {k: self._wrap_element_script_result(v) for k, v in iter(arg.items())}
         elif isinstance(arg, Node):
             return Element(self, arg, None, None)
         else:
