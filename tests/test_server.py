@@ -2,7 +2,7 @@ from contextlib import closing
 import pytest
 
 import capybara
-from capybara.compat import urlopen, wsgi_decode_body, wsgi_encode_body
+from capybara.compat import decode_socket_data, encode_socket_data, urlopen
 from capybara.server import Server
 
 
@@ -21,14 +21,14 @@ class TestServer:
     def app(self):
         def app(environ, start_response):
             start_response("200 OK", [])
-            return [wsgi_encode_body("Hello Server!")]
+            return [encode_socket_data("Hello Server!")]
 
         return app
 
     def test_spools_up_a_wsgi_server(self, app):
         server = Server(app).boot()
         with closing(urlopen("http://{}:{}".format(server.host, server.port))) as response:
-            assert "Hello Server" in wsgi_decode_body(response.read())
+            assert "Hello Server" in decode_socket_data(response.read())
 
     def test_does_nothing_when_no_app_given(self):
         Server(None).boot()
@@ -37,46 +37,46 @@ class TestServer:
         capybara.server_host = "127.0.0.1"
         server = Server(app).boot()
         with closing(urlopen("http://127.0.0.1:{}".format(server.port))) as response:
-            assert "Hello Server" in wsgi_decode_body(response.read())
+            assert "Hello Server" in decode_socket_data(response.read())
 
         capybara.server_host = "0.0.0.0"
         server = Server(app).boot()
         with closing(urlopen("http://127.0.0.1:{}".format(server.port))) as response:
-            assert "Hello Server" in wsgi_decode_body(response.read())
+            assert "Hello Server" in decode_socket_data(response.read())
 
     def test_uses_specified_port(self, app):
         capybara.server_port = 22789
         server = Server(app).boot()
         with closing(urlopen("http://{}:22789".format(server.host))) as response:
-            assert "Hello Server" in wsgi_decode_body(response.read())
+            assert "Hello Server" in decode_socket_data(response.read())
 
     def test_uses_given_port(self, app):
         server = Server(app, port=22790).boot()
         with closing(urlopen("http://{}:22790".format(server.host))) as response:
-            assert "Hello Server" in wsgi_decode_body(response.read())
+            assert "Hello Server" in decode_socket_data(response.read())
 
     def test_finds_an_available_port(self, app):
         def app2(environ, start_response):
             start_response("200 OK", [])
-            return [wsgi_encode_body("Hello Second Server!")]
+            return [encode_socket_data("Hello Second Server!")]
 
         server1 = Server(app).boot()
         server2 = Server(app2).boot()
 
         with closing(urlopen("http://{}:{}".format(server1.host, server1.port))) as response1:
-            assert "Hello Server" in wsgi_decode_body(response1.read())
+            assert "Hello Server" in decode_socket_data(response1.read())
 
         with closing(urlopen("http://{}:{}".format(server2.host, server2.port))) as response2:
-            assert "Hello Second Server" in wsgi_decode_body(response2.read())
+            assert "Hello Second Server" in decode_socket_data(response2.read())
 
     def test_uses_the_existing_server_if_it_is_already_running(self, app):
         server1 = Server(app).boot()
         server2 = Server(app).boot()
 
         with closing(urlopen("http://{}:{}".format(server1.host, server1.port))) as response1:
-            assert "Hello Server" in wsgi_decode_body(response1.read())
+            assert "Hello Server" in decode_socket_data(response1.read())
 
         with closing(urlopen("http://{}:{}".format(server2.host, server2.port))) as response2:
-            assert "Hello Server" in wsgi_decode_body(response2.read())
+            assert "Hello Server" in decode_socket_data(response2.read())
 
         assert server1.port == server2.port
