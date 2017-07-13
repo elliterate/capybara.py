@@ -53,7 +53,7 @@ class Driver(Base):
             capabilities = (capabilities or DesiredCapabilities.FIREFOX).copy()
             # Auto-accept unload alerts triggered by navigating away.
             if capabilities.get("marionette"):
-                capabilities["unhandledPromptBehavior"] = "ignore"
+                capabilities["unhandledPromptBehavior"] = "dismiss"
             else:
                 capabilities["unexpectedAlertBehaviour"] = "ignore"
 
