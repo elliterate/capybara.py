@@ -91,7 +91,7 @@ class Node(Base):
         ActionChains(self.driver.browser).context_click(self.native).perform()
 
     def select_option(self):
-        if not self.selected:
+        if not self.selected and not self.disabled:
             self.native.click()
 
     def send_keys(self, *args):
