@@ -3,7 +3,7 @@ from time import sleep
 
 import capybara
 from capybara.exceptions import ReadOnlyElementError
-from capybara.tests.helpers import extract_results
+from capybara.tests.helpers import extract_results, ismarionette
 
 
 class NodeTestCase:
@@ -246,6 +246,9 @@ class TestNodeClick(NodeTestCase):
 @pytest.mark.requires("js")
 class TestNodeDoubleClick(NodeTestCase):
     def test_double_clicks_an_element(self, session):
+        if ismarionette(session):
+            pytest.skip("selenium/geckodriver doesn't support double-click")
+
         session.visit("/with_js")
         session.find("css", "#click-test").double_click()
         assert session.find("css", "#has-been-double-clicked")
@@ -254,6 +257,9 @@ class TestNodeDoubleClick(NodeTestCase):
 @pytest.mark.requires("js")
 class TestNodeRightClick(NodeTestCase):
     def test_right_clicks_an_element(self, session):
+        if ismarionette(session):
+            pytest.skip("selenium/geckodriver doesn't support right-click")
+
         session.visit("/with_js")
         session.find("css", "#click-test").right_click()
         assert session.find("css", "#has-been-right-clicked")
@@ -268,6 +274,9 @@ class TestNodeSendKeys(NodeTestCase):
 
     def test_sends_special_characters(self, session):
         from selenium.webdriver.common.keys import Keys
+
+        if ismarionette(session):
+            pytest.skip("selenium/geckodriver doesn't support some special characters")
 
         session.visit("/form")
         session.find("css", "#address1_city").send_keys(
