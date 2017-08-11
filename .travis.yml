@@ -29,7 +29,7 @@ matrix:
             - awesome
     - env: TOXENV=marionette
       addons:
-        firefox: latest
+        firefox: latest-beta
         apt:
           packages:
             - awesome
