@@ -16,3 +16,7 @@ def extract_results(session):
             [elem.tail or ""])
 
     return ImmutableMultiDict(json.loads(inner_html(element)))
+
+
+def ismarionette(session):
+    return getattr(session.driver, "_marionette", False)

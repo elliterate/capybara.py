@@ -1,6 +1,7 @@
 import atexit
 from contextlib import contextmanager
 from selenium.common.exceptions import (
+    InvalidElementStateException,
     NoAlertPresentException,
     NoSuchWindowException,
     StaleElementReferenceException,
@@ -49,10 +50,13 @@ class Driver(Base):
     def browser(self):
         capabilities = self._desired_capabilities
 
-        if self._browser_name in ["ff", "firefox"]:
+        if self._firefox:
             capabilities = (capabilities or DesiredCapabilities.FIREFOX).copy()
             # Auto-accept unload alerts triggered by navigating away.
-            capabilities["unexpectedAlertBehaviour"] = "ignore"
+            if capabilities.get("marionette"):
+                capabilities["unhandledPromptBehavior"] = "dismiss"
+            else:
+                capabilities["unexpectedAlertBehaviour"] = "ignore"
 
         browser = get_browser(self._browser_name, capabilities=capabilities, **self._options)
         atexit.register(browser.quit)
@@ -194,7 +198,15 @@ class Driver(Base):
 
     @property
     def invalid_element_errors(self):
-        return (StaleElementReferenceException,)
+        return InvalidElementStateException, StaleElementReferenceException
+
+    @property
+    def _marionette(self):
+        return self._firefox and self.browser.w3c
+
+    @property
+    def _firefox(self):
+        return self._browser_name in ["ff", "firefox"]
 
     def _find_css(self, css):
         return [Node(self, element) for element in self.browser.find_elements_by_css_selector(css)]
