@@ -45,6 +45,17 @@ def make_conftest(testdir):
         pytest_plugins = ["capybara.pytest_plugin"]
 
         capybara.app = test_app.app
+
+        @capybara.register_driver("selenium")
+        def init_selenium_driver(app):
+            from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+
+            from capybara.selenium.driver import Driver
+
+            capabilities = DesiredCapabilities.FIREFOX.copy()
+            capabilities["marionette"] = False
+
+            return Driver(app, browser="firefox", desired_capabilities=capabilities)
     """)
 
 
