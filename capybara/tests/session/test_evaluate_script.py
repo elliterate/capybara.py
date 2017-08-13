@@ -1,6 +1,7 @@
 import pytest
 
 from capybara.node.element import Element
+from capybara.tests.helpers import isselenium
 
 
 @pytest.mark.requires("js")
@@ -34,6 +35,9 @@ class TestEvaluateScript:
         assert elements == list(session.find("css", "#form_city").find_all("css", "option"))
 
     def test_supports_returning_dicts_with_elements(self, session):
+        if isselenium(session):
+            pytest.importorskip("selenium", minversion="3.4.3")
+
         session.visit("/form")
         result = session.evaluate_script(
           "{a: document.getElementById('form_title'), "
