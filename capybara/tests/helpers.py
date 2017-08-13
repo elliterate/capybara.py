@@ -20,3 +20,13 @@ def extract_results(session):
 
 def ismarionette(session):
     return getattr(session.driver, "_marionette", False)
+
+
+def isselenium(session):
+    try:
+        from capybara.selenium.driver import Driver
+    except ImportError:
+        # If we can't import it, then it can't be in use.
+        return False
+
+    return isinstance(session.driver, Driver)
