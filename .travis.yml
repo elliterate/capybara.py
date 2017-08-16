@@ -57,10 +57,12 @@ before_install:
 install:
   - pip install tox
 before_script:
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start && sleep 1
-  - mkdir -p ~/.config/awesome
-  - echo "require('awful'); tags = {}; tags[1] = awful.tag({'name'})" > ~/.config/awesome/rc.lua
-  - "awesome &"
+  - if [[ -z $HEADLESS ]]; then
+      export DISPLAY=:99.0;
+      sh -e /etc/init.d/xvfb start && sleep 1;
+      mkdir -p ~/.config/awesome;
+      echo "require('awful'); tags = {}; tags[1] = awful.tag({'name'})" > ~/.config/awesome/rc.lua;
+      awesome &
+    fi
 script: tox
 cache: pip
