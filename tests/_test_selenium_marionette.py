@@ -12,12 +12,13 @@ def init_selenium_marionette_driver(app):
     capabilities = DesiredCapabilities.FIREFOX.copy()
     capabilities["marionette"] = True
 
-    options = Options()
+    firefox_options = Options()
 
     # Allow the driver to attach files.
-    options.set_preference("dom.file.createInChild", True)
+    firefox_options.set_preference("dom.file.createInChild", True)
 
-    return Driver(app, browser="firefox", desired_capabilities=capabilities, firefox_options=options)
+    return Driver(
+        app, browser="firefox", desired_capabilities=capabilities, firefox_options=firefox_options)
 
 
 SeleniumMarionetteDriverSuite = DriverSuite("selenium_marionette")
