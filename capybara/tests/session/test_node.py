@@ -273,7 +273,7 @@ class TestNodeSendKeys(NodeTestCase):
         assert session.find("css", "#address1_city").value == "Oceanside"
 
     def test_sends_special_characters(self, session):
-        from selenium.webdriver.common.keys import Keys
+        Keys = pytest.importorskip("selenium.webdriver.common.keys").Keys
 
         if ismarionette(session):
             pytest.skip("selenium/geckodriver doesn't support some special characters")
