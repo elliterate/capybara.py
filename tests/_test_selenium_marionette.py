@@ -1,3 +1,5 @@
+import os
+
 import capybara
 from capybara.tests.suite import DriverSuite
 
@@ -13,6 +15,8 @@ def init_selenium_marionette_driver(app):
     capabilities["marionette"] = True
 
     firefox_options = Options()
+    if os.environ.get("HEADLESS"):
+        firefox_options.add_argument("--headless")
 
     # Allow the driver to attach files.
     firefox_options.set_preference("dom.file.createInChild", True)

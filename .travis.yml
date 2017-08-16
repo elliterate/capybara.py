@@ -35,12 +35,23 @@ matrix:
         apt:
           packages:
             - awesome
+    - env:
+        - TOXENV=marionette
+        - HEADLESS=true
+      addons:
+        firefox: latest-beta
+        apt:
+          packages:
+            - awesome
     - env: TOXENV=selenium2
   allow_failures:
     - env:
         - TOXENV=chrome
         - HEADLESS=true
     - env: TOXENV=marionette
+    - env:
+        - TOXENV=marionette
+        - HEADLESS=true
 before_install:
   # Upgrade pip to a version that supports `pip install .[test]`.
   - pip install --upgrade pip
