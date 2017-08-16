@@ -3,13 +3,7 @@ import pytest
 
 from capybara.exceptions import ElementNotFound, FileNotFound
 
-from capybara.tests.helpers import extract_results, ismarionette
-
-
-@pytest.fixture(autouse=True)
-def skip_marionette(session):
-    if ismarionette(session):
-        pytest.skip("attach_file broken by Firefox 55")
+from capybara.tests.helpers import extract_results
 
 
 class AttachFileTestCase:
