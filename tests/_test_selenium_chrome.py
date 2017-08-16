@@ -11,7 +11,7 @@ def init_selenium_chrome_driver(app):
     from capybara.selenium.driver import Driver
 
     chrome_options = Options()
-    if os.environ.get("CAPYBARA_CHROME_HEADLESS"):
+    if os.environ.get("HEADLESS"):
         chrome_options.add_argument("--headless")
 
     return Driver(app, browser="chrome", chrome_options=chrome_options)
@@ -21,7 +21,7 @@ def init_selenium_chrome_driver(app):
 _skip = ["modals"]
 
 # See: https://bugs.chromium.org/p/chromium/issues/detail?id=706008
-if os.environ.get("CAPYBARA_CHROME_HEADLESS"):
+if os.environ.get("HEADLESS"):
     _skip.append("windows")
 
 SeleniumChromeDriverSuite = DriverSuite("selenium_chrome", skip=_skip)

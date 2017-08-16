@@ -19,7 +19,9 @@ matrix:
           packages:
             - google-chrome-stable
             - awesome
-    - env: TOXENV=chrome-headless
+    - env:
+        - TOXENV=chrome
+        - HEADLESS=true
       addons:
         apt:
           sources:
@@ -35,7 +37,9 @@ matrix:
             - awesome
     - env: TOXENV=selenium2
   allow_failures:
-    - env: TOXENV=chrome-headless
+    - env:
+        - TOXENV=chrome
+        - HEADLESS=true
     - env: TOXENV=marionette
 before_install:
   # Upgrade pip to a version that supports `pip install .[test]`.
@@ -44,7 +48,7 @@ before_install:
   - GECKODRIVER_URL="https://github.com/mozilla/geckodriver/releases/download/v0.18.0/geckodriver-v0.18.0-linux64.tar.gz";
     FILE=`mktemp`; wget "$GECKODRIVER_URL" -qO $FILE && tar xz -C ~/drivers -f $FILE geckodriver; rm $FILE; chmod 777 ~/drivers/geckodriver;
     ~/drivers/geckodriver --version;
-  - if [[ $TOXENV == chrome* ]]; then
+  - if [[ $TOXENV == chrome ]]; then
       CHROMEDRIVER_VERSION=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE);
       CHROMEDRIVER_URL="http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip";
       FILE=`mktemp`; wget "$CHROMEDRIVER_URL" -qO $FILE && unzip $FILE chromedriver -d ~/drivers; rm $FILE; chmod 777 ~/drivers/chromedriver;
