@@ -3,8 +3,15 @@ from threading import Thread
 from time import sleep
 
 import capybara
-from capybara.compat import URLError, decode_socket_data, encode_socket_data, urlopen
-from capybara.utils import Counter, TimeoutError, cached_property, find_available_port, timeout
+from capybara.compat import URLError, urlopen
+from capybara.utils import (
+    Counter,
+    TimeoutError,
+    cached_property,
+    decode_bytes,
+    encode_string,
+    find_available_port,
+    timeout)
 
 
 class Server(object):
@@ -105,7 +112,7 @@ class Server(object):
                 body, status_code = response.read(), response.getcode()
 
                 if str(status_code)[0] == "2" or str(status_code)[0] == "3":
-                    return decode_socket_data(body) == str(id(self.app))
+                    return decode_bytes(body) == str(id(self.app))
         except URLError:
             pass
 
@@ -135,7 +142,7 @@ class Middleware(object):
 
     def identify(self, environ, start_response):
         start_response("200 OK", [("Content-Type", "text/plain")])
-        return [encode_socket_data(str(id(self.app)))]
+        return [encode_string(str(id(self.app)))]
 
     @property
     def has_pending_requests(self):

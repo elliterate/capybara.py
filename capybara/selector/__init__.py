@@ -1,6 +1,7 @@
 from xpath import dsl as x
 
 import capybara
+from capybara.compat import str_
 from capybara.helpers import desc
 from capybara.selector.filter_set import add_filter_set, remove_filter_set, filter_sets
 from capybara.selector.selector import add_selector, remove_selector, selectors
@@ -156,7 +157,7 @@ with add_selector("label") as s:
     def xpath(locator):
         expr = x.descendant("label")
         if locator:
-            expr = expr[x.string.n.is_(str(locator)) | x.attr("id").equals(str(locator))]
+            expr = expr[x.string.n.is_(str_(locator)) | x.attr("id").equals(str_(locator))]
         return expr
 
     @s.filter("field")
@@ -169,7 +170,7 @@ with add_selector("label") as s:
             else:
                 return node.base in field_or_value._find_xpath("./ancestor::label[1]")
         else:
-            return node["for"] == str(field_or_value)
+            return node["for"] == str_(field_or_value)
 
     @s.describe
     def describe(options):
@@ -204,7 +205,7 @@ with add_selector("link") as s:
         else:
             # For href element attributes, Selenium returns the full URL that would
             # be visited rather than the raw value in the source. So we use XPath.
-            query = x.axis("self")[x.attr("href") == str(href)]
+            query = x.axis("self")[x.attr("href") == str_(href)]
             return node.has_selector("xpath", query)
 
     @s.describe

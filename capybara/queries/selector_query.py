@@ -2,6 +2,7 @@ from xpath.expression import ExpressionType
 from xpath.renderer import to_xpath
 
 import capybara
+from capybara.compat import str_
 from capybara.helpers import desc, normalize_text, toregex
 from capybara.result import Result
 from capybara.selector import selectors
@@ -157,7 +158,7 @@ class SelectorQuery(object):
         if isinstance(self.expression, ExpressionType):
             return to_xpath(self.expression, exact=exact)
         else:
-            return str(self.expression)
+            return str_(self.expression)
 
     def resolve_for(self, node, exact=None):
         """

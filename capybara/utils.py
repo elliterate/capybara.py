@@ -7,10 +7,9 @@ from time import time
 from capybara.compat import (
     ParseResult,
     bytes_,
-    bytes_decode,
     parse_qsl,
     quote,
-    str_encode,
+    str_,
     unquote,
     urlencode,
     urlparse)
@@ -61,12 +60,12 @@ class Counter(object):
 
 def decode_bytes(value):
     """ str: Decodes the given byte sequence. """
-    return bytes_decode(value, "utf-8") if isinstance(value, bytes_) else value
+    return value.decode("utf-8") if isbytes(value) else value
 
 
 def encode_string(value):
     """ bytes: Encodes the given string. """
-    return str_encode(value, "utf-8") if isinstance(value, str) else value
+    return value.encode("utf-8") if isstring(value) else value
 
 
 def find_available_port():
@@ -147,6 +146,11 @@ def isregex(possible_regex):
     """
 
     return hasattr(possible_regex, "search") and callable(possible_regex.search)
+
+
+def isstring(value):
+    """ bool: Whether the given value is a string. """
+    return isinstance(value, str_)
 
 
 def normalize_url(url):

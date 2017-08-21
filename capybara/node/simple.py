@@ -2,10 +2,11 @@ import re
 from xpath import dsl as x
 from xpath.renderer import to_xpath
 
+from capybara.compat import bytes_, str_
 from capybara.node.document_matchers import DocumentMatchersMixin
 from capybara.node.finders import FindersMixin
 from capybara.node.matchers import MatchersMixin
-from capybara.utils import inner_content
+from capybara.utils import decode_bytes, inner_content
 
 
 class Simple(FindersMixin, MatchersMixin, DocumentMatchersMixin, object):
@@ -19,8 +20,9 @@ class Simple(FindersMixin, MatchersMixin, DocumentMatchersMixin, object):
     """
 
     def __init__(self, native):
-        if isinstance(native, str):
+        if isinstance(native, (bytes_, str_)):
             from lxml import etree
+            native = decode_bytes(native)
             native = etree.HTML(native)
         self.native = native
 

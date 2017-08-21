@@ -1,6 +1,7 @@
 import re
 
-from capybara.utils import decode_bytes, isbytes, isregex
+from capybara.compat import PY2, str_
+from capybara.utils import decode_bytes, isbytes, isregex, isstring, encode_string
 
 
 def declension(singular, plural, count):
@@ -30,6 +31,12 @@ def desc(value):
 
     if isbytes(value):
         value = decode_bytes(value)
+
+    if PY2:
+        if isstring(value):
+            # In Python 2, strings (``unicode`` objects) represent as ``u'...'``, so ensure
+            # the string is encoded (as a ``str`` object) for cleaner representation.
+            value = encode_string(value)
 
     return repr(value)
 
@@ -133,7 +140,7 @@ def normalize_text(value):
     if value is None:
         return ""
 
-    text = decode_bytes(value) if isbytes(value) else str(value)
+    text = decode_bytes(value) if isbytes(value) else str_(value)
 
     return normalize_whitespace(text)
 
