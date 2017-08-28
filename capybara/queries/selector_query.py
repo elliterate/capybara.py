@@ -1,4 +1,4 @@
-from xpath.expression import ExpressionType
+from xpath.expression import AbstractExpression
 from xpath.renderer import to_xpath
 
 import capybara
@@ -155,7 +155,7 @@ class SelectorQuery(object):
 
         exact = exact if exact is not None else self.exact
 
-        if isinstance(self.expression, ExpressionType):
+        if isinstance(self.expression, AbstractExpression):
             return to_xpath(self.expression, exact=exact)
         else:
             return str_(self.expression)
