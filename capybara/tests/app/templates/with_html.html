@@ -18,7 +18,7 @@
   et dolore magna aliqua. Ut enim ad minim veniam,
   quis nostrud exercitation <a href="/foo" id="foo">ullamco</a> laboris nisi
   ut aliquip ex ea commodo consequat.
-  <a href="/with_simple_html" aria-label="Go to simple"><img width="20" height="20" alt="awesome image" /></a>
+  <a href="/with_simple_html" aria-label="Go to simple"><img id="first_image" width="20" height="20" alt="awesome image" /></a>
 </p>
 
 <p class="para" id="second">
@@ -122,4 +122,18 @@ banana</textarea>
 
 <div id="unicode-text">
   이름
+</div>
+
+<div id="ancestor3">
+  Ancestor
+  <div id="ancestor2">
+    Ancestor
+    <div id="ancestor1">
+      Ancestor
+      <div id="child">Child</div>
+    </div>
+  </div>
+  <button id="ancestor_button" type="submit" disabled>
+    <img id="button_img" width="20" height="20" alt="button img"/>
+  </button>
 </div>
