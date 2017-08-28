@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara package &#8212; Capybara 0.1.1 documentation</title>
+    <title>capybara package &#8212; Capybara 0.1.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.1',
+        VERSION:     '0.1.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -116,16 +116,6 @@
 </div>
 <div class="section" id="module-capybara.compat">
 <span id="capybara-compat-module"></span><h2>capybara.compat module<a class="headerlink" href="#module-capybara.compat" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="capybara.compat.wsgi_decode_body">
-<code class="descclassname">capybara.compat.</code><code class="descname">wsgi_decode_body</code><span class="sig-paren">(</span><em>body</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/compat.html#wsgi_decode_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.compat.wsgi_decode_body" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="function">
-<dt id="capybara.compat.wsgi_encode_body">
-<code class="descclassname">capybara.compat.</code><code class="descname">wsgi_encode_body</code><span class="sig-paren">(</span><em>body</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/compat.html#wsgi_encode_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.compat.wsgi_encode_body" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </div>
 <div class="section" id="module-capybara.dsl">
 <span id="capybara-dsl-module"></span><h2>capybara.dsl module<a class="headerlink" href="#module-capybara.dsl" title="Permalink to this headline">¶</a></h2>
@@ -1462,7 +1452,7 @@ option. The select box can be found via its name, id, or label text.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>text</strong> (<em>str</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
+<li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
 <li><strong>wait</strong> (<em>int | float</em><em>, </em><em>optional</em>) – Maximum time to wait for the modal to appear after
 executing the wrapped code.</li>
 </ul>
@@ -1484,7 +1474,7 @@ executing the wrapped code.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>text</strong> (<em>str</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
+<li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
 <li><strong>wait</strong> (<em>int | float</em><em>, </em><em>optional</em>) – Maximum time to wait for the modal to appear after
 executing the wrapped code.</li>
 </ul>
@@ -1506,7 +1496,7 @@ executing the wrapped code.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>text</strong> (<em>str</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
+<li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
 <li><strong>response</strong> (<em>str</em><em>, </em><em>optional</em>) – Response to provide to the prompt.</li>
 <li><strong>wait</strong> (<em>int | float</em><em>, </em><em>optional</em>) – Maximum time to wait for the modal to appear after
 executing the wrapped code.</li>
@@ -1578,7 +1568,7 @@ path+query portion of the full URL.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>text</strong> (<em>str</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
+<li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
 <li><strong>wait</strong> (<em>int | float</em><em>, </em><em>optional</em>) – Maximum time to wait for the modal to appear after
 executing the wrapped code.</li>
 </ul>
@@ -1600,7 +1590,7 @@ executing the wrapped code.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>text</strong> (<em>str</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
+<li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
 <li><strong>wait</strong> (<em>int | float</em><em>, </em><em>optional</em>) – Maximum time to wait for the modal to appear after
 executing the wrapped code.</li>
 </ul>
@@ -1860,6 +1850,23 @@ the type set in <a class="reference internal" href="#capybara.default_selector" 
 <li><strong>**kwargs</strong> – Arbitrary keywords arguments for the call to <a class="reference internal" href="#capybara.dsl.find" title="capybara.dsl.find"><code class="xref py py-meth docutils literal"><span class="pre">find()</span></code></a>.</li>
 </ul>
 </td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="capybara.dsl.switch_to_frame">
+<code class="descclassname">capybara.dsl.</code><code class="descname">switch_to_frame</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.switch_to_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch to the given frame.</p>
+<p>If you use this method you are responsible for making sure you switch back to the parent
+frame when done in the frame changed to. <a class="reference internal" href="#capybara.dsl.frame" title="capybara.dsl.frame"><code class="xref py py-meth docutils literal"><span class="pre">frame()</span></code></a> is preferred over this method and
+should be used when possible. May not be supported by all drivers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>frame</strong> (<em>Element | str</em>) – The iframe/frame element to switch to.</td>
 </tr>
 </tbody>
 </table>
@@ -2304,6 +2311,11 @@ possible to interact with this collection similar to a List because it implement
 <dt id="capybara.server.Middleware">
 <em class="property">class </em><code class="descclassname">capybara.server.</code><code class="descname">Middleware</code><span class="sig-paren">(</span><em>app</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/server.html#Middleware"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.server.Middleware" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dl class="attribute">
+<dt id="capybara.server.Middleware.has_pending_requests">
+<code class="descname">has_pending_requests</code><a class="headerlink" href="#capybara.server.Middleware.has_pending_requests" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="capybara.server.Middleware.identify">
 <code class="descname">identify</code><span class="sig-paren">(</span><em>environ</em>, <em>start_response</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/server.html#Middleware.identify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.server.Middleware.identify" title="Permalink to this definition">¶</a></dt>
@@ -2349,6 +2361,16 @@ Defaults to <a class="reference internal" href="#capybara.server_host" title="ca
 </dd></dl>
 
 <dl class="attribute">
+<dt id="capybara.server.Server.error">
+<code class="descname">error</code><a class="headerlink" href="#capybara.server.Server.error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="capybara.server.Server.has_pending_requests">
+<code class="descname">has_pending_requests</code><a class="headerlink" href="#capybara.server.Server.has_pending_requests" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="capybara.server.Server.middleware">
 <code class="descname">middleware</code><a class="reference internal" href="_modules/capybara/server.html#Server.middleware"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.server.Server.middleware" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -2358,11 +2380,21 @@ Defaults to <a class="reference internal" href="#capybara.server_host" title="ca
 <code class="descname">port_key</code><a class="headerlink" href="#capybara.server.Server.port_key" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="capybara.server.Server.reset_error">
+<code class="descname">reset_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/server.html#Server.reset_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.server.Server.reset_error" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="capybara.server.Server.responsive">
 <code class="descname">responsive</code><a class="headerlink" href="#capybara.server.Server.responsive" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>bool</em> – Whether the server for this app is up and responsive.</p>
 </dd></dl>
+
+<dl class="method">
+<dt id="capybara.server.Server.wait_for_pending_requests">
+<code class="descname">wait_for_pending_requests</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/server.html#Server.wait_for_pending_requests"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.server.Server.wait_for_pending_requests" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -2414,7 +2446,7 @@ a <code class="xref py py-class docutils literal"><span class="pre">Document</sp
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>text</strong> (<em>str</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
+<li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
 <li><strong>wait</strong> (<em>int | float</em><em>, </em><em>optional</em>) – Maximum time to wait for the modal to appear after
 executing the wrapped code.</li>
 </ul>
@@ -2436,7 +2468,7 @@ executing the wrapped code.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>text</strong> (<em>str</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
+<li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
 <li><strong>wait</strong> (<em>int | float</em><em>, </em><em>optional</em>) – Maximum time to wait for the modal to appear after
 executing the wrapped code.</li>
 </ul>
@@ -2458,7 +2490,7 @@ executing the wrapped code.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>text</strong> (<em>str</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
+<li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
 <li><strong>response</strong> (<em>str</em><em>, </em><em>optional</em>) – Response to provide to the prompt.</li>
 <li><strong>wait</strong> (<em>int | float</em><em>, </em><em>optional</em>) – Maximum time to wait for the modal to appear after
 executing the wrapped code.</li>
@@ -2841,7 +2873,7 @@ inside the link.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>text</strong> (<em>str</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
+<li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
 <li><strong>wait</strong> (<em>int | float</em><em>, </em><em>optional</em>) – Maximum time to wait for the modal to appear after
 executing the wrapped code.</li>
 </ul>
@@ -2863,7 +2895,7 @@ executing the wrapped code.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>text</strong> (<em>str</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
+<li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text to match against the text in the modal.</li>
 <li><strong>wait</strong> (<em>int | float</em><em>, </em><em>optional</em>) – Maximum time to wait for the modal to appear after
 executing the wrapped code.</li>
 </ul>
@@ -3927,6 +3959,12 @@ switched explicitly.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="capybara.session.Session.raise_server_error">
+<code class="descname">raise_server_error</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.raise_server_error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.raise_server_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Raise errors encountered by the server.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="capybara.session.Session.reset">
 <code class="descname">reset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.reset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset the session (i.e., remove cookies and navigate to a blank page).</p>
@@ -4061,6 +4099,23 @@ The option can be found by its text.</p>
 <dt id="capybara.session.Session.source">
 <code class="descname">source</code><a class="headerlink" href="#capybara.session.Session.source" title="Permalink to this definition">¶</a></dt>
 <dd><p>Alias for <a class="reference internal" href="#capybara.session.Session.html" title="capybara.session.Session.html"><code class="xref py py-attr docutils literal"><span class="pre">html</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="capybara.session.Session.switch_to_frame">
+<code class="descname">switch_to_frame</code><span class="sig-paren">(</span><em>frame</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.switch_to_frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.switch_to_frame" title="Permalink to this definition">¶</a></dt>
+<dd><p>Switch to the given frame.</p>
+<p>If you use this method you are responsible for making sure you switch back to the parent
+frame when done in the frame changed to. <a class="reference internal" href="#capybara.session.Session.frame" title="capybara.session.Session.frame"><code class="xref py py-meth docutils literal"><span class="pre">frame()</span></code></a> is preferred over this method and
+should be used when possible. May not be supported by all drivers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>frame</strong> (<em>Element | str</em>) – The iframe/frame element to switch to.</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -4375,6 +4430,19 @@ path+query portion of the full URL.</p>
 </div>
 <div class="section" id="module-capybara.utils">
 <span id="capybara-utils-module"></span><h2>capybara.utils module<a class="headerlink" href="#module-capybara.utils" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="capybara.utils.Counter">
+<em class="property">class </em><code class="descclassname">capybara.utils.</code><code class="descname">Counter</code><a class="reference internal" href="_modules/capybara/utils.html#Counter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.utils.Counter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<p>Keeps track of a running count.</p>
+<dl class="attribute">
+<dt id="capybara.utils.Counter.value">
+<code class="descname">value</code><a class="headerlink" href="#capybara.utils.Counter.value" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> – The current value of the counter.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="exception">
 <dt id="capybara.utils.TimeoutError">
 <em class="property">exception </em><code class="descclassname">capybara.utils.</code><code class="descname">TimeoutError</code><a class="reference internal" href="_modules/capybara/utils.html#TimeoutError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.utils.TimeoutError" title="Permalink to this definition">¶</a></dt>
@@ -4464,6 +4532,12 @@ path+query portion of the full URL.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="function">
+<dt id="capybara.utils.isstring">
+<code class="descclassname">capybara.utils.</code><code class="descname">isstring</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/utils.html#isstring"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.utils.isstring" title="Permalink to this definition">¶</a></dt>
+<dd><p>bool: Whether the given value is a string.</p>
 </dd></dl>
 
 <dl class="function">
@@ -4731,6 +4805,12 @@ the current window should remain the same as it was before calling this method.<
 <dt id="capybara.match">
 <code class="descclassname">capybara.</code><code class="descname">match</code><em class="property"> = 'smart'</em><a class="headerlink" href="#capybara.match" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>str</em> – The matching strategy to use.</p>
+</dd></dl>
+
+<dl class="data">
+<dt id="capybara.raise_server_errors">
+<code class="descclassname">capybara.</code><code class="descname">raise_server_errors</code><em class="property"> = True</em><a class="headerlink" href="#capybara.raise_server_errors" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>bool</em> – Whether errors raised in the server should be raised in the tests.</p>
 </dd></dl>
 
 <dl class="function">

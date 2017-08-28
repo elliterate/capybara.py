@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.helpers &#8212; Capybara 0.1.1 documentation</title>
+    <title>capybara.helpers &#8212; Capybara 0.1.2 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.1.1',
+        VERSION:     '0.1.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -41,7 +41,8 @@
   <h1>Source code for capybara.helpers</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">re</span>
 
-<span class="kn">from</span> <span class="nn">capybara.utils</span> <span class="k">import</span> <span class="n">decode_bytes</span><span class="p">,</span> <span class="n">isbytes</span><span class="p">,</span> <span class="n">isregex</span>
+<span class="kn">from</span> <span class="nn">capybara.compat</span> <span class="k">import</span> <span class="n">PY2</span><span class="p">,</span> <span class="n">str_</span>
+<span class="kn">from</span> <span class="nn">capybara.utils</span> <span class="k">import</span> <span class="n">decode_bytes</span><span class="p">,</span> <span class="n">isbytes</span><span class="p">,</span> <span class="n">isregex</span><span class="p">,</span> <span class="n">isstring</span><span class="p">,</span> <span class="n">encode_string</span>
 
 
 <div class="viewcode-block" id="declension"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.declension">[docs]</a><span class="k">def</span> <span class="nf">declension</span><span class="p">(</span><span class="n">singular</span><span class="p">,</span> <span class="n">plural</span><span class="p">,</span> <span class="n">count</span><span class="p">):</span>
@@ -71,6 +72,12 @@
 
     <span class="k">if</span> <span class="n">isbytes</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
         <span class="n">value</span> <span class="o">=</span> <span class="n">decode_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">PY2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">isstring</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="c1"># In Python 2, strings (``unicode`` objects) represent as ``u&#39;...&#39;``, so ensure</span>
+            <span class="c1"># the string is encoded (as a ``str`` object) for cleaner representation.</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">encode_string</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
@@ -174,7 +181,7 @@
     <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
-    <span class="n">text</span> <span class="o">=</span> <span class="n">decode_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">isbytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">else</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">decode_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">isbytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">else</span> <span class="n">str_</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">normalize_whitespace</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
 

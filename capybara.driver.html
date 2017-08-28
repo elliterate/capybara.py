@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.driver package &#8212; Capybara 0.1.1 documentation</title>
+    <title>capybara.driver package &#8212; Capybara 0.1.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.1',
+        VERSION:     '0.1.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -60,7 +60,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>modal_type</strong> (<em>str</em>) – The type of modal that should be accepted.</li>
-<li><strong>text</strong> (<em>str</em><em>, </em><em>optional</em>) – Text that is expected to appear in the modal.</li>
+<li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text that is expected to appear in the modal.</li>
 <li><strong>response</strong> (<em>str</em><em>, </em><em>optional</em>) – Text to enter for a response, if applicable.</li>
 <li><strong>wait</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of seconds to wait for the modal to appear.</li>
 </ul>
@@ -106,7 +106,7 @@
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>modal_type</strong> (<em>str</em>) – The type of modal that should be dismissed.</li>
-<li><strong>text</strong> (<em>str</em><em>, </em><em>optional</em>) – Text that is expected to appear in the modal.</li>
+<li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text that is expected to appear in the modal.</li>
 <li><strong>wait</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of seconds to wait for the modal to appear.</li>
 </ul>
 </td>

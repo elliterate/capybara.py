@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.utils &#8212; Capybara 0.1.1 documentation</title>
+    <title>capybara.utils &#8212; Capybara 0.1.2 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.1.1',
+        VERSION:     '0.1.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -42,15 +42,15 @@
 <span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
 <span class="kn">import</span> <span class="nn">signal</span>
 <span class="kn">from</span> <span class="nn">socket</span> <span class="k">import</span> <span class="n">socket</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Lock</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
 
 <span class="kn">from</span> <span class="nn">capybara.compat</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">ParseResult</span><span class="p">,</span>
     <span class="n">bytes_</span><span class="p">,</span>
-    <span class="n">bytes_decode</span><span class="p">,</span>
     <span class="n">parse_qsl</span><span class="p">,</span>
     <span class="n">quote</span><span class="p">,</span>
-    <span class="n">str_encode</span><span class="p">,</span>
+    <span class="n">str_</span><span class="p">,</span>
     <span class="n">unquote</span><span class="p">,</span>
     <span class="n">urlencode</span><span class="p">,</span>
     <span class="n">urlparse</span><span class="p">)</span>
@@ -78,14 +78,35 @@
         <span class="k">return</span> <span class="n">value</span></div>
 
 
+<div class="viewcode-block" id="Counter"><a class="viewcode-back" href="../../capybara.html#capybara.utils.Counter">[docs]</a><span class="k">class</span> <span class="nc">Counter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Keeps track of a running count. &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; int: The current value of the counter. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_value</span>
+
+    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_value</span> <span class="o">-=</span> <span class="mi">1</span></div>
+
+
 <div class="viewcode-block" id="decode_bytes"><a class="viewcode-back" href="../../capybara.html#capybara.utils.decode_bytes">[docs]</a><span class="k">def</span> <span class="nf">decode_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; str: Decodes the given byte sequence. &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">bytes_decode</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">bytes_</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span></div>
+    <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">isbytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span></div>
 
 
 <div class="viewcode-block" id="encode_string"><a class="viewcode-back" href="../../capybara.html#capybara.utils.encode_string">[docs]</a><span class="k">def</span> <span class="nf">encode_string</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; bytes: Encodes the given string. &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">str_encode</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span></div>
+    <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">isstring</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">else</span> <span class="n">value</span></div>
 
 
 <div class="viewcode-block" id="find_available_port"><a class="viewcode-back" href="../../capybara.html#capybara.utils.find_available_port">[docs]</a><span class="k">def</span> <span class="nf">find_available_port</span><span class="p">():</span>
@@ -166,6 +187,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">possible_regex</span><span class="p">,</span> <span class="s2">&quot;search&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">callable</span><span class="p">(</span><span class="n">possible_regex</span><span class="o">.</span><span class="n">search</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="isstring"><a class="viewcode-back" href="../../capybara.html#capybara.utils.isstring">[docs]</a><span class="k">def</span> <span class="nf">isstring</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; bool: Whether the given value is a string. &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">str_</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="normalize_url"><a class="viewcode-back" href="../../capybara.html#capybara.utils.normalize_url">[docs]</a><span class="k">def</span> <span class="nf">normalize_url</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>

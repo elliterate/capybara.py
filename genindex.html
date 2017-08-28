@@ -6,13 +6,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Index &#8212; Capybara 0.1.1 documentation</title>
+    <title>Index &#8212; Capybara 0.1.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.1',
+        VERSION:     '0.1.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -429,6 +429,8 @@
       </ul></li>
       <li><a href="capybara.html#capybara.window.Window.closed">closed (capybara.window.Window attribute)</a>
 </li>
+      <li><a href="capybara.html#capybara.utils.Counter">Counter (class in capybara.utils)</a>
+</li>
       <li><a href="capybara.selector.html#capybara.selector.selector.SelectorFactory.css">css (capybara.selector.selector.SelectorFactory attribute)</a>
 </li>
       <li><a href="capybara.queries.html#capybara.queries.selector_query.SelectorQuery.css">css() (capybara.queries.selector_query.SelectorQuery method)</a>
@@ -582,6 +584,8 @@
       <li><a href="capybara.html#capybara.enable_aria_label">enable_aria_label (in module capybara)</a>
 </li>
       <li><a href="capybara.html#capybara.utils.encode_string">encode_string() (in module capybara.utils)</a>
+</li>
+      <li><a href="capybara.html#capybara.server.Server.error">error (capybara.server.Server attribute)</a>
 </li>
       <li><a href="capybara.driver.html#capybara.driver.base.Base.evaluate_script">evaluate_script() (capybara.driver.base.Base method)</a>
 
@@ -899,8 +903,6 @@
         <li><a href="capybara.html#capybara.dsl.has_no_selector">(in module capybara.dsl)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="capybara.node.html#capybara.node.matchers.MatchersMixin.has_no_table">has_no_table() (capybara.node.matchers.MatchersMixin method)</a>
 
       <ul>
@@ -909,6 +911,8 @@
         <li><a href="capybara.html#capybara.dsl.has_no_table">(in module capybara.dsl)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="capybara.node.html#capybara.node.matchers.MatchersMixin.has_no_text">has_no_text() (capybara.node.matchers.MatchersMixin method)</a>
 
       <ul>
@@ -939,6 +943,12 @@
         <li><a href="capybara.html#capybara.session.Session.has_no_xpath">(capybara.session.Session method)</a>
 </li>
         <li><a href="capybara.html#capybara.dsl.has_no_xpath">(in module capybara.dsl)</a>
+</li>
+      </ul></li>
+      <li><a href="capybara.html#capybara.server.Middleware.has_pending_requests">has_pending_requests (capybara.server.Middleware attribute)</a>
+
+      <ul>
+        <li><a href="capybara.html#capybara.server.Server.has_pending_requests">(capybara.server.Server attribute)</a>
 </li>
       </ul></li>
       <li><a href="capybara.node.html#capybara.node.matchers.MatchersMixin.has_select">has_select() (capybara.node.matchers.MatchersMixin method)</a>
@@ -1046,6 +1056,8 @@
       <li><a href="capybara.html#capybara.utils.isbytes">isbytes() (in module capybara.utils)</a>
 </li>
       <li><a href="capybara.html#capybara.utils.isregex">isregex() (in module capybara.utils)</a>
+</li>
+      <li><a href="capybara.html#capybara.utils.isstring">isstring() (in module capybara.utils)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1227,6 +1239,10 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="capybara.html#capybara.session.Session.raise_server_error">raise_server_error() (capybara.session.Session method)</a>
+</li>
+      <li><a href="capybara.html#capybara.raise_server_errors">raise_server_errors (in module capybara)</a>
+</li>
       <li><a href="capybara.driver.html#capybara.driver.node.Node.readonly">readonly (capybara.driver.node.Node attribute)</a>
 
       <ul>
@@ -1285,6 +1301,8 @@
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="capybara.html#capybara.server.Server.reset_error">reset_error() (capybara.server.Server method)</a>
+</li>
       <li><a href="capybara.html#capybara.session.Session.reset_session">reset_session() (capybara.session.Session method)</a>
 
       <ul>
@@ -1405,10 +1423,10 @@
       </ul></li>
       <li><a href="capybara.html#capybara.server.Server">Server (class in capybara.server)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="capybara.html#capybara.server_host">server_host (in module capybara)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="capybara.html#capybara.server_name">server_name (in module capybara)</a>
 </li>
       <li><a href="capybara.html#capybara.server_port">server_port (in module capybara)</a>
@@ -1455,6 +1473,10 @@
 
       <ul>
         <li><a href="capybara.selenium.html#capybara.selenium.driver.Driver.switch_to_frame">(capybara.selenium.driver.Driver method)</a>
+</li>
+        <li><a href="capybara.html#capybara.session.Session.switch_to_frame">(capybara.session.Session method)</a>
+</li>
+        <li><a href="capybara.html#capybara.dsl.switch_to_frame">(in module capybara.dsl)</a>
 </li>
       </ul></li>
       <li><a href="capybara.driver.html#capybara.driver.base.Base.switch_to_window">switch_to_window() (capybara.driver.base.Base method)</a>
@@ -1610,6 +1632,8 @@
 </li>
         <li><a href="capybara.selenium.html#capybara.selenium.node.Node.value">(capybara.selenium.node.Node attribute)</a>
 </li>
+        <li><a href="capybara.html#capybara.utils.Counter.value">(capybara.utils.Counter attribute)</a>
+</li>
         <li><a href="capybara.werkzeug.html#capybara.werkzeug.node.Node.value">(capybara.werkzeug.node.Node attribute)</a>
 </li>
       </ul></li>
@@ -1627,6 +1651,8 @@
         <li><a href="capybara.werkzeug.html#capybara.werkzeug.node.Node.visible">(capybara.werkzeug.node.Node attribute)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="capybara.driver.html#capybara.driver.node.Node.visible_text">visible_text (capybara.driver.node.Node attribute)</a>
 
       <ul>
@@ -1641,8 +1667,6 @@
         <li><a href="capybara.werkzeug.html#capybara.werkzeug.node.Node.visible_text">(capybara.werkzeug.node.Node attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="capybara.html#capybara.visible_text_only">visible_text_only (in module capybara)</a>
 </li>
       <li><a href="capybara.driver.html#capybara.driver.base.Base.visit">visit() (capybara.driver.base.Base method)</a>
@@ -1671,6 +1695,8 @@
         <li><a href="capybara.queries.html#capybara.queries.text_query.TextQuery.wait">(capybara.queries.text_query.TextQuery attribute)</a>
 </li>
       </ul></li>
+      <li><a href="capybara.html#capybara.server.Server.wait_for_pending_requests">wait_for_pending_requests() (capybara.server.Server method)</a>
+</li>
       <li><a href="capybara.html#capybara.wait_on_first_by_default">wait_on_first_by_default (in module capybara)</a>
 </li>
       <li><a href="capybara.html#capybara.window.Window">Window (class in capybara.window)</a>
@@ -1681,14 +1707,14 @@
         <li><a href="capybara.html#capybara.dsl.window">(in module capybara.dsl)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="capybara.driver.html#capybara.driver.base.Base.window_handles">window_handles (capybara.driver.base.Base attribute)</a>
 
       <ul>
         <li><a href="capybara.selenium.html#capybara.selenium.driver.Driver.window_handles">(capybara.selenium.driver.Driver attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="capybara.html#capybara.session.Session.window_opened_by">window_opened_by() (capybara.session.Session method)</a>
 
       <ul>
@@ -1704,10 +1730,6 @@
       <li><a href="capybara.html#capybara.exceptions.WindowError">WindowError</a>
 </li>
       <li><a href="capybara.html#capybara.session.Session.windows">windows (capybara.session.Session attribute)</a>
-</li>
-      <li><a href="capybara.html#capybara.compat.wsgi_decode_body">wsgi_decode_body() (in module capybara.compat)</a>
-</li>
-      <li><a href="capybara.html#capybara.compat.wsgi_encode_body">wsgi_encode_body() (in module capybara.compat)</a>
 </li>
   </ul></td>
 </tr></table>

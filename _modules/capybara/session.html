@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.session &#8212; Capybara 0.1.1 documentation</title>
+    <title>capybara.session &#8212; Capybara 0.1.2 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.1.1',
+        VERSION:     '0.1.2',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -75,7 +75,7 @@
     <span class="s2">&quot;assert_no_current_path&quot;</span><span class="p">,</span> <span class="s2">&quot;dismiss_confirm&quot;</span><span class="p">,</span> <span class="s2">&quot;dismiss_prompt&quot;</span><span class="p">,</span> <span class="s2">&quot;evaluate_script&quot;</span><span class="p">,</span>
     <span class="s2">&quot;execute_script&quot;</span><span class="p">,</span> <span class="s2">&quot;fieldset&quot;</span><span class="p">,</span> <span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="s2">&quot;go_back&quot;</span><span class="p">,</span> <span class="s2">&quot;go_forward&quot;</span><span class="p">,</span> <span class="s2">&quot;has_current_path&quot;</span><span class="p">,</span>
     <span class="s2">&quot;has_no_current_path&quot;</span><span class="p">,</span> <span class="s2">&quot;open_new_window&quot;</span><span class="p">,</span> <span class="s2">&quot;reset&quot;</span><span class="p">,</span> <span class="s2">&quot;save_page&quot;</span><span class="p">,</span> <span class="s2">&quot;save_screenshot&quot;</span><span class="p">,</span> <span class="s2">&quot;scope&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;switch_to_window&quot;</span><span class="p">,</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;visit&quot;</span><span class="p">,</span> <span class="s2">&quot;window&quot;</span><span class="p">,</span> <span class="s2">&quot;window_opened_by&quot;</span><span class="p">]</span>
+    <span class="s2">&quot;switch_to_frame&quot;</span><span class="p">,</span> <span class="s2">&quot;switch_to_window&quot;</span><span class="p">,</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;visit&quot;</span><span class="p">,</span> <span class="s2">&quot;window&quot;</span><span class="p">,</span> <span class="s2">&quot;window_opened_by&quot;</span><span class="p">]</span>
 <span class="n">_SESSION_PROPERTIES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;current_host&quot;</span><span class="p">,</span> <span class="s2">&quot;current_path&quot;</span><span class="p">,</span> <span class="s2">&quot;current_url&quot;</span><span class="p">,</span> <span class="s2">&quot;current_window&quot;</span><span class="p">,</span> <span class="s2">&quot;windows&quot;</span><span class="p">]</span>
 
 <span class="n">DSL_METHODS</span> <span class="o">=</span> <span class="n">_DOCUMENT_METHODS</span> <span class="o">+</span> <span class="n">_NODE_METHODS</span> <span class="o">+</span> <span class="n">_SESSION_METHODS</span>
@@ -129,7 +129,10 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_scope</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; node.Base: The current node relative to which all interaction will be scoped. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">document</span>
+        <span class="n">scope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">scope</span> <span class="ow">in</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;frame&quot;</span><span class="p">]:</span>
+            <span class="n">scope</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">document</span>
+        <span class="k">return</span> <span class="n">scope</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">html</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -188,6 +191,8 @@
 <span class="sd">        Args:</span>
 <span class="sd">            visit_uri (str): The URL to navigate to.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">raise_server_error</span><span class="p">()</span>
 
         <span class="n">visit_uri</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">visit_uri</span><span class="p">)</span>
 
@@ -287,16 +292,12 @@
 <span class="sd">            locator (str | Element): The name/id of the frame or the frame&#39;s element.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">new_frame</span> <span class="o">=</span> <span class="n">locator</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">Element</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="n">new_frame</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">new_frame</span> <span class="o">=</span> <span class="n">locator</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">Element</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="n">new_frame</span><span class="p">)</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">yield</span>
-            <span class="k">finally</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="s2">&quot;parent&quot;</span><span class="p">)</span>
+            <span class="k">yield</span>
         <span class="k">finally</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="s2">&quot;parent&quot;</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -325,6 +326,36 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_opened_by</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">open_new_window</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Session.switch_to_frame"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.switch_to_frame">[docs]</a>    <span class="k">def</span> <span class="nf">switch_to_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Switch to the given frame.</span>
+
+<span class="sd">        If you use this method you are responsible for making sure you switch back to the parent</span>
+<span class="sd">        frame when done in the frame changed to. :meth:`frame` is preferred over this method and</span>
+<span class="sd">        should be used when possible. May not be supported by all drivers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            frame (Element | str): The iframe/frame element to switch to.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;frame&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">frame</span> <span class="o">==</span> <span class="s2">&quot;parent&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="s2">&quot;frame&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ScopeError</span><span class="p">(</span><span class="s2">&quot;`switch_to_frame(</span><span class="se">\&quot;</span><span class="s2">parent</span><span class="se">\&quot;</span><span class="s2">)` cannot be called &quot;</span>
+                                 <span class="s2">&quot;from inside a descendant frame&#39;s `scope` context.&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="s2">&quot;parent&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">frame</span> <span class="o">==</span> <span class="s2">&quot;top&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;frame&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="p">:</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s2">&quot;frame&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">scope</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="k">for</span> <span class="n">scope</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="p">[</span><span class="n">idx</span><span class="p">:]]):</span>
+                    <span class="k">raise</span> <span class="n">ScopeError</span><span class="p">(</span><span class="s2">&quot;`switch_to_frame(</span><span class="se">\&quot;</span><span class="s2">top</span><span class="se">\&quot;</span><span class="s2">)` cannot be called &quot;</span>
+                                     <span class="s2">&quot;from inside a descendant frame&#39;s `scope` context.&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="p">[:</span><span class="n">idx</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="s2">&quot;top&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Session.switch_to_window"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.switch_to_window">[docs]</a>    <span class="k">def</span> <span class="nf">switch_to_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -469,7 +500,7 @@
 <span class="sd">        Execute the wrapped code, accepting an alert.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            text (str, optional): Text to match against the text in the modal.</span>
+<span class="sd">            text (str | RegexObject, optional): Text to match against the text in the modal.</span>
 <span class="sd">            wait (int | float, optional): Maximum time to wait for the modal to appear after</span>
 <span class="sd">                executing the wrapped code.</span>
 
@@ -487,7 +518,7 @@
 <span class="sd">        Execute the wrapped code, accepting a confirm.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            text (str, optional): Text to match against the text in the modal.</span>
+<span class="sd">            text (str | RegexObject, optional): Text to match against the text in the modal.</span>
 <span class="sd">            wait (int | float, optional): Maximum time to wait for the modal to appear after</span>
 <span class="sd">                executing the wrapped code.</span>
 
@@ -504,7 +535,7 @@
 <span class="sd">        Execute the wrapped code, dismissing a confirm.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            text (str, optional): Text to match against the text in the modal.</span>
+<span class="sd">            text (str | RegexObject, optional): Text to match against the text in the modal.</span>
 <span class="sd">            wait (int | float, optional): Maximum time to wait for the modal to appear after</span>
 <span class="sd">                executing the wrapped code.</span>
 
@@ -521,7 +552,7 @@
 <span class="sd">        Execute the wrapped code, accepting a prompt, optionally responding to the prompt.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            text (str, optional): Text to match against the text in the modal.</span>
+<span class="sd">            text (str | RegexObject, optional): Text to match against the text in the modal.</span>
 <span class="sd">            response (str, optional): Response to provide to the prompt.</span>
 <span class="sd">            wait (int | float, optional): Maximum time to wait for the modal to appear after</span>
 <span class="sd">                executing the wrapped code.</span>
@@ -539,7 +570,7 @@
 <span class="sd">        Execute the wrapped code, dismissing a prompt.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            text (str, optional): Text to match against the text in the modal.</span>
+<span class="sd">            text (str | RegexObject, optional): Text to match against the text in the modal.</span>
 <span class="sd">            wait (int | float, optional): Maximum time to wait for the modal to appear after</span>
 <span class="sd">                executing the wrapped code.</span>
 
@@ -608,7 +639,19 @@
 <span class="sd">        teardown method.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">wait_for_pending_requests</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raise_server_error</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Session.raise_server_error"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.raise_server_error">[docs]</a>    <span class="k">def</span> <span class="nf">raise_server_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Raise errors encountered by the server. &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">capybara</span><span class="o">.</span><span class="n">raise_server_errors</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">error</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">reset_error</span><span class="p">()</span></div>
 
     <span class="n">cleanup</span> <span class="o">=</span> <span class="n">reset</span>
     <span class="sd">&quot;&quot;&quot; Alias for :meth:`reset`. &quot;&quot;&quot;</span>
@@ -619,6 +662,8 @@
     <span class="k">def</span> <span class="nf">_wrap_element_script_result</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_wrap_element_script_result</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">arg</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_element_script_result</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">Node</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
