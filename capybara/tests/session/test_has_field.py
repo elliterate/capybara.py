@@ -1,4 +1,5 @@
 import pytest
+import re
 
 
 class HasFieldTestCase:
@@ -15,6 +16,29 @@ class TestHasField(HasFieldTestCase):
 
     def test_is_false_if_the_field_is_not_on_the_page(self, session):
         assert not session.has_field("Monkey")
+
+    def test_is_true_if_a_field_with_the_given_value_is_on_the_page(self, session):
+        assert session.has_field("First Name", value="John")
+        assert session.has_field("First Name", value=re.compile(r"^Joh"))
+        assert session.has_field("Phone", value="+1 555 7021")
+        assert session.has_field("Street", value="Sesame street 66")
+        assert session.has_field("Description", value="Descriptive text goes here")
+
+    def test_is_false_if_a_field_with_the_given_value_is_not_on_the_page(self, session):
+        assert not session.has_field("First Name", value="Peter")
+        assert not session.has_field("First Name", value=re.compile(r"eter$"))
+        assert not session.has_field("Wrong Name", value="John")
+        assert not session.has_field("Description", value="Monkey")
+
+    def test_is_true_after_the_field_has_been_filled_in_with_the_given_value(self, session):
+        session.fill_in("First Name", value="Jonas")
+        assert session.has_field("First Name", value="Jonas")
+        assert session.has_field("First Name", value=re.compile(r"ona"))
+
+    def test_is_false_after_the_field_has_been_filled_in_with_a_different_value(self, session):
+        session.fill_in("First Name", value="Jonas")
+        assert not session.has_field("First Name", value="John")
+        assert not session.has_field("First Name", value=re.compile(r"John|Paul|George|Ringo"))
 
 
 class TestHasFieldDisabled(HasFieldTestCase):
@@ -49,3 +73,26 @@ class TestHasNoField:
 
     def test_is_true_if_the_field_is_not_on_the_page(self, session):
         assert session.has_no_field("Monkey")
+
+    def test_is_false_if_a_field_with_the_given_value_is_on_the_page(self, session):
+        assert not session.has_no_field("First Name", value="John")
+        assert not session.has_no_field("First Name", value=re.compile(r"^Joh"))
+        assert not session.has_no_field("Phone", value="+1 555 7021")
+        assert not session.has_no_field("Street", value="Sesame street 66")
+        assert not session.has_no_field("Description", value="Descriptive text goes here")
+
+    def test_is_true_if_a_field_with_the_given_value_is_not_on_the_page(self, session):
+        assert session.has_no_field("First Name", value="Peter")
+        assert session.has_no_field("First Name", value=re.compile(r"eter$"))
+        assert session.has_no_field("Wrong Name", value="John")
+        assert session.has_no_field("Description", value="Monkey")
+
+    def test_is_false_after_the_field_has_been_filled_in_with_the_given_value(self, session):
+        session.fill_in("First Name", value="Jonas")
+        assert not session.has_no_field("First Name", value="Jonas")
+        assert not session.has_no_field("First Name", value=re.compile(r"ona"))
+
+    def test_is_true_after_the_field_has_been_filled_in_with_a_different_value(self, session):
+        session.fill_in("First Name", value="Jonas")
+        assert session.has_no_field("First Name", value="John")
+        assert session.has_no_field("First Name", value=re.compile(r"John|Paul|George|Ringo"))
