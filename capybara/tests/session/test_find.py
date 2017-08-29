@@ -96,6 +96,9 @@ class TestFind(FindTestCase):
         with session.scope("xpath", "//div[@id='for_bar']"):
             assert session.find("css", "input:disabled").value == "James"
 
+    def test_supports_a_custom_filter(self, session):
+        assert session.find("css", "input", filter=lambda node: node.disabled)["name"] == "disabled_text"
+
 
 class TestFindMatch(FindTestCase):
     def test_defaults_to_capybara_match(self, session):

@@ -14,14 +14,8 @@ class AncestorQuery(SelectorQuery):
             match_result = super(type(self), self).resolve_for(
                 node.session.current_scope, exact=exact)
 
-            ancestor_result = node.find_all("xpath", to_xpath(x.ancestor()))
-
-            matching_ancestors = [
-                element
-                for element in ancestor_result
-                if element in match_result]
-
-            return Result(matching_ancestors, self)
+            return node.find_all(
+                "xpath", to_xpath(x.ancestor()), filter=lambda el: el in match_result)
 
         return resolve()
 

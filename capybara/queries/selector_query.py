@@ -26,6 +26,7 @@ class SelectorQuery(object):
             of times greater than zero.
         exact (bool, optional): Whether to exactly match the locator string. Defaults to
             :data:`capybara.exact`.
+        filter (Callable[[Element], bool], optional): A function for filtering results.
         match (str, optional): The matching strategy to use. Defaults to :data:`capybara.match`.
         maximum (int, optional): The maximum number of times the selector should match. Defaults to
             infinite.
@@ -39,8 +40,9 @@ class SelectorQuery(object):
         **filter_options: Arbitrary keyword arguments for the selector's filters.
     """
 
-    def __init__(self, selector, locator=None, between=None, count=None, exact=None, match=None,
-                 maximum=None, minimum=None, text=None, visible=None, wait=None, **filter_options):
+    def __init__(self, selector, locator=None, between=None, count=None, exact=None, filter=None,
+                 match=None, maximum=None, minimum=None, text=None, visible=None, wait=None,
+                 **filter_options):
         if locator is None and selector not in selectors:
             locator = selector
             selector = capybara.default_selector
@@ -52,6 +54,7 @@ class SelectorQuery(object):
             "between": between,
             "count": count,
             "exact": exact,
+            "filter": filter,
             "match": match,
             "maximum": maximum,
             "minimum": minimum,
@@ -230,6 +233,10 @@ class SelectorQuery(object):
             elif query_filter.has_default:
                 if not query_filter.matches(node, query_filter.default):
                     return False
+
+        if self.options["filter"] and not self.options["filter"](node):
+            return False
+
         return True
 
     @property

@@ -14,15 +14,9 @@ class SiblingQuery(SelectorQuery):
             match_result = super(type(self), self).resolve_for(
                 node.session.current_scope, exact=exact)
 
-            sibling_result = node.find_all(
-                "xpath", to_xpath(x.preceding_sibling().union(x.following_sibling())))
-
-            matching_siblings = [
-                element
-                for element in sibling_result
-                if element in match_result]
-
-            return Result(matching_siblings, self)
+            return node.find_all(
+                "xpath", to_xpath(x.preceding_sibling().union(x.following_sibling())),
+                filter=lambda el: el in match_result)
 
         return resolve()
 
