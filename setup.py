@@ -68,7 +68,7 @@ setup(
         "Topic :: Software Development :: Quality Assurance",
         "Topic :: Software Development :: Testing"],
     packages=find_packages(exclude=["tests", "tests.*"]),
-    install_requires=["lxml", "xpath-py ~= 0.1.0"],
+    install_requires=["lxml", "xpath-py ~= 0.1.1"],
     setup_requires=["pytest-runner"],
     tests_require=tests_require,
     extras_require={

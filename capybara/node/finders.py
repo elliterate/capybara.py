@@ -3,6 +3,7 @@ from capybara.exceptions import Ambiguous, ElementNotFound, ExpectationNotMet
 from capybara.helpers import matches_count
 from capybara.queries.ancestor_query import AncestorQuery
 from capybara.queries.selector_query import SelectorQuery
+from capybara.queries.sibling_query import SiblingQuery
 
 
 class FindersMixin(object):
@@ -62,6 +63,31 @@ class FindersMixin(object):
         """
 
         return self._synchronized_resolve(AncestorQuery(*args, **kwargs))
+
+    def sibling(self, *args, **kwargs):
+        """
+        Find an :class:`Element` based on the given arguments that is also a sibling of the
+        element called on. ``sibling`` will raise an error if the element is not found.
+
+        ``sibling`` takes the same options as :meth:`find`. ::
+
+            element.sibling("#foo").find(".bar")
+            element.sibling("xpath", "//div[contains(., 'bar')]")
+            element.sibling("li", text="Quox").click_link("Delete")
+
+        Args:
+            *args: Variable length argument list for :class:`SiblingQuery`.
+            **kwargs: Arbitrary keyword arguments for :class:`SiblingQuery`.
+
+        Returns:
+            Element: The found element.
+
+        Raises:
+            Ambiguous: If more than one element matching element is found.
+            ElementNotFound: If the element can't be found before time expires.
+        """
+
+        return self._synchronized_resolve(SiblingQuery(*args, **kwargs))
 
     def find_button(self, locator, **kwargs):
         """
