@@ -161,6 +161,20 @@ with add_selector("fillable_field") as s:
 
     s.filter_set("field")
 
+    @s.filter("value")
+    def value(node, value):
+        if isregex(value):
+            return bool(value.search(node.value))
+        else:
+            return node.value == value
+
+    @s.describe
+    def describe(options):
+        description = ""
+        if options.get("value"):
+            description += " with value {}".format(desc(options["value"]))
+        return description
+
 with add_selector("frame") as s:
     @s.xpath
     def xpath(locator):

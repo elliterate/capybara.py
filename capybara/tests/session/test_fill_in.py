@@ -59,6 +59,11 @@ class TestFillIn:
         session.click_button("awesome")
         assert extract_results(session)["form[password]"] == "supasikrit"
 
+    def test_fills_in_a_field_based_on_current_value(self, session):
+        session.fill_in(current_value="John", value="Thomas")
+        session.click_button("awesome")
+        assert extract_results(session)["form[first_name]"] == "Thomas"
+
     def test_handles_html_in_a_textarea(self, session):
         session.fill_in("form_description", value="is <strong>very</strong> secret!")
         session.click_button("awesome")
