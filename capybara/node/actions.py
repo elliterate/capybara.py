@@ -12,7 +12,7 @@ class ActionsMixin(object):
     :data:`capybara.default_max_wait_time`.
     """
 
-    def attach_file(self, locator, path, **kwargs):
+    def attach_file(self, locator_or_path, path=None, **kwargs):
         """
         Find a file field on the page and attach a file given its path. The file field can be found
         via its name, id, or label text. ::
@@ -20,20 +20,27 @@ class ActionsMixin(object):
             page.attach_file(locator, "/path/to/file.png")
 
         Args:
-            locator (str): Which field to attach the file to.
-            path (str): The path of the file that will be attached.
+            locator_or_path (str): Which field to attach the file to, or the path of the file that
+                will be attached.
+            path (str, optional): The path of the file that will be attached. Defaults to
+                ``locator_or_path``.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
 
         Raises:
             FileNotFound: No file exists at the given path.
         """
 
+        if path is None:
+            locator, path = None, locator_or_path
+        else:
+            locator = locator_or_path
+
         if not os.path.isfile(path):
             raise FileNotFound("cannot attach file, {0} does not exist".format(path))
 
         self.find("file_field", locator, **kwargs).set(path)
 
-    def check(self, locator, allow_label_click=None, **kwargs):
+    def check(self, locator=None, allow_label_click=None, **kwargs):
         """
         Find a check box and mark it as checked. The check box can be found via name, id, or label
         text. ::
@@ -41,7 +48,7 @@ class ActionsMixin(object):
             page.check("German")
 
         Args:
-            locator (str): Which check box to check.
+            locator (str, optional): Which check box to check.
             allow_label_click (bool, optional): Attempt to click the label to toggle state if
                 element is non-visible. Defaults to :data:`capybara.automatic_label_click`.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
@@ -65,7 +72,7 @@ class ActionsMixin(object):
             except Exception:
                 raise e
 
-    def choose(self, locator, allow_label_click=None, **kwargs):
+    def choose(self, locator=None, allow_label_click=None, **kwargs):
         """
         Find a radio button and mark it as checked. The radio button can be found via name, id, or
         label text. ::
@@ -73,7 +80,7 @@ class ActionsMixin(object):
             page.choose("Male")
 
         Args:
-            locator (str): Which radio button to choose.
+            locator (str, optional): Which radio button to choose.
             allow_label_click (bool, optional): Attempt to click the label to toggle state if
                 element is non-visible. Defaults to :data:`capybara.automatic_label_click`.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
@@ -97,7 +104,7 @@ class ActionsMixin(object):
             except Exception:
                 raise e
 
-    def click_button(self, locator, **kwargs):
+    def click_button(self, locator=None, **kwargs):
         """
         Finds a button on the page and clicks it. This can be any ``<input>`` element of type
         submit, reset, image, or button, or it can be any ``<button>`` element. All buttons can be
@@ -105,31 +112,31 @@ class ActionsMixin(object):
         content, and image ``<input>`` elements by their alt attribute.
 
         Args:
-            locator (str): Which button to find.
+            locator (str, optional): Which button to find.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
         """
 
         return self.find("button", locator, **kwargs).click()
 
-    def click_link(self, locator, **kwargs):
+    def click_link(self, locator=None, **kwargs):
         """
         Finds a link by id, text, or title and clicks it. Also looks at image alt text inside the
         link.
 
         Args:
-            locator (str): Text, id, title, or nested image's alt attribute.
+            locator (str, optional): Text, id, title, or nested image's alt attribute.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
         """
 
         return self.find("link", locator, **kwargs).click()
 
-    def click_link_or_button(self, locator, **kwargs):
+    def click_link_or_button(self, locator=None, **kwargs):
         """
         Finds a button or link by id, text or value and clicks it. Also looks at image alt text
         inside the link.
 
         Args:
-            locator (str): Text, id, or value of link or button.
+            locator (str, optional): Text, id, or value of link or button.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
         """
 
@@ -138,7 +145,7 @@ class ActionsMixin(object):
     click_on = click_link_or_button
     """ Alias for :meth:`click_link_or_button`. """
 
-    def fill_in(self, locator, value=None, **kwargs):
+    def fill_in(self, locator=None, value=None, **kwargs):
         """
         Locate a text field or text area and fill it in with the given text. The field can be found
         via its name, id, or label text. ::
@@ -146,14 +153,14 @@ class ActionsMixin(object):
             page.fill_in("Name", value="Bob")
 
         Args:
-            locator (str): Which field to fill in.
+            locator (str, optional): Which field to fill in.
             value (str, optional): The value to fill in. Defaults to None.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
         """
 
         self.find("fillable_field", locator, **kwargs).set(value)
 
-    def select(self, value, field=None, **kwargs):
+    def select(self, value=None, field=None, **kwargs):
         """
         If the ``field`` argument is present, ``select`` finds a select box on the page and selects
         a particular option from it. Otherwise it finds an option inside the current scope and
@@ -164,7 +171,7 @@ class ActionsMixin(object):
             page.select("March", field="Month")
 
         Args:
-            value (str): Which option to select.
+            value (str, optional): Which option to select.
             field (str, optional): The id, name, or label of the select box.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
         """
@@ -174,14 +181,14 @@ class ActionsMixin(object):
         else:
             self.find("option", value, **kwargs).select_option()
 
-    def uncheck(self, locator, allow_label_click=None, **kwargs):
+    def uncheck(self, locator=None, allow_label_click=None, **kwargs):
         """
         Find a check box and uncheck it. The check box can be found via name, id, or label text. ::
 
             page.uncheck("German")
 
         Args:
-            locator (str): Which check box to uncheck.
+            locator (str, optional): Which check box to uncheck.
             allow_label_click (bool, optional): Attempt to click the label to toggle state if
                 element is non-visible. Defaults to :data:`capybara.automatic_label_click`.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
@@ -205,7 +212,7 @@ class ActionsMixin(object):
             except Exception:
                 raise e
 
-    def unselect(self, value, field=None, **kwargs):
+    def unselect(self, value=None, field=None, **kwargs):
         """
         Find a select box on the page and unselect a particular option from it. If the select box is
         a multiple select, ``unselect`` can be called multiple times to unselect more than one
@@ -214,7 +221,7 @@ class ActionsMixin(object):
             page.unselect("March", field="Month")
 
         Args:
-            value (str): Which option to unselect.
+            value (str, optional): Which option to unselect.
             field (str, optional): The id, name, or label of the select box.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
         """

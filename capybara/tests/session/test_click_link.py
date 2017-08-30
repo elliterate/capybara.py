@@ -94,3 +94,7 @@ class TestClickLink:
     def test_raises_an_error_for_partial_match_when_exact_is_true(self, session):
         with pytest.raises(ElementNotFound):
             session.click_link("abo", exact=True)
+
+    def test_uses_options_without_locator(self, session):
+        session.click_link(href="/foo")
+        assert session.has_content("Another World")

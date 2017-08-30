@@ -64,22 +64,23 @@ with add_selector("button") as s:
         button_expr = x.descendant("button")
         image_button_expr = x.descendant("input")[x.attr("type").equals("image")]
 
-        attr_matchers = (
-            x.attr("id").equals(locator) |
-            x.attr("value").is_(locator) |
-            x.attr("title").is_(locator))
-        image_attr_matchers = x.attr("alt").is_(locator)
+        if locator:
+            attr_matchers = (
+                x.attr("id").equals(locator) |
+                x.attr("value").is_(locator) |
+                x.attr("title").is_(locator))
+            image_attr_matchers = x.attr("alt").is_(locator)
 
-        if capybara.enable_aria_label:
-            attr_matchers |= x.attr("aria-label").is_(locator)
-            image_attr_matchers |= x.attr("aria-label").is_(locator)
+            if capybara.enable_aria_label:
+                attr_matchers |= x.attr("aria-label").is_(locator)
+                image_attr_matchers |= x.attr("aria-label").is_(locator)
 
-        input_button_expr = input_button_expr[attr_matchers]
-        button_expr = button_expr[
-            attr_matchers |
-            x.string.n.is_(locator) |
-            x.descendant("img")[x.attr("alt").is_(locator)]]
-        image_button_expr = image_button_expr[image_attr_matchers]
+            input_button_expr = input_button_expr[attr_matchers]
+            button_expr = button_expr[
+                attr_matchers |
+                x.string.n.is_(locator) |
+                x.descendant("img")[x.attr("alt").is_(locator)]]
+            image_button_expr = image_button_expr[image_attr_matchers]
 
         return input_button_expr + button_expr + image_button_expr
 
@@ -131,9 +132,10 @@ with add_selector("fieldset") as s:
     @s.xpath
     def xpath(locator):
         expr = x.descendant("fieldset")
-        expr = expr[
-            x.attr("id").equals(locator) |
-            x.child("legend")[x.string.n.is_(locator)]]
+        if locator:
+            expr = expr[
+                x.attr("id").equals(locator) |
+                x.child("legend")[x.string.n.is_(locator)]]
         return expr
 
 with add_selector("file_field") as s:
@@ -163,7 +165,8 @@ with add_selector("frame") as s:
     @s.xpath
     def xpath(locator):
         expr = x.descendant("frame") + x.descendant("iframe")
-        expr = expr[x.attr("id").equals(locator) | x.attr("name").equals(locator)]
+        if locator:
+            expr = expr[x.attr("id").equals(locator) | x.attr("name").equals(locator)]
         return expr
 
 with add_selector("label") as s:
@@ -198,17 +201,18 @@ with add_selector("link") as s:
     def xpath(locator):
         expr = x.descendant("a")[x.attr("href")]
 
-        attr_matchers = (
-            x.attr("id").equals(locator) |
-            x.attr("title").is_(locator) |
-            x.string.n.is_(locator))
+        if locator:
+            attr_matchers = (
+                x.attr("id").equals(locator) |
+                x.attr("title").is_(locator) |
+                x.string.n.is_(locator))
 
-        if capybara.enable_aria_label:
-            attr_matchers |= x.attr("aria-label").is_(locator)
+            if capybara.enable_aria_label:
+                attr_matchers |= x.attr("aria-label").is_(locator)
 
-        expr = expr[
-            attr_matchers |
-            x.descendant("img")[x.attr("alt").is_(locator)]]
+            expr = expr[
+                attr_matchers |
+                x.descendant("img")[x.attr("alt").is_(locator)]]
 
         return expr
 
@@ -253,7 +257,8 @@ with add_selector("option") as s:
     @s.xpath
     def xpath(locator):
         expr = x.descendant("option")
-        expr = expr[x.string.n.is_(locator)]
+        if locator:
+            expr = expr[x.string.n.is_(locator)]
         return expr
 
 with add_selector("radio_button") as s:
@@ -334,23 +339,27 @@ with add_selector("table") as s:
     @s.xpath
     def xpath(locator):
         expr = x.descendant("table")
-        expr = expr[
-            x.attr("id").equals(locator) |
-            x.descendant("caption").is_(locator)]
+        if locator:
+            expr = expr[
+                x.attr("id").equals(locator) |
+                x.descendant("caption").is_(locator)]
         return expr
 
 
 def _locate_field(field_expr, locator):
-    attr_matchers = (
-        x.attr("id").equals(locator) |
-        x.attr("name").equals(locator) |
-        x.attr("placeholder").equals(locator) |
-        x.attr("id").equals(x.anywhere("label")[x.string.n.is_(locator)].attr("for")))
+    expr = field_expr
 
-    if capybara.enable_aria_label:
-        attr_matchers |= x.attr("aria-label").is_(locator)
+    if locator:
+        attr_matchers = (
+            x.attr("id").equals(locator) |
+            x.attr("name").equals(locator) |
+            x.attr("placeholder").equals(locator) |
+            x.attr("id").equals(x.anywhere("label")[x.string.n.is_(locator)].attr("for")))
 
-    expr = field_expr[attr_matchers]
-    expr += x.descendant("label")[x.string.n.is_(locator)].descendant(field_expr)
+        if capybara.enable_aria_label:
+            attr_matchers |= x.attr("aria-label").is_(locator)
+
+        expr = expr[attr_matchers]
+        expr += x.descendant("label")[x.string.n.is_(locator)].descendant(field_expr)
 
     return expr

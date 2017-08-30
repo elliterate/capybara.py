@@ -89,7 +89,7 @@ class FindersMixin(object):
 
         return self._synchronized_resolve(SiblingQuery(*args, **kwargs))
 
-    def find_button(self, locator, **kwargs):
+    def find_button(self, locator=None, **kwargs):
         """
         Find a button on the page. This can be any ``<input>`` element of type submit, reset, image,
         or button, or it can be a ``<button>`` element. All buttons can be found by their id, value,
@@ -97,7 +97,7 @@ class FindersMixin(object):
         ``<input>`` elements by their alt attribute.
 
         Args:
-            locator (str): The id, value, title, text content, alt of image.
+            locator (str, optional): The id, value, title, text content, alt of image.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
 
         Returns:
@@ -120,12 +120,12 @@ class FindersMixin(object):
 
         return self.find("id", id, **kwargs)
 
-    def find_field(self, locator, **kwargs):
+    def find_field(self, locator=None, **kwargs):
         """
         Find a form field on the page. The field can be found by its name, id, or label text.
 
         Args:
-            locator (str): Name, id, placeholder, or text of associated label element.
+            locator (str, optional): Name, id, placeholder, or text of associated label element.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
 
         Returns:
@@ -134,12 +134,12 @@ class FindersMixin(object):
 
         return self.find("field", locator, **kwargs)
 
-    def find_link(self, locator, **kwargs):
+    def find_link(self, locator=None, **kwargs):
         """
         Find a link on the page. The link can be found by its id or text.
 
         Args:
-            locator (str): ID, title, text, or alt of enclosed img element.
+            locator (str, optional): ID, title, text, or alt of enclosed img element.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
 
         Returns:

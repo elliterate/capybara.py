@@ -33,3 +33,6 @@ class TestFindLink:
         capybara.enable_aria_label = False
         with pytest.raises(ElementNotFound):
             session.find_link("Go to simple")
+
+    def test_uses_options_without_locator(self, session):
+        assert session.find_link(href="#anchor").text == "Normal Anchor"

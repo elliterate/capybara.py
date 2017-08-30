@@ -32,6 +32,9 @@ class TestFindButton(FindButtonTestCase):
         with pytest.raises(ElementNotFound):
             session.find_button("Mediocre Button")
 
+    def test_uses_options_without_locator(self, session):
+        assert session.find_button(disabled=True).value == "Disabled button"
+
 
 class TestFindButtonDisabled(FindButtonTestCase):
     def test_does_not_find_disabled_buttons_when_false(self, session):

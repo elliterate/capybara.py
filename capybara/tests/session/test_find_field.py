@@ -46,6 +46,9 @@ class TestFindField(FindFieldTestCase):
         with pytest.raises(ElementNotFound):
             session.find_field("Unlabelled Input")
 
+    def test_uses_options_without_locator(self, session):
+        assert session.find_field(value="dog")["id"] == "form_pets_dog"
+
     def test_accepts_an_optional_filter(self, session):
         assert session.find_field("form[pets][]", filter=lambda node: node.value == "dog")["id"] == "form_pets_dog"
 
