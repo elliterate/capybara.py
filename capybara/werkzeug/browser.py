@@ -36,10 +36,10 @@ class Browser(object):
     def follow(self, method, path, params=None):
         if path.startswith("#") or path.lower().startswith("javascript:"):
             return
-        self._process_and_follow_redirects(method, path, params)
+        self._process_and_follow_redirects(method, path, params, {"Referer": self.current_url})
 
     def submit(self, method, path, params):
-        self._process_and_follow_redirects(method, path, params)
+        self._process_and_follow_redirects(method, path, params, {"Referer": self.current_url})
 
     @property
     def html(self):
@@ -55,9 +55,7 @@ class Browser(object):
         self._process(method, path, params, headers)
         for _ in range(self.driver.redirect_limit):
             if 300 <= self.last_response.status_code < 400:
-                headers = headers.copy() if headers else {}
                 path = self.last_response.headers["Location"]
-                headers["Referer"] = self.last_request.url
                 self._process("GET", path, params, headers)
 
     def _process(self, method, path, params=None, headers=None):

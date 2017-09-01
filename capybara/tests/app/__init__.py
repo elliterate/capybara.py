@@ -36,8 +36,8 @@ def redirect_again():
     return flask.redirect("/landed")
 
 
-@app.route("/referer_base")
-def referer_base():
+@app.route("/referrer_base")
+def referrer_base():
     return """
     <a href="/get_referrer">direct link</a>
     <a href="/redirect_to_get_referrer">link via redirect</a>
@@ -52,7 +52,7 @@ def redirect_to_get_referrer():
 
 @app.route("/get_referrer")
 def get_referrer():
-    return "No referer" if request.referrer is None else "Got referer: {0}".format(request.referrer)
+    return "No referrer" if request.referrer is None else "Got referrer: {0}".format(request.referrer)
 
 
 @app.route("/host")
