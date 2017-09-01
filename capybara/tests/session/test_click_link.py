@@ -92,6 +92,10 @@ class TestClickLink:
         assert session.has_css("#referrer", text=re.compile(r"/with_html$"))
         assert session.has_text("This is a test")
 
+    def test_adds_query_string_to_current_url_with_naked_query_string(self, session):
+        session.click_link("Naked Query String")
+        assert session.has_text("Query String sent")
+
     def test_does_nothing_on_anchor_links(self, session):
         session.fill_in("test_field", value="blah")
         session.click_link("Normal Anchor")
