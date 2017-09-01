@@ -10,13 +10,14 @@ class TitleQuery(object):
 
     Args:
         expected_title (str | RegexObject): The desired title.
+        exact (bool, optional): Whether the text should match exactly. Defaults to False.
     """
 
-    def __init__(self, expected_title):
+    def __init__(self, expected_title, exact=False):
         self.expected_title = (expected_title if isregex(expected_title)
                                else normalize_text(expected_title))
         self.actual_title = None
-        self.search_regexp = toregex(expected_title)
+        self.search_regexp = toregex(expected_title, exact=exact)
 
     def resolves_for(self, node):
         """

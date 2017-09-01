@@ -1,11 +1,13 @@
+import re
 from xpath.expression import AbstractExpression
 from xpath.renderer import to_xpath
 
 import capybara
-from capybara.compat import str_
+from capybara.compat import bytes_, str_
 from capybara.helpers import desc, normalize_text, toregex
 from capybara.result import Result
 from capybara.selector import selectors
+from capybara.utils import isregex
 
 
 VALID_MATCH = ["first", "one", "prefer_exact", "smart"]
@@ -26,6 +28,8 @@ class SelectorQuery(object):
             of times greater than zero.
         exact (bool, optional): Whether to exactly match the locator string. Defaults to
             :data:`capybara.exact`.
+        exact_text (bool | str, optional): Whether to exactly match the text, or the exact text to
+            match. Defaults to False.
         filter (Callable[[Element], bool], optional): A function for filtering results.
         match (str, optional): The matching strategy to use. Defaults to :data:`capybara.match`.
         maximum (int, optional): The maximum number of times the selector should match. Defaults to
@@ -40,9 +44,9 @@ class SelectorQuery(object):
         **filter_options: Arbitrary keyword arguments for the selector's filters.
     """
 
-    def __init__(self, selector, locator=None, between=None, count=None, exact=None, filter=None,
-                 match=None, maximum=None, minimum=None, text=None, visible=None, wait=None,
-                 **filter_options):
+    def __init__(self, selector, locator=None, between=None, count=None, exact=None,
+                 exact_text=None, filter=None, match=None, maximum=None, minimum=None, text=None,
+                 visible=None, wait=None, **filter_options):
         if locator is None and selector not in selectors:
             locator = selector
             selector = capybara.default_selector
@@ -54,6 +58,7 @@ class SelectorQuery(object):
             "between": between,
             "count": count,
             "exact": exact,
+            "exact_text": exact_text,
             "filter": filter,
             "match": match,
             "maximum": maximum,
@@ -108,6 +113,10 @@ class SelectorQuery(object):
             return self.options["exact"]
         else:
             return capybara.exact
+
+    @property
+    def exact_text(self):
+        return self.options["exact_text"]
 
     @property
     def match(self):
@@ -212,7 +221,22 @@ class SelectorQuery(object):
         visible = self.visible
 
         if self.options["text"]:
-            regex = toregex(self.options["text"])
+            if isregex(self.options["text"]):
+                regex = self.options["text"]
+            elif self.exact_text is True:
+                regex = re.compile(r"\A{}\Z".format(re.escape(self.options["text"])))
+            else:
+                regex = toregex(self.options["text"])
+
+            text = normalize_text(
+                node.all_text if visible == "all" else node.visible_text)
+
+            if not regex.search(text):
+                return False
+
+        if isinstance(self.exact_text, (bytes_, str_)):
+            regex = re.compile(r"\A{}\Z".format(re.escape(self.exact_text)))
+
             text = normalize_text(
                 node.all_text if visible == "all" else node.visible_text)
 

@@ -3,12 +3,13 @@ from capybara.queries.title_query import TitleQuery
 
 
 class DocumentMatchersMixin(object):
-    def assert_title(self, title):
+    def assert_title(self, title, **kwargs):
         """
         Asserts that the page has the given title.
 
         Args:
             title (str | RegexObject): The string or regex that the title should match.
+            **kwargs: Arbitrary keyword arguments for :class:`TitleQuery`.
 
         Returns:
             True
@@ -17,7 +18,7 @@ class DocumentMatchersMixin(object):
             ExpectationNotMet: If the assertion hasn't succeeded during the wait time.
         """
 
-        query = TitleQuery(title)
+        query = TitleQuery(title, **kwargs)
 
         @self.synchronize
         def assert_title():
@@ -28,12 +29,13 @@ class DocumentMatchersMixin(object):
 
         return assert_title()
 
-    def assert_no_title(self, title):
+    def assert_no_title(self, title, **kwargs):
         """
         Asserts that the page doesn't have the given title.
 
         Args:
             title (str | RegexObject): The string that the title should include.
+            **kwargs: Arbitrary keyword arguments for :class:`TitleQuery`.
 
         Returns:
             True
@@ -42,7 +44,7 @@ class DocumentMatchersMixin(object):
             ExpectationNotMet: If the assertion hasn't succeeded during the wait time.
         """
 
-        query = TitleQuery(title)
+        query = TitleQuery(title, **kwargs)
 
         @self.synchronize
         def assert_no_title():
@@ -53,36 +55,38 @@ class DocumentMatchersMixin(object):
 
         return assert_no_title()
 
-    def has_title(self, title):
+    def has_title(self, title, **kwargs):
         """
         Checks if the page has the given title.
 
         Args:
             title (str | RegexObject): The string or regex that the title should match.
+            **kwargs: Arbitrary keyword arguments for :class:`TitleQuery`.
 
         Returns:
             bool: Whether it matches.
         """
 
         try:
-            self.assert_title(title)
+            self.assert_title(title, **kwargs)
             return True
         except ExpectationNotMet:
             return False
 
-    def has_no_title(self, title):
+    def has_no_title(self, title, **kwargs):
         """
         Checks if the page doesn't have the given title.
 
         Args:
             title (str | RegexObject): The string that the title should include.
+            **kwargs: Arbitrary keyword arguments for :class:`TitleQuery`.
 
         Returns:
             bool: Whether it doesn't match.
         """
 
         try:
-            self.assert_no_title(title)
+            self.assert_no_title(title, **kwargs)
             return True
         except ExpectationNotMet:
             return False

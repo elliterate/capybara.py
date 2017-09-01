@@ -59,6 +59,18 @@ class TestHasSelector:
         assert session.has_selector("//p//a", text=re.compile("re[dab]i", re.IGNORECASE), count=1)
         assert not session.has_selector("//p//a", text=re.compile("Red$"))
 
+    def test_only_matches_elements_that_match_exact_text_exactly(self, session):
+        assert session.has_selector("id", "h2one", exact_text="Header Class Test One")
+        assert not session.has_selector("id", "h2one", exact_text="Header Class Test")
+
+    def test_only_matches_elements_that_match_exactly_when_exact_text_true(self, session):
+        assert session.has_selector("id", "h2one", text="Header Class Test One", exact_text=True)
+        assert not session.has_selector("id", "h2one", text="Header Class Test", exact_text=True)
+
+    def test_matches_substrings_when_exact_text_false(self, session):
+        assert session.has_selector("id", "h2one", text="Header Class Test One", exact_text=False)
+        assert session.has_selector("id", "h2one", text="Header Class Test", exact_text=False)
+
 
 class TestHasNoSelector:
     @pytest.fixture(autouse=True)
@@ -106,3 +118,17 @@ class TestHasNoSelector:
     def test_discards_all_matches_where_the_given_regex_is_matched(self, session):
         assert not session.has_no_selector("//p//a", text=re.compile(r"re[dab]i", re.IGNORECASE), count=1)
         assert session.has_no_selector("//p//a", text=re.compile(r"Red$"))
+
+    def test_only_matches_elements_that_do_not_match_exact_text_exactly(self, session):
+        assert not session.has_no_selector("id", "h2one", exact_text="Header Class Test One")
+        assert session.has_no_selector("id", "h2one", exact_text="Header Class Test")
+
+    def test_only_matches_elements_that_do_not_match_exactly_when_exact_text_true(self, session):
+        assert not session.has_no_selector("id", "h2one", text="Header Class Test One",
+                                           exact_text=True)
+        assert session.has_no_selector("id", "h2one", text="Header Class Test", exact_text=True)
+
+    def test_does_not_match_substrings_when_exact_text_false(self, session):
+        assert not session.has_no_selector("id", "h2one", text="Header Class Test One",
+                                           exact_text=False)
+        assert not session.has_no_selector("id", "h2one", text="Header Class Test", exact_text=False)

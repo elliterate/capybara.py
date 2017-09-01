@@ -159,16 +159,24 @@ def normalize_whitespace(text):
     return re.sub(r"\s+", " ", text, flags=re.UNICODE).strip()
 
 
-def toregex(text):
+def toregex(text, exact=False):
     """
     Returns a compiled regular expression for the given text.
 
     Args:
         text (str | RegexObject): The text to match.
+        exact (bool, optional): Whether the generated regular expression should match exact
+            strings. Defaults to False.
 
     Returns:
         RegexObject: A compiled regular expression that will match the text.
     """
 
-    return (text if isregex(text)
-            else re.compile(re.escape(normalize_text(text))))
+    if isregex(text):
+        return text
+
+    escaped = re.escape(normalize_text(text))
+    if exact:
+        escaped = r"\A{}\Z".format(escaped)
+
+    return re.compile(escaped)

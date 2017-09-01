@@ -82,6 +82,14 @@ class TestHasText:
         session.visit("/with_html")
         assert not session.has_text(re.compile(r"xxxxyzzz"))
 
+    def test_is_true_if_text_matches_exact_text_exactly(self, session):
+        session.visit("/with_html")
+        assert session.find("id", "h2one").has_text("Header Class Test One", exact_text=True)
+
+    def test_is_false_if_text_does_not_match_exact_text_exactly(self, session):
+        session.visit("/with_html")
+        assert not session.find("id", "h2one").has_text("Header Class Test On", exact_text=True)
+
     def test_escapes_any_characters_that_would_have_special_meaning_in_a_regex(self, session):
         session.visit("/with_html")
         assert not session.has_text(".orem")

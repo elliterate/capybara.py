@@ -20,6 +20,7 @@ class TextQuery(object):
         between (Iterable[int], optional): A range of acceptable counts.
         count (int, optional): The number of times the text should match. Defaults to any number of
             times greater than zero.
+        exact_text (bool, optional): Whether to match the text exactly. Defaults to False.
         maximum (int, optional): The maximum number of times the selector should match. Defaults to
             infinite.
         minimum (int, optional): The minimum number of times the selector should match. Defaults to
@@ -28,8 +29,8 @@ class TextQuery(object):
             Defaults to :data:`capybara.default_max_wait_time`.
     """
 
-    def __init__(self, query_type, expected_text=None, between=None, count=None, maximum=None,
-                 minimum=None, wait=None):
+    def __init__(self, query_type, expected_text=None, between=None, count=None, exact_text=False,
+                 maximum=None, minimum=None, wait=None):
         if expected_text is None:
             expected_text = query_type
             query_type = None
@@ -46,10 +47,11 @@ class TextQuery(object):
         self.expected_text = (expected_text if isregex(expected_text)
                               else normalize_text(expected_text))
         self.query_type = query_type
-        self.search_regexp = toregex(expected_text)
+        self.search_regexp = toregex(expected_text, exact=exact_text)
         self.options = {
             "between": between,
             "count": count,
+            "exact_text": exact_text,
             "maximum": maximum,
             "minimum": minimum,
             "wait": wait}
@@ -87,6 +89,8 @@ class TextQuery(object):
     def description(self):
         if isregex(self.expected_text):
             return "text matching {}".format(desc(self.expected_text))
+        elif self.options["exact_text"]:
+            return "exact text {}".format(desc(self.expected_text))
         else:
             return "text {}".format(desc(self.expected_text))
 
