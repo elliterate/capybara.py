@@ -87,6 +87,11 @@ class TestClickLink:
         session.click_link("Blank JS Anchor")
         assert session.find_field("test_field").value == "blah"
 
+    def test_does_nothing_on_url_and_anchor_links_for_the_same_page(self, session):
+        session.fill_in("test_field", value="blah")
+        session.click_link("Anchor on same page")
+        assert session.find_field("test_field").value == "blah"
+
     def test_follows_link_on_url_and_anchor_links_for_a_different_page(self, session):
         session.click_link("Anchor on different page")
         assert session.has_text("Bar")

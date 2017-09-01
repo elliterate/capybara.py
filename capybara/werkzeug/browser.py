@@ -1,3 +1,4 @@
+import re
 from werkzeug.test import Client, create_environ
 from werkzeug.wrappers import BaseResponse, Request
 
@@ -34,8 +35,14 @@ class Browser(object):
         self._process_and_follow_redirects("GET", path)
 
     def follow(self, method, path, params=None):
-        if path.startswith("#") or path.lower().startswith("javascript:"):
+        if (
+            # 1. Anchor on the current page
+            re.sub(r"^{}".format(re.escape(self._request_path)), "", path).startswith("#") or
+            # 2. Inline JavaScript
+            path.lower().startswith("javascript:")
+        ):
             return
+
         self._process_and_follow_redirects(method, path, params, {"Referer": self.current_url})
 
     def submit(self, method, path, params):
@@ -50,6 +57,10 @@ class Browser(object):
         if self._dom is None:
             self._dom = HTML(self.html)
         return self._dom
+
+    @property
+    def _request_path(self):
+        return self.last_request.path if self.last_request else "/"
 
     def _process_and_follow_redirects(self, method, path, params=None, headers=None):
         self._process(method, path, params, headers)
