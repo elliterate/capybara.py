@@ -1,4 +1,5 @@
 import pytest
+import re
 
 from capybara.exceptions import ElementNotFound
 from capybara.tests.helpers import extract_results
@@ -121,6 +122,11 @@ class TestClickButton(ClickButtonTestCase):
     def test_does_not_send_image_buttons_that_were_not_clicked(self, session):
         session.click_button("awesome")
         assert extract_results(session).get("form[okay]") is None
+
+    def test_follows_redirects(self, session):
+        session.click_button("Go FAR")
+        assert session.has_text("You landed")
+        assert re.compile(r"/landed$").search(session.current_url)
 
     def test_raises_an_error_for_disabled_buttons(self, session):
         with pytest.raises(ElementNotFound):

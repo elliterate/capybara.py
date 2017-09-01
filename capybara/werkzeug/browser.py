@@ -58,7 +58,7 @@ class Browser(object):
                 headers = headers.copy() if headers else {}
                 path = self.last_response.headers["Location"]
                 headers["Referer"] = self.last_request.url
-                self._process(method, path, params, headers)
+                self._process("GET", path, params, headers)
 
     def _process(self, method, path, params=None, headers=None):
         self._dom = None

@@ -74,6 +74,10 @@ class TestClickLink:
         with pytest.raises(ElementNotFound):
             session.click_link("labore", href=re.compile(r".+d+"))
 
+    def test_follows_redirects(self, session):
+        session.click_link("Redirect")
+        assert session.has_text("You landed")
+
     def test_does_nothing_on_anchor_links(self, session):
         session.fill_in("test_field", value="blah")
         session.click_link("Normal Anchor")
