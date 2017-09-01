@@ -77,7 +77,7 @@ class Browser(object):
             path=requested_uri.path,
             params=requested_uri.params,
             query=requested_uri.query,
-            fragment=requested_uri.fragment)
+            fragment="")
 
         self._current_scheme = base_uri.scheme
         self._current_netloc = base_uri.netloc

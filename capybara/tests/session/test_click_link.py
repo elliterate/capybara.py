@@ -87,6 +87,10 @@ class TestClickLink:
         session.click_link("Blank JS Anchor")
         assert session.find_field("test_field").value == "blah"
 
+    def test_follows_link_on_url_and_anchor_links_for_a_different_page(self, session):
+        session.click_link("Anchor on different page")
+        assert session.has_text("Bar")
+
     def test_raises_an_error_for_links_with_no_href(self, session):
         with pytest.raises(ElementNotFound):
             session.click_link("No Href")
