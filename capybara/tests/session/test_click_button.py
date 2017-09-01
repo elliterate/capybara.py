@@ -123,6 +123,13 @@ class TestClickButton(ClickButtonTestCase):
         session.click_button("awesome")
         assert extract_results(session).get("form[okay]") is None
 
+    def test_serializes_and_sends_get_forms(self, session):
+        session.visit("/form")
+        session.click_button("med")
+        results = extract_results(session)
+        assert results["form[middle_name]"] == "Darren"
+        assert results.get("form[foo]") is None
+
     def test_follows_redirects(self, session):
         session.click_button("Go FAR")
         assert session.has_text("You landed")
