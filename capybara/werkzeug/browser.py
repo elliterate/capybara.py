@@ -46,6 +46,9 @@ class Browser(object):
         self._process_and_follow_redirects(method, path, params, {"Referer": self.current_url})
 
     def submit(self, method, path, params):
+        if not path:
+            path = self._request_path
+
         self._process_and_follow_redirects(method, path, params, {"Referer": self.current_url})
 
     @property

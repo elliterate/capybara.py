@@ -128,6 +128,11 @@ class TestClickButton(ClickButtonTestCase):
         assert session.has_text("You landed")
         assert re.compile(r"/landed$").search(session.current_url)
 
+    def test_posts_back_to_the_same_url_when_no_action_given(self, session):
+        session.visit("/postback")
+        session.click_button("With no action")
+        assert session.has_text("Postback")
+
     def test_raises_an_error_for_disabled_buttons(self, session):
         with pytest.raises(ElementNotFound):
             session.click_button("Disabled button")
