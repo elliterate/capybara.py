@@ -74,6 +74,11 @@ class TestClickLink:
         with pytest.raises(ElementNotFound):
             session.click_link("labore", href=re.compile(r".+d+"))
 
+    def test_follows_relative_links(self, session):
+        session.visit("/")
+        session.click_link("Relative")
+        assert session.has_text("This is a test")
+
     def test_follows_protocol_relative_links(self, session):
         session.click_link("Protocol")
         assert session.has_text("Another World")
@@ -81,6 +86,11 @@ class TestClickLink:
     def test_follows_redirects(self, session):
         session.click_link("Redirect")
         assert session.has_text("You landed")
+
+    def test_follows_redirects_back_to_itself(self, session):
+        session.click_link("BackToMyself")
+        assert session.has_css("#referrer", text=re.compile(r"/with_html$"))
+        assert session.has_text("This is a test")
 
     def test_does_nothing_on_anchor_links(self, session):
         session.fill_in("test_field", value="blah")
