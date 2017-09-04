@@ -74,6 +74,10 @@ class TestClickLink:
         with pytest.raises(ElementNotFound):
             session.click_link("labore", href=re.compile(r".+d+"))
 
+    def test_follows_protocol_relative_links(self, session):
+        session.click_link("Protocol")
+        assert session.has_text("Another World")
+
     def test_follows_redirects(self, session):
         session.click_link("Redirect")
         assert session.has_text("You landed")

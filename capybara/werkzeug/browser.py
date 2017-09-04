@@ -13,7 +13,7 @@ class Browser(object):
         self.driver = driver
         self.last_request = None
         self.last_response = None
-        self._current_scheme = None
+        self._current_scheme = "http"
         self._current_netloc = None
         self._dom = None
 
