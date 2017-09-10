@@ -1,3 +1,4 @@
+from collections import Hashable
 import re
 from xpath.expression import AbstractExpression
 from xpath.renderer import to_xpath
@@ -47,7 +48,10 @@ class SelectorQuery(object):
     def __init__(self, selector, locator=None, between=None, count=None, exact=None,
                  exact_text=None, filter=None, match=None, maximum=None, minimum=None, text=None,
                  visible=None, wait=None, **filter_options):
-        if locator is None and selector not in selectors:
+        if locator is None and (
+            not isinstance(selector, Hashable) or
+            selector not in selectors
+        ):
             locator = selector
             selector = capybara.default_selector
 
