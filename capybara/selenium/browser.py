@@ -28,5 +28,7 @@ def get_browser(browser_name, capabilities=None, **options):
         return webdriver.PhantomJS(desired_capabilities=capabilities, **options)
     if browser_name == "safari":
         return webdriver.Safari(desired_capabilities=capabilities, **options)
+    if browser_name == "remote":
+        return webdriver.Remote(desired_capabilities=capabilities, **options)
 
     raise ValueError("unsupported browser: {}".format(repr(browser_name)))
