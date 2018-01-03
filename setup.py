@@ -7,7 +7,13 @@ tests_require = ["selenium < 4", "werkzeug"]
 if sys.version_info < (3, 3):
     tests_require.append("mock")
 
-driver_verification_tests_require = ["flaky", "flask", "py", "pytest >= 3", "werkzeug"]
+driver_verification_tests_require = [
+    "flaky",
+    "flask",
+    "py",
+    # See: https://github.com/pytest-dev/pytest/issues/3074
+    "pytest >= 3, < 3.3",
+    "werkzeug"]
 if sys.version_info < (3, 3):
     driver_verification_tests_require.append("mock")
 
