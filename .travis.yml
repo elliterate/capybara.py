@@ -32,6 +32,12 @@ matrix:
         apt:
           packages:
             - awesome
+    - env: TOXENV=marionette
+      addons:
+        firefox: latest-nightly
+        apt:
+          packages:
+            - awesome
     - env:
         - TOXENV=marionette
         - HEADLESS=true
@@ -42,6 +48,8 @@ matrix:
             - awesome
     - env: TOXENV=selenium2
   allow_failures:
+    - addons:
+        firefox: latest-nightly
     - env:
         - TOXENV=chrome
         - HEADLESS=true
