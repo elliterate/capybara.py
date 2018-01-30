@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.helpers &#8212; Capybara 0.1.2 documentation</title>
+    <title>capybara.helpers &#8212; Capybara 0.1.3 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../',
-        VERSION:     '0.1.2',
+        VERSION:     '0.1.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -200,19 +200,27 @@
     <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
 
 
-<div class="viewcode-block" id="toregex"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.toregex">[docs]</a><span class="k">def</span> <span class="nf">toregex</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="toregex"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.toregex">[docs]</a><span class="k">def</span> <span class="nf">toregex</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Returns a compiled regular expression for the given text.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        text (str | RegexObject): The text to match.</span>
+<span class="sd">        exact (bool, optional): Whether the generated regular expression should match exact</span>
+<span class="sd">            strings. Defaults to False.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        RegexObject: A compiled regular expression that will match the text.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">return</span> <span class="p">(</span><span class="n">text</span> <span class="k">if</span> <span class="n">isregex</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
-            <span class="k">else</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">normalize_text</span><span class="p">(</span><span class="n">text</span><span class="p">))))</span></div>
+    <span class="k">if</span> <span class="n">isregex</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">text</span>
+
+    <span class="n">escaped</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">normalize_text</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">exact</span><span class="p">:</span>
+        <span class="n">escaped</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\A</span><span class="si">{}</span><span class="s2">\Z&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">escaped</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">escaped</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
@@ -248,7 +256,7 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

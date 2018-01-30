@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.werkzeug.browser &#8212; Capybara 0.1.2 documentation</title>
+    <title>capybara.werkzeug.browser &#8212; Capybara 0.1.3 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.1.2',
+        VERSION:     '0.1.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -39,7 +39,8 @@
           <div class="body" role="main">
             
   <h1>Source code for capybara.werkzeug.browser</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">werkzeug.test</span> <span class="k">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">create_environ</span>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">werkzeug.test</span> <span class="k">import</span> <span class="n">Client</span><span class="p">,</span> <span class="n">create_environ</span>
 <span class="kn">from</span> <span class="nn">werkzeug.wrappers</span> <span class="k">import</span> <span class="n">BaseResponse</span><span class="p">,</span> <span class="n">Request</span>
 
 <span class="kn">import</span> <span class="nn">capybara</span>
@@ -53,7 +54,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span> <span class="o">=</span> <span class="n">driver</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_request</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">last_response</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_current_scheme</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current_scheme</span> <span class="o">=</span> <span class="s2">&quot;http&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_netloc</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -75,12 +76,21 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_process_and_follow_redirects</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Browser.follow"><a class="viewcode-back" href="../../../capybara.werkzeug.html#capybara.werkzeug.browser.Browser.follow">[docs]</a>    <span class="k">def</span> <span class="nf">follow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;javascript:&quot;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="c1"># 1. Anchor on the current page</span>
+            <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_request_path</span><span class="p">)),</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span> <span class="ow">or</span>
+            <span class="c1"># 2. Inline JavaScript</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;javascript:&quot;</span><span class="p">)</span>
+        <span class="p">):</span>
             <span class="k">return</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_process_and_follow_redirects</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></div>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process_and_follow_redirects</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Referer&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">})</span></div>
 
 <div class="viewcode-block" id="Browser.submit"><a class="viewcode-back" href="../../../capybara.werkzeug.html#capybara.werkzeug.browser.Browser.submit">[docs]</a>    <span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_process_and_follow_redirects</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_request_path</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process_and_follow_redirects</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Referer&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">current_url</span><span class="p">})</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">html</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -92,14 +102,16 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span> <span class="o">=</span> <span class="n">HTML</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">html</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span>
 
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">_request_path</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_request</span><span class="o">.</span><span class="n">path</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_request</span> <span class="k">else</span> <span class="s2">&quot;/&quot;</span>
+
     <span class="k">def</span> <span class="nf">_process_and_follow_redirects</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">redirect_limit</span><span class="p">):</span>
             <span class="k">if</span> <span class="mi">300</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&lt;</span> <span class="mi">400</span><span class="p">:</span>
-                <span class="n">headers</span> <span class="o">=</span> <span class="n">headers</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">if</span> <span class="n">headers</span> <span class="k">else</span> <span class="p">{}</span>
                 <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Location&quot;</span><span class="p">]</span>
-                <span class="n">headers</span><span class="p">[</span><span class="s2">&quot;Referer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_request</span><span class="o">.</span><span class="n">url</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">headers</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_dom</span> <span class="o">=</span> <span class="kc">None</span>
@@ -114,13 +126,17 @@
             <span class="n">query</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
             <span class="n">fragment</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
+        <span class="n">requested_path</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_request_path</span> <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;?&quot;</span><span class="p">)</span>
+            <span class="k">else</span> <span class="n">requested_uri</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+
         <span class="n">path_uri</span> <span class="o">=</span> <span class="n">ParseResult</span><span class="p">(</span>
             <span class="n">scheme</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
             <span class="n">netloc</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="n">requested_uri</span><span class="o">.</span><span class="n">path</span><span class="p">,</span>
+            <span class="n">path</span><span class="o">=</span><span class="n">requested_path</span><span class="p">,</span>
             <span class="n">params</span><span class="o">=</span><span class="n">requested_uri</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
             <span class="n">query</span><span class="o">=</span><span class="n">requested_uri</span><span class="o">.</span><span class="n">query</span><span class="p">,</span>
-            <span class="n">fragment</span><span class="o">=</span><span class="n">requested_uri</span><span class="o">.</span><span class="n">fragment</span><span class="p">)</span>
+            <span class="n">fragment</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_scheme</span> <span class="o">=</span> <span class="n">base_uri</span><span class="o">.</span><span class="n">scheme</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_current_netloc</span> <span class="o">=</span> <span class="n">base_uri</span><span class="o">.</span><span class="n">netloc</span>
@@ -174,7 +190,7 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

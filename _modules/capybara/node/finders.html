@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.node.finders &#8212; Capybara 0.1.2 documentation</title>
+    <title>capybara.node.finders &#8212; Capybara 0.1.3 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '0.1.2',
+        VERSION:     '0.1.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -42,7 +42,9 @@
 <span></span><span class="kn">import</span> <span class="nn">capybara</span>
 <span class="kn">from</span> <span class="nn">capybara.exceptions</span> <span class="k">import</span> <span class="n">Ambiguous</span><span class="p">,</span> <span class="n">ElementNotFound</span><span class="p">,</span> <span class="n">ExpectationNotMet</span>
 <span class="kn">from</span> <span class="nn">capybara.helpers</span> <span class="k">import</span> <span class="n">matches_count</span>
+<span class="kn">from</span> <span class="nn">capybara.queries.ancestor_query</span> <span class="k">import</span> <span class="n">AncestorQuery</span>
 <span class="kn">from</span> <span class="nn">capybara.queries.selector_query</span> <span class="k">import</span> <span class="n">SelectorQuery</span>
+<span class="kn">from</span> <span class="nn">capybara.queries.sibling_query</span> <span class="k">import</span> <span class="n">SiblingQuery</span>
 
 
 <div class="viewcode-block" id="FindersMixin"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin">[docs]</a><span class="k">class</span> <span class="nc">FindersMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -76,30 +78,59 @@
 <span class="sd">            ElementNotFound: If the element can&#39;t be found before time expires.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">query</span> <span class="o">=</span> <span class="n">SelectorQuery</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_synchronized_resolve</span><span class="p">(</span><span class="n">SelectorQuery</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
 
-        <span class="nd">@self</span><span class="o">.</span><span class="n">synchronize</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">wait</span><span class="p">)</span>
-        <span class="k">def</span> <span class="nf">find</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">match</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;prefer_exact&quot;</span><span class="p">,</span> <span class="s2">&quot;smart&quot;</span><span class="p">]:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">resolve_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">query</span><span class="o">.</span><span class="n">exact</span><span class="p">:</span>
-                    <span class="n">result</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">resolve_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">result</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">resolve_for</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<div class="viewcode-block" id="FindersMixin.ancestor"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.ancestor">[docs]</a>    <span class="k">def</span> <span class="nf">ancestor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find an :class:`Element` based on the given arguments that is also an ancestor of the</span>
+<span class="sd">        element called on. ``ancestor`` will raise an error if the element is not found.</span>
 
-            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">match</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="s2">&quot;smart&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">Ambiguous</span><span class="p">(</span><span class="s2">&quot;Ambiguous match, found </span><span class="si">{count}</span><span class="s2"> elements matching </span><span class="si">{query}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-                    <span class="n">count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="n">ElementNotFound</span><span class="p">(</span><span class="s2">&quot;Unable to find </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+<span class="sd">        ``ancestor`` takes the same options as :meth:`find`. ::</span>
 
-            <span class="n">element</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">element</span><span class="o">.</span><span class="n">allow_reload</span> <span class="o">=</span> <span class="kc">True</span>
-            <span class="k">return</span> <span class="n">element</span>
+<span class="sd">            element.ancestor(&quot;#foo&quot;).find(&quot;.bar&quot;)</span>
+<span class="sd">            element.ancestor(&quot;xpath&quot;, &quot;//div[contains(., &#39;bar&#39;)]&quot;)</span>
+<span class="sd">            element.ancestor(&quot;li&quot;, text=&quot;Quox&quot;).click_link(&quot;Delete&quot;)</span>
 
-        <span class="k">return</span> <span class="n">find</span><span class="p">()</span></div>
+<span class="sd">        Args:</span>
+<span class="sd">            *args: Variable length argument list for :class:`AncestorQuery`.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`AncestorQuery`.</span>
 
-<div class="viewcode-block" id="FindersMixin.find_button"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.find_button">[docs]</a>    <span class="k">def</span> <span class="nf">find_button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            Element: The found element.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Ambiguous: If more than one element matching element is found.</span>
+<span class="sd">            ElementNotFound: If the element can&#39;t be found before time expires.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_synchronized_resolve</span><span class="p">(</span><span class="n">AncestorQuery</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FindersMixin.sibling"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.sibling">[docs]</a>    <span class="k">def</span> <span class="nf">sibling</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Find an :class:`Element` based on the given arguments that is also a sibling of the</span>
+<span class="sd">        element called on. ``sibling`` will raise an error if the element is not found.</span>
+
+<span class="sd">        ``sibling`` takes the same options as :meth:`find`. ::</span>
+
+<span class="sd">            element.sibling(&quot;#foo&quot;).find(&quot;.bar&quot;)</span>
+<span class="sd">            element.sibling(&quot;xpath&quot;, &quot;//div[contains(., &#39;bar&#39;)]&quot;)</span>
+<span class="sd">            element.sibling(&quot;li&quot;, text=&quot;Quox&quot;).click_link(&quot;Delete&quot;)</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            *args: Variable length argument list for :class:`SiblingQuery`.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SiblingQuery`.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Element: The found element.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            Ambiguous: If more than one element matching element is found.</span>
+<span class="sd">            ElementNotFound: If the element can&#39;t be found before time expires.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_synchronized_resolve</span><span class="p">(</span><span class="n">SiblingQuery</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="FindersMixin.find_button"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.find_button">[docs]</a>    <span class="k">def</span> <span class="nf">find_button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find a button on the page. This can be any ``&lt;input&gt;`` element of type submit, reset, image,</span>
 <span class="sd">        or button, or it can be a ``&lt;button&gt;`` element. All buttons can be found by their id, value,</span>
@@ -107,7 +138,7 @@
 <span class="sd">        ``&lt;input&gt;`` elements by their alt attribute.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            locator (str): The id, value, title, text content, alt of image.</span>
+<span class="sd">            locator (str, optional): The id, value, title, text content, alt of image.</span>
 <span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
 
 <span class="sd">        Returns:</span>
@@ -130,12 +161,12 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FindersMixin.find_field"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.find_field">[docs]</a>    <span class="k">def</span> <span class="nf">find_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="FindersMixin.find_field"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.find_field">[docs]</a>    <span class="k">def</span> <span class="nf">find_field</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find a form field on the page. The field can be found by its name, id, or label text.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            locator (str): Name, id, placeholder, or text of associated label element.</span>
+<span class="sd">            locator (str, optional): Name, id, placeholder, or text of associated label element.</span>
 <span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
 
 <span class="sd">        Returns:</span>
@@ -144,12 +175,12 @@
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;field&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="FindersMixin.find_link"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.find_link">[docs]</a>    <span class="k">def</span> <span class="nf">find_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="FindersMixin.find_link"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.FindersMixin.find_link">[docs]</a>    <span class="k">def</span> <span class="nf">find_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Find a link on the page. The link can be found by its id or text.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            locator (str): ID, title, text, or alt of enclosed img element.</span>
+<span class="sd">            locator (str, optional): ID, title, text, or alt of enclosed img element.</span>
 <span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
 
 <span class="sd">        Returns:</span>
@@ -241,7 +272,29 @@
             <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="k">except</span> <span class="n">ExpectationNotMet</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span></div></div>
+            <span class="k">return</span> <span class="kc">None</span></div>
+
+    <span class="k">def</span> <span class="nf">_synchronized_resolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">query</span><span class="p">):</span>
+        <span class="nd">@self</span><span class="o">.</span><span class="n">synchronize</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">wait</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">resolve</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">match</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;prefer_exact&quot;</span><span class="p">,</span> <span class="s2">&quot;smart&quot;</span><span class="p">]:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">resolve_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">query</span><span class="o">.</span><span class="n">exact</span><span class="p">:</span>
+                    <span class="n">result</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">resolve_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">resolve_for</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">query</span><span class="o">.</span><span class="n">match</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;one&quot;</span><span class="p">,</span> <span class="s2">&quot;smart&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">Ambiguous</span><span class="p">(</span><span class="s2">&quot;Ambiguous match, found </span><span class="si">{count}</span><span class="s2"> elements matching </span><span class="si">{query}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">count</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">),</span> <span class="n">query</span><span class="o">=</span><span class="n">query</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">ElementNotFound</span><span class="p">(</span><span class="s2">&quot;Unable to find </span><span class="si">{0}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+
+            <span class="n">element</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">element</span><span class="o">.</span><span class="n">allow_reload</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">return</span> <span class="n">element</span>
+
+        <span class="k">return</span> <span class="n">resolve</span><span class="p">()</span></div>
 </pre></div>
 
           </div>
@@ -277,7 +330,7 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
     </div>

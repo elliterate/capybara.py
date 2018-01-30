@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.driver package &#8212; Capybara 0.1.2 documentation</title>
+    <title>capybara.driver package &#8212; Capybara 0.1.3 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.2',
+        VERSION:     '0.1.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -52,7 +52,7 @@
 <p>The base class for drivers used by sessions.</p>
 <dl class="method">
 <dt id="capybara.driver.base.Base.accept_modal">
-<code class="descname">accept_modal</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/driver/base.html#Base.accept_modal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.driver.base.Base.accept_modal" title="Permalink to this definition">¶</a></dt>
+<code class="descname">accept_modal</code><span class="sig-paren">(</span><em>modal_type</em>, <em>text=None</em>, <em>response=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/driver/base.html#Base.accept_modal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.driver.base.Base.accept_modal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accepts the modal that appears matching the given type and, optionally, text.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -98,7 +98,7 @@
 
 <dl class="method">
 <dt id="capybara.driver.base.Base.dismiss_modal">
-<code class="descname">dismiss_modal</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/driver/base.html#Base.dismiss_modal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.driver.base.Base.dismiss_modal" title="Permalink to this definition">¶</a></dt>
+<code class="descname">dismiss_modal</code><span class="sig-paren">(</span><em>modal_type</em>, <em>text=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/driver/base.html#Base.dismiss_modal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.driver.base.Base.dismiss_modal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dismisses the modal that appears matching the given type and, optionally, text.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -548,7 +548,7 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

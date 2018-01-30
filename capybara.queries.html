@@ -5,13 +5,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.queries package &#8212; Capybara 0.1.2 documentation</title>
+    <title>capybara.queries package &#8212; Capybara 0.1.3 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    './',
-        VERSION:     '0.1.2',
+        VERSION:     '0.1.3',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -101,7 +101,7 @@ match. Defaults to False.</li>
 <span id="capybara-queries-selector-query-module"></span><h2>capybara.queries.selector_query module<a class="headerlink" href="#module-capybara.queries.selector_query" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="capybara.queries.selector_query.SelectorQuery">
-<em class="property">class </em><code class="descclassname">capybara.queries.selector_query.</code><code class="descname">SelectorQuery</code><span class="sig-paren">(</span><em>selector</em>, <em>locator=None</em>, <em>between=None</em>, <em>count=None</em>, <em>exact=None</em>, <em>match=None</em>, <em>maximum=None</em>, <em>minimum=None</em>, <em>text=None</em>, <em>visible=None</em>, <em>wait=None</em>, <em>**filter_options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/selector_query.html#SelectorQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.selector_query.SelectorQuery" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">capybara.queries.selector_query.</code><code class="descname">SelectorQuery</code><span class="sig-paren">(</span><em>selector</em>, <em>locator=None</em>, <em>between=None</em>, <em>count=None</em>, <em>exact=None</em>, <em>exact_text=None</em>, <em>filter=None</em>, <em>match=None</em>, <em>maximum=None</em>, <em>minimum=None</em>, <em>text=None</em>, <em>visible=None</em>, <em>wait=None</em>, <em>**filter_options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/selector_query.html#SelectorQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.selector_query.SelectorQuery" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Queries for elements using a selector.</p>
 <p>If no locator is provided and the given selector is not a valid selector, the first
@@ -118,6 +118,9 @@ argument is assumed to be the locator and the default selector will be used.</p>
 of times greater than zero.</li>
 <li><strong>exact</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to exactly match the locator string. Defaults to
 <a class="reference internal" href="capybara.html#capybara.exact" title="capybara.exact"><code class="xref py py-data docutils literal"><span class="pre">capybara.exact</span></code></a>.</li>
+<li><strong>exact_text</strong> (<em>bool | str</em><em>, </em><em>optional</em>) – Whether to exactly match the text, or the exact text to
+match. Defaults to False.</li>
+<li><strong>filter</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="capybara.node.html#capybara.node.element.Element" title="capybara.node.element.Element"><em>Element</em></a><em>]</em><em>, </em><em>bool</em><em>]</em><em>, </em><em>optional</em>) – A function for filtering results.</li>
 <li><strong>match</strong> (<em>str</em><em>, </em><em>optional</em>) – The matching strategy to use. Defaults to <a class="reference internal" href="capybara.html#capybara.match" title="capybara.match"><code class="xref py py-data docutils literal"><span class="pre">capybara.match</span></code></a>.</li>
 <li><strong>maximum</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of times the selector should match. Defaults to
 infinite.</li>
@@ -151,6 +154,11 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <code class="descname">exact</code><a class="headerlink" href="#capybara.queries.selector_query.SelectorQuery.exact" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>bool</em> – Whether to exactly match the locator string.</p>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="capybara.queries.selector_query.SelectorQuery.exact_text">
+<code class="descname">exact_text</code><a class="headerlink" href="#capybara.queries.selector_query.SelectorQuery.exact_text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.queries.selector_query.SelectorQuery.kwargs">
@@ -255,7 +263,7 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <span id="capybara-queries-text-query-module"></span><h2>capybara.queries.text_query module<a class="headerlink" href="#module-capybara.queries.text_query" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="capybara.queries.text_query.TextQuery">
-<em class="property">class </em><code class="descclassname">capybara.queries.text_query.</code><code class="descname">TextQuery</code><span class="sig-paren">(</span><em>query_type</em>, <em>expected_text=None</em>, <em>between=None</em>, <em>count=None</em>, <em>maximum=None</em>, <em>minimum=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/text_query.html#TextQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.text_query.TextQuery" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">capybara.queries.text_query.</code><code class="descname">TextQuery</code><span class="sig-paren">(</span><em>query_type</em>, <em>expected_text=None</em>, <em>between=None</em>, <em>count=None</em>, <em>exact_text=False</em>, <em>maximum=None</em>, <em>minimum=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/text_query.html#TextQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.text_query.TextQuery" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Queries for text content in a node.</p>
 <p>If only one argument is provided, it will be assumed to be <code class="docutils literal"><span class="pre">expected_text</span></code>.</p>
@@ -269,6 +277,7 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <li><strong>between</strong> (<em>Iterable</em><em>[</em><em>int</em><em>]</em><em>, </em><em>optional</em>) – A range of acceptable counts.</li>
 <li><strong>count</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of times the text should match. Defaults to any number of
 times greater than zero.</li>
+<li><strong>exact_text</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to match the text exactly. Defaults to False.</li>
 <li><strong>maximum</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of times the selector should match. Defaults to
 infinite.</li>
 <li><strong>minimum</strong> (<em>int</em><em>, </em><em>optional</em>) – The minimum number of times the selector should match. Defaults to
@@ -328,14 +337,18 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <span id="capybara-queries-title-query-module"></span><h2>capybara.queries.title_query module<a class="headerlink" href="#module-capybara.queries.title_query" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="capybara.queries.title_query.TitleQuery">
-<em class="property">class </em><code class="descclassname">capybara.queries.title_query.</code><code class="descname">TitleQuery</code><span class="sig-paren">(</span><em>expected_title</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/title_query.html#TitleQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.title_query.TitleQuery" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">capybara.queries.title_query.</code><code class="descname">TitleQuery</code><span class="sig-paren">(</span><em>expected_title</em>, <em>exact=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/title_query.html#TitleQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.title_query.TitleQuery" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
 <p>Queries the title content of a node.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>expected_title</strong> (<em>str | RegexObject</em>) – The desired title.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>expected_title</strong> (<em>str | RegexObject</em>) – The desired title.</li>
+<li><strong>exact</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the text should match exactly. Defaults to False.</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -427,7 +440,7 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
