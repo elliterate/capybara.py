@@ -242,6 +242,12 @@ class TestNodeClick(NodeTestCase):
         radio.click()
         assert radio.checked
 
+    def test_handles_fixed_headers_and_footers(self, session):
+        session.visit("/with_fixed_header_footer")
+        # session.click_link("Go to root")
+        session.find("link", "Go to root").click()
+        assert session.has_current_path("/")
+
 
 @pytest.mark.requires("js")
 class TestNodeDoubleClick(NodeTestCase):

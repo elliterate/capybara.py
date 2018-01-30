@@ -1,4 +1,11 @@
+from selenium.common.exceptions import WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
+
+try:
+    from selenium.common.exceptions import ElementClickInterceptedException
+except ImportError:
+    class ElementClickInterceptedException(WebDriverException):
+        pass
 
 from capybara.exceptions import ReadOnlyElementError, UnselectNotAllowed
 from capybara.driver.node import Node as Base
@@ -76,7 +83,25 @@ class Node(Base):
                 for element in self.native.find_elements_by_xpath(xpath)]
 
     def click(self):
-        self.native.click()
+        try:
+            self.native.click()
+        except WebDriverException as e:
+            if (
+                # Marionette
+                isinstance(e, ElementClickInterceptedException) or
+
+                # Chrome
+                "Other element would receive the click" in e.msg
+            ):
+                try:
+                    self.driver.execute_script("""
+                        arguments[0].scrollIntoView({behavior: 'instant', block: 'center', inline: 'center'})
+                    """, self)
+                except:
+                    # Swallow error if scrollIntoView with options isn't supported.
+                    pass
+
+            raise
 
     def double_click(self):
         ActionChains(self.driver.browser).double_click(self.native).perform()

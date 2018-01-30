@@ -1,12 +1,11 @@
 import atexit
 from contextlib import contextmanager
 from selenium.common.exceptions import (
-    InvalidElementStateException,
     NoAlertPresentException,
     NoSuchWindowException,
-    StaleElementReferenceException,
     TimeoutException,
-    UnexpectedAlertPresentException)
+    UnexpectedAlertPresentException,
+    WebDriverException)
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
@@ -198,7 +197,7 @@ class Driver(Base):
 
     @property
     def invalid_element_errors(self):
-        return InvalidElementStateException, StaleElementReferenceException
+        return (WebDriverException,)
 
     @property
     def _marionette(self):
