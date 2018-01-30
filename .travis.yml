@@ -1,3 +1,4 @@
+sudo: true
 language: python
 dist: trusty
 addons:
