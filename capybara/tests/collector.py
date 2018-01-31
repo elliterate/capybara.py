@@ -1,6 +1,12 @@
 import py.path
 from _pytest.config import Config, PytestPluginManager, default_plugins
-from _pytest.main import FSCollector
+
+try:
+    # pytest >= 3.4
+    from _pytest.nodes import FSCollector
+except ImportError:
+    # pytest < 3.4
+    from _pytest.main import FSCollector
 
 
 class GraftedSubSession(FSCollector):

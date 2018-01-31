@@ -11,8 +11,7 @@ driver_verification_tests_require = [
     "flaky",
     "flask",
     "py",
-    # See: https://github.com/pytest-dev/pytest/issues/3074
-    "pytest >= 3, < 3.3",
+    "pytest ~= 3.0, != 3.3.*, < 3.5",
     "werkzeug"]
 if sys.version_info < (3, 3):
     driver_verification_tests_require.append("mock")
