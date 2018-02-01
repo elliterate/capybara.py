@@ -78,6 +78,7 @@ class TestWindowSize(WindowTestCase):
 
     @flaky
     def test_switches_to_original_window_if_invoked_not_for_current_window(self, session, initial_window, other_window):
+        sleep(1)  # wait for ``other_window`` to finish opening
         with session.window(other_window):
             size = self.win_size(session)
         assert other_window.size == size
