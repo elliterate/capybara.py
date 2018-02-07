@@ -77,5 +77,7 @@ setup(
     setup_requires=["pytest-runner"],
     tests_require=tests_require,
     extras_require={
+        "development": ["bumpversion"],
+
         # Expose test dependencies for external scripts, like pip.
         "test": tests_require})
