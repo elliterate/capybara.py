@@ -1,6 +1,8 @@
 from __future__ import absolute_import
 from contextlib import contextmanager
 
+from capybara.version import __version__
+
 
 app = None
 """ object: The WSGI-compliant app to test. """
