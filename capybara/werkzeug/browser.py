@@ -13,9 +13,11 @@ class Browser(object):
         self.driver = driver
         self.last_request = None
         self.last_response = None
+
         self._current_scheme = "http"
         self._current_netloc = None
         self._dom = None
+        self._last_request_env_options = None
 
     @property
     def app(self):
@@ -51,6 +53,14 @@ class Browser(object):
 
         self._process_and_follow_redirects(method, path, params, {"Referer": self.current_url})
 
+    def refresh(self):
+        self._reset_cache()
+
+        env = create_environ(**self._last_request_env_options)
+
+        self.last_request = Request(env)
+        self.last_response = self.client.open(env)
+
     @property
     def html(self):
         return decode_bytes(self.last_response.data) if self.last_response else ""
@@ -73,7 +83,7 @@ class Browser(object):
                 self._process("GET", path, headers=headers)
 
     def _process(self, method, path, params=None, headers=None):
-        self._dom = None
+        self._reset_cache()
 
         requested_uri = urlparse(path)
 
@@ -100,11 +110,16 @@ class Browser(object):
         self._current_scheme = base_uri.scheme
         self._current_netloc = base_uri.netloc
 
-        env = create_environ(method=method,
-                             path=path_uri.geturl(),
-                             base_url=base_uri.geturl() or None,
-                             data=params,
-                             headers=headers)
+        env_options = dict(
+            method=method,
+            path=path_uri.geturl(),
+            base_url=base_uri.geturl() or None,
+            data=params,
+            headers=headers)
+
+        self._last_request_env_options = env_options
+
+        env = create_environ(**env_options)
 
         self.last_request = Request(env)
         self.last_response = self.client.open(env)
@@ -114,3 +129,6 @@ class Browser(object):
             uri = urlparse(capybara.app_host)
             self._current_scheme = uri.scheme
             self._current_netloc = uri.netloc
+
+    def _reset_cache(self):
+        self._dom = None

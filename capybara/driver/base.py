@@ -103,6 +103,10 @@ class Base(object):
 
         raise NotImplementedError()
 
+    def refresh(self):
+        """ Refresh the page. """
+        raise NotImplementedError()
+
     def go_back(self):
         """ Move back a single entry in the browser's history. """
         raise NotImplementedError()

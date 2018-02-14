@@ -5,6 +5,7 @@ import time
 
 
 app = Flask(__name__)
+form_post_count = 0
 
 # Ensure application exceptions are raised.
 app.debug = True
@@ -82,8 +83,11 @@ def with_quotes():
 @app.route("/relative", methods=["POST"])
 @app.route("/form", methods=["POST"])
 def results():
+    global form_post_count
+    form_post_count += 1
     data = request.args.copy()
     data.update(request.form)
+    data.update({"post_count": form_post_count})
     return """<pre id="results">""" + json.dumps(data.to_dict(flat=False)) + """</pre>"""
 
 

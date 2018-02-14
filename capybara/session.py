@@ -33,8 +33,8 @@ _SESSION_METHODS = [
     "accept_alert", "accept_confirm", "accept_prompt", "assert_current_path",
     "assert_no_current_path", "dismiss_confirm", "dismiss_prompt", "evaluate_script",
     "execute_script", "fieldset", "frame", "go_back", "go_forward", "has_current_path",
-    "has_no_current_path", "open_new_window", "reset", "save_page", "save_screenshot", "scope",
-    "switch_to_frame", "switch_to_window", "table", "visit", "window", "window_opened_by"]
+    "has_no_current_path", "open_new_window", "refresh", "reset", "save_page", "save_screenshot",
+    "scope", "switch_to_frame", "switch_to_window", "table", "visit", "window", "window_opened_by"]
 _SESSION_PROPERTIES = ["current_host", "current_path", "current_url", "current_window", "windows"]
 
 DSL_METHODS = _DOCUMENT_METHODS + _NODE_METHODS + _SESSION_METHODS
@@ -171,6 +171,11 @@ class Session(SessionMatchersMixin, object):
             fragment=visit_uri.fragment)
 
         self.driver.visit(visit_uri.geturl())
+
+    def refresh(self):
+        """ Refresh the page. """
+        self.raise_server_error()
+        self.driver.refresh()
 
     def go_back(self):
         """ Move back a single entry in the browser's history. """

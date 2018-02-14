@@ -128,6 +128,13 @@ class Driver(Base):
     def visit(self, url):
         self.browser.get(url)
 
+    def refresh(self):
+        try:
+            with self.accept_modal(None, wait=0.1):
+                self.browser.refresh()
+        except ModalNotFound:
+            pass
+
     def go_back(self):
         self.browser.back()
 
