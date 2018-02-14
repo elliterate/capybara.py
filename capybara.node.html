@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>capybara.node package &#8212; Capybara 0.1.3 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.3',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -29,8 +21,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -48,17 +39,17 @@
 <dl class="class">
 <dt id="capybara.node.actions.ActionsMixin">
 <em class="property">class </em><code class="descclassname">capybara.node.actions.</code><code class="descname">ActionsMixin</code><a class="reference internal" href="_modules/capybara/node/actions.html#ActionsMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.actions.ActionsMixin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>If the driver is capable of executing JavaScript, actions will wait for a set amount of time and
 continuously retry finding the element until either the element is found or the time expires.
-The length of time <code class="xref py py-meth docutils literal"><span class="pre">find()</span></code> will wait is controlled through
-<a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal"><span class="pre">capybara.default_max_wait_time</span></code></a>.</p>
+The length of time <code class="xref py py-meth docutils literal notranslate"><span class="pre">find()</span></code> will wait is controlled through
+<a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>.</p>
 <dl class="method">
 <dt id="capybara.node.actions.ActionsMixin.attach_file">
 <code class="descname">attach_file</code><span class="sig-paren">(</span><em>locator_or_path</em>, <em>path=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/actions.html#ActionsMixin.attach_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.actions.ActionsMixin.attach_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a file field on the page and attach a file given its path. The file field can be found
 via its name, id, or label text.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">attach_file</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="s2">&quot;/path/to/file.png&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">attach_file</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="s2">&quot;/path/to/file.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -69,12 +60,12 @@ via its name, id, or label text.</p>
 <li><strong>locator_or_path</strong> (<em>str</em>) – Which field to attach the file to, or the path of the file that
 will be attached.</li>
 <li><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The path of the file that will be attached. Defaults to
-<code class="docutils literal"><span class="pre">locator_or_path</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<code class="docutils literal notranslate"><span class="pre">locator_or_path</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">FileNotFound</span></code> – No file exists at the given path.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">FileNotFound</span></code> – No file exists at the given path.</p>
 </td>
 </tr>
 </tbody>
@@ -86,7 +77,7 @@ will be attached.</li>
 <code class="descname">check</code><span class="sig-paren">(</span><em>locator=None</em>, <em>allow_label_click=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/actions.html#ActionsMixin.check"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.actions.ActionsMixin.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a check box and mark it as checked. The check box can be found via name, id, or label
 text.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="s2">&quot;German&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="s2">&quot;German&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -96,8 +87,8 @@ text.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>locator</strong> (<em>str</em><em>, </em><em>optional</em>) – Which check box to check.</li>
 <li><strong>allow_label_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – Attempt to click the label to toggle state if
-element is non-visible. Defaults to <a class="reference internal" href="capybara.html#capybara.automatic_label_click" title="capybara.automatic_label_click"><code class="xref py py-data docutils literal"><span class="pre">capybara.automatic_label_click</span></code></a>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+element is non-visible. Defaults to <a class="reference internal" href="capybara.html#capybara.automatic_label_click" title="capybara.automatic_label_click"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.automatic_label_click</span></code></a>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -110,7 +101,7 @@ element is non-visible. Defaults to <a class="reference internal" href="capybara
 <code class="descname">choose</code><span class="sig-paren">(</span><em>locator=None</em>, <em>allow_label_click=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/actions.html#ActionsMixin.choose"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.actions.ActionsMixin.choose" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a radio button and mark it as checked. The radio button can be found via name, id, or
 label text.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">choose</span><span class="p">(</span><span class="s2">&quot;Male&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">choose</span><span class="p">(</span><span class="s2">&quot;Male&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -120,8 +111,8 @@ label text.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>locator</strong> (<em>str</em><em>, </em><em>optional</em>) – Which radio button to choose.</li>
 <li><strong>allow_label_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – Attempt to click the label to toggle state if
-element is non-visible. Defaults to <a class="reference internal" href="capybara.html#capybara.automatic_label_click" title="capybara.automatic_label_click"><code class="xref py py-data docutils literal"><span class="pre">capybara.automatic_label_click</span></code></a>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+element is non-visible. Defaults to <a class="reference internal" href="capybara.html#capybara.automatic_label_click" title="capybara.automatic_label_click"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.automatic_label_click</span></code></a>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -132,17 +123,17 @@ element is non-visible. Defaults to <a class="reference internal" href="capybara
 <dl class="method">
 <dt id="capybara.node.actions.ActionsMixin.click_button">
 <code class="descname">click_button</code><span class="sig-paren">(</span><em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/actions.html#ActionsMixin.click_button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.actions.ActionsMixin.click_button" title="Permalink to this definition">¶</a></dt>
-<dd><p>Finds a button on the page and clicks it. This can be any <code class="docutils literal"><span class="pre">&lt;input&gt;</span></code> element of type
-submit, reset, image, or button, or it can be any <code class="docutils literal"><span class="pre">&lt;button&gt;</span></code> element. All buttons can be
-found by their id, value, or title. <code class="docutils literal"><span class="pre">&lt;button&gt;</span></code> elements can also be found by their text
-content, and image <code class="docutils literal"><span class="pre">&lt;input&gt;</span></code> elements by their alt attribute.</p>
+<dd><p>Finds a button on the page and clicks it. This can be any <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> element of type
+submit, reset, image, or button, or it can be any <code class="docutils literal notranslate"><span class="pre">&lt;button&gt;</span></code> element. All buttons can be
+found by their id, value, or title. <code class="docutils literal notranslate"><span class="pre">&lt;button&gt;</span></code> elements can also be found by their text
+content, and image <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> elements by their alt attribute.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>locator</strong> (<em>str</em><em>, </em><em>optional</em>) – Which button to find.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -161,7 +152,7 @@ link.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>locator</strong> (<em>str</em><em>, </em><em>optional</em>) – Text, id, title, or nested image’s alt attribute.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -180,7 +171,7 @@ inside the link.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>locator</strong> (<em>str</em><em>, </em><em>optional</em>) – Text, id, or value of link or button.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -191,7 +182,7 @@ inside the link.</p>
 <dl class="method">
 <dt id="capybara.node.actions.ActionsMixin.click_on">
 <code class="descname">click_on</code><span class="sig-paren">(</span><em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.node.actions.ActionsMixin.click_on" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#capybara.node.actions.ActionsMixin.click_link_or_button" title="capybara.node.actions.ActionsMixin.click_link_or_button"><code class="xref py py-meth docutils literal"><span class="pre">click_link_or_button()</span></code></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#capybara.node.actions.ActionsMixin.click_link_or_button" title="capybara.node.actions.ActionsMixin.click_link_or_button"><code class="xref py py-meth docutils literal notranslate"><span class="pre">click_link_or_button()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -199,7 +190,7 @@ inside the link.</p>
 <code class="descname">fill_in</code><span class="sig-paren">(</span><em>locator=None</em>, <em>current_value=None</em>, <em>value=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/actions.html#ActionsMixin.fill_in"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.actions.ActionsMixin.fill_in" title="Permalink to this definition">¶</a></dt>
 <dd><p>Locate a text field or text area and fill it in with the given text. The field can be found
 via its name, id, or label text.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">fill_in</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Bob&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">fill_in</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Bob&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -210,7 +201,7 @@ via its name, id, or label text.</p>
 <li><strong>locator</strong> (<em>str</em><em>, </em><em>optional</em>) – Which field to fill in.</li>
 <li><strong>current_value</strong> (<em>str</em><em>, </em><em>optional</em>) – The current value of the field.</li>
 <li><strong>value</strong> (<em>str</em><em>, </em><em>optional</em>) – The value to fill in. Defaults to None.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -221,12 +212,12 @@ via its name, id, or label text.</p>
 <dl class="method">
 <dt id="capybara.node.actions.ActionsMixin.select">
 <code class="descname">select</code><span class="sig-paren">(</span><em>value=None</em>, <em>field=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/actions.html#ActionsMixin.select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.actions.ActionsMixin.select" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the <code class="docutils literal"><span class="pre">field</span></code> argument is present, <code class="docutils literal"><span class="pre">select</span></code> finds a select box on the page and selects
+<dd><p>If the <code class="docutils literal notranslate"><span class="pre">field</span></code> argument is present, <code class="docutils literal notranslate"><span class="pre">select</span></code> finds a select box on the page and selects
 a particular option from it. Otherwise it finds an option inside the current scope and
-selects it. If the select box is a multiple select, <code class="docutils literal"><span class="pre">select</span></code> can be called multiple times
+selects it. If the select box is a multiple select, <code class="docutils literal notranslate"><span class="pre">select</span></code> can be called multiple times
 to select more than one option. The select box can be found via its name, id, or label text.
 The option can be found by its text.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;March&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">&quot;Month&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;March&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">&quot;Month&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -236,7 +227,7 @@ The option can be found by its text.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>value</strong> (<em>str</em><em>, </em><em>optional</em>) – Which option to select.</li>
 <li><strong>field</strong> (<em>str</em><em>, </em><em>optional</em>) – The id, name, or label of the select box.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -248,7 +239,7 @@ The option can be found by its text.</p>
 <dt id="capybara.node.actions.ActionsMixin.uncheck">
 <code class="descname">uncheck</code><span class="sig-paren">(</span><em>locator=None</em>, <em>allow_label_click=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/actions.html#ActionsMixin.uncheck"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.actions.ActionsMixin.uncheck" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a check box and uncheck it. The check box can be found via name, id, or label text.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">uncheck</span><span class="p">(</span><span class="s2">&quot;German&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">uncheck</span><span class="p">(</span><span class="s2">&quot;German&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -258,8 +249,8 @@ The option can be found by its text.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>locator</strong> (<em>str</em><em>, </em><em>optional</em>) – Which check box to uncheck.</li>
 <li><strong>allow_label_click</strong> (<em>bool</em><em>, </em><em>optional</em>) – Attempt to click the label to toggle state if
-element is non-visible. Defaults to <a class="reference internal" href="capybara.html#capybara.automatic_label_click" title="capybara.automatic_label_click"><code class="xref py py-data docutils literal"><span class="pre">capybara.automatic_label_click</span></code></a>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+element is non-visible. Defaults to <a class="reference internal" href="capybara.html#capybara.automatic_label_click" title="capybara.automatic_label_click"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.automatic_label_click</span></code></a>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -271,9 +262,9 @@ element is non-visible. Defaults to <a class="reference internal" href="capybara
 <dt id="capybara.node.actions.ActionsMixin.unselect">
 <code class="descname">unselect</code><span class="sig-paren">(</span><em>value=None</em>, <em>field=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/actions.html#ActionsMixin.unselect"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.actions.ActionsMixin.unselect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a select box on the page and unselect a particular option from it. If the select box is
-a multiple select, <code class="docutils literal"><span class="pre">unselect</span></code> can be called multiple times to unselect more than one
+a multiple select, <code class="docutils literal notranslate"><span class="pre">unselect</span></code> can be called multiple times to unselect more than one
 option. The select box can be found via its name, id, or label text.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">unselect</span><span class="p">(</span><span class="s2">&quot;March&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">&quot;Month&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">unselect</span><span class="p">(</span><span class="s2">&quot;March&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">&quot;Month&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -283,7 +274,7 @@ option. The select box can be found via its name, id, or label text.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>value</strong> (<em>str</em><em>, </em><em>optional</em>) – Which option to unselect.</li>
 <li><strong>field</strong> (<em>str</em><em>, </em><em>optional</em>) – The id, name, or label of the select box.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -299,15 +290,15 @@ option. The select box can be found via its name, id, or label text.</p>
 <dl class="class">
 <dt id="capybara.node.base.Base">
 <em class="property">class </em><code class="descclassname">capybara.node.base.</code><code class="descname">Base</code><span class="sig-paren">(</span><em>session</em>, <em>base</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/base.html#Base"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.base.Base" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#capybara.node.finders.FindersMixin" title="capybara.node.finders.FindersMixin"><code class="xref py py-class docutils literal"><span class="pre">capybara.node.finders.FindersMixin</span></code></a>, <a class="reference internal" href="#capybara.node.actions.ActionsMixin" title="capybara.node.actions.ActionsMixin"><code class="xref py py-class docutils literal"><span class="pre">capybara.node.actions.ActionsMixin</span></code></a>, <a class="reference internal" href="#capybara.node.matchers.MatchersMixin" title="capybara.node.matchers.MatchersMixin"><code class="xref py py-class docutils literal"><span class="pre">capybara.node.matchers.MatchersMixin</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>A <a class="reference internal" href="#capybara.node.base.Base" title="capybara.node.base.Base"><code class="xref py py-class docutils literal"><span class="pre">Base</span></code></a> represents either an element on a page through the subclass <code class="xref py py-class docutils literal"><span class="pre">Element</span></code> or
-a document through <code class="xref py py-class docutils literal"><span class="pre">Document</span></code>.</p>
+<dd><p>Bases: <a class="reference internal" href="#capybara.node.finders.FindersMixin" title="capybara.node.finders.FindersMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.node.finders.FindersMixin</span></code></a>, <a class="reference internal" href="#capybara.node.actions.ActionsMixin" title="capybara.node.actions.ActionsMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.node.actions.ActionsMixin</span></code></a>, <a class="reference internal" href="#capybara.node.matchers.MatchersMixin" title="capybara.node.matchers.MatchersMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.node.matchers.MatchersMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A <a class="reference internal" href="#capybara.node.base.Base" title="capybara.node.base.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code></a> represents either an element on a page through the subclass <code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code> or
+a document through <code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code>.</p>
 <p>Both types of Node share the same methods, used for interacting with the elements on the page.
 These methods are divided into three categories: finders, actions, and matchers. These are found
-in the classes <code class="xref py py-class docutils literal"><span class="pre">FindersMixin</span></code>, <code class="xref py py-class docutils literal"><span class="pre">ActionsMixin</span></code>, and <code class="xref py py-class docutils literal"><span class="pre">MatchersMixin</span></code>
+in the classes <code class="xref py py-class docutils literal notranslate"><span class="pre">FindersMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">ActionsMixin</span></code>, and <code class="xref py py-class docutils literal notranslate"><span class="pre">MatchersMixin</span></code>
 respectively.</p>
-<p>A <code class="xref py py-class docutils literal"><span class="pre">Session</span></code> exposes all methods from <code class="xref py py-class docutils literal"><span class="pre">Document</span></code> directly:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="s2">&quot;selenium&quot;</span><span class="p">,</span> <span class="n">my_app</span><span class="p">)</span>
+<p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code> exposes all methods from <code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code> directly:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="s2">&quot;selenium&quot;</span><span class="p">,</span> <span class="n">my_app</span><span class="p">)</span>
 <span class="n">session</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 <span class="n">session</span><span class="o">.</span><span class="n">fill_in</span><span class="p">(</span><span class="s2">&quot;Foo&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Bar&quot;</span><span class="p">)</span>  <span class="c1"># from capybara.node.actions.ActionsMixin</span>
 <span class="n">bar</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;#bar&quot;</span><span class="p">)</span>           <span class="c1"># from capybara.node.finders.FindersMixin</span>
@@ -360,15 +351,15 @@ re-run.</p>
 <p>Certain drivers have no support for asynchronous processes. These drivers run the function,
 and any error raised bubbles up immediately. This allows faster turn around in the case
 where an expectation fails.</p>
-<p>Only exceptions that are <code class="xref py py-exc docutils literal"><span class="pre">ElementNotFound</span></code> or any subclass thereof cause the block to
+<p>Only exceptions that are <code class="xref py py-exc docutils literal notranslate"><span class="pre">ElementNotFound</span></code> or any subclass thereof cause the block to
 be rerun. Drivers may specify additional exceptions which also cause reruns. This usually
 occurs when a node is manipulated which no longer exists on the page. For example, the
-Selenium driver specifies <code class="docutils literal"><span class="pre">selenium.common.exceptions.StateElementReferenceException</span></code>.</p>
+Selenium driver specifies <code class="docutils literal notranslate"><span class="pre">selenium.common.exceptions.StateElementReferenceException</span></code>.</p>
 <p>As long as any of these exceptions are thrown, the function is re-run, until a certain
-amount of time passes. The amount of time defaults to <a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal"><span class="pre">capybara.default_max_wait_time</span></code></a>
-and can be overridden through the <code class="docutils literal"><span class="pre">wait</span></code> argument. This time is compared with the system
-time to see how much time has passed. If the return value of <code class="docutils literal"><span class="pre">time.time()</span></code> is stubbed
-out, Capybara will raise <code class="xref py py-exc docutils literal"><span class="pre">FrozenInTime</span></code>.</p>
+amount of time passes. The amount of time defaults to <a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>
+and can be overridden through the <code class="docutils literal notranslate"><span class="pre">wait</span></code> argument. This time is compared with the system
+time to see how much time has passed. If the return value of <code class="docutils literal notranslate"><span class="pre">time.time()</span></code> is stubbed
+out, Capybara will raise <code class="xref py py-exc docutils literal notranslate"><span class="pre">FrozenInTime</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -377,7 +368,7 @@ out, Capybara will raise <code class="xref py py-exc docutils literal"><span cla
 <li><strong>func</strong> (<em>Callable</em><em>, </em><em>optional</em>) – The function to decorate.</li>
 <li><strong>wait</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of seconds to retry this function.</li>
 <li><strong>errors</strong> (<em>Tuple</em><em>[</em><em>Type</em><em>[</em><em>Exception</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Exception types that cause the function to be
-rerun. Defaults to <code class="docutils literal"><span class="pre">driver.invalid_element_errors</span></code> + <code class="xref py py-exc docutils literal"><span class="pre">ElementNotFound</span></code>.</li>
+rerun. Defaults to <code class="docutils literal notranslate"><span class="pre">driver.invalid_element_errors</span></code> + <code class="xref py py-exc docutils literal notranslate"><span class="pre">ElementNotFound</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -387,7 +378,7 @@ rerun. Defaults to <code class="docutils literal"><span class="pre">driver.inval
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">Callable</p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">FrozenInTime</span></code> – If the return value of <code class="docutils literal"><span class="pre">time.time()</span></code> appears stuck.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">FrozenInTime</span></code> – If the return value of <code class="docutils literal notranslate"><span class="pre">time.time()</span></code> appears stuck.</p>
 </td>
 </tr>
 </tbody>
@@ -411,7 +402,7 @@ rerun. Defaults to <code class="docutils literal"><span class="pre">driver.inval
 <dl class="function">
 <dt id="capybara.node.base.synchronize">
 <code class="descclassname">capybara.node.base.</code><code class="descname">synchronize</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/base.html#synchronize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.base.synchronize" title="Permalink to this definition">¶</a></dt>
-<dd><p>Decorator for <a class="reference internal" href="#capybara.node.base.synchronize" title="capybara.node.base.synchronize"><code class="xref py py-meth docutils literal"><span class="pre">synchronize()</span></code></a>.</p>
+<dd><p>Decorator for <a class="reference internal" href="#capybara.node.base.synchronize" title="capybara.node.base.synchronize"><code class="xref py py-meth docutils literal notranslate"><span class="pre">synchronize()</span></code></a>.</p>
 </dd></dl>
 
 </div>
@@ -420,8 +411,8 @@ rerun. Defaults to <code class="docutils literal"><span class="pre">driver.inval
 <dl class="class">
 <dt id="capybara.node.document.Document">
 <em class="property">class </em><code class="descclassname">capybara.node.document.</code><code class="descname">Document</code><span class="sig-paren">(</span><em>session</em>, <em>base</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/document.html#Document"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.document.Document" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#capybara.node.document_matchers.DocumentMatchersMixin" title="capybara.node.document_matchers.DocumentMatchersMixin"><code class="xref py py-class docutils literal"><span class="pre">capybara.node.document_matchers.DocumentMatchersMixin</span></code></a>, <a class="reference internal" href="#capybara.node.base.Base" title="capybara.node.base.Base"><code class="xref py py-class docutils literal"><span class="pre">capybara.node.base.Base</span></code></a></p>
-<p>A <a class="reference internal" href="#capybara.node.document.Document" title="capybara.node.document.Document"><code class="xref py py-class docutils literal"><span class="pre">Document</span></code></a> represents an HTML document. Any operation performed on it will be
+<dd><p>Bases: <a class="reference internal" href="#capybara.node.document_matchers.DocumentMatchersMixin" title="capybara.node.document_matchers.DocumentMatchersMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.node.document_matchers.DocumentMatchersMixin</span></code></a>, <a class="reference internal" href="#capybara.node.base.Base" title="capybara.node.base.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.node.base.Base</span></code></a></p>
+<p>A <a class="reference internal" href="#capybara.node.document.Document" title="capybara.node.document.Document"><code class="xref py py-class docutils literal notranslate"><span class="pre">Document</span></code></a> represents an HTML document. Any operation performed on it will be
 performed on the entire document.</p>
 <dl class="attribute">
 <dt id="capybara.node.document.Document.all_text">
@@ -455,7 +446,7 @@ performed on the entire document.</p>
 <dl class="class">
 <dt id="capybara.node.document_matchers.DocumentMatchersMixin">
 <em class="property">class </em><code class="descclassname">capybara.node.document_matchers.</code><code class="descname">DocumentMatchersMixin</code><a class="reference internal" href="_modules/capybara/node/document_matchers.html#DocumentMatchersMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.document_matchers.DocumentMatchersMixin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="capybara.node.document_matchers.DocumentMatchersMixin.assert_no_title">
 <code class="descname">assert_no_title</code><span class="sig-paren">(</span><em>title</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/document_matchers.html#DocumentMatchersMixin.assert_no_title"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.document_matchers.DocumentMatchersMixin.assert_no_title" title="Permalink to this definition">¶</a></dt>
@@ -466,14 +457,14 @@ performed on the entire document.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>title</strong> (<em>str | RegexObject</em>) – The string that the title should include.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">TitleQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">TitleQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ExpectationNotMet</span></code> – If the assertion hasn’t succeeded during the wait time.</p>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ExpectationNotMet</span></code> – If the assertion hasn’t succeeded during the wait time.</p>
 </td>
 </tr>
 </tbody>
@@ -490,14 +481,14 @@ performed on the entire document.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>title</strong> (<em>str | RegexObject</em>) – The string or regex that the title should match.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">TitleQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">TitleQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ExpectationNotMet</span></code> – If the assertion hasn’t succeeded during the wait time.</p>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ExpectationNotMet</span></code> – If the assertion hasn’t succeeded during the wait time.</p>
 </td>
 </tr>
 </tbody>
@@ -514,7 +505,7 @@ performed on the entire document.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>title</strong> (<em>str | RegexObject</em>) – The string that the title should include.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">TitleQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">TitleQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -538,7 +529,7 @@ performed on the entire document.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>title</strong> (<em>str | RegexObject</em>) – The string or regex that the title should match.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">TitleQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">TitleQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -560,17 +551,17 @@ performed on the entire document.</p>
 <dl class="class">
 <dt id="capybara.node.element.Element">
 <em class="property">class </em><code class="descclassname">capybara.node.element.</code><code class="descname">Element</code><span class="sig-paren">(</span><em>session</em>, <em>base</em>, <em>query_scope</em>, <em>query</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#capybara.node.base.Base" title="capybara.node.base.Base"><code class="xref py py-class docutils literal"><span class="pre">capybara.node.base.Base</span></code></a></p>
-<p>An <a class="reference internal" href="#capybara.node.element.Element" title="capybara.node.element.Element"><code class="xref py py-class docutils literal"><span class="pre">Element</span></code></a> represents a single element on the page. It is possible to interact with the
+<dd><p>Bases: <a class="reference internal" href="#capybara.node.base.Base" title="capybara.node.base.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.node.base.Base</span></code></a></p>
+<p>An <a class="reference internal" href="#capybara.node.element.Element" title="capybara.node.element.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></a> represents a single element on the page. It is possible to interact with the
 contents of this element the same as with a document:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="s2">&quot;selenium&quot;</span><span class="p">,</span> <span class="n">my_app</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="s2">&quot;selenium&quot;</span><span class="p">,</span> <span class="n">my_app</span><span class="p">)</span>
 
 <span class="n">bar</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;#bar&quot;</span><span class="p">)</span>       <span class="c1"># from capybara.node.finders.FindersMixin</span>
 <span class="n">bar</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;Baz&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="s2">&quot;Quox&quot;</span><span class="p">)</span>  <span class="c1"># from capybara.node.actions.ActionsMixin</span>
 </pre></div>
 </div>
-<p><a class="reference internal" href="#capybara.node.element.Element" title="capybara.node.element.Element"><code class="xref py py-class docutils literal"><span class="pre">Element</span></code></a> also has access to HTML attributes and other properties of the element:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">bar</span><span class="o">.</span><span class="n">value</span>
+<p><a class="reference internal" href="#capybara.node.element.Element" title="capybara.node.element.Element"><code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code></a> also has access to HTML attributes and other properties of the element:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bar</span><span class="o">.</span><span class="n">value</span>
 <span class="n">bar</span><span class="o">.</span><span class="n">text</span>
 <span class="n">bar</span><span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
 </pre></div>
@@ -589,7 +580,7 @@ contents of this element the same as with a document:</p>
 
 <dl class="method">
 <dt id="capybara.node.element.Element.click">
-<code class="descname">click</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.click" title="Permalink to this definition">¶</a></dt>
+<code class="descname">click</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.click" title="Permalink to this definition">¶</a></dt>
 <dd><p>Click the element.</p>
 </dd></dl>
 
@@ -601,15 +592,15 @@ contents of this element the same as with a document:</p>
 
 <dl class="method">
 <dt id="capybara.node.element.Element.double_click">
-<code class="descname">double_click</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.double_click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.double_click" title="Permalink to this definition">¶</a></dt>
+<code class="descname">double_click</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.double_click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.double_click" title="Permalink to this definition">¶</a></dt>
 <dd><p>Double-click the element.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="capybara.node.element.Element.drag_to">
-<code class="descname">drag_to</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.drag_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.drag_to" title="Permalink to this definition">¶</a></dt>
+<code class="descname">drag_to</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.drag_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.drag_to" title="Permalink to this definition">¶</a></dt>
 <dd><p>Drag the element to the given other element.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;#foo&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">source</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;#foo&quot;</span><span class="p">)</span>
 <span class="n">target</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;#bar&quot;</span><span class="p">)</span>
 <span class="n">source</span><span class="o">.</span><span class="n">drag_to</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
 </pre></div>
@@ -626,7 +617,7 @@ contents of this element the same as with a document:</p>
 
 <dl class="method">
 <dt id="capybara.node.element.Element.hover">
-<code class="descname">hover</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.hover"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.hover" title="Permalink to this definition">¶</a></dt>
+<code class="descname">hover</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.hover"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.hover" title="Permalink to this definition">¶</a></dt>
 <dd><p>Hover on the element.</p>
 </dd></dl>
 
@@ -657,17 +648,28 @@ contents of this element the same as with a document:</p>
 <dl class="method">
 <dt id="capybara.node.element.Element.reload">
 <code class="descname">reload</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.reload"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.reload" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Reloads the underlying driver node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">This node.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">node.Base</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="capybara.node.element.Element.right_click">
-<code class="descname">right_click</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.right_click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.right_click" title="Permalink to this definition">¶</a></dt>
+<code class="descname">right_click</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.right_click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.right_click" title="Permalink to this definition">¶</a></dt>
 <dd><p>Right-click the element.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="capybara.node.element.Element.select_option">
-<code class="descname">select_option</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.select_option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.select_option" title="Permalink to this definition">¶</a></dt>
+<code class="descname">select_option</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.select_option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.select_option" title="Permalink to this definition">¶</a></dt>
 <dd><p>Select this node if it is an option element inside a select tag.</p>
 </dd></dl>
 
@@ -679,10 +681,10 @@ contents of this element the same as with a document:</p>
 
 <dl class="method">
 <dt id="capybara.node.element.Element.send_keys">
-<code class="descname">send_keys</code><span class="sig-paren">(</span><em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.send_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.send_keys" title="Permalink to this definition">¶</a></dt>
+<code class="descname">send_keys</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.send_keys"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.send_keys" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send keystrokes to the element.</p>
 <p>Examples:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">selenium.webdriver.common.keys</span> <span class="k">import</span> <span class="n">Keys</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">selenium.webdriver.common.keys</span> <span class="k">import</span> <span class="n">Keys</span>
 
 <span class="n">element</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>                  <span class="c1"># =&gt; value: &quot;foo&quot;</span>
 <span class="n">element</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="s2">&quot;tet&quot;</span><span class="p">,</span> <span class="n">Keys</span><span class="o">.</span><span class="n">LEFT</span><span class="p">,</span> <span class="s2">&quot;s&quot;</span><span class="p">)</span>  <span class="c1"># =&gt; value: &quot;test&quot;</span>
@@ -700,7 +702,7 @@ contents of this element the same as with a document:</p>
 
 <dl class="method">
 <dt id="capybara.node.element.Element.set">
-<code class="descname">set</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.set" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the value of the form element to the given value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -721,10 +723,10 @@ contents of this element the same as with a document:</p>
 <dl class="attribute">
 <dt id="capybara.node.element.Element.text">
 <code class="descname">text</code><a class="headerlink" href="#capybara.node.element.Element.text" title="Permalink to this definition">¶</a></dt>
-<dd><p>Retrieve the text of the element. If <a class="reference internal" href="capybara.html#capybara.ignore_hidden_elements" title="capybara.ignore_hidden_elements"><code class="xref py py-data docutils literal"><span class="pre">capybara.ignore_hidden_elements</span></code></a> is <code class="docutils literal"><span class="pre">True</span></code>,
+<dd><p>Retrieve the text of the element. If <a class="reference internal" href="capybara.html#capybara.ignore_hidden_elements" title="capybara.ignore_hidden_elements"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.ignore_hidden_elements</span></code></a> is <code class="docutils literal notranslate"><span class="pre">True</span></code>,
 which it is by default, then this will return only text which is visible. The exact
 semantics of this may differ between drivers, but generally any text within elements with
-<code class="docutils literal"><span class="pre">display:</span> <span class="pre">none</span></code> is ignored.</p>
+<code class="docutils literal notranslate"><span class="pre">display:</span> <span class="pre">none</span></code> is ignored.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -739,7 +741,7 @@ semantics of this may differ between drivers, but generally any text within elem
 
 <dl class="method">
 <dt id="capybara.node.element.Element.unselect_option">
-<code class="descname">unselect_option</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.unselect_option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.unselect_option" title="Permalink to this definition">¶</a></dt>
+<code class="descname">unselect_option</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/element.html#Element.unselect_option"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.element.Element.unselect_option" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unselect this node if it is an option element inside a multiple select tag.</p>
 </dd></dl>
 
@@ -769,18 +771,18 @@ semantics of this may differ between drivers, but generally any text within elem
 <dl class="class">
 <dt id="capybara.node.finders.FindersMixin">
 <em class="property">class </em><code class="descclassname">capybara.node.finders.</code><code class="descname">FindersMixin</code><a class="reference internal" href="_modules/capybara/node/finders.html#FindersMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.finders.FindersMixin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>If the driver is capable of executing JavaScript, finders will wait for a set amount of time and
 continuously retry finding the element until either the element is found or the time expires.
-The length of time <a class="reference internal" href="#capybara.node.finders.FindersMixin.find" title="capybara.node.finders.FindersMixin.find"><code class="xref py py-meth docutils literal"><span class="pre">find()</span></code></a> will wait is controlled through
-<a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal"><span class="pre">capybara.default_max_wait_time</span></code></a> and defaults to 2 seconds.</p>
+The length of time <a class="reference internal" href="#capybara.node.finders.FindersMixin.find" title="capybara.node.finders.FindersMixin.find"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find()</span></code></a> will wait is controlled through
+<a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a> and defaults to 2 seconds.</p>
 <dl class="method">
 <dt id="capybara.node.finders.FindersMixin.ancestor">
 <code class="descname">ancestor</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/finders.html#FindersMixin.ancestor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.finders.FindersMixin.ancestor" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find an <code class="xref py py-class docutils literal"><span class="pre">Element</span></code> based on the given arguments that is also an ancestor of the
-element called on. <code class="docutils literal"><span class="pre">ancestor</span></code> will raise an error if the element is not found.</p>
-<p><code class="docutils literal"><span class="pre">ancestor</span></code> takes the same options as <a class="reference internal" href="#capybara.node.finders.FindersMixin.find" title="capybara.node.finders.FindersMixin.find"><code class="xref py py-meth docutils literal"><span class="pre">find()</span></code></a>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">element</span><span class="o">.</span><span class="n">ancestor</span><span class="p">(</span><span class="s2">&quot;#foo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
+<dd><p>Find an <code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code> based on the given arguments that is also an ancestor of the
+element called on. <code class="docutils literal notranslate"><span class="pre">ancestor</span></code> will raise an error if the element is not found.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ancestor</span></code> takes the same options as <a class="reference internal" href="#capybara.node.finders.FindersMixin.find" title="capybara.node.finders.FindersMixin.find"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find()</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">element</span><span class="o">.</span><span class="n">ancestor</span><span class="p">(</span><span class="s2">&quot;#foo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
 <span class="n">element</span><span class="o">.</span><span class="n">ancestor</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//div[contains(., &#39;bar&#39;)]&quot;</span><span class="p">)</span>
 <span class="n">element</span><span class="o">.</span><span class="n">ancestor</span><span class="p">(</span><span class="s2">&quot;li&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Quox&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Delete&quot;</span><span class="p">)</span>
 </pre></div>
@@ -790,8 +792,8 @@ element called on. <code class="docutils literal"><span class="pre">ancestor</sp
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">AncestorQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">AncestorQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">AncestorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">AncestorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -802,8 +804,8 @@ element called on. <code class="docutils literal"><span class="pre">ancestor</sp
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><code class="xref py py-exc docutils literal"><span class="pre">Ambiguous</span></code> – If more than one element matching element is found.</li>
-<li><code class="xref py py-exc docutils literal"><span class="pre">ElementNotFound</span></code> – If the element can’t be found before time expires.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">Ambiguous</span></code> – If more than one element matching element is found.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">ElementNotFound</span></code> – If the element can’t be found before time expires.</li>
 </ul>
 </td>
 </tr>
@@ -814,10 +816,10 @@ element called on. <code class="docutils literal"><span class="pre">ancestor</sp
 <dl class="method">
 <dt id="capybara.node.finders.FindersMixin.find">
 <code class="descname">find</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/finders.html#FindersMixin.find"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.finders.FindersMixin.find" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find an <code class="xref py py-class docutils literal"><span class="pre">Element</span></code> based on the given arguments. <code class="docutils literal"><span class="pre">find</span></code> will raise an error if the
+<dd><p>Find an <code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code> based on the given arguments. <code class="docutils literal notranslate"><span class="pre">find</span></code> will raise an error if the
 element is not found.</p>
-<p><code class="docutils literal"><span class="pre">find</span></code> takes the same options as <a class="reference internal" href="#capybara.node.finders.FindersMixin.find_all" title="capybara.node.finders.FindersMixin.find_all"><code class="xref py py-meth docutils literal"><span class="pre">find_all()</span></code></a>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;#foo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
+<p><code class="docutils literal notranslate"><span class="pre">find</span></code> takes the same options as <a class="reference internal" href="#capybara.node.finders.FindersMixin.find_all" title="capybara.node.finders.FindersMixin.find_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;#foo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
 <span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//div[contains(., &#39;bar&#39;)]&quot;</span><span class="p">)</span>
 <span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;li&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Quox&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Delete&quot;</span><span class="p">)</span>
 </pre></div>
@@ -827,8 +829,8 @@ element is not found.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -839,8 +841,8 @@ element is not found.</p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><code class="xref py py-exc docutils literal"><span class="pre">Ambiguous</span></code> – If more than one element matching element is found.</li>
-<li><code class="xref py py-exc docutils literal"><span class="pre">ElementNotFound</span></code> – If the element can’t be found before time expires.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">Ambiguous</span></code> – If more than one element matching element is found.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">ElementNotFound</span></code> – If the element can’t be found before time expires.</li>
 </ul>
 </td>
 </tr>
@@ -854,13 +856,13 @@ element is not found.</p>
 <dd><p>Find all elements on the page matching the given selector and options.</p>
 <p>Both XPath and CSS expressions are supported, but Capybara does not try to automatically
 distinguish between them. The following statements are equivalent:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;css&quot;</span><span class="p">,</span> <span class="s2">&quot;a#person_123&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;css&quot;</span><span class="p">,</span> <span class="s2">&quot;a#person_123&quot;</span><span class="p">)</span>
 <span class="n">page</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//a[@id=&#39;person_123&#39;]&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>If the type of selector is left out, Capybara uses <a class="reference internal" href="capybara.html#capybara.default_selector" title="capybara.default_selector"><code class="xref py py-data docutils literal"><span class="pre">capybara.default_selector</span></code></a>. It’s
-set to <code class="docutils literal"><span class="pre">&quot;css&quot;</span></code> by default.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;a#person_123&quot;</span><span class="p">)</span>
+<p>If the type of selector is left out, Capybara uses <a class="reference internal" href="capybara.html#capybara.default_selector" title="capybara.default_selector"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_selector</span></code></a>. It’s
+set to <code class="docutils literal notranslate"><span class="pre">&quot;css&quot;</span></code> by default.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;a#person_123&quot;</span><span class="p">)</span>
 
 <span class="n">capybara</span><span class="o">.</span><span class="n">default_selector</span> <span class="o">=</span> <span class="s2">&quot;xpath&quot;</span>
 <span class="n">page</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;//a[@id=&#39;person_123&#39;]&quot;</span><span class="p">)</span>
@@ -868,27 +870,27 @@ set to <code class="docutils literal"><span class="pre">&quot;css&quot;</span></
 </div>
 <p>The set of found elements can further be restricted by specifying options. It’s possible to
 select elements by their text or visibility:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Home&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Home&quot;</span><span class="p">)</span>
 <span class="n">page</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;#menu li&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>By default if no elements are found, an empty list is returned; however, expectations can be
 set on the number of elements to be found which will trigger Capybara’s waiting behavior for
 the expectations to match. The expectations can be set using:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 <span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">,</span> <span class="n">maximum</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">,</span> <span class="n">minimum</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">,</span> <span class="n">between</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>See <code class="xref py py-func docutils literal"><span class="pre">matches_count()</span></code> for additional information about count matching.</p>
+<p>See <code class="xref py py-func docutils literal notranslate"><span class="pre">matches_count()</span></code> for additional information about count matching.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -898,7 +900,7 @@ the expectations to match. The expectations can be set using:</p>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference internal" href="capybara.html#capybara.result.Result" title="capybara.result.Result">Result</a></p>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ExpectationNotMet</span></code> – The matched results did not meet the expected criteria.</p>
+<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ExpectationNotMet</span></code> – The matched results did not meet the expected criteria.</p>
 </td>
 </tr>
 </tbody>
@@ -908,17 +910,17 @@ the expectations to match. The expectations can be set using:</p>
 <dl class="method">
 <dt id="capybara.node.finders.FindersMixin.find_button">
 <code class="descname">find_button</code><span class="sig-paren">(</span><em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/finders.html#FindersMixin.find_button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.finders.FindersMixin.find_button" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find a button on the page. This can be any <code class="docutils literal"><span class="pre">&lt;input&gt;</span></code> element of type submit, reset, image,
-or button, or it can be a <code class="docutils literal"><span class="pre">&lt;button&gt;</span></code> element. All buttons can be found by their id, value,
-or title. <code class="docutils literal"><span class="pre">&lt;button&gt;</span></code> elements can also be found by their text content, and image
-<code class="docutils literal"><span class="pre">&lt;input&gt;</span></code> elements by their alt attribute.</p>
+<dd><p>Find a button on the page. This can be any <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> element of type submit, reset, image,
+or button, or it can be a <code class="docutils literal notranslate"><span class="pre">&lt;button&gt;</span></code> element. All buttons can be found by their id, value,
+or title. <code class="docutils literal notranslate"><span class="pre">&lt;button&gt;</span></code> elements can also be found by their text content, and image
+<code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> elements by their alt attribute.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em><em>, </em><em>optional</em>) – The id, value, title, text content, alt of image.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -942,7 +944,7 @@ or title. <code class="docutils literal"><span class="pre">&lt;button&gt;</span>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>id</strong> (<em>str</em>) – The id of the element.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -966,7 +968,7 @@ or title. <code class="docutils literal"><span class="pre">&lt;button&gt;</span>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em><em>, </em><em>optional</em>) – Name, id, placeholder, or text of associated label element.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -985,7 +987,7 @@ or title. <code class="docutils literal"><span class="pre">&lt;button&gt;</span>
 <code class="descname">find_first</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/finders.html#FindersMixin.find_first"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.finders.FindersMixin.find_first" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the first element on the page matching the given selector and options, or None if no
 element matches.</p>
-<p>By default, no waiting behavior occurs. However, if <code class="docutils literal"><span class="pre">capybara.wait_on_first_by_default</span></code>
+<p>By default, no waiting behavior occurs. However, if <code class="docutils literal notranslate"><span class="pre">capybara.wait_on_first_by_default</span></code>
 is set to true, it will trigger Capybara’s waiting behavior for a minimum of 1 matching
 element to be found.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -993,8 +995,8 @@ element to be found.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1018,7 +1020,7 @@ element to be found.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em><em>, </em><em>optional</em>) – ID, title, text, or alt of enclosed img element.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1035,10 +1037,10 @@ element to be found.</p>
 <dl class="method">
 <dt id="capybara.node.finders.FindersMixin.sibling">
 <code class="descname">sibling</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/finders.html#FindersMixin.sibling"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.finders.FindersMixin.sibling" title="Permalink to this definition">¶</a></dt>
-<dd><p>Find an <code class="xref py py-class docutils literal"><span class="pre">Element</span></code> based on the given arguments that is also a sibling of the
-element called on. <code class="docutils literal"><span class="pre">sibling</span></code> will raise an error if the element is not found.</p>
-<p><code class="docutils literal"><span class="pre">sibling</span></code> takes the same options as <a class="reference internal" href="#capybara.node.finders.FindersMixin.find" title="capybara.node.finders.FindersMixin.find"><code class="xref py py-meth docutils literal"><span class="pre">find()</span></code></a>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">element</span><span class="o">.</span><span class="n">sibling</span><span class="p">(</span><span class="s2">&quot;#foo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
+<dd><p>Find an <code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code> based on the given arguments that is also a sibling of the
+element called on. <code class="docutils literal notranslate"><span class="pre">sibling</span></code> will raise an error if the element is not found.</p>
+<p><code class="docutils literal notranslate"><span class="pre">sibling</span></code> takes the same options as <a class="reference internal" href="#capybara.node.finders.FindersMixin.find" title="capybara.node.finders.FindersMixin.find"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find()</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">element</span><span class="o">.</span><span class="n">sibling</span><span class="p">(</span><span class="s2">&quot;#foo&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;.bar&quot;</span><span class="p">)</span>
 <span class="n">element</span><span class="o">.</span><span class="n">sibling</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//div[contains(., &#39;bar&#39;)]&quot;</span><span class="p">)</span>
 <span class="n">element</span><span class="o">.</span><span class="n">sibling</span><span class="p">(</span><span class="s2">&quot;li&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Quox&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Delete&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1048,8 +1050,8 @@ element called on. <code class="docutils literal"><span class="pre">sibling</spa
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">SiblingQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SiblingQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">SiblingQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SiblingQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1060,8 +1062,8 @@ element called on. <code class="docutils literal"><span class="pre">sibling</spa
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><ul class="first last simple">
-<li><code class="xref py py-exc docutils literal"><span class="pre">Ambiguous</span></code> – If more than one element matching element is found.</li>
-<li><code class="xref py py-exc docutils literal"><span class="pre">ElementNotFound</span></code> – If the element can’t be found before time expires.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">Ambiguous</span></code> – If more than one element matching element is found.</li>
+<li><code class="xref py py-exc docutils literal notranslate"><span class="pre">ElementNotFound</span></code> – If the element can’t be found before time expires.</li>
 </ul>
 </td>
 </tr>
@@ -1077,18 +1079,18 @@ element called on. <code class="docutils literal"><span class="pre">sibling</spa
 <dl class="class">
 <dt id="capybara.node.matchers.MatchersMixin">
 <em class="property">class </em><code class="descclassname">capybara.node.matchers.</code><code class="descname">MatchersMixin</code><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <dl class="method">
 <dt id="capybara.node.matchers.MatchersMixin.assert_matches_selector">
 <code class="descname">assert_matches_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.assert_matches_selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.assert_matches_selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that the current node matches a given selector.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">node</span><span class="o">.</span><span class="n">assert_matches_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">node</span><span class="o">.</span><span class="n">assert_matches_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">)</span>
 <span class="n">node</span><span class="o">.</span><span class="n">assert_matches_selector</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//p[@id=&#39;foo&#39;]&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>It also accepts all options that <code class="xref py py-meth docutils literal"><span class="pre">find_all()</span></code> accepts, such as <code class="docutils literal"><span class="pre">text</span></code> and
-<code class="docutils literal"><span class="pre">visible</span></code>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">node</span><span class="o">.</span><span class="n">assert_matches_selector</span><span class="p">(</span><span class="s2">&quot;li&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Horse&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<p>It also accepts all options that <code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code> accepts, such as <code class="docutils literal notranslate"><span class="pre">text</span></code> and
+<code class="docutils literal notranslate"><span class="pre">visible</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">node</span><span class="o">.</span><span class="n">assert_matches_selector</span><span class="p">(</span><span class="s2">&quot;li&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Horse&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1096,15 +1098,15 @@ element called on. <code class="docutils literal"><span class="pre">sibling</spa
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ExpectationNotMet</span></code> – If the selector does not match.</p>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ExpectationNotMet</span></code> – If the selector does not match.</p>
 </td>
 </tr>
 </tbody>
@@ -1115,11 +1117,11 @@ element called on. <code class="docutils literal"><span class="pre">sibling</spa
 <dt id="capybara.node.matchers.MatchersMixin.assert_no_selector">
 <code class="descname">assert_no_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.assert_no_selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.assert_no_selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that a given selector is not on the page or a descendant of the current node. Usage
-is identical to <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.assert_selector" title="capybara.node.matchers.MatchersMixin.assert_selector"><code class="xref py py-meth docutils literal"><span class="pre">assert_selector()</span></code></a>.</p>
-<p>Query options such as <code class="docutils literal"><span class="pre">count</span></code>, <code class="docutils literal"><span class="pre">minimum</span></code>, and <code class="docutils literal"><span class="pre">between</span></code> are considered to be an
+is identical to <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.assert_selector" title="capybara.node.matchers.MatchersMixin.assert_selector"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assert_selector()</span></code></a>.</p>
+<p>Query options such as <code class="docutils literal notranslate"><span class="pre">count</span></code>, <code class="docutils literal notranslate"><span class="pre">minimum</span></code>, and <code class="docutils literal notranslate"><span class="pre">between</span></code> are considered to be an
 integral part of the selector. This will return True, for example, if a page contains 4
 anchors but the query expects 5:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_no_selector</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">minimum</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Found, raises ExpectationNotMet</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_no_selector</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">minimum</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># Found, raises ExpectationNotMet</span>
 <span class="n">page</span><span class="o">.</span><span class="n">assert_no_selector</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>    <span class="c1"># Found, raises ExpectationNotMet</span>
 <span class="n">page</span><span class="o">.</span><span class="n">assert_no_selector</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>    <span class="c1"># Not Found, returns True</span>
 </pre></div>
@@ -1129,15 +1131,15 @@ anchors but the query expects 5:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ExpectationNotMet</span></code> – The given selector matched.</p>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ExpectationNotMet</span></code> – The given selector matched.</p>
 </td>
 </tr>
 </tbody>
@@ -1154,15 +1156,15 @@ HTML tags.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">TextQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">TextQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">TextQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">TextQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ExpectationNotMet</span></code> – If the assertion hasn’t succeeded during the wait time.</p>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ExpectationNotMet</span></code> – If the assertion hasn’t succeeded during the wait time.</p>
 </td>
 </tr>
 </tbody>
@@ -1173,21 +1175,21 @@ HTML tags.</p>
 <dt id="capybara.node.matchers.MatchersMixin.assert_not_match_selector">
 <code class="descname">assert_not_match_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.assert_not_match_selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.assert_not_match_selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that the current node does not match a given selector. See
-<a class="reference internal" href="#capybara.node.matchers.MatchersMixin.assert_matches_selector" title="capybara.node.matchers.MatchersMixin.assert_matches_selector"><code class="xref py py-meth docutils literal"><span class="pre">assert_matches_selector()</span></code></a>.</p>
+<a class="reference internal" href="#capybara.node.matchers.MatchersMixin.assert_matches_selector" title="capybara.node.matchers.MatchersMixin.assert_matches_selector"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assert_matches_selector()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ExpectationNotMet</span></code> – If the selector matches.</p>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ExpectationNotMet</span></code> – If the selector matches.</p>
 </td>
 </tr>
 </tbody>
@@ -1198,26 +1200,26 @@ HTML tags.</p>
 <dt id="capybara.node.matchers.MatchersMixin.assert_selector">
 <code class="descname">assert_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.assert_selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.assert_selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that a given selector is on the page or a descendant of the current node.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>By default it will check if the expression occurs at least once, but a different number can
 be specified.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;p.foo&quot;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;p.foo&quot;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>This will check if the expression occurs exactly 4 times. See <code class="xref py py-meth docutils literal"><span class="pre">find_all()</span></code> for other
+<p>This will check if the expression occurs exactly 4 times. See <code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code> for other
 available result size options.</p>
-<p>If a <code class="docutils literal"><span class="pre">count</span></code> of 0 is specified, it will behave like <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.assert_no_selector" title="capybara.node.matchers.MatchersMixin.assert_no_selector"><code class="xref py py-meth docutils literal"><span class="pre">assert_no_selector()</span></code></a>; however,
+<p>If a <code class="docutils literal notranslate"><span class="pre">count</span></code> of 0 is specified, it will behave like <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.assert_no_selector" title="capybara.node.matchers.MatchersMixin.assert_no_selector"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assert_no_selector()</span></code></a>; however,
 use of that method is preferred over this one.</p>
-<p>It also accepts all options that <code class="xref py py-meth docutils literal"><span class="pre">find_all()</span></code> accepts, such as <code class="docutils literal"><span class="pre">text</span></code> and
-<code class="docutils literal"><span class="pre">visible</span></code>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;li&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Horse&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<p>It also accepts all options that <code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code> accepts, such as <code class="docutils literal notranslate"><span class="pre">text</span></code> and
+<code class="docutils literal notranslate"><span class="pre">visible</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;li&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Horse&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">assert_selector</span></code> can also accept XPath expressions generated by the <code class="docutils literal"><span class="pre">xpath-py</span></code>
+<p><code class="docutils literal notranslate"><span class="pre">assert_selector</span></code> can also accept XPath expressions generated by the <code class="docutils literal notranslate"><span class="pre">xpath-py</span></code>
 package:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">xpath</span> <span class="k">import</span> <span class="n">dsl</span> <span class="k">as</span> <span class="n">x</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">xpath</span> <span class="k">import</span> <span class="n">dsl</span> <span class="k">as</span> <span class="n">x</span>
 
 <span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">descendant</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">))</span>
 </pre></div>
@@ -1227,15 +1229,15 @@ package:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ExpectationNotMet</span></code> – The given selector did not match.</p>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ExpectationNotMet</span></code> – The given selector did not match.</p>
 </td>
 </tr>
 </tbody>
@@ -1251,15 +1253,15 @@ package:</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">TextQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">TextQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">TextQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">TextQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">True</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal"><span class="pre">ExpectationNotMet</span></code> – If the assertion hasn’t succeeded during the wait time.</p>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ExpectationNotMet</span></code> – If the assertion hasn’t succeeded during the wait time.</p>
 </td>
 </tr>
 </tbody>
@@ -1276,7 +1278,7 @@ package:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em>) – The text, value, or id of a button to check for.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1301,7 +1303,7 @@ value, or id, that is currently checked.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em>) – The label, name, or id of a checked field.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1318,25 +1320,25 @@ value, or id, that is currently checked.</p>
 <dl class="method">
 <dt id="capybara.node.matchers.MatchersMixin.has_content">
 <code class="descname">has_content</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.has_content" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_text" title="capybara.node.matchers.MatchersMixin.has_text"><code class="xref py py-meth docutils literal"><span class="pre">has_text()</span></code></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_text" title="capybara.node.matchers.MatchersMixin.has_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_text()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="capybara.node.matchers.MatchersMixin.has_css">
 <code class="descname">has_css</code><span class="sig-paren">(</span><em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.has_css"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.has_css" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given CSS selector is on the page or a descendant of the current node.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_css</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_css</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>By default it will check if the selector occurs at least once, but a different number can
 be specified.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_css</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_css</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This will check if the selector occurs exactly 4 times.</p>
-<p>It also accepts all options that <code class="xref py py-meth docutils literal"><span class="pre">find_all()</span></code> accepts, such as <code class="docutils literal"><span class="pre">text</span></code> and
-<code class="docutils literal"><span class="pre">visible</span></code>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_css</span><span class="p">(</span><span class="s2">&quot;li&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Horse&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<p>It also accepts all options that <code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code> accepts, such as <code class="docutils literal notranslate"><span class="pre">text</span></code> and
+<code class="docutils literal notranslate"><span class="pre">visible</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_css</span><span class="p">(</span><span class="s2">&quot;li&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Horse&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1345,7 +1347,7 @@ be specified.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>path</strong> (<em>str</em>) – A CSS selector.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1364,8 +1366,8 @@ be specified.</p>
 <code class="descname">has_field</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.has_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.has_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a form field with the given label, name, or id.</p>
 <p>For text fields and other textual fields, such as textareas and HTML5 email/url/etc. fields,
-it’s possible to specify a <code class="docutils literal"><span class="pre">value</span></code> argument to specify the text the field should contain:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_field</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Jonas&quot;</span><span class="p">)</span>
+it’s possible to specify a <code class="docutils literal notranslate"><span class="pre">value</span></code> argument to specify the text the field should contain:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_field</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Jonas&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1374,7 +1376,7 @@ it’s possible to specify a <code class="docutils literal"><span class="pre">va
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em>) – The label, name, or id of a field to check for.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1398,7 +1400,7 @@ it’s possible to specify a <code class="docutils literal"><span class="pre">va
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em>) – The text or id of a link to check for.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1422,7 +1424,7 @@ it’s possible to specify a <code class="docutils literal"><span class="pre">va
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em>) – The text, value, or id of a button to check for.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1447,7 +1449,7 @@ value, or id that is currently checked.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em>) – The label, name, or id of a checked field.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1464,21 +1466,21 @@ value, or id that is currently checked.</p>
 <dl class="method">
 <dt id="capybara.node.matchers.MatchersMixin.has_no_content">
 <code class="descname">has_no_content</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.has_no_content" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_no_text" title="capybara.node.matchers.MatchersMixin.has_no_text"><code class="xref py py-meth docutils literal"><span class="pre">has_no_text()</span></code></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_no_text" title="capybara.node.matchers.MatchersMixin.has_no_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_no_text()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="capybara.node.matchers.MatchersMixin.has_no_css">
 <code class="descname">has_no_css</code><span class="sig-paren">(</span><em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.has_no_css"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.has_no_css" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given CSS selector is not on the page or a descendant of the current node.
-Usage is identical to <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_css" title="capybara.node.matchers.MatchersMixin.has_css"><code class="xref py py-meth docutils literal"><span class="pre">has_css()</span></code></a>.</p>
+Usage is identical to <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_css" title="capybara.node.matchers.MatchersMixin.has_css"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_css()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>path</strong> (<em>str</em>) – A CSS Selector.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1496,14 +1498,14 @@ Usage is identical to <a class="reference internal" href="#capybara.node.matcher
 <dt id="capybara.node.matchers.MatchersMixin.has_no_field">
 <code class="descname">has_no_field</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.has_no_field"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.has_no_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no form field with the given label, name, or id. See
-<a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_field" title="capybara.node.matchers.MatchersMixin.has_field"><code class="xref py py-meth docutils literal"><span class="pre">has_field()</span></code></a>.</p>
+<a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_field" title="capybara.node.matchers.MatchersMixin.has_field"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_field()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em>) – The label, name, or id of a field to check for.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1527,7 +1529,7 @@ Usage is identical to <a class="reference internal" href="#capybara.node.matcher
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em>) – The text or id of a link to check for.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1545,14 +1547,14 @@ Usage is identical to <a class="reference internal" href="#capybara.node.matcher
 <dt id="capybara.node.matchers.MatchersMixin.has_no_select">
 <code class="descname">has_no_select</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.has_no_select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.has_no_select" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no select field with the given label, name, or id.
-See <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_select" title="capybara.node.matchers.MatchersMixin.has_select"><code class="xref py py-meth docutils literal"><span class="pre">has_select()</span></code></a>.</p>
+See <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_select" title="capybara.node.matchers.MatchersMixin.has_select"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_select()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em>) – The label, name, or id of a select box.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1570,14 +1572,14 @@ See <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.ha
 <dt id="capybara.node.matchers.MatchersMixin.has_no_selector">
 <code class="descname">has_no_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.has_no_selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.has_no_selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given selector is not on the page or a descendant of the current node. Usage is
-identical to <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_selector" title="capybara.node.matchers.MatchersMixin.has_selector"><code class="xref py py-meth docutils literal"><span class="pre">has_selector()</span></code></a>.</p>
+identical to <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_selector" title="capybara.node.matchers.MatchersMixin.has_selector"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_selector()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1595,14 +1597,14 @@ identical to <a class="reference internal" href="#capybara.node.matchers.Matcher
 <dt id="capybara.node.matchers.MatchersMixin.has_no_table">
 <code class="descname">has_no_table</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.has_no_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.has_no_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no table with the given id or caption. See
-<a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_table" title="capybara.node.matchers.MatchersMixin.has_table"><code class="xref py py-meth docutils literal"><span class="pre">has_table()</span></code></a>.</p>
+<a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_table" title="capybara.node.matchers.MatchersMixin.has_table"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_table()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em>) – The id or caption of a table.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1626,8 +1628,8 @@ tags and normalizing whitespace.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">TextQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">TextQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">TextQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">TextQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1652,7 +1654,7 @@ value, or id, that is currently unchecked.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em>) – The label, name, or id of an unchecked field.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1670,14 +1672,14 @@ value, or id, that is currently unchecked.</p>
 <dt id="capybara.node.matchers.MatchersMixin.has_no_xpath">
 <code class="descname">has_no_xpath</code><span class="sig-paren">(</span><em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.has_no_xpath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.has_no_xpath" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given XPath expression is not on the page or a descendant of the current node.
-Usage is identical to <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_xpath" title="capybara.node.matchers.MatchersMixin.has_xpath"><code class="xref py py-meth docutils literal"><span class="pre">has_xpath()</span></code></a>.</p>
+Usage is identical to <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_xpath" title="capybara.node.matchers.MatchersMixin.has_xpath"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_xpath()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>path</strong> (<em>str</em>) – An XPath expression.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1696,19 +1698,19 @@ Usage is identical to <a class="reference internal" href="#capybara.node.matcher
 <code class="descname">has_select</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.has_select"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.has_select" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a select field with the given label, name, or id.</p>
 <p>It can be specified which option should currently be selected:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_select</span><span class="p">(</span><span class="s2">&quot;Language&quot;</span><span class="p">,</span> <span class="n">selected</span><span class="o">=</span><span class="s2">&quot;German&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_select</span><span class="p">(</span><span class="s2">&quot;Language&quot;</span><span class="p">,</span> <span class="n">selected</span><span class="o">=</span><span class="s2">&quot;German&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>For multiple select boxes, several options may be specified:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_select</span><span class="p">(</span><span class="s2">&quot;Language&quot;</span><span class="p">,</span> <span class="n">selected</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;English&quot;</span><span class="p">,</span> <span class="s2">&quot;German&quot;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_select</span><span class="p">(</span><span class="s2">&quot;Language&quot;</span><span class="p">,</span> <span class="n">selected</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;English&quot;</span><span class="p">,</span> <span class="s2">&quot;German&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>It’s also possible to check if the exact set of options exists for this select box:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_select</span><span class="p">(</span><span class="s2">&quot;Language&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;English&quot;</span><span class="p">,</span> <span class="s2">&quot;German&quot;</span><span class="p">,</span> <span class="s2">&quot;Spanish&quot;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_select</span><span class="p">(</span><span class="s2">&quot;Language&quot;</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;English&quot;</span><span class="p">,</span> <span class="s2">&quot;German&quot;</span><span class="p">,</span> <span class="s2">&quot;Spanish&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>You can also check for a partial set of options:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_select</span><span class="p">(</span><span class="s2">&quot;Language&quot;</span><span class="p">,</span> <span class="n">with_options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;English&quot;</span><span class="p">,</span> <span class="s2">&quot;German&quot;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_select</span><span class="p">(</span><span class="s2">&quot;Language&quot;</span><span class="p">,</span> <span class="n">with_options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;English&quot;</span><span class="p">,</span> <span class="s2">&quot;German&quot;</span><span class="p">])</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1717,7 +1719,7 @@ Usage is identical to <a class="reference internal" href="#capybara.node.matcher
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em>) – The label, name, or id of a select box.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1735,23 +1737,23 @@ Usage is identical to <a class="reference internal" href="#capybara.node.matcher
 <dt id="capybara.node.matchers.MatchersMixin.has_selector">
 <code class="descname">has_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.has_selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.has_selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given selector is on the page or a descendant of the current node.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">)</span>
 <span class="n">page</span><span class="o">.</span><span class="n">has_selector</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;.//p[@id=&#39;foo&#39;]&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>By default it will check if the expression occurs at least once, but a different number can
 be specified.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_selector</span><span class="p">(</span><span class="s2">&quot;p.foo&quot;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_selector</span><span class="p">(</span><span class="s2">&quot;p.foo&quot;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This will check if the expression occurs exactly 4 times.</p>
-<p>It also accepts all options that <code class="xref py py-meth docutils literal"><span class="pre">find_all()</span></code> accepts, such as <code class="docutils literal"><span class="pre">text</span></code> and
-<code class="docutils literal"><span class="pre">visible</span></code>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_selector</span><span class="p">(</span><span class="s2">&quot;li&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Horse&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<p>It also accepts all options that <code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code> accepts, such as <code class="docutils literal notranslate"><span class="pre">text</span></code> and
+<code class="docutils literal notranslate"><span class="pre">visible</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_selector</span><span class="p">(</span><span class="s2">&quot;li&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;Horse&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">has_selector</span></code> can also accept XPath expressions generated by the <code class="docutils literal"><span class="pre">xpath-py</span></code> package:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">xpath</span> <span class="k">import</span> <span class="n">dsl</span> <span class="k">as</span> <span class="n">x</span>
+<p><code class="docutils literal notranslate"><span class="pre">has_selector</span></code> can also accept XPath expressions generated by the <code class="docutils literal notranslate"><span class="pre">xpath-py</span></code> package:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">xpath</span> <span class="k">import</span> <span class="n">dsl</span> <span class="k">as</span> <span class="n">x</span>
 
 <span class="n">page</span><span class="o">.</span><span class="n">has_selector</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">descendant</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">))</span>
 </pre></div>
@@ -1761,8 +1763,8 @@ be specified.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1780,7 +1782,7 @@ be specified.</p>
 <dt id="capybara.node.matchers.MatchersMixin.has_table">
 <code class="descname">has_table</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.has_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.has_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a table with the given id or caption:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_table</span><span class="p">(</span><span class="s2">&quot;People&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_table</span><span class="p">(</span><span class="s2">&quot;People&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1789,7 +1791,7 @@ be specified.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em>) – The id or caption of a table.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1812,7 +1814,7 @@ whitespace isn’t normalized in a passed regular expression as normalizing whit
 regular expression isn’t easy and doesn’t seem to be worth it.</p>
 <p>By default it will check if the text occurs at least once, but a different number can be
 specified.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_text</span><span class="p">(</span><span class="s2">&quot;lorem ipsum&quot;</span><span class="p">,</span> <span class="n">between</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_text</span><span class="p">(</span><span class="s2">&quot;lorem ipsum&quot;</span><span class="p">,</span> <span class="n">between</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1820,8 +1822,8 @@ specified.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">TextQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">TextQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">TextQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">TextQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1846,7 +1848,7 @@ value, or id, that is currently unchecked.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>locator</strong> (<em>str</em>) – The label, name, or id of an unchecked field.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1864,11 +1866,11 @@ value, or id, that is currently unchecked.</p>
 <dt id="capybara.node.matchers.MatchersMixin.has_xpath">
 <code class="descname">has_xpath</code><span class="sig-paren">(</span><em>query</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.has_xpath"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.has_xpath" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given XPath expression is on the page or a descendant of the current node.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">has_xpath</span><span class="p">(</span><span class="s2">&quot;.//p[@id=&#39;foo&#39;]&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">has_xpath</span><span class="p">(</span><span class="s2">&quot;.//p[@id=&#39;foo&#39;]&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p><code class="docutils literal"><span class="pre">has_xpath</span></code> can also accept XPath expressions generated by the <code class="docutils literal"><span class="pre">xpath-py</span></code> package:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">xpath</span> <span class="k">import</span> <span class="n">dsl</span> <span class="k">as</span> <span class="n">x</span>
+<p><code class="docutils literal notranslate"><span class="pre">has_xpath</span></code> can also accept XPath expressions generated by the <code class="docutils literal notranslate"><span class="pre">xpath-py</span></code> package:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">xpath</span> <span class="k">import</span> <span class="n">dsl</span> <span class="k">as</span> <span class="n">x</span>
 
 <span class="n">session</span><span class="o">.</span><span class="n">has_xpath</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">descendant</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">))</span>
 </pre></div>
@@ -1879,7 +1881,7 @@ value, or id, that is currently unchecked.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>query</strong> (<em>str</em>) – An XPath expression.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1903,7 +1905,7 @@ value, or id, that is currently unchecked.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>css</strong> (<em>str</em>) – The CSS selector to match against the current node.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1926,8 +1928,8 @@ value, or id, that is currently unchecked.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1952,7 +1954,7 @@ value, or id, that is currently unchecked.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>xpath</strong> (<em>str | xpath.expression.Expression</em>) – The XPath expression to match against the
 current node.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1976,7 +1978,7 @@ current node.</li>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>css</strong> (<em>str</em>) – The CSS selector to match against the current node.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -1994,14 +1996,14 @@ current node.</li>
 <dt id="capybara.node.matchers.MatchersMixin.not_match_selector">
 <code class="descname">not_match_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/matchers.html#MatchersMixin.not_match_selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.not_match_selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the current node does not match the given selector. Usage is identical to
-<a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_selector" title="capybara.node.matchers.MatchersMixin.has_selector"><code class="xref py py-meth docutils literal"><span class="pre">has_selector()</span></code></a>.</p>
+<a class="reference internal" href="#capybara.node.matchers.MatchersMixin.has_selector" title="capybara.node.matchers.MatchersMixin.has_selector"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_selector()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>*args</strong> – Variable length argument list for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -2026,7 +2028,7 @@ current node.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>xpath</strong> (<em>str | xpath.expression.Expression</em>) – The XPath expression to match against the
 current node.</li>
-<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal"><span class="pre">SelectorQuery</span></code>.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
 </tr>
@@ -2043,13 +2045,13 @@ current node.</li>
 <dl class="method">
 <dt id="capybara.node.matchers.MatchersMixin.refute_matches_selector">
 <code class="descname">refute_matches_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.refute_matches_selector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.assert_not_match_selector" title="capybara.node.matchers.MatchersMixin.assert_not_match_selector"><code class="xref py py-meth docutils literal"><span class="pre">assert_not_match_selector()</span></code></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.assert_not_match_selector" title="capybara.node.matchers.MatchersMixin.assert_not_match_selector"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assert_not_match_selector()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="capybara.node.matchers.MatchersMixin.refute_selector">
 <code class="descname">refute_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.node.matchers.MatchersMixin.refute_selector" title="Permalink to this definition">¶</a></dt>
-<dd><p>Alias for <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.assert_no_selector" title="capybara.node.matchers.MatchersMixin.assert_no_selector"><code class="xref py py-meth docutils literal"><span class="pre">assert_no_selector()</span></code></a>.</p>
+<dd><p>Alias for <a class="reference internal" href="#capybara.node.matchers.MatchersMixin.assert_no_selector" title="capybara.node.matchers.MatchersMixin.assert_no_selector"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assert_no_selector()</span></code></a>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -2060,10 +2062,10 @@ current node.</li>
 <dl class="class">
 <dt id="capybara.node.simple.Simple">
 <em class="property">class </em><code class="descclassname">capybara.node.simple.</code><code class="descname">Simple</code><span class="sig-paren">(</span><em>native</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/node/simple.html#Simple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.node.simple.Simple" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="#capybara.node.finders.FindersMixin" title="capybara.node.finders.FindersMixin"><code class="xref py py-class docutils literal"><span class="pre">capybara.node.finders.FindersMixin</span></code></a>, <a class="reference internal" href="#capybara.node.matchers.MatchersMixin" title="capybara.node.matchers.MatchersMixin"><code class="xref py py-class docutils literal"><span class="pre">capybara.node.matchers.MatchersMixin</span></code></a>, <a class="reference internal" href="#capybara.node.document_matchers.DocumentMatchersMixin" title="capybara.node.document_matchers.DocumentMatchersMixin"><code class="xref py py-class docutils literal"><span class="pre">capybara.node.document_matchers.DocumentMatchersMixin</span></code></a>, <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
-<p>A <a class="reference internal" href="#capybara.node.simple.Simple" title="capybara.node.simple.Simple"><code class="xref py py-class docutils literal"><span class="pre">Simple</span></code></a> is a simpler version of <code class="xref py py-class docutils literal"><span class="pre">Base</span></code> which includes only
-<code class="xref py py-class docutils literal"><span class="pre">FindersMixin</span></code> and <code class="xref py py-class docutils literal"><span class="pre">MatchersMixin</span></code> and does not include <code class="xref py py-class docutils literal"><span class="pre">ActionsMixin</span></code>.
-This type of node is returned when using <a class="reference internal" href="capybara.html#capybara.string" title="capybara.string"><code class="xref py py-func docutils literal"><span class="pre">capybara.string()</span></code></a>.</p>
+<dd><p>Bases: <a class="reference internal" href="#capybara.node.finders.FindersMixin" title="capybara.node.finders.FindersMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.node.finders.FindersMixin</span></code></a>, <a class="reference internal" href="#capybara.node.matchers.MatchersMixin" title="capybara.node.matchers.MatchersMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.node.matchers.MatchersMixin</span></code></a>, <a class="reference internal" href="#capybara.node.document_matchers.DocumentMatchersMixin" title="capybara.node.document_matchers.DocumentMatchersMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.node.document_matchers.DocumentMatchersMixin</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A <a class="reference internal" href="#capybara.node.simple.Simple" title="capybara.node.simple.Simple"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simple</span></code></a> is a simpler version of <code class="xref py py-class docutils literal notranslate"><span class="pre">Base</span></code> which includes only
+<code class="xref py py-class docutils literal notranslate"><span class="pre">FindersMixin</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">MatchersMixin</span></code> and does not include <code class="xref py py-class docutils literal notranslate"><span class="pre">ActionsMixin</span></code>.
+This type of node is returned when using <a class="reference internal" href="capybara.html#capybara.string" title="capybara.string"><code class="xref py py-func docutils literal notranslate"><span class="pre">capybara.string()</span></code></a>.</p>
 <p>It is useful in that it does not require a session, an application, or a driver, but can still
 use Capybara’s finders and matchers on any string that contains HTML.</p>
 <dl class="attribute">
@@ -2188,12 +2190,14 @@ use Capybara’s finders and matchers on any string that contains HTML.</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -2204,7 +2208,7 @@ use Capybara’s finders and matchers on any string that contains HTML.</p>
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

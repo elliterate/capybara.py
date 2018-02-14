@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>capybara.tests package &#8212; Capybara 0.1.3 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.3',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -29,8 +21,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -44,13 +35,13 @@
 <a class="reference external" href="https://docs.pytest.org/en/latest/plugins.html">a pytest plugin</a>.</p>
 <div class="section" id="id1">
 <h2><span class="target" id="using">Using</span><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>To use, add the pytest plugin in your <code class="docutils literal"><span class="pre">conftest.py</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pytest_plugins</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;capybara.tests.pytest_plugin&quot;</span><span class="p">]</span>
+<p>To use, add the pytest plugin in your <code class="docutils literal notranslate"><span class="pre">conftest.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest_plugins</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;capybara.tests.pytest_plugin&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Then, add a test file (e.g., <code class="docutils literal"><span class="pre">tests/test_my_custom_driver.py</span></code>) that registers your driver and
+<p>Then, add a test file (e.g., <code class="docutils literal notranslate"><span class="pre">tests/test_my_custom_driver.py</span></code>) that registers your driver and
 instantiates a test suite:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
 <span class="kn">from</span> <span class="nn">capybara.tests.suite</span> <span class="k">import</span> <span class="n">DriverSuite</span>
 
 
@@ -75,10 +66,10 @@ be included and run against your registered driver.</p>
 <div class="section" id="id2">
 <h2><span class="target" id="including-implicit-test-dependencies">Including implicit test dependencies</span><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>This test suite relies on a number of third-party dependencies that, because they are not needed
-for the operation of Capybara itself, are not included in its <code class="docutils literal"><span class="pre">requires</span></code> configuration and thus
+for the operation of Capybara itself, are not included in its <code class="docutils literal notranslate"><span class="pre">requires</span></code> configuration and thus
 will <em>not</em> be automatically pulled in by your package. You will need to manually add and maintain
-these dependencies in the <code class="docutils literal"><span class="pre">tests_require</span></code> configuration of your <code class="docutils literal"><span class="pre">setup.py</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span>
+these dependencies in the <code class="docutils literal notranslate"><span class="pre">tests_require</span></code> configuration of your <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">setup</span><span class="p">(</span>
     <span class="c1"># ...</span>
     <span class="n">tests_require</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;flaky&quot;</span><span class="p">,</span> <span class="s2">&quot;flask&quot;</span><span class="p">,</span> <span class="s2">&quot;mock&quot;</span><span class="p">,</span> <span class="s2">&quot;py&quot;</span><span class="p">,</span> <span class="s2">&quot;pytest &gt;= 3&quot;</span><span class="p">,</span> <span class="s2">&quot;werkzeug&quot;</span><span class="p">])</span>  <span class="c1"># as of writing</span>
 </pre></div>
@@ -91,7 +82,7 @@ these dependencies in the <code class="docutils literal"><span class="pre">tests
 <dl class="class">
 <dt id="capybara.tests.suite.DriverSuite">
 <em class="property">class </em><code class="descclassname">capybara.tests.suite.</code><code class="descname">DriverSuite</code><span class="sig-paren">(</span><em>driver_name</em>, <em>skip=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/tests/suite.html#DriverSuite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.tests.suite.DriverSuite" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Represents a suite of tests that should be run against a particular driver.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -160,12 +151,14 @@ the suite marked as requiring these features will be skipped.</li>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -176,7 +169,7 @@ the suite marked as requiring these features will be skipped.</li>
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

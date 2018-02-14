@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Capybara &#8212; Capybara 0.1.3 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.3',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -29,8 +21,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -43,11 +34,11 @@
 <p>Capybara helps you test web applications by simulating how a real user would
 interact with your app. It is agnostic about the driver running your tests and
 comes with Werkzeug and Selenium support built in.</p>
-<p><strong>Note: Firefox 48+</strong> If you’re using Firefox with <code class="docutils literal"><span class="pre">selenium</span></code> and want full
-functionality stay on either Firefox <a class="reference external" href="https://ftp.mozilla.org/pub/firefox/releases/45.0esr/">45.0esr</a> or <a class="reference external" href="https://ftp.mozilla.org/pub/firefox/releases/47.0.1/">47.0.1</a>. If using <code class="docutils literal"><span class="pre">selenium</span></code>
-3.0+ this will require configuring your driver with the <code class="docutils literal"><span class="pre">&quot;marionette&quot;:</span> <span class="pre">False</span></code>
+<p><strong>Note: Firefox 48+</strong> If you’re using Firefox with <code class="docutils literal notranslate"><span class="pre">selenium</span></code> and want full
+functionality stay on either Firefox <a class="reference external" href="https://ftp.mozilla.org/pub/firefox/releases/45.0esr/">45.0esr</a> or <a class="reference external" href="https://ftp.mozilla.org/pub/firefox/releases/47.0.1/">47.0.1</a>. If using <code class="docutils literal notranslate"><span class="pre">selenium</span></code>
+3.0+ this will require configuring your driver with the <code class="docutils literal notranslate"><span class="pre">&quot;marionette&quot;:</span> <span class="pre">False</span></code>
 capability as shown below:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
 
 <span class="nd">@capybara</span><span class="o">.</span><span class="n">register_driver</span><span class="p">(</span><span class="s2">&quot;selenium&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">init_selenium_driver</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
@@ -61,7 +52,7 @@ capability as shown below:</p>
     <span class="k">return</span> <span class="n">Driver</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">browser</span><span class="o">=</span><span class="s2">&quot;firefox&quot;</span><span class="p">,</span> <span class="n">desired_capabilities</span><span class="o">=</span><span class="n">capabilities</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Using Firefox 48+ requires <code class="docutils literal"><span class="pre">geckodriver</span></code> and <code class="docutils literal"><span class="pre">selenium</span></code> v3, the combo of
+<p>Using Firefox 48+ requires <code class="docutils literal notranslate"><span class="pre">geckodriver</span></code> and <code class="docutils literal notranslate"><span class="pre">selenium</span></code> v3, the combo of
 which currently has multiple issues and is feature incomplete.</p>
 <div class="section" id="id1">
 <h2><span class="target" id="key-benefits">Key benefits</span><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
@@ -76,9 +67,9 @@ for asynchronous processes to complete.</li>
 </div>
 <div class="section" id="id2">
 <h2><span class="target" id="setup">Setup</span><a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<p>To install, add <code class="docutils literal"><span class="pre">capybara-py</span></code> to your application’s test requirements.</p>
-<p>In your test setup, set <a class="reference internal" href="capybara.html#capybara.app" title="capybara.app"><code class="xref py py-data docutils literal"><span class="pre">capybara.app</span></code></a> to your WSGI-compliant app:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">app</span>
+<p>To install, add <code class="docutils literal notranslate"><span class="pre">capybara-py</span></code> to your application’s test requirements.</p>
+<p>In your test setup, set <a class="reference internal" href="capybara.html#capybara.app" title="capybara.app"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.app</span></code></a> to your WSGI-compliant app:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">app</span>
 <span class="kn">import</span> <span class="nn">capybara</span>
 
 <span class="n">capybara</span><span class="o">.</span><span class="n">app</span> <span class="o">=</span> <span class="n">app</span>
@@ -87,14 +78,14 @@ for asynchronous processes to complete.</li>
 </div>
 <div class="section" id="id3">
 <h2><span class="target" id="using-capybara-with-pytest">Using Capybara with pytest</span><a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<p>Load pytest support by adding it to the <code class="docutils literal"><span class="pre">pytest_plugins</span></code> in your
-<code class="docutils literal"><span class="pre">conftest.py</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pytest_plugins</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;capybara.pytest_plugin&quot;</span><span class="p">]</span>
+<p>Load pytest support by adding it to the <code class="docutils literal notranslate"><span class="pre">pytest_plugins</span></code> in your
+<code class="docutils literal notranslate"><span class="pre">conftest.py</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pytest_plugins</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;capybara.pytest_plugin&quot;</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>The plugin provides a <a class="reference internal" href="capybara.html#capybara.dsl.page" title="capybara.dsl.page"><code class="xref py py-data docutils literal"><span class="pre">page</span></code></a> fixture for use in your
+<p>The plugin provides a <a class="reference internal" href="capybara.html#capybara.dsl.page" title="capybara.dsl.page"><code class="xref py py-data docutils literal notranslate"><span class="pre">page</span></code></a> fixture for use in your
 tests:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_user_signs_in</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_user_signs_in</span><span class="p">(</span><span class="n">page</span><span class="p">):</span>
     <span class="n">page</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
     <span class="n">page</span><span class="o">.</span><span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Sign in&quot;</span><span class="p">)</span>
 
@@ -103,10 +94,10 @@ tests:</p>
     <span class="n">page</span><span class="o">.</span><span class="n">click_button</span><span class="p">(</span><span class="s2">&quot;Sign in&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Use the <code class="docutils literal"><span class="pre">js</span></code> mark to switch to the <a class="reference internal" href="capybara.html#capybara.javascript_driver" title="capybara.javascript_driver"><code class="xref py py-data docutils literal"><span class="pre">capybara.javascript_driver</span></code></a>
-(<code class="docutils literal"><span class="pre">&quot;selenium&quot;</span></code> by default), or use the <code class="docutils literal"><span class="pre">driver</span></code> mark to switch to one
+<p>Use the <code class="docutils literal notranslate"><span class="pre">js</span></code> mark to switch to the <a class="reference internal" href="capybara.html#capybara.javascript_driver" title="capybara.javascript_driver"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.javascript_driver</span></code></a>
+(<code class="docutils literal notranslate"><span class="pre">&quot;selenium&quot;</span></code> by default), or use the <code class="docutils literal notranslate"><span class="pre">driver</span></code> mark to switch to one
 specific driver. For example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytest</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pytest</span>
 
 <span class="nd">@pytest</span><span class="o">.</span><span class="n">mark</span><span class="o">.</span><span class="n">js</span>
 <span class="k">def</span> <span class="nf">test_uses_the_default_js_driver</span><span class="p">():</span>
@@ -120,9 +111,9 @@ specific driver. For example:</p>
 </div>
 <div class="section" id="id4">
 <h2><span class="target" id="using-capybara-with-unittest">Using Capybara with unittest</span><a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
-<p>Define a base test case that exposes the <a class="reference internal" href="capybara.html#capybara.dsl.page" title="capybara.dsl.page"><code class="xref py py-data docutils literal"><span class="pre">page</span></code></a> session proxy and cleans
+<p>Define a base test case that exposes the <a class="reference internal" href="capybara.html#capybara.dsl.page" title="capybara.dsl.page"><code class="xref py py-data docutils literal notranslate"><span class="pre">page</span></code></a> session proxy and cleans
 up between tests:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
 <span class="kn">import</span> <span class="nn">capybara.dsl</span>
 <span class="kn">import</span> <span class="nn">unittest</span>
 
@@ -134,26 +125,26 @@ up between tests:</p>
         <span class="n">capybara</span><span class="o">.</span><span class="n">reset_sessions</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>(Remember to call <code class="docutils literal"><span class="pre">super</span></code> in any subclasses that override <code class="docutils literal"><span class="pre">setUp</span></code> or <code class="docutils literal"><span class="pre">tearDown</span></code>!)</p>
+<p>(Remember to call <code class="docutils literal notranslate"><span class="pre">super</span></code> in any subclasses that override <code class="docutils literal notranslate"><span class="pre">setUp</span></code> or <code class="docutils literal notranslate"><span class="pre">tearDown</span></code>!)</p>
 </div>
 <div class="section" id="id5">
 <h2><span class="target" id="drivers">Drivers</span><a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <p>Capybara uses the same DSL to drive a variety of browser and headless drivers.</p>
 <div class="section" id="id6">
 <h3><span class="target" id="selecting-the-driver">Selecting the Driver</span><a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h3>
-<p>By default, Capybara uses the <code class="docutils literal"><span class="pre">&quot;werkzeug&quot;</span></code> driver, which is fast but limited:
+<p>By default, Capybara uses the <code class="docutils literal notranslate"><span class="pre">&quot;werkzeug&quot;</span></code> driver, which is fast but limited:
 it does not support JavaScript, nor is it able to access HTTP resources outside
 of your WSGI application, such as remote APIs and OAuth services. To get around
 these limitations, you can set up a different default driver for your features.
 For example if you’d prefer to run everything in Selenium, you could do:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
 
 <span class="n">capybara</span><span class="o">.</span><span class="n">default_driver</span> <span class="o">=</span> <span class="s2">&quot;selenium&quot;</span>
 </pre></div>
 </div>
 <p>You can also change the driver temporarily (typically in the setup and teardown
 functions):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
 
 <span class="n">capybara</span><span class="o">.</span><span class="n">current_driver</span> <span class="o">=</span> <span class="s2">&quot;selenium&quot;</span> <span class="c1"># temporarily select different driver</span>
 <span class="c1"># tests here</span>
@@ -176,7 +167,7 @@ interact with.</p>
 <div class="section" id="id8">
 <h3><span class="target" id="selenium">Selenium</span><a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <p>At the moment, Capybara supports <a class="reference external" href="http://seleniumhq.org/docs/01_introducing_selenium.html#selenium-2-aka-selenium-webdriver">Selenium 2.0 (Webdriver)</a>, <em>not</em> Selenium RC.
-In order to use Selenium, you’ll need to install the <code class="docutils literal"><span class="pre">selenium</span></code> package.
+In order to use Selenium, you’ll need to install the <code class="docutils literal notranslate"><span class="pre">selenium</span></code> package.
 Provided Firefox is installed, everything is set up for you, and you should be
 able to start using Selenium right away.</p>
 </div>
@@ -185,28 +176,28 @@ able to start using Selenium right away.</p>
 <h2><span class="target" id="the-dsl">The DSL</span><a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="id10">
 <h3><span class="target" id="navigating">Navigating</span><a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
-<p>You can use the <a class="reference internal" href="capybara.html#capybara.session.Session.visit" title="capybara.session.Session.visit"><code class="xref py py-meth docutils literal"><span class="pre">visit</span></code></a> method to navigate to other pages:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">visit</span><span class="p">(</span><span class="s2">&quot;/projects&quot;</span><span class="p">)</span>
+<p>You can use the <a class="reference internal" href="capybara.html#capybara.session.Session.visit" title="capybara.session.Session.visit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">visit</span></code></a> method to navigate to other pages:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">visit</span><span class="p">(</span><span class="s2">&quot;/projects&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>The visit method only takes a single parameter, the request method is <strong>always</strong>
 GET.</p>
 <p>You can get the current path of the browsing session, and test it using the
-<a class="reference internal" href="capybara.html#capybara.session_matchers.SessionMatchersMixin.has_current_path" title="capybara.session_matchers.SessionMatchersMixin.has_current_path"><code class="xref py py-meth docutils literal"><span class="pre">has_current_path</span></code></a> matcher:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">page</span><span class="o">.</span><span class="n">has_current_path</span><span class="p">(</span><span class="s2">&quot;/posts/1/comments/2&quot;</span><span class="p">)</span>
+<a class="reference internal" href="capybara.html#capybara.session_matchers.SessionMatchersMixin.has_current_path" title="capybara.session_matchers.SessionMatchersMixin.has_current_path"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_current_path</span></code></a> matcher:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">page</span><span class="o">.</span><span class="n">has_current_path</span><span class="p">(</span><span class="s2">&quot;/posts/1/comments/2&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Note:</strong> You can also assert the current path by testing the value of
-<a class="reference internal" href="capybara.html#capybara.session.Session.current_path" title="capybara.session.Session.current_path"><code class="xref py py-attr docutils literal"><span class="pre">current_path</span></code></a> directly. However, using the
-<a class="reference internal" href="capybara.html#capybara.session_matchers.SessionMatchersMixin.has_current_path" title="capybara.session_matchers.SessionMatchersMixin.has_current_path"><code class="xref py py-meth docutils literal"><span class="pre">has_current_path</span></code></a> matcher
+<a class="reference internal" href="capybara.html#capybara.session.Session.current_path" title="capybara.session.Session.current_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">current_path</span></code></a> directly. However, using the
+<a class="reference internal" href="capybara.html#capybara.session_matchers.SessionMatchersMixin.has_current_path" title="capybara.session_matchers.SessionMatchersMixin.has_current_path"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_current_path</span></code></a> matcher
 is safer since it uses Capybara’s <a class="reference internal" href="#asynchronous-javascript-ajax-and-friends">waiting behavior</a> to ensure that preceding actions (such as a
-<a class="reference internal" href="capybara.node.html#capybara.node.actions.ActionsMixin.click_link" title="capybara.node.actions.ActionsMixin.click_link"><code class="xref py py-meth docutils literal"><span class="pre">click_link</span></code></a>) have completed.</p>
+<a class="reference internal" href="capybara.node.html#capybara.node.actions.ActionsMixin.click_link" title="capybara.node.actions.ActionsMixin.click_link"><code class="xref py py-meth docutils literal notranslate"><span class="pre">click_link</span></code></a>) have completed.</p>
 </div>
 <div class="section" id="id11">
 <h3><span class="target" id="clicking-links-and-buttons">Clicking links and buttons</span><a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
-<p><em>Full reference:</em> <a class="reference internal" href="capybara.node.html#capybara.node.actions.ActionsMixin" title="capybara.node.actions.ActionsMixin"><code class="xref py py-class docutils literal"><span class="pre">capybara.node.actions.ActionsMixin</span></code></a></p>
+<p><em>Full reference:</em> <a class="reference internal" href="capybara.node.html#capybara.node.actions.ActionsMixin" title="capybara.node.actions.ActionsMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.node.actions.ActionsMixin</span></code></a></p>
 <p>You can interact with the webapp by following links.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;id-of-link&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;id-of-link&quot;</span><span class="p">)</span>
 <span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Link Text&quot;</span><span class="p">)</span>
 <span class="n">click_button</span><span class="p">(</span><span class="s2">&quot;Save&quot;</span><span class="p">)</span>
 <span class="n">click_on</span><span class="p">(</span><span class="s2">&quot;Link Text&quot;</span><span class="p">)</span>  <span class="c1"># clicks on either links or buttons</span>
@@ -216,9 +207,9 @@ is safer since it uses Capybara’s <a class="reference internal" href="#asynchr
 </div>
 <div class="section" id="id12">
 <h3><span class="target" id="interacting-with-forms">Interacting with forms</span><a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h3>
-<p><em>Full reference:</em> <a class="reference internal" href="capybara.node.html#capybara.node.actions.ActionsMixin" title="capybara.node.actions.ActionsMixin"><code class="xref py py-class docutils literal"><span class="pre">capybara.node.actions.ActionsMixin</span></code></a></p>
+<p><em>Full reference:</em> <a class="reference internal" href="capybara.node.html#capybara.node.actions.ActionsMixin" title="capybara.node.actions.ActionsMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.node.actions.ActionsMixin</span></code></a></p>
 <p>There are a number of tools for interacting with form elements:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">fill_in</span><span class="p">(</span><span class="s2">&quot;First Name&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fill_in</span><span class="p">(</span><span class="s2">&quot;First Name&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">)</span>
 <span class="n">fill_in</span><span class="p">(</span><span class="s2">&quot;Password&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Seekrit&quot;</span><span class="p">)</span>
 <span class="n">fill_in</span><span class="p">(</span><span class="s2">&quot;Description&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Really Long Text...&quot;</span><span class="p">)</span>
 <span class="n">choose</span><span class="p">(</span><span class="s2">&quot;A Radio Button&quot;</span><span class="p">)</span>
@@ -231,10 +222,10 @@ is safer since it uses Capybara’s <a class="reference internal" href="#asynchr
 </div>
 <div class="section" id="id13">
 <h3><span class="target" id="querying">Querying</span><a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h3>
-<p><em>Full reference:</em> <a class="reference internal" href="capybara.node.html#capybara.node.matchers.MatchersMixin" title="capybara.node.matchers.MatchersMixin"><code class="xref py py-class docutils literal"><span class="pre">capybara.node.matchers.MatchersMixin</span></code></a></p>
+<p><em>Full reference:</em> <a class="reference internal" href="capybara.node.html#capybara.node.matchers.MatchersMixin" title="capybara.node.matchers.MatchersMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.node.matchers.MatchersMixin</span></code></a></p>
 <p>Capybara has a rich set of options for querying the page for the existence of certain elements, and
 working with and manipulating those elements.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_selector</span><span class="p">(</span><span class="s2">&quot;table tr&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_selector</span><span class="p">(</span><span class="s2">&quot;table tr&quot;</span><span class="p">)</span>
 <span class="n">page</span><span class="o">.</span><span class="n">has_selector</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//table/tr&quot;</span><span class="p">)</span>
 
 <span class="n">page</span><span class="o">.</span><span class="n">has_xpath</span><span class="p">(</span><span class="s2">&quot;//table/tr&quot;</span><span class="p">)</span>
@@ -245,21 +236,21 @@ working with and manipulating those elements.</p>
 </div>
 <div class="section" id="id14">
 <h3><span class="target" id="finding">Finding</span><a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h3>
-<p><em>Full reference:</em> <a class="reference internal" href="capybara.node.html#capybara.node.finders.FindersMixin" title="capybara.node.finders.FindersMixin"><code class="xref py py-class docutils literal"><span class="pre">capybara.node.finders.FindersMixin</span></code></a></p>
+<p><em>Full reference:</em> <a class="reference internal" href="capybara.node.html#capybara.node.finders.FindersMixin" title="capybara.node.finders.FindersMixin"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.node.finders.FindersMixin</span></code></a></p>
 <p>You can also find specific elements, in order to manipulate them:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">find_field</span><span class="p">(</span><span class="s2">&quot;First Name&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">find_field</span><span class="p">(</span><span class="s2">&quot;First Name&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
 <span class="n">find_button</span><span class="p">(</span><span class="s2">&quot;Send&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
 
 <span class="n">find</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//table/tr&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
 <span class="n">find</span><span class="p">(</span><span class="s2">&quot;#overlay&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;h1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Note</strong>: <a class="reference internal" href="capybara.node.html#capybara.node.finders.FindersMixin.find" title="capybara.node.finders.FindersMixin.find"><code class="xref py py-meth docutils literal"><span class="pre">find</span></code></a> will wait for an element to appear
+<p><strong>Note</strong>: <a class="reference internal" href="capybara.node.html#capybara.node.finders.FindersMixin.find" title="capybara.node.finders.FindersMixin.find"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find</span></code></a> will wait for an element to appear
 on the page, as explained in the Ajax section. If the element does not appear it will raise an
 error.</p>
 <p>These elements all have all the Capybara DSL methods available, so you can restrict them
 to specific parts of the page:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;#navigation&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Home&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;#navigation&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Home&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -267,9 +258,9 @@ to specific parts of the page:</p>
 <h3><span class="target" id="scoping">Scoping</span><a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h3>
 <p>Capybara makes it possible to restrict certain actions, such as clicking links, to
 within a specific area of the page. For this purpose you can use the generic
-<a class="reference internal" href="capybara.html#capybara.session.Session.scope" title="capybara.session.Session.scope"><code class="xref py py-meth docutils literal"><span class="pre">scope</span></code></a> context manager. Optionally you can specify which
+<a class="reference internal" href="capybara.html#capybara.session.Session.scope" title="capybara.session.Session.scope"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scope</span></code></a> context manager. Optionally you can specify which
 kind of selector to use.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">scope</span><span class="p">(</span><span class="s2">&quot;li#employee&quot;</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">scope</span><span class="p">(</span><span class="s2">&quot;li#employee&quot;</span><span class="p">):</span>
     <span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Jimmy&quot;</span><span class="p">)</span>
 
 <span class="k">with</span> <span class="n">scope</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//li[@id=&#39;employee&#39;]&quot;</span><span class="p">):</span>
@@ -280,7 +271,7 @@ kind of selector to use.</p>
 <div class="section" id="id16">
 <h3><span class="target" id="working-with-windows">Working with windows</span><a class="headerlink" href="#id16" title="Permalink to this headline">¶</a></h3>
 <p>Capybara provides some methods to ease finding and switching windows:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">facebook_window</span> <span class="o">=</span> <span class="n">window_opened_by</span><span class="p">(</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">facebook_window</span> <span class="o">=</span> <span class="n">window_opened_by</span><span class="p">(</span>
     <span class="k">lambda</span><span class="p">:</span> <span class="n">click_button</span><span class="p">(</span><span class="s2">&quot;Like&quot;</span><span class="p">))</span>
 <span class="k">with</span> <span class="n">window</span><span class="p">(</span><span class="n">facebook_window</span><span class="p">):</span>
     <span class="n">find</span><span class="p">(</span><span class="s2">&quot;#login_email&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;a@example.com&quot;</span><span class="p">)</span>
@@ -292,12 +283,12 @@ kind of selector to use.</p>
 <div class="section" id="id17">
 <h3><span class="target" id="scripting">Scripting</span><a class="headerlink" href="#id17" title="Permalink to this headline">¶</a></h3>
 <p>In drivers which support it, you can easily execute JavaScript:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;$(&#39;body&#39;).empty()&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;$(&#39;body&#39;).empty()&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>For simple expressions, you can return the result of the script. Note that this may break with
 more complicated expressions:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">evaluate_script</span><span class="p">(</span><span class="s2">&quot;4 + 4&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">evaluate_script</span><span class="p">(</span><span class="s2">&quot;4 + 4&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -305,17 +296,17 @@ more complicated expressions:</p>
 <h3><span class="target" id="modals">Modals</span><a class="headerlink" href="#id18" title="Permalink to this headline">¶</a></h3>
 <p>In drivers which support it, you can accept, dismiss and respond to alerts, confirms and prompts.</p>
 <p>You can accept or dismiss alert messages by wrapping the code that produces the alert in a context manager:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">accept_alert</span><span class="p">():</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">accept_alert</span><span class="p">():</span>
     <span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Show Alert&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You can accept or dismiss a confirmation by wrapping it in a context manager, as well:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">dismiss_confirm</span><span class="p">():</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">dismiss_confirm</span><span class="p">():</span>
     <span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Show Confirm&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You can accept or dismiss prompts as well, and also provide text to fill in for the response:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">accept_prompt</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="s2">&quot;Linus Torvalds&quot;</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">accept_prompt</span><span class="p">(</span><span class="n">response</span><span class="o">=</span><span class="s2">&quot;Linus Torvalds&quot;</span><span class="p">):</span>
     <span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Show Prompt About Linux&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -324,19 +315,19 @@ more complicated expressions:</p>
 <h3><span class="target" id="debugging">Debugging</span><a class="headerlink" href="#id19" title="Permalink to this headline">¶</a></h3>
 <p>It can be useful to take a snapshot of the page as it currently is and take a
 look at it:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">save_page</span><span class="p">(</span><span class="s2">&quot;output.html&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">save_page</span><span class="p">(</span><span class="s2">&quot;output.html&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You can also retrieve the current state of the DOM as a string using
-<a class="reference internal" href="capybara.html#capybara.session.Session.html" title="capybara.session.Session.html"><code class="xref py py-attr docutils literal"><span class="pre">page.html</span></code></a>.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">html</span><span class="p">)</span>
+<a class="reference internal" href="capybara.html#capybara.session.Session.html" title="capybara.session.Session.html"><code class="xref py py-attr docutils literal notranslate"><span class="pre">page.html</span></code></a>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">html</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This is mostly useful for debugging. You should avoid testing against the contents of
-<a class="reference internal" href="capybara.html#capybara.session.Session.html" title="capybara.session.Session.html"><code class="xref py py-attr docutils literal"><span class="pre">page.html</span></code></a> and use the more expressive finder methods
+<a class="reference internal" href="capybara.html#capybara.session.Session.html" title="capybara.session.Session.html"><code class="xref py py-attr docutils literal notranslate"><span class="pre">page.html</span></code></a> and use the more expressive finder methods
 instead.</p>
 <p>Finally, in drivers that support it, you can save a screenshot:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">save_screenshot</span><span class="p">(</span><span class="s2">&quot;screenshot.png&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">save_screenshot</span><span class="p">(</span><span class="s2">&quot;screenshot.png&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -344,17 +335,17 @@ instead.</p>
 <div class="section" id="id20">
 <h2><span class="target" id="matching">Matching</span><a class="headerlink" href="#id20" title="Permalink to this headline">¶</a></h2>
 <p>It is possible to customize how Capybara finds elements. At your disposal are
-two options, <a class="reference internal" href="capybara.html#capybara.exact" title="capybara.exact"><code class="xref py py-data docutils literal"><span class="pre">capybara.exact</span></code></a> and <a class="reference internal" href="capybara.html#capybara.match" title="capybara.match"><code class="xref py py-data docutils literal"><span class="pre">capybara.match</span></code></a>.</p>
+two options, <a class="reference internal" href="capybara.html#capybara.exact" title="capybara.exact"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.exact</span></code></a> and <a class="reference internal" href="capybara.html#capybara.match" title="capybara.match"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.match</span></code></a>.</p>
 <div class="section" id="id21">
 <h3><span class="target" id="exactness">Exactness</span><a class="headerlink" href="#id21" title="Permalink to this headline">¶</a></h3>
-<p><a class="reference internal" href="capybara.html#capybara.exact" title="capybara.exact"><code class="xref py py-data docutils literal"><span class="pre">capybara.exact</span></code></a> and the <code class="docutils literal"><span class="pre">exact</span></code> option work together with the <code class="docutils literal"><span class="pre">is_</span></code>
-expression inside the XPath package. When <code class="docutils literal"><span class="pre">exact</span></code> is true, all <code class="docutils literal"><span class="pre">is_</span></code>
+<p><a class="reference internal" href="capybara.html#capybara.exact" title="capybara.exact"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.exact</span></code></a> and the <code class="docutils literal notranslate"><span class="pre">exact</span></code> option work together with the <code class="docutils literal notranslate"><span class="pre">is_</span></code>
+expression inside the XPath package. When <code class="docutils literal notranslate"><span class="pre">exact</span></code> is true, all <code class="docutils literal notranslate"><span class="pre">is_</span></code>
 expressions match exactly; when it is false, they allow substring matches.
-Many of the selectors built into Capybara use the <code class="docutils literal"><span class="pre">is_</span></code> expression. This
+Many of the selectors built into Capybara use the <code class="docutils literal notranslate"><span class="pre">is_</span></code> expression. This
 way you can specify whether you want to allow substring matches or not.
-<a class="reference internal" href="capybara.html#capybara.exact" title="capybara.exact"><code class="xref py py-data docutils literal"><span class="pre">capybara.exact</span></code></a> is false by default.</p>
+<a class="reference internal" href="capybara.html#capybara.exact" title="capybara.exact"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.exact</span></code></a> is false by default.</p>
 <p>For example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Password&quot;</span><span class="p">)</span>  <span class="c1"># also matches &quot;Password confirmation&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Password&quot;</span><span class="p">)</span>  <span class="c1"># also matches &quot;Password confirmation&quot;</span>
 <span class="n">capybara</span><span class="o">.</span><span class="n">exact</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Password&quot;</span><span class="p">)</span>  <span class="c1"># does not match &quot;Password confirmation&quot;</span>
 <span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;Password&quot;</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># can be overridden</span>
@@ -363,21 +354,21 @@ way you can specify whether you want to allow substring matches or not.
 </div>
 <div class="section" id="id22">
 <h3><span class="target" id="strategy">Strategy</span><a class="headerlink" href="#id22" title="Permalink to this headline">¶</a></h3>
-<p>Using <a class="reference internal" href="capybara.html#capybara.match" title="capybara.match"><code class="xref py py-data docutils literal"><span class="pre">capybara.match</span></code></a> and the equivalent <code class="docutils literal"><span class="pre">match</span></code> option, you can control
+<p>Using <a class="reference internal" href="capybara.html#capybara.match" title="capybara.match"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.match</span></code></a> and the equivalent <code class="docutils literal notranslate"><span class="pre">match</span></code> option, you can control
 how Capybara behaves when multiple elements all match a query. There are
 currently four different strategies built into Capybara:</p>
 <ol class="arabic simple">
 <li><strong>first:</strong> Just picks the first element that matches.</li>
 <li><strong>one:</strong> Raises an error if more than one element matches.</li>
-<li><strong>smart:</strong> If <code class="docutils literal"><span class="pre">exact</span></code> is <code class="docutils literal"><span class="pre">True</span></code>, raises an error if more than one element
-matches, just like <code class="docutils literal"><span class="pre">one</span></code>. If <code class="docutils literal"><span class="pre">exact</span></code> is <code class="docutils literal"><span class="pre">False</span></code>, it will first try to
+<li><strong>smart:</strong> If <code class="docutils literal notranslate"><span class="pre">exact</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, raises an error if more than one element
+matches, just like <code class="docutils literal notranslate"><span class="pre">one</span></code>. If <code class="docutils literal notranslate"><span class="pre">exact</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, it will first try to
 find an exact match. An error is raised if more than one element is found. If
 no element is found, a new search is performed which allows partial matches.
 If that search returns multiple matches, an error is raised.</li>
 <li><strong>prefer_exact:</strong> If multiple matches are found, some of which are exact, and
 some of which are not, then the first exactly matching element is returned.</li>
 </ol>
-<p>The default for <a class="reference internal" href="capybara.html#capybara.match" title="capybara.match"><code class="xref py py-data docutils literal"><span class="pre">capybara.match</span></code></a> is <code class="docutils literal"><span class="pre">&quot;smart&quot;</span></code>.</p>
+<p>The default for <a class="reference internal" href="capybara.html#capybara.match" title="capybara.match"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.match</span></code></a> is <code class="docutils literal notranslate"><span class="pre">&quot;smart&quot;</span></code>.</p>
 </div>
 </div>
 <div class="section" id="id23">
@@ -387,7 +378,7 @@ where you are attempting to interact with an element which is not yet present
 on the page. Capybara automatically deals with this by waiting for elements
 to appear on the page.</p>
 <p>When issuing instructions to the DSL such as:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;foo&quot;</span><span class="p">)</span>
 <span class="n">click_link</span><span class="p">(</span><span class="s2">&quot;bar&quot;</span><span class="p">)</span>
 <span class="k">assert</span> <span class="n">page</span><span class="o">.</span><span class="n">has_text</span><span class="p">(</span><span class="s2">&quot;baz&quot;</span><span class="p">)</span>
 </pre></div>
@@ -400,14 +391,14 @@ brief period of time before giving up and throwing an error. The same is true of
 the next line, which looks for the content <em>baz</em> on the page; it will retry
 looking for that content for a brief time. You can adjust how long this period
 is (the default is 2 seconds):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
 
 <span class="n">capybara</span><span class="o">.</span><span class="n">default_max_wait_time</span> <span class="o">=</span> <span class="mi">5</span>
 </pre></div>
 </div>
 <p>Be aware that because of this behavior, the follow two statements are <strong>not</strong>
 equivalent, and you should <strong>always</strong> use the latter!</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="ow">not</span> <span class="n">page</span><span class="o">.</span><span class="n">has_xpath</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="ow">not</span> <span class="n">page</span><span class="o">.</span><span class="n">has_xpath</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 <span class="n">page</span><span class="o">.</span><span class="n">has_no_xpath</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -416,15 +407,15 @@ Only the latter would wait for the asynchronous process to remove the content
 from the page.</p>
 <p>Capybara’s waiting behavior is quite advanced, and can deal with situations
 such as the following line of code:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">find</span><span class="p">(</span><span class="s2">&quot;#sidebar&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;h1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">has_text</span><span class="p">(</span><span class="s2">&quot;Something&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">assert</span> <span class="n">find</span><span class="p">(</span><span class="s2">&quot;#sidebar&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;h1&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">has_text</span><span class="p">(</span><span class="s2">&quot;Something&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Even if JavaScript causes <code class="docutils literal"><span class="pre">#sidebar</span></code> to disappear off the page, Capybara
+<p>Even if JavaScript causes <code class="docutils literal notranslate"><span class="pre">#sidebar</span></code> to disappear off the page, Capybara
 will automatically reload it and any elements it contains. So if an AJAX
-request causes the contents of <code class="docutils literal"><span class="pre">#sidebar</span></code> to change, which would update
-the text of the <code class="docutils literal"><span class="pre">h1</span></code> to “Something”, and this happened, this test would
+request causes the contents of <code class="docutils literal notranslate"><span class="pre">#sidebar</span></code> to change, which would update
+the text of the <code class="docutils literal notranslate"><span class="pre">h1</span></code> to “Something”, and this happened, this test would
 pass. If you do not want this behavior, you can set
-<a class="reference internal" href="capybara.html#capybara.automatic_reload" title="capybara.automatic_reload"><code class="xref py py-data docutils literal"><span class="pre">capybara.automatic_reload</span></code></a> to <code class="docutils literal"><span class="pre">False</span></code>.</p>
+<a class="reference internal" href="capybara.html#capybara.automatic_reload" title="capybara.automatic_reload"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.automatic_reload</span></code></a> to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </div>
 <div class="section" id="id24">
 <h2><span class="target" id="using-sessions">Using sessions</span><a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h2>
@@ -436,7 +427,7 @@ name using the current driver and test app instance is not found.</p>
 <h3><span class="target" id="named-sessions">Named sessions</span><a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
 <p>To perform operations in a different session and then revert to the previous
 session:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
 
 <span class="k">with</span> <span class="n">capybara</span><span class="o">.</span><span class="n">using_session</span><span class="p">(</span><span class="s2">&quot;Bob&#39;s session&quot;</span><span class="p">):</span>
      <span class="c1"># do something in Bob&#39;s browser session</span>
@@ -444,7 +435,7 @@ session:</p>
 </pre></div>
 </div>
 <p>To permanently switch the current session to a different session:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
 
 <span class="n">capybara</span><span class="o">.</span><span class="n">session_name</span> <span class="o">=</span> <span class="s2">&quot;some other session&quot;</span>
 </pre></div>
@@ -452,9 +443,9 @@ session:</p>
 </div>
 <div class="section" id="id26">
 <h3><span class="target" id="using-sessions-manually">Using sessions manually</span><a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h3>
-<p>For ultimate control, you can instantiate and use a <a class="reference internal" href="capybara.html#capybara.session.Session" title="capybara.session.Session"><code class="xref py py-class docutils literal"><span class="pre">Session</span></code></a>
+<p>For ultimate control, you can instantiate and use a <a class="reference internal" href="capybara.html#capybara.session.Session" title="capybara.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>
 manually.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">capybara.session</span> <span class="k">import</span> <span class="n">Session</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">capybara.session</span> <span class="k">import</span> <span class="n">Session</span>
 
 <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="s2">&quot;selenium&quot;</span><span class="p">,</span> <span class="n">my_wsgi_app</span><span class="p">)</span>
 <span class="k">with</span> <span class="n">session</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">&quot;//form[@id=&#39;session&#39;]&quot;</span><span class="p">):</span>
@@ -467,8 +458,8 @@ manually.</p>
 </div>
 <div class="section" id="id27">
 <h2><span class="target" id="using-the-dsl-elsewhere">Using the DSL elsewhere</span><a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h2>
-<p>You can access the <a class="reference internal" href="capybara.html#capybara.dsl.page" title="capybara.dsl.page"><code class="xref py py-data docutils literal"><span class="pre">page</span></code></a> session proxy from anywhere by importing it:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">capybara.dsl</span> <span class="k">import</span> <span class="n">page</span>
+<p>You can access the <a class="reference internal" href="capybara.html#capybara.dsl.page" title="capybara.dsl.page"><code class="xref py py-data docutils literal notranslate"><span class="pre">page</span></code></a> session proxy from anywhere by importing it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">capybara.dsl</span> <span class="k">import</span> <span class="n">page</span>
 
 <span class="c1"># ...</span>
 
@@ -479,8 +470,8 @@ manually.</p>
 </pre></div>
 </div>
 <p>You can mix the DSL methods into any class by inheriting from
-<code class="xref py py-class docutils literal"><span class="pre">DSLMixin</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">capybara.dsl</span> <span class="k">import</span> <span class="n">DSLMixin</span>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DSLMixin</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">capybara.dsl</span> <span class="k">import</span> <span class="n">DSLMixin</span>
 
 <span class="k">class</span> <span class="nc">MyClass</span><span class="p">(</span><span class="n">DSLMixin</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">login</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -490,8 +481,8 @@ manually.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">click_button</span><span class="p">(</span><span class="s2">&quot;Sign in&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>You can also mix the DSL methods into any module by importing all of <a class="reference internal" href="capybara.html#module-capybara.dsl" title="capybara.dsl"><code class="xref py py-mod docutils literal"><span class="pre">capybara.dsl</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">capybara.dsl</span> <span class="k">import</span> <span class="o">*</span>
+<p>You can also mix the DSL methods into any module by importing all of <a class="reference internal" href="capybara.html#module-capybara.dsl" title="capybara.dsl"><code class="xref py py-mod docutils literal notranslate"><span class="pre">capybara.dsl</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">capybara.dsl</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
     <span class="k">with</span> <span class="n">scope</span><span class="p">(</span><span class="s2">&quot;//form[@id=&#39;session&#39;]&quot;</span><span class="p">):</span>
@@ -510,14 +501,14 @@ scripting.</p>
 <h2><span class="target" id="calling-remote-servers">Calling remote servers</span><a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h2>
 <p>Normally Capybara expects to be testing an in-process WSGI application, but you
 can also use it to talk to a web server running anywhere on the internet, by
-setting <a class="reference internal" href="capybara.html#capybara.app_host" title="capybara.app_host"><code class="xref py py-data docutils literal"><span class="pre">capybara.app_host</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">capybara</span><span class="o">.</span><span class="n">app_host</span> <span class="o">=</span> <span class="s2">&quot;http://www.google.com&quot;</span>
+setting <a class="reference internal" href="capybara.html#capybara.app_host" title="capybara.app_host"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.app_host</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">capybara</span><span class="o">.</span><span class="n">app_host</span> <span class="o">=</span> <span class="s2">&quot;http://www.google.com&quot;</span>
 <span class="c1"># ...</span>
 <span class="n">visit</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>With drivers that support it, you can also visit any URL directly:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">visit</span><span class="p">(</span><span class="s2">&quot;http://www.google.com&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">visit</span><span class="p">(</span><span class="s2">&quot;http://www.google.com&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -526,13 +517,13 @@ setting <a class="reference internal" href="capybara.html#capybara.app_host" tit
 <p>Capybara does not try to guess what kind of selector you are going to give it,
 and will always use CSS by default. If you want to use XPath, you’ll need to
 do:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">scope</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//ul/li&quot;</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">scope</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//ul/li&quot;</span><span class="p">):</span>
     <span class="c1"># ...</span>
 <span class="n">find</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//ul/li&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">text</span>
 </pre></div>
 </div>
 <p>Alternatively you can set the default selector to XPath:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
 
 <span class="n">capybara</span><span class="o">.</span><span class="n">default_selector</span> <span class="o">=</span> <span class="s2">&quot;xpath&quot;</span>
 
@@ -541,7 +532,7 @@ do:</p>
 </div>
 <p>Capybara allows you to add custom selectors, which can be very useful if you
 find yourself using the same kinds of selectors very often:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">capybara.selector</span> <span class="k">import</span> <span class="n">add_selector</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">capybara.selector</span> <span class="k">import</span> <span class="n">add_selector</span>
 <span class="kn">from</span> <span class="nn">xpath</span> <span class="k">import</span> <span class="n">dsl</span> <span class="k">as</span> <span class="n">x</span>
 
 <span class="k">with</span> <span class="n">add_selector</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">s</span><span class="p">:</span>
@@ -555,9 +546,9 @@ find yourself using the same kinds of selectors very often:</p>
 </pre></div>
 </div>
 <p>The block given to xpath must always return an XPath expression as a string, or
-an XPath expression generated through the <code class="docutils literal"><span class="pre">xpath-py</span></code> package. You can now use these
+an XPath expression generated through the <code class="docutils literal notranslate"><span class="pre">xpath-py</span></code> package. You can now use these
 selectors like this:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;post_123&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="s2">&quot;post_123&quot;</span><span class="p">)</span>
 <span class="n">find</span><span class="p">(</span><span class="s2">&quot;row&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">find</span><span class="p">(</span><span class="s2">&quot;flash_type&quot;</span><span class="p">,</span> <span class="s2">&quot;notice&quot;</span><span class="p">)</span>
 </pre></div>
@@ -568,17 +559,17 @@ selectors like this:</p>
 <p>In XPath the expression // means something very specific, and it might not be what
 you think. Contrary to common belief, // means “anywhere in the document” not “anywhere
 in the current context”. As an example:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//body&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//script&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//body&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//script&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>You might expect this to find all script tags in the body, but actually, it finds all
 script tags anywhere in the entire document, not only in the body! What you’re looking
 for is the .// expression which means “any descendant of the current node”:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//body&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;.//script&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//body&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;.//script&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The same thing goes for <a class="reference internal" href="capybara.html#capybara.session.Session.scope" title="capybara.session.Session.scope"><code class="xref py py-meth docutils literal"><span class="pre">scope</span></code></a>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">scope</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//body&quot;</span><span class="p">):</span>
+<p>The same thing goes for <a class="reference internal" href="capybara.html#capybara.session.Session.scope" title="capybara.session.Session.scope"><code class="xref py py-meth docutils literal notranslate"><span class="pre">scope</span></code></a>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">scope</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;//body&quot;</span><span class="p">):</span>
     <span class="n">page</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;.//script&quot;</span><span class="p">)</span>
     <span class="k">with</span> <span class="n">scope</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;.//table/tbody&quot;</span><span class="p">):</span>
         <span class="c1"># ...</span>
@@ -591,7 +582,7 @@ for is the .// expression which means “any descendant of the current node”:<
 exposes an API to tweak those drivers with whatever settings you want, or to
 add your own drivers. This is how to override the Selenium driver
 configuration to use Chrome:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
 
 <span class="nd">@capybara</span><span class="o">.</span><span class="n">register_driver</span><span class="p">(</span><span class="s2">&quot;selenium&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">init_selenium_driver</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
@@ -601,7 +592,7 @@ configuration to use Chrome:</p>
 </pre></div>
 </div>
 <p>However, it’s also possible to give this configuration a different name.</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="nd">@capybara</span><span class="o">.</span><span class="n">register_driver</span><span class="p">(</span><span class="s2">&quot;selenium_chrome&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@capybara</span><span class="o">.</span><span class="n">register_driver</span><span class="p">(</span><span class="s2">&quot;selenium_chrome&quot;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">init_selenium_chrome_driver</span><span class="p">(</span><span class="n">app</span><span class="p">):</span>
     <span class="kn">from</span> <span class="nn">capybara.selenium.driver</span> <span class="k">import</span> <span class="n">Driver</span>
 
@@ -609,11 +600,11 @@ configuration to use Chrome:</p>
 </pre></div>
 </div>
 <p>Then tests can switch between using different browsers effortlessly:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">capybara</span><span class="o">.</span><span class="n">current_driver</span> <span class="o">=</span> <span class="s2">&quot;selenium_chrome&quot;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">capybara</span><span class="o">.</span><span class="n">current_driver</span> <span class="o">=</span> <span class="s2">&quot;selenium_chrome&quot;</span>
 </pre></div>
 </div>
 <p>Whatever is returned from the initialization function should conform to the API
-described by <a class="reference internal" href="capybara.driver.html#capybara.driver.base.Base" title="capybara.driver.base.Base"><code class="xref py py-class docutils literal"><span class="pre">capybara.driver.base.Base</span></code></a>, it does not however have to
+described by <a class="reference internal" href="capybara.driver.html#capybara.driver.base.Base" title="capybara.driver.base.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.driver.base.Base</span></code></a>, it does not however have to
 inherit from this class.</p>
 <p>The <a class="reference external" href="https://github.com/SeleniumHQ/selenium/wiki/Python-Bindings">Selenium wiki</a> has additional info about how the underlying driver can be
 configured.</p>
@@ -624,7 +615,7 @@ configured.</p>
 <li>Server errors will only be raised in the session that initiates the server
 thread. If you are testing for specific server errors and using multiple
 sessions make sure to test for the errors using the initial session (usually
-<code class="docutils literal"><span class="pre">&quot;default&quot;</span></code>).</li>
+<code class="docutils literal notranslate"><span class="pre">&quot;default&quot;</span></code>).</li>
 </ul>
 </div>
 </div>
@@ -711,12 +702,14 @@ sessions make sure to test for the errors using the initial session (usually
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -727,7 +720,7 @@ sessions make sure to test for the errors using the initial session (usually
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |

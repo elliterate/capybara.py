@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>capybara.queries package &#8212; Capybara 0.1.3 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.3',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -29,8 +21,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
-  </head>
-  <body>
+  </head><body>
   
 
     <div class="document">
@@ -48,7 +39,7 @@
 <dl class="class">
 <dt id="capybara.queries.current_path_query.CurrentPathQuery">
 <em class="property">class </em><code class="descclassname">capybara.queries.current_path_query.</code><code class="descname">CurrentPathQuery</code><span class="sig-paren">(</span><em>expected_path</em>, <em>url=False</em>, <em>only_path=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/current_path_query.html#CurrentPathQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.current_path_query.CurrentPathQuery" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Queries the current path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -102,7 +93,7 @@ match. Defaults to False.</li>
 <dl class="class">
 <dt id="capybara.queries.selector_query.SelectorQuery">
 <em class="property">class </em><code class="descclassname">capybara.queries.selector_query.</code><code class="descname">SelectorQuery</code><span class="sig-paren">(</span><em>selector</em>, <em>locator=None</em>, <em>between=None</em>, <em>count=None</em>, <em>exact=None</em>, <em>exact_text=None</em>, <em>filter=None</em>, <em>match=None</em>, <em>maximum=None</em>, <em>minimum=None</em>, <em>text=None</em>, <em>visible=None</em>, <em>wait=None</em>, <em>**filter_options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/selector_query.html#SelectorQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.selector_query.SelectorQuery" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Queries for elements using a selector.</p>
 <p>If no locator is provided and the given selector is not a valid selector, the first
 argument is assumed to be the locator and the default selector will be used.</p>
@@ -117,20 +108,20 @@ argument is assumed to be the locator and the default selector will be used.</p>
 <li><strong>count</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of times the selector should match. Defaults to any number
 of times greater than zero.</li>
 <li><strong>exact</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to exactly match the locator string. Defaults to
-<a class="reference internal" href="capybara.html#capybara.exact" title="capybara.exact"><code class="xref py py-data docutils literal"><span class="pre">capybara.exact</span></code></a>.</li>
+<a class="reference internal" href="capybara.html#capybara.exact" title="capybara.exact"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.exact</span></code></a>.</li>
 <li><strong>exact_text</strong> (<em>bool | str</em><em>, </em><em>optional</em>) – Whether to exactly match the text, or the exact text to
 match. Defaults to False.</li>
 <li><strong>filter</strong> (<em>Callable</em><em>[</em><em>[</em><a class="reference internal" href="capybara.node.html#capybara.node.element.Element" title="capybara.node.element.Element"><em>Element</em></a><em>]</em><em>, </em><em>bool</em><em>]</em><em>, </em><em>optional</em>) – A function for filtering results.</li>
-<li><strong>match</strong> (<em>str</em><em>, </em><em>optional</em>) – The matching strategy to use. Defaults to <a class="reference internal" href="capybara.html#capybara.match" title="capybara.match"><code class="xref py py-data docutils literal"><span class="pre">capybara.match</span></code></a>.</li>
+<li><strong>match</strong> (<em>str</em><em>, </em><em>optional</em>) – The matching strategy to use. Defaults to <a class="reference internal" href="capybara.html#capybara.match" title="capybara.match"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.match</span></code></a>.</li>
 <li><strong>maximum</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of times the selector should match. Defaults to
 infinite.</li>
 <li><strong>minimum</strong> (<em>int</em><em>, </em><em>optional</em>) – The minimum number of times the selector should match. Defaults to
 1.</li>
 <li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text that should be contained in matched elements.</li>
 <li><strong>visible</strong> (<em>bool | str</em><em>, </em><em>optional</em>) – The desired element visibility. Defaults to
-<a class="reference internal" href="capybara.html#capybara.ignore_hidden_elements" title="capybara.ignore_hidden_elements"><code class="xref py py-data docutils literal"><span class="pre">capybara.ignore_hidden_elements</span></code></a>.</li>
+<a class="reference internal" href="capybara.html#capybara.ignore_hidden_elements" title="capybara.ignore_hidden_elements"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.ignore_hidden_elements</span></code></a>.</li>
 <li><strong>wait</strong> (<em>bool | int | float</em><em>, </em><em>optional</em>) – Whether and how long to wait for synchronization.
-Defaults to <a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal"><span class="pre">capybara.default_max_wait_time</span></code></a>.</li>
+Defaults to <a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>.</li>
 <li><strong>**filter_options</strong> – Arbitrary keyword arguments for the selector’s filters.</li>
 </ul>
 </td>
@@ -264,9 +255,9 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <dl class="class">
 <dt id="capybara.queries.text_query.TextQuery">
 <em class="property">class </em><code class="descclassname">capybara.queries.text_query.</code><code class="descname">TextQuery</code><span class="sig-paren">(</span><em>query_type</em>, <em>expected_text=None</em>, <em>between=None</em>, <em>count=None</em>, <em>exact_text=False</em>, <em>maximum=None</em>, <em>minimum=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/text_query.html#TextQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.text_query.TextQuery" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Queries for text content in a node.</p>
-<p>If only one argument is provided, it will be assumed to be <code class="docutils literal"><span class="pre">expected_text</span></code>.</p>
+<p>If only one argument is provided, it will be assumed to be <code class="docutils literal notranslate"><span class="pre">expected_text</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -283,7 +274,7 @@ infinite.</li>
 <li><strong>minimum</strong> (<em>int</em><em>, </em><em>optional</em>) – The minimum number of times the selector should match. Defaults to
 1.</li>
 <li><strong>wait</strong> (<em>bool | int | float</em><em>, </em><em>optional</em>) – Whether and how long to wait for synchronization.
-Defaults to <a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal"><span class="pre">capybara.default_max_wait_time</span></code></a>.</li>
+Defaults to <a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>.</li>
 </ul>
 </td>
 </tr>
@@ -338,7 +329,7 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <dl class="class">
 <dt id="capybara.queries.title_query.TitleQuery">
 <em class="property">class </em><code class="descclassname">capybara.queries.title_query.</code><code class="descname">TitleQuery</code><span class="sig-paren">(</span><em>expected_title</em>, <em>exact=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/title_query.html#TitleQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.title_query.TitleQuery" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal"><span class="pre">object</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Queries the title content of a node.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -424,12 +415,14 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -440,7 +433,7 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.6</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
       
       |
