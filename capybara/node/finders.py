@@ -4,6 +4,7 @@ from capybara.helpers import matches_count
 from capybara.queries.ancestor_query import AncestorQuery
 from capybara.queries.selector_query import SelectorQuery
 from capybara.queries.sibling_query import SiblingQuery
+from capybara.result import Result
 
 
 class FindersMixin(object):
@@ -194,6 +195,10 @@ class FindersMixin(object):
             ExpectationNotMet: The matched results did not meet the expected criteria.
         """
 
+        minimum_specified = _options_include_minimum(kwargs)
+        if not minimum_specified:
+            kwargs["minimum"] = 1
+
         query = SelectorQuery(*args, **kwargs)
 
         @self.synchronize(wait=query.wait)
@@ -205,7 +210,12 @@ class FindersMixin(object):
 
             return result
 
-        return find_all()
+        try:
+            return find_all()
+        except ExpectationNotMet:
+            if minimum_specified:
+                raise
+            return Result([], None)
 
     def find_first(self, *args, **kwargs):
         """

@@ -20,6 +20,18 @@ class TestFindAll(FindAllTestCase):
     def test_returns_an_empty_result_when_nothing_was_found(self, session):
         assert len(session.find_all("//div[@id='nosuchthing']")) == 0
 
+    @pytest.mark.requires("js")
+    def test_waits_for_matching_elements_to_appear(self, session):
+        session.visit("/with_js")
+        session.click_link("Click me")
+        assert len(session.find_all("css", "a#has-been-clicked")) > 0
+
+    @pytest.mark.requires("js")
+    def test_does_not_wait_if_minimum_0_option_is_specified(self, session):
+        session.visit("/with_js")
+        session.click_link("Click me")
+        assert len(session.find_all("css", "a#has-been-clicked", minimum=0)) == 0
+
     def test_accepts_an_xpath_expression_instance(self, session):
         session.visit("/form")
         xpath = html.fillable_field("Name")
