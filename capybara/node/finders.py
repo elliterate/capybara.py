@@ -209,12 +209,11 @@ class FindersMixin(object):
 
     def find_first(self, *args, **kwargs):
         """
-        Find the first element on the page matching the given selector and options, or None if no
-        element matches.
+        Find the first element on the page matching the given selector and options.
 
-        By default, no waiting behavior occurs. However, if ``capybara.wait_on_first_by_default``
-        is set to true, it will trigger Capybara's waiting behavior for a minimum of 1 matching
-        element to be found.
+        By default :meth:`find_first` will wait up to :data:`capybara.default_max_wait_time`
+        seconds for matching elements to appear and then raise an error if no matching element
+        is found, or ``None`` if the provided count options allow for empty results.
 
         Args:
             *args: Variable length argument list for :class:`SelectorQuery`.
@@ -222,16 +221,16 @@ class FindersMixin(object):
 
         Returns:
             Element: The found element or None.
+
+        Raises:
+            ElementNotFound: An element matching the provided options couldn't be found.
         """
 
-        if capybara.wait_on_first_by_default:
-            kwargs.setdefault("minimum", 1)
+        if not _options_include_minimum(kwargs):
+            kwargs["minimum"] = 1
 
-        try:
-            result = self.find_all(*args, **kwargs)
-            return result[0] if len(result) > 0 else None
-        except ExpectationNotMet:
-            return None
+        result = self.find_all(*args, **kwargs)
+        return result[0] if len(result) > 0 else None
 
     def _synchronized_resolve(self, query):
         @self.synchronize(wait=query.wait)
@@ -254,3 +253,7 @@ class FindersMixin(object):
             return element
 
         return resolve()
+
+
+def _options_include_minimum(options):
+    return any(key in options for key in ["between", "count", "minimum"])

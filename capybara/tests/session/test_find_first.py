@@ -2,6 +2,7 @@ import pytest
 from xpath import html
 
 import capybara
+from capybara.exceptions import ElementNotFound
 
 
 class FindFirstTestCase:
@@ -15,8 +16,12 @@ class TestFindFirst(FindFirstTestCase):
         assert session.find_first("//h1").text == "This is a test"
         assert session.find_first("//input[@id='test_field']").value == "monkey"
 
-    def test_returns_none_when_nothing_was_found(self, session):
-        assert session.find_first("//div[@id='nosuchthing']") is None
+    def test_raises_when_nothing_was_found(self, session):
+        with pytest.raises(ElementNotFound):
+            session.find_first("//div[@id='nosuchthing']")
+
+    def test_returns_nil_when_nothing_was_found_if_count_options_allow_no_results(self, session):
+        assert session.find_first("//div[@id='nosuchthing']", minimum=0) is None
 
     def test_accepts_an_xpath_expression_instance(self, session):
         session.visit("/form")
@@ -44,7 +49,8 @@ class TestFindFirst(FindFirstTestCase):
 
 class TestFindFirstVisible(FindFirstTestCase):
     def test_only_finds_visible_nodes_when_true(self, session):
-        assert session.find_first("css", "a#invisible", visible=True) is None
+        with pytest.raises(ElementNotFound):
+            session.find_first("css", "a#invisible", visible=True)
         assert session.find_first("css", "a#visible", visible=True) is not None
 
     def test_finds_nodes_regardless_of_whether_they_are_invisible_when_false(self, session):
@@ -57,30 +63,25 @@ class TestFindFirstVisible(FindFirstTestCase):
 
     def test_finds_only_hidden_nodes_when_hidden(self, session):
         assert session.find_first("css", "a#invisible", visible="hidden") is not None
-        assert session.find_first("css", "a#visible", visible="hidden") is None
+        with pytest.raises(ElementNotFound):
+            session.find_first("css", "a#visible", visible="hidden")
 
     def test_finds_only_visible_nodes_when_visible(self, session):
-        assert session.find_first("css", "a#invisible", visible="visible") is None
+        with pytest.raises(ElementNotFound):
+            session.find_first("css", "a#invisible", visible="visible")
         assert session.find_first("css", "a#visible", visible="visible") is not None
 
 
 @pytest.mark.requires("js")
-class TestFindFirstWithWaitOnFirstByDefault(FindFirstTestCase):
+class TestFindFirstWaitingBehavior(FindFirstTestCase):
     @pytest.fixture(autouse=True)
     def setup_session(self, session):
         session.visit("/with_js")
 
-    def test_does_not_wait_if_false(self, session):
-        capybara.wait_on_first_by_default = False
+    def test_does_not_wait_if_minimum_0(self, session):
         session.click_link("clickable")
-        assert session.find_first("css", "a#has-been-clicked") is None
+        assert session.find_first("css", "a#has-been-clicked", minimum=0) is None
 
-    def test_waits_for_at_least_one_match_if_true(self, session):
-        capybara.wait_on_first_by_default = True
+    def test_waits_for_at_least_one_match_by_default(self, session):
         session.click_link("clickable")
         assert session.find_first("css", "a#has-been-clicked") is not None
-
-    def test_returns_nil_after_waiting_if_no_match(self, session):
-        capybara.wait_on_first_by_default = True
-        session.click_link("clickable")
-        assert session.find_first("css", "a#not-a-real-link") is None

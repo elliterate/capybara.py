@@ -23,7 +23,6 @@ def setup_capybara():
     original_match = capybara.match
     original_raise_server_errors = capybara.raise_server_errors
     original_visible_text_only = capybara.visible_text_only
-    original_wait_on_first_by_default = capybara.wait_on_first_by_default
     try:
         capybara.app = app
         capybara.app_host = None
@@ -42,7 +41,6 @@ def setup_capybara():
         capybara.match = original_match
         capybara.raise_server_errors = original_raise_server_errors
         capybara.visible_text_only = original_visible_text_only
-        capybara.wait_on_first_by_default = original_wait_on_first_by_default
 
 
 @pytest.fixture(scope="session")
