@@ -53,9 +53,11 @@ before_install:
   # Upgrade pip to a version that supports `pip install .[test]`.
   - pip install --upgrade pip
   - mkdir -p ~/drivers; export PATH=~/drivers:$PATH;
-  - GECKODRIVER_URL="https://github.com/mozilla/geckodriver/releases/download/v0.18.0/geckodriver-v0.18.0-linux64.tar.gz";
-    FILE=`mktemp`; wget "$GECKODRIVER_URL" -qO $FILE && tar xz -C ~/drivers -f $FILE geckodriver; rm $FILE; chmod 777 ~/drivers/geckodriver;
-    ~/drivers/geckodriver --version;
+  - if [[ $TOXENV == marionette ]]; then
+      GECKODRIVER_URL="https://github.com/mozilla/geckodriver/releases/download/v0.18.0/geckodriver-v0.18.0-linux64.tar.gz";
+      FILE=`mktemp`; wget "$GECKODRIVER_URL" -qO $FILE && tar xz -C ~/drivers -f $FILE geckodriver; rm $FILE; chmod 777 ~/drivers/geckodriver;
+      ~/drivers/geckodriver --version;
+    fi
   - if [[ $TOXENV == chrome ]]; then
       CHROMEDRIVER_VERSION=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE);
       CHROMEDRIVER_URL="http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip";
