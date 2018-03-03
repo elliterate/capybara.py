@@ -4,6 +4,39 @@ from capybara.compat import PY2, str_
 from capybara.utils import decode_bytes, isbytes, isregex, isstring, encode_string
 
 
+def compare_count(count, options):
+    """
+    Returns how the given count compares to the given query options.
+
+    If no quantity options are specified, any count is considered acceptable.
+
+    Args:
+        count (int): The count to be validated.
+        options (Dict[str, int | Iterable[int]]): A dictionary of query options.
+
+    Returns:
+        int: A negative, zero or positive number depending on whether the count
+            is considered smaller than, equal to, or larger than the options.
+    """
+
+    if options.get("count") is not None:
+        return cmp(count, int(options["count"]))
+    if options.get("maximum") is not None and count > int(options["maximum"]):
+        return 1
+    if options.get("minimum") is not None and count < int(options["minimum"]):
+        return -1
+    if options.get("between") is not None:
+        minimum = min(options["between"])
+        maximum = max(options["between"])
+        if count > maximum:
+            return 1
+        if count < minimum:
+            return -1
+        return 0
+
+    return 0
+
+
 def declension(singular, plural, count):
     """
     Returns the appropriate word variation for the given quantity.
@@ -112,15 +145,7 @@ def matches_count(count, options):
         bool: Whether the count matches the options.
     """
 
-    if options.get("count") is not None:
-        return count == int(options["count"])
-    if options.get("maximum") is not None and int(options["maximum"]) < count:
-        return False
-    if options.get("minimum") is not None and int(options["minimum"]) > count:
-        return False
-    if options.get("between") is not None and count not in options["between"]:
-        return False
-    return True
+    return compare_count(count, options) == 0
 
 
 def normalize_text(value):

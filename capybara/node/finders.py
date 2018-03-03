@@ -1,6 +1,6 @@
 import capybara
 from capybara.exceptions import Ambiguous, ElementNotFound, ExpectationNotMet
-from capybara.helpers import matches_count
+from capybara.helpers import compare_count, matches_count
 from capybara.queries.ancestor_query import AncestorQuery
 from capybara.queries.selector_query import SelectorQuery
 from capybara.queries.sibling_query import SiblingQuery
@@ -201,9 +201,11 @@ class FindersMixin(object):
 
         query = SelectorQuery(*args, **kwargs)
 
+        data = {}
+
         @self.synchronize(wait=query.wait)
         def find_all():
-            result = query.resolve_for(self)
+            result = data['result'] = query.resolve_for(self)
 
             if not matches_count(len(result), query.options):
                 raise ExpectationNotMet(result.failure_message)
@@ -213,7 +215,7 @@ class FindersMixin(object):
         try:
             return find_all()
         except ExpectationNotMet:
-            if minimum_specified:
+            if minimum_specified or (data['result'] and compare_count(len(data['result']), query.options) == 1):
                 raise
             return Result([], None)
 
