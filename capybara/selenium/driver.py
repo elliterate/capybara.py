@@ -196,8 +196,20 @@ class Driver(Base):
                         # Allow time for the modal to be handled.
                         sleep(0.25)
                     except NoAlertPresentException:
-                        # The alert is now gone. Nothing to do.
-                        pass
+                        # The alert is now gone.
+
+                        if self.browser.current_url != "about:blank":
+                            # If navigation has not occurred, Firefox may have dismissed the alert
+                            # before we could accept it.
+
+                            # Try to navigate again, anticipating the alert this time.
+                            try:
+                                self.browser.get("about:blank")
+                                sleep(0.1)  # Wait for the alert.
+                                self.browser.switch_to.alert.accept()
+                            except NoAlertPresentException:
+                                # No alert appeared this time.
+                                pass
 
                     # Try cleaning up the browser again.
                     continue

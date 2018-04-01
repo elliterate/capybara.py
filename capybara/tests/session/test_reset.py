@@ -2,7 +2,6 @@ import pytest
 
 import capybara
 from capybara.tests.app import AppError
-from capybara.tests.helpers import ismarionette
 
 
 class TestReset:
@@ -43,9 +42,6 @@ class TestReset:
 
     @pytest.mark.requires("modals")
     def test_handles_modals_during_unload(self, session):
-        if ismarionette(session):
-            pytest.skip("geckodriver cannot be reliably reset with unload alerts")
-
         session.visit("/with_unload_alert")
         assert session.has_selector("css", "div")
         session.reset()
@@ -53,9 +49,6 @@ class TestReset:
 
     @pytest.mark.requires("modals")
     def test_handles_already_open_modals(self, session):
-        if ismarionette(session):
-            pytest.skip("geckodriver cannot be reliably reset with unload alerts")
-
         session.visit("/with_unload_alert")
         session.click_link("Go away")
         session.reset()
