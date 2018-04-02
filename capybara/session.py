@@ -31,10 +31,11 @@ _NODE_METHODS = [
 _NODE_PROPERTIES = ["text"]
 _SESSION_METHODS = [
     "accept_alert", "accept_confirm", "accept_prompt", "assert_current_path",
-    "assert_no_current_path", "dismiss_confirm", "dismiss_prompt", "evaluate_script",
-    "execute_script", "fieldset", "frame", "go_back", "go_forward", "has_current_path",
-    "has_no_current_path", "open_new_window", "refresh", "reset", "save_page", "save_screenshot",
-    "scope", "switch_to_frame", "switch_to_window", "table", "visit", "window", "window_opened_by"]
+    "assert_no_current_path", "dismiss_confirm", "dismiss_prompt", "evaluate_async_script",
+    "evaluate_script", "execute_script", "fieldset", "frame", "go_back", "go_forward",
+    "has_current_path", "has_no_current_path", "open_new_window", "refresh", "reset", "save_page",
+    "save_screenshot", "scope", "switch_to_frame", "switch_to_window", "table", "visit", "window",
+    "window_opened_by"]
 _SESSION_PROPERTIES = ["current_host", "current_path", "current_url", "current_window", "windows"]
 
 DSL_METHODS = _DOCUMENT_METHODS + _NODE_METHODS + _SESSION_METHODS
@@ -456,6 +457,23 @@ class Session(SessionMatchersMixin, object):
 
         args = [arg.base if isinstance(arg, Base) else arg for arg in args]
         result = self.driver.evaluate_script(script, *args)
+        return self._wrap_element_script_result(result)
+
+    def evaluate_async_script(self, script, *args):
+        """
+        Evaluate the given JavaScript and obtain the result from a callback function which will be
+        passed as the last argument to the script.
+
+        Args:
+            script (str): A string of JavaScript to evaluate.
+            *args: Variable length argument list to pass to the executed JavaScript string.
+
+        Returns:
+            object: The result of the evaluated JavaScript (may be driver specific).
+        """
+
+        args = [arg.base if isinstance(arg, Base) else arg for arg in args]
+        result = self.driver.evaluate_async_script(script, *args)
         return self._wrap_element_script_result(result)
 
     @contextmanager

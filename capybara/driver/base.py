@@ -140,6 +140,20 @@ class Base(object):
 
         raise NotImplementedError()
 
+    def evaluate_async_script(self, script, *args):
+        """
+        Evaluates the given JavaScript and obtains the result from a callback function.
+
+        Args:
+            script (str): A string of JavaScript to evaluate.
+            *args: Variable length argument list to pass to the executed JavaScript string.
+
+        Returns:
+            object: The result of the evaluated JavaScript.
+        """
+
+        raise NotImplementedError()
+
     def save_screenshot(self, path, **kwargs):
         """
         Saves a screenshot of the current state of the page.
