@@ -20,7 +20,7 @@ class DocumentMatchersMixin(object):
 
         query = TitleQuery(title, **kwargs)
 
-        @self.synchronize
+        @self.synchronize(wait=query.wait)
         def assert_title():
             if not query.resolves_for(self):
                 raise ExpectationNotMet(query.failure_message)
@@ -46,7 +46,7 @@ class DocumentMatchersMixin(object):
 
         query = TitleQuery(title, **kwargs)
 
-        @self.synchronize
+        @self.synchronize(wait=query.wait)
         def assert_no_title():
             if query.resolves_for(self):
                 raise ExpectationNotMet(query.negative_failure_message)

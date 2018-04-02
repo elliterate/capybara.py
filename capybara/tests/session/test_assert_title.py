@@ -24,7 +24,7 @@ class TestAssertTitle:
     @pytest.mark.requires("js")
     def test_waits_for_title(self, session):
         session.click_link("Change title")
-        assert session.assert_title("changed title") is True
+        assert session.assert_title("changed title", wait=3) is True
 
     def test_raises_error_if_the_page_title_does_not_contain_the_given_string(self, session):
         with pytest.raises(ExpectationNotMet) as excinfo:
@@ -59,7 +59,7 @@ class TestAssertNoTitle:
     @pytest.mark.requires("js")
     def test_waits_for_title_to_disappear(self, session):
         session.click_link("Change title")
-        assert session.assert_no_title("with_js") is True
+        assert session.assert_no_title("with_js", wait=3) is True
 
     def test_is_true_if_the_title_does_not_contain_the_string(self, session):
         assert session.assert_no_title("monkey") is True

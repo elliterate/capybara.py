@@ -41,7 +41,7 @@ class TestHasNoTitle:
     @pytest.mark.requires("js")
     def test_waits_for_title_to_disappear(self, session):
         session.click_link("Change title")
-        assert session.has_no_title("with_js") is True
+        assert session.has_no_title("with_js", wait=5) is True
 
     def test_is_true_if_the_page_does_not_have_the_given_title(self, session):
         assert session.has_no_title("monkey") is True
