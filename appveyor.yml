@@ -1,0 +1,18 @@
+environment:
+  matrix:
+    - PYTHON: "C:\\Python27-x64"
+      TOXENV: "chrome"
+    - PYTHON: "C:\\Python35-x64"
+      TOXENV: "chrome"
+    - PYTHON: "C:\\Python27-x64"
+      TOXENV: "marionette"
+    - PYTHON: "C:\\Python35-x64"
+      TOXENV: "marionette"
+
+install:
+  - "%PYTHON%\\python.exe -m pip install tox"
+
+build: off
+
+test_script:
+  - "%PYTHON%\\python.exe tox"
