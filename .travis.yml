@@ -22,7 +22,7 @@ matrix:
         - TOXENV=chrome
         - HEADLESS=true
       addons:
-        chrome: beta
+        chrome: stable
         apt:
           packages:
             - awesome
