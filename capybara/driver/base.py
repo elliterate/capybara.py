@@ -35,6 +35,21 @@ class Base(object):
         raise NotImplementedError()
 
     @property
+    def frame_title(self):
+        """ str: The title for the current frame. """
+        elements = self._find_xpath("/html/head/title")
+        titles = [element.all_text for element in elements]
+        return titles[0] if len(titles) else ""
+
+    @property
+    def frame_url(self):
+        """ str: The URL for the current frame. """
+        try:
+            return self.evaluate_script("document.location.href")
+        except NotImplementedError:
+            raise NotImplementedError()
+
+    @property
     def current_window_handle(self):
         """ object: The current window handle. """
         raise NotImplementedError()
