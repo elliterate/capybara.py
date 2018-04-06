@@ -94,3 +94,10 @@ class TestCurrentURL:
         session.visit("/with_js")
         session.execute_script("window.history.replaceState({}, '', '/replaced')")
         assert session.current_path == "/replaced"
+
+    @pytest.mark.requires("frames")
+    def test_gets_the_url_of_the_toop_level_browsing_context(self, session):
+        session.visit("/within_frames")
+        assert session.current_url.endswith("/within_frames")
+        with session.frame("frameOne"):
+            assert session.current_url.endswith("/within_frames")
