@@ -4,11 +4,11 @@ import capybara
 from capybara.tests.suite import DriverSuite
 
 
-@capybara.register_driver("selenium_edge")
+@capybara.register_driver("selenium_ie")
 def init_selenium_edgr_driver(app):
     from capybara.selenium.driver import Driver
 
-    return Driver(app, browser="edge")
+    return Driver(app, browser="ie")
 
 
 _skip = []
@@ -17,4 +17,4 @@ _skip = []
 if os.environ.get("HEADLESS"):
     _skip.append("windows")
 
-SeleniumEdgeDriverSuite = DriverSuite("selenium_edge", skip=_skip)
+SeleniumIeDriverSuite = DriverSuite("selenium_ie", skip=_skip)
