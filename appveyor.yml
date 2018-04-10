@@ -14,6 +14,9 @@ environment:
       TOXENV: "marionette"
 
 install:
+  # Registry hack so driver can maintain connection
+  - REG ADD "HKLM\SOFTWARE\Microsoft\Internet Explorer\MAIN\FeatureControl\FEATURE_BFCACHE" /v iexplore.exe /t REG_DWORD /d 00000000
+  - REG ADD "HKLM\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\MAIN\FeatureControl\FEATURE_BFCACHE" /v iexplore.exe /t REG_DWORD /d 00000000
   - "%PYTHON%\\python.exe -m pip install tox"
 
 build: off
