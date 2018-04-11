@@ -19,6 +19,11 @@ install:
   - REG ADD "HKLM\SOFTWARE\Wow6432Node\Microsoft\Internet Explorer\MAIN\FeatureControl\FEATURE_BFCACHE" /v iexplore.exe /t REG_DWORD /d 00000000
   - "%PYTHON%\\python.exe -m pip install tox"
 
+before_test:
+  - chromedriver.exe --version
+  - geckodriver.exe --version
+  - IEDriverServer.exe --version
+
 build: off
 
 test_script:
