@@ -275,7 +275,7 @@ def init_werkzeug_server(app, port, host):
 
     # Mute the server.
     log = getLogger('werkzeug')
-    log.disabled = True
+    # log.disabled = True
 
     server = make_server(host, port, app, threaded=True)
 

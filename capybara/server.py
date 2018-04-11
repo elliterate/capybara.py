@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 from contextlib import closing
 from threading import Thread
 from time import sleep, time
@@ -79,6 +81,8 @@ class Server(object):
             init_func = capybara.servers[capybara.server_name]
             init_args = (self.middleware, self.port, self.host)
 
+            print("Starting {} server at {}:{}".format(capybara.server_name, self.host, self.port))
+
             self.server_thread = Thread(target=init_func, args=init_args)
 
             # Inform Python that it shouldn't wait for this thread to terminate before
@@ -107,6 +111,8 @@ class Server(object):
             # Try to fetch the endpoint added by the middleware.
             identify_url = "http://{0}:{1}/__identify__".format(self.host, self.port)
 
+            print("Requesting {}".format(identify_url))
+
             with closing(urlopen(identify_url)) as response:
                 body, status_code = response.read(), response.getcode()
 
@@ -129,6 +135,8 @@ class Middleware(object):
         self.error = None
 
     def __call__(self, environ, start_response):
+        print("Received request for {}".format(environ["PATH_INFO"]))
+
         if environ["PATH_INFO"] == "/__identify__":
             return self.identify(environ, start_response)
         else:
