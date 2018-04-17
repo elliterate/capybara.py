@@ -15,6 +15,9 @@ Documentation
 
 See https://elliterate.github.io/capybara.py/.
 
+**Need help?** Ask on the mailing list (please do not open an issue on GitHub):
+http://groups.google.com/group/capybara-py/.
+
 Credits
 ~~~~~~~
 

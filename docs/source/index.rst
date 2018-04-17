@@ -5,6 +5,9 @@ Capybara helps you test web applications by simulating how a real user would
 interact with your app. It is agnostic about the driver running your tests and
 comes with Werkzeug and Selenium support built in.
 
+**Need help?** Ask on the mailing list (please do not open an issue on GitHub):
+http://groups.google.com/group/capybara-py/.
+
 **Note: Firefox 48+** If you're using Firefox with ``selenium`` and want full
 functionality stay on either Firefox |ff45|_ or |ff47|_. If using ``selenium``
 3.0+ this will require configuring your driver with the ``"marionette": False``
