@@ -1,8 +1,5 @@
-from contextlib import contextmanager
-import signal
 from socket import socket
 from threading import Lock
-from time import time
 
 from capybara.compat import (
     ParseResult,
@@ -232,59 +229,3 @@ def setter_decorator(fset):
     fdoc = fset.__doc__
 
     return property(fget, fset, None, fdoc)
-
-
-class TimeoutError(Exception):
-    pass
-
-
-@contextmanager
-def timeout(seconds):
-    """
-    Raises an exception if the wrapped code fails to return within the given number of seconds.
-
-    Args:
-        seconds (int | float): The number of seconds to wait before timing out.
-
-    Raises:
-        TimeoutError: The wrapped code failed to return within the given timeout.
-    """
-
-    def handler(signum, frame):
-        raise TimeoutError()
-
-    old_seconds, start_time = 0, 0
-    old_handler = signal.signal(signal.SIGALRM, handler)
-    try:
-        start_time = time()
-        old_seconds = signal.alarm(seconds)
-
-        if 0 < old_seconds < seconds:
-            # Someone else cares about a shorter timeout, so restore it.
-            handler = None
-
-            # Give ourselves a moment to restore before re-activating the alarm.
-            signal.alarm(0)
-
-            # Restore the original handler.
-            signal.signal(signal.SIGALRM, old_handler)
-            old_handler = None
-
-            # Restore the original alarm.
-            signal.alarm(old_seconds)
-            old_seconds = 0
-
-        try:
-            yield
-        finally:
-            if handler:
-                signal.alarm(0)
-    finally:
-        # If another handler was registered, restore it.
-        if old_handler:
-            signal.signal(signal.SIGALRM, old_handler)
-
-        # If another alarm was already scheduled, restore it.
-        if old_seconds:
-            elapsed = time() - start_time
-            signal.alarm(old_seconds - elapsed)

@@ -1,17 +1,15 @@
 from contextlib import closing
 from threading import Thread
-from time import sleep
+from time import sleep, time
 
 import capybara
 from capybara.compat import URLError, urlopen
 from capybara.utils import (
     Counter,
-    TimeoutError,
     cached_property,
     decode_bytes,
     encode_string,
-    find_available_port,
-    timeout)
+    find_available_port)
 
 
 class Server(object):
@@ -60,12 +58,11 @@ class Server(object):
         return Middleware(self.app)
 
     def wait_for_pending_requests(self):
-        try:
-            with timeout(60):
-                while self.has_pending_requests:
-                    sleep(0.01)
-        except TimeoutError:
-            raise TimeoutError("Requests did not finish in 60 seconds")
+        start_time = time()
+        while self.has_pending_requests:
+            if time() - start_time > 60:
+                raise RuntimeError("Requests did not finish in 60 seconds")
+            sleep(0.01)
 
     def boot(self):
         """
@@ -91,9 +88,11 @@ class Server(object):
             self.server_thread.start()
 
             # Make sure the server actually starts and becomes responsive.
-            with timeout(60):
-                while not self.responsive:
-                    self.server_thread.join(0.1)
+            start_time = time()
+            while not self.responsive:
+                if time() - start_time > 60:
+                    raise RuntimeError("WSGI application timed out during boot")
+                self.server_thread.join(0.1)
 
         return self
 
