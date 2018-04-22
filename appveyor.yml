@@ -13,6 +13,7 @@ before_test:
   - chromedriver.exe --version
   - geckodriver.exe --version
   - IEDriverServer.exe --version
+  - iexplore.exe --version
 
 build: off
 
