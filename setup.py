@@ -11,7 +11,7 @@ driver_verification_tests_require = [
     "flaky",
     "flask",
     "py",
-    "pytest ~= 3.0, != 3.3.*, < 3.5",
+    "pytest ~= 3.0, != 3.3.*, < 3.7",
     "werkzeug"]
 if sys.version_info < (3, 3):
     driver_verification_tests_require.append("mock")

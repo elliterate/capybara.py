@@ -3,6 +3,7 @@
 *.pyc
 .cache/
 .eggs/
+.pytest_cache/
 .tox/
 build/
 dist/
