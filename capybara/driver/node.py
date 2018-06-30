@@ -75,11 +75,11 @@ class Node(object):
 
         raise NotImplementedError()
 
-    def click(self):
+    def click(self, *keys, **offset):
         """ Clicks on this node. """
         raise NotImplementedError()
 
-    def double_click(self):
+    def double_click(self, *keys, **offset):
         """ Double-click the node. """
         raise NotImplementedError()
 
@@ -101,7 +101,7 @@ class Node(object):
         """ Hover on the node. """
         raise NotImplementedError()
 
-    def right_click(self):
+    def right_click(self, *keys, **offset):
         """ Right-click the node. """
         raise NotImplementedError()
 

@@ -61,12 +61,33 @@ $(function() {
     }, 400)
   });
   $('#click-test').on({
-    dblclick: function() {
-      $(this).after('<a id="has-been-double-clicked" href="#">Has been double clicked</a>');
+    click: function(e) {
+      var desc = "";
+      if (e.altKey) desc += 'alt ';
+      if (e.ctrlKey) desc += 'control ';
+      if (e.metaKey) desc += 'meta ';
+      if (e.shiftKey) desc += 'shift ';
+      var pos = this.getBoundingClientRect();
+      $(this).after('<a id="has-been-clicked" href="#">Has been ' + desc + 'clicked at ' + (e.clientX - pos.left) + ',' + (e.clientY - pos.top) + '</a>');
+    },
+    dblclick: function(e) {
+      var desc = "";
+      if (e.altKey) desc += 'alt ';
+      if (e.ctrlKey) desc += 'control ';
+      if (e.metaKey) desc += 'meta ';
+      if (e.shiftKey) desc += 'shift ';
+      var pos = this.getBoundingClientRect();
+      $(this).after('<a id="has-been-double-clicked" href="#">Has been ' + desc + 'double clicked at ' + (e.clientX - pos.left) + ',' + (e.clientY - pos.top) + '</a>');
     },
     contextmenu: function(e) {
       e.preventDefault();
-      $(this).after('<a id="has-been-right-clicked" href="#">Has been right clicked</a>');
+      var desc = "";
+      if (e.altKey) desc += 'alt ';
+      if (e.ctrlKey) desc += 'control ';
+      if (e.metaKey) desc += 'meta ';
+      if (e.shiftKey) desc += 'shift ';
+      var pos = this.getBoundingClientRect();
+      $(this).after('<a id="has-been-right-clicked" href="#">Has been ' + desc + 'right clicked at ' + (e.clientX - pos.left) + ',' + (e.clientY - pos.top) + '</a>');
     }
   });
   $('#open-alert').click(function() {

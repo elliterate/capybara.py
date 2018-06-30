@@ -146,14 +146,35 @@ class Element(Base):
         return self.base[name]
 
     @synchronize
-    def click(self):
-        """ Click the element. """
-        self.base.click()
+    def click(self, *keys, **offset):
+        """
+        Click the element.
+
+        Both ``x`` and ``y`` must be specified if an offset is wanted. If not specified, the click
+        will occur at the middle of the element.
+
+        Args:
+            keys (List[Keys], optional): Keys to be held down when clicking.
+            offset (Dict[str, int], optional): X- and Y-coordinates to offset the click location
+                from the toop left corner of the element.
+        """
+
+        self.base.click(*keys, **offset)
 
     @synchronize
-    def double_click(self):
-        """ Double-click the element. """
-        self.base.double_click()
+    def double_click(self, *keys, **offset):
+        """
+        Double-click the element.
+
+        Both ``x`` and ``y`` must be specified if an offset is wanted. If not specified, the click
+        will occur at the middle of the element.
+
+        Args:
+            keys (List[Keys], optional): Keys to be held down when clicking.
+            offset (Dict[str, int], optional): X- and Y-coordinates to offset the click location
+                from the toop left corner of the element.
+        """
+        self.base.double_click(*keys, **offset)
 
     @synchronize
     def drag_to(self, node):
@@ -194,9 +215,19 @@ class Element(Base):
         self.base.hover()
 
     @synchronize
-    def right_click(self):
-        """ Right-click the element. """
-        self.base.right_click()
+    def right_click(self, *keys, **offset):
+        """
+        Right-click the element.
+
+        Both ``x`` and ``y`` must be specified if an offset is wanted. If not specified, the click
+        will occur at the middle of the element.
+
+        Args:
+            keys (List[Keys], optional): Keys to be held down when clicking.
+            offset (Dict[str, int], optional): X- and Y-coordinates to offset the click location
+                from the toop left corner of the element.
+        """
+        self.base.right_click(*keys, **offset)
 
     @synchronize
     def select_option(self):

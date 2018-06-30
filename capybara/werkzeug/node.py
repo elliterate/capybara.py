@@ -78,7 +78,10 @@ class Node(Base):
     def value(self):
         return self._string_node.value
 
-    def click(self):
+    def click(self, *keys, **offset):
+        if any(keys) or any(offset.values()):
+            raise ValueError("The Werkzeug driver does not support click options")
+
         if self.tag_name == "a" and self["href"]:
             self.driver.follow("GET", self["href"])
         elif (self.tag_name == "input" and self["type"] in ["submit", "image"]) or \

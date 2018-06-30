@@ -1,4 +1,6 @@
-from selenium.common.exceptions import WebDriverException
+from contextlib import contextmanager
+from functools import wraps
+from selenium.common.exceptions import MoveTargetOutOfBoundsException, WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
 
 try:
@@ -82,9 +84,17 @@ class Node(Base):
         return [cls(self.driver, element)
                 for element in self.native.find_elements_by_xpath(xpath)]
 
-    def click(self):
+    def click(self, *keys, **offset):
         try:
-            self.native.click()
+            if not any(keys) and not self._has_coords(offset):
+                self.native.click()
+            else:
+                @self._scroll_if_needed
+                def click():
+                    with self._action_with_modifiers(keys, offset) as a:
+                        a.click() if self._has_coords(offset) else a.click(self.native)
+                click()
+
         except WebDriverException as e:
             if (
                 # Marionette
@@ -93,18 +103,16 @@ class Node(Base):
                 # Chrome
                 "Other element would receive the click" in e.msg
             ):
-                try:
-                    self.driver.execute_script("""
-                        arguments[0].scrollIntoView({behavior: 'instant', block: 'center', inline: 'center'})
-                    """, self)
-                except:
-                    # Swallow error if scrollIntoView with options isn't supported.
-                    pass
+                self._scroll_to_center()
 
             raise
 
-    def double_click(self):
-        ActionChains(self.driver.browser).double_click(self.native).perform()
+    def double_click(self, *keys, **offset):
+        @self._scroll_if_needed
+        def double_click():
+            with self._action_with_modifiers(keys, offset) as a:
+                a.double_click() if self._has_coords(offset) else a.double_click(self.native)
+        double_click()
 
     def drag_to(self, element):
         ActionChains(self.driver.browser).drag_and_drop(self.native, element.native).perform()
@@ -112,8 +120,12 @@ class Node(Base):
     def hover(self):
         ActionChains(self.driver.browser).move_to_element(self.native).perform()
 
-    def right_click(self):
-        ActionChains(self.driver.browser).context_click(self.native).perform()
+    def right_click(self, *keys, **offset):
+        @self._scroll_if_needed
+        def right_click():
+            with self._action_with_modifiers(keys, offset) as a:
+                a.context_click() if self._has_coords(offset) else a.context_click(self.native)
+        right_click()
 
     def select_option(self):
         if not self.selected and not self.disabled:
@@ -185,3 +197,47 @@ class Node(Base):
     @property
     def _select_node(self):
         return self._find_xpath("./ancestor::select")[0]
+
+    @staticmethod
+    def _has_coords(options):
+        return bool(options.get('x')) and bool(options.get('y'))
+
+    def _scroll_if_needed(self, fn):
+        @wraps(fn)
+        def wrapper():
+            try:
+                fn()
+            except MoveTargetOutOfBoundsException:
+                self._scroll_to_center()
+                fn()
+
+        return wrapper
+
+    def _scroll_to_center(self):
+        try:
+            self.driver.execute_script("""
+                arguments[0].scrollIntoView({behavior: 'instant', block: 'center', inline: 'center'})
+            """, self)
+        except:
+            # Swallow error if scrollIntoView with options isn't supported.
+            pass
+
+    @contextmanager
+    def _action_with_modifiers(self, keys, offset):
+        actions = ActionChains(self.driver.browser)
+        if self._has_coords(offset):
+            actions.move_to_element_with_offset(self.native, offset['x'], offset['y'])
+        self._modifiers_down(actions, keys)
+        yield actions
+        self._modifiers_up(actions, keys)
+        actions.perform()
+
+    @staticmethod
+    def _modifiers_down(actions, keys):
+        for key in keys:
+            actions.key_down(key)
+
+    @staticmethod
+    def _modifiers_up(actions, keys):
+        for key in keys:
+            actions.key_up(key)

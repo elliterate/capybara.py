@@ -18,11 +18,33 @@ def extract_results(session):
     return ImmutableMultiDict(json.loads(inner_html(element)))
 
 
+def isfirefox(session):
+    """ bool: Whether the session is using Firefox. """
+    return getattr(session.driver, "_firefox", False)
+
+
 def ismarionette(session):
+    """ bool: Whether the session is using Marionette. """
     return getattr(session.driver, "_marionette", False)
 
 
+def ismarionettelt(version, session):
+    """
+    Whether the session is using Marionette with Firefox less than the given version.
+
+    Args:
+        version (int): The Firefox version to test.
+        session (Session): The Capybara session.
+
+    Returns:
+        bool: Whether the session is using Marionette with Firefox less than the given version.
+    """
+
+    return ismarionette(session) and int(session.driver.browser.capabilities['browserVersion'].split(".")[0]) < version
+
+
 def isselenium(session):
+    """ bool: Whether the session is using Selenium. """
     try:
         from capybara.selenium.driver import Driver
     except ImportError:

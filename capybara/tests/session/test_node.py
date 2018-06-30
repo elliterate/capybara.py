@@ -1,9 +1,10 @@
 import pytest
+import re
 from time import sleep
 
 import capybara
 from capybara.exceptions import ReadOnlyElementError
-from capybara.tests.helpers import extract_results, ismarionette
+from capybara.tests.helpers import extract_results, isfirefox, ismarionette, ismarionettelt
 
 
 class NodeTestCase:
@@ -242,6 +243,32 @@ class TestNodeClick(NodeTestCase):
         radio.click()
         assert radio.checked
 
+    @pytest.mark.requires("js")
+    def test_allows_modifiers(self, session):
+        Keys = pytest.importorskip("selenium.webdriver.common.keys").Keys
+
+        session.visit("/with_js")
+        session.find("css", "#click-test").click(Keys.SHIFT)
+        assert session.has_link("Has been shift clicked")
+
+    @pytest.mark.requires("js")
+    def test_allows_multiple_modifiers(self, session):
+        Keys = pytest.importorskip("selenium.webdriver.common.keys").Keys
+
+        session.visit("/with_js")
+        session.find("css", "#click-test").click(Keys.ALT, Keys.META, Keys.SHIFT)
+        assert session.has_link("alt meta shift")
+
+    @pytest.mark.requires("js")
+    def test_allows_adjusting_the_click_offset(self, session):
+        session.visit("/with_js")
+        session.find("css", "#click-test").click(x=5, y=5)
+        link = session.find("link", "has-been-clicked")
+        regex = re.compile(r"^Has been clicked at (?P<x>[\d\.-]+),(?P<y>[\d\.-]+)$")
+        locations = regex.search(link.text).groupdict()
+        assert float(locations['x']) == pytest.approx(5, 1)
+        assert float(locations['y']) == pytest.approx(5, 1)
+
     def test_handles_fixed_headers_and_footers(self, session):
         session.visit("/with_fixed_header_footer")
         # session.click_link("Go to root")
@@ -252,23 +279,61 @@ class TestNodeClick(NodeTestCase):
 @pytest.mark.requires("js")
 class TestNodeDoubleClick(NodeTestCase):
     def test_double_clicks_an_element(self, session):
-        if ismarionette(session):
+        if ismarionettelt(59, session):
             pytest.skip("selenium/geckodriver doesn't support double-click")
 
         session.visit("/with_js")
         session.find("css", "#click-test").double_click()
         assert session.find("css", "#has-been-double-clicked")
 
+    def test_allows_modifiers(self, session):
+        if ismarionettelt(59, session):
+            pytest.skip("selenium/geckodriver doesn't support double-click")
+
+        Keys = pytest.importorskip("selenium.webdriver.common.keys").Keys
+
+        session.visit("/with_js")
+        session.find("css", "#click-test").double_click(Keys.ALT)
+        assert session.has_link("Has been alt double clicked")
+
+    def test_allows_adjusting_the_click_offset(self, session):
+        if ismarionettelt(59, session):
+            pytest.skip("selenium/geckodriver doesn't support double-click")
+
+        session.visit("/with_js")
+        session.find("css", "#click-test").double_click(x=10, y=5)
+        link = session.find("link", "has-been-double-clicked")
+        regex = re.compile(r"^Has been double clicked at (?P<x>[\d\.-]+),(?P<y>[\d\.-]+)$")
+        locations = regex.search(link.text).groupdict()
+        assert float(locations['x']) == pytest.approx(10, 1)
+        assert float(locations['y']) == pytest.approx(5, 1)
+
 
 @pytest.mark.requires("js")
 class TestNodeRightClick(NodeTestCase):
     def test_right_clicks_an_element(self, session):
-        if ismarionette(session):
-            pytest.skip("selenium/geckodriver doesn't support right-click")
-
         session.visit("/with_js")
         session.find("css", "#click-test").right_click()
         assert session.find("css", "#has-been-right-clicked")
+
+    def test_allows_modifiers(self, session):
+        if isfirefox(session) and not ismarionette(session):
+            pytest.skip("Firefox without Marionette/geckodriver doesn't support modified right-click")
+
+        Keys = pytest.importorskip("selenium.webdriver.common.keys").Keys
+
+        session.visit("/with_js")
+        session.find("css", "#click-test").right_click(Keys.META)
+        assert session.has_link("Has been meta right clicked")
+
+    def test_allows_adjusting_the_click_offset(self, session):
+        session.visit("/with_js")
+        session.find("css", "#click-test").right_click(x=10, y=10)
+        link = session.find("link", "has-been-right-clicked")
+        regex = re.compile(r"^Has been right clicked at (?P<x>[\d\.-]+),(?P<y>[\d\.-]+)$")
+        locations = regex.search(link.text).groupdict()
+        assert float(locations['x']) == pytest.approx(10, 1)
+        assert float(locations['y']) == pytest.approx(10, 1)
 
 
 @pytest.mark.requires("send_keys")
