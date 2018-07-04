@@ -28,15 +28,29 @@ class Driver(Base):
     Args:
         app (object): The WSGI-compliant app to drive.
         browser (str, optional): The name of the browser to use. Defaults to "firefox".
+        clear_local_storage (bool, optional): Whether to clear local storage on reset.
+            Defaults to False.
+        clear_session_storage (bool, optional): Whether to clear session storage on
+            reset. Defaults to False.
         desired_capabilities (Dict[str, str | bool], optional): Desired
             capabilities of the underlying browser. Defaults to a set of
             reasonable defaults provided by Selenium.
         options: Arbitrary keyword arguments for the underlying Selenium driver.
     """
 
-    def __init__(self, app, browser="firefox", desired_capabilities=None, **options):
+    def __init__(
+        self,
+        app,
+        browser="firefox",
+        clear_local_storage=False,
+        clear_session_storage=False,
+        desired_capabilities=None,
+        **options
+    ):
         self.app = app
         self._browser_name = browser
+        self._clear_local_storage = clear_local_storage
+        self._clear_session_storage = clear_session_storage
         self._desired_capabilities = desired_capabilities
         self._options = options
         self._frame_handles = []
@@ -183,6 +197,7 @@ class Driver(Base):
                     # otherwise it can trigger an endless series of unload modals.
                     if not navigated:
                         self.browser.delete_all_cookies()
+                        self._clear_storage()
                         self.browser.get("about:blank")
                         navigated = True
 
@@ -231,6 +246,13 @@ class Driver(Base):
     @property
     def _firefox(self):
         return self._browser_name in ["ff", "firefox"]
+
+    def _clear_storage(self):
+        if "browser" in self.__dict__:
+            if self._clear_local_storage:
+                self.execute_script("window.localStorage.clear()")
+            if self._clear_session_storage:
+                self.execute_script("window.sessionStorage.clear()")
 
     def _find_css(self, css):
         return [Node(self, element) for element in self.browser.find_elements_by_css_selector(css)]
