@@ -1,5 +1,9 @@
+from collections import Hashable
+
+import capybara
 from capybara.exceptions import ExpectationNotMet
 from capybara.helpers import expects_none, matches_count
+from capybara.selector import selectors
 from capybara.queries.selector_query import SelectorQuery
 from capybara.queries.text_query import TextQuery
 
@@ -153,6 +157,44 @@ class MatchersMixin(object):
             return True
 
         return assert_selector()
+
+    def assert_all_of_selectors(self, *args, **kwargs):
+        wait = kwargs['wait'] if 'wait' in kwargs else capybara.default_max_wait_time
+
+        if len(args) and isinstance(args[0], Hashable) and args[0] in selectors:
+            selector = args[0]
+            locators = args[1:]
+        else:
+            selector = capybara.default_selector
+            locators = args
+
+        @self.synchronize(wait=wait)
+        def assert_all_of_selectors():
+            for locator in locators:
+                self.assert_selector(selector, locator, **kwargs)
+
+            return True
+
+        return assert_all_of_selectors()
+
+    def assert_none_of_selectors(self, *args, **kwargs):
+        wait = kwargs['wait'] if 'wait' in kwargs else capybara.default_max_wait_time
+
+        if len(args) and isinstance(args[0], Hashable) and args[0] in selectors:
+            selector = args[0]
+            locators = args[1:]
+        else:
+            selector = capybara.default_selector
+            locators = args
+
+        @self.synchronize(wait=wait)
+        def assert_none_of_selectors():
+            for locator in locators:
+                self.assert_no_selector(selector, locator, **kwargs)
+
+            return True
+
+        return assert_none_of_selectors()
 
     def assert_no_selector(self, *args, **kwargs):
         """
