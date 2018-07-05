@@ -30,3 +30,14 @@ class TestLabelSelector(SelectorTestCase):
     def test_does_not_match_substrings_when_exact_is_true(self, session):
         with pytest.raises(ElementNotFound):
             session.find("label", "Customer Na", exact=True)
+
+
+class TestFieldSelector(SelectorTestCase):
+    def test_finds_by_id(self, session):
+        assert session.find("field", id="customer_email").value == "ben@ben.com"
+
+    def test_finds_by_name(self, session):
+        assert session.find("field", name="form[other_title]")["id"] == "form_other_title"
+
+    def test_finds_by_placeholder(self, session):
+        assert session.find("field", placeholder="FirstName")["id"] == "form_first_name"

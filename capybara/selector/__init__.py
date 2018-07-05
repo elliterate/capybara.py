@@ -32,6 +32,18 @@ with add_filter_set("field") as fs:
     def disabled(node, value):
         return not node.disabled ^ value
 
+    @fs.filter("id")
+    def id(node, value):
+        return node["id"] == value
+
+    @fs.filter("name")
+    def name(node, value):
+        return node["name"] == value
+
+    @fs.filter("placeholder")
+    def placeholder(node, value):
+        return node["placeholder"] == value
+
     @fs.filter("readonly", boolean=True)
     def readonly(node, value):
         return not node.readonly ^ value
