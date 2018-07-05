@@ -40,6 +40,22 @@ class TestHasField(HasFieldTestCase):
         assert not session.has_field("First Name", value="John")
         assert not session.has_field("First Name", value=re.compile(r"John|Paul|George|Ringo"))
 
+    def test_is_true_if_a_field_with_the_given_type_is_on_the_page(self, session):
+        assert session.has_field("First Name", field_type="text")
+        assert session.has_field("Html5 Email", field_type="email")
+        assert session.has_field("Html5 Multiple Email", field_type="email")
+        assert session.has_field("Html5 Tel", field_type="tel")
+        assert session.has_field("Description", field_type="textarea")
+        assert session.has_field("Languages", field_type="select")
+
+    def test_is_false_if_a_field_with_the_given_type_is_not_on_the_page(self, session):
+        assert not session.has_field("First Name", field_type="textarea")
+        assert not session.has_field("Html5 Email", field_type="tel")
+        assert not session.has_field("Html5 Multiple Email", field_type="tel")
+        assert not session.has_field("Description", field_type="")
+        assert not session.has_field("Description", field_type="email")
+        assert not session.has_field("Languages", field_type="textarea")
+
 
 class TestHasFieldDisabled(HasFieldTestCase):
     def test_does_not_find_disabled_fields_when_false(self, session):
@@ -96,3 +112,19 @@ class TestHasNoField:
         session.fill_in("First Name", value="Jonas")
         assert session.has_no_field("First Name", value="John")
         assert session.has_no_field("First Name", value=re.compile(r"John|Paul|George|Ringo"))
+
+    def test_is_false_if_a_field_with_the_given_type_is_on_the_page(self, session):
+        assert not session.has_no_field("First Name", field_type="text")
+        assert not session.has_no_field("Html5 Email", field_type="email")
+        assert not session.has_no_field("Html5 Multiple Email", field_type="email")
+        assert not session.has_no_field("Html5 Tel", field_type="tel")
+        assert not session.has_no_field("Description", field_type="textarea")
+        assert not session.has_no_field("Languages", field_type="select")
+
+    def test_is_true_if_a_field_with_the_given_type_is_not_on_the_page(self, session):
+        assert session.has_no_field("First Name", field_type="textarea")
+        assert session.has_no_field("Html5 Email", field_type="tel")
+        assert session.has_no_field("Html5 Multiple Email", field_type="tel")
+        assert session.has_no_field("Description", field_type="")
+        assert session.has_no_field("Description", field_type="email")
+        assert session.has_no_field("Languages", field_type="textarea")

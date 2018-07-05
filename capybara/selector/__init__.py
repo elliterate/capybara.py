@@ -114,6 +114,13 @@ with add_selector("field") as s:
 
     s.filter_set("field")
 
+    @s.filter("field_type")
+    def field_type(node, value):
+        if value in ["select", "textarea"]:
+            return node.tag_name == value
+        else:
+            return node["type"] == value
+
     @s.filter("value")
     def value(node, value):
         if isregex(value):
