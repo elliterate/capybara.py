@@ -158,15 +158,12 @@ class MatchersMixin(object):
 
         return assert_selector()
 
-    def assert_all_of_selectors(self, *args, **kwargs):
+    def assert_all_of_selectors(self, selector, *locators, **kwargs):
         wait = kwargs['wait'] if 'wait' in kwargs else capybara.default_max_wait_time
 
-        if len(args) and isinstance(args[0], Hashable) and args[0] in selectors:
-            selector = args[0]
-            locators = args[1:]
-        else:
+        if not isinstance(selector, Hashable) or selector not in selectors:
+            locators = (selector,) + locators
             selector = capybara.default_selector
-            locators = args
 
         @self.synchronize(wait=wait)
         def assert_all_of_selectors():
@@ -177,15 +174,12 @@ class MatchersMixin(object):
 
         return assert_all_of_selectors()
 
-    def assert_none_of_selectors(self, *args, **kwargs):
+    def assert_none_of_selectors(self, selector, *locators, **kwargs):
         wait = kwargs['wait'] if 'wait' in kwargs else capybara.default_max_wait_time
 
-        if len(args) and isinstance(args[0], Hashable) and args[0] in selectors:
-            selector = args[0]
-            locators = args[1:]
-        else:
+        if not isinstance(selector, Hashable) or selector not in selectors:
+            locators = (selector,) + locators
             selector = capybara.default_selector
-            locators = args
 
         @self.synchronize(wait=wait)
         def assert_none_of_selectors():
