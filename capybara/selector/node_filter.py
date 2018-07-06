@@ -1,7 +1,7 @@
 from warnings import warn
 
 
-class Filter(object):
+class NodeFilter(object):
     """
     A rule to apply to identify desired nodes.
 

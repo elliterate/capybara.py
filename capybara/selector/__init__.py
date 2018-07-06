@@ -24,31 +24,31 @@ with add_selector("id") as s:
         return x.descendant()[x.attr("id") == id]
 
 with add_filter_set("field") as fs:
-    @fs.filter("checked", boolean=True)
+    @fs.node_filter("checked", boolean=True)
     def checked(node, value):
         return not node.checked ^ value
 
-    @fs.filter("disabled", boolean=True, default=False, skip_if="all")
+    @fs.node_filter("disabled", boolean=True, default=False, skip_if="all")
     def disabled(node, value):
         return not node.disabled ^ value
 
-    @fs.filter("id")
+    @fs.node_filter("id")
     def id(node, value):
         return node["id"] == value
 
-    @fs.filter("name")
+    @fs.node_filter("name")
     def name(node, value):
         return node["name"] == value
 
-    @fs.filter("placeholder")
+    @fs.node_filter("placeholder")
     def placeholder(node, value):
         return node["placeholder"] == value
 
-    @fs.filter("readonly", boolean=True)
+    @fs.node_filter("readonly", boolean=True)
     def readonly(node, value):
         return not node.readonly ^ value
 
-    @fs.filter("unchecked", boolean=True)
+    @fs.node_filter("unchecked", boolean=True)
     def unchecked(node, value):
         return node.checked ^ value
 
@@ -96,7 +96,7 @@ with add_selector("button") as s:
 
         return input_button_expr + button_expr + image_button_expr
 
-    @s.filter("disabled", boolean=True, default=False, skip_if="all")
+    @s.node_filter("disabled", boolean=True, default=False, skip_if="all")
     def disabled(node, value):
         return not node.disabled ^ value
 
@@ -126,14 +126,14 @@ with add_selector("field") as s:
 
     s.filter_set("field")
 
-    @s.filter("field_type")
+    @s.node_filter("field_type")
     def field_type(node, value):
         if value in ["select", "textarea"]:
             return node.tag_name == value
         else:
             return node["type"] == value
 
-    @s.filter("value")
+    @s.node_filter("value")
     def value(node, value):
         if isregex(value):
             return bool(value.search(node.value))
@@ -180,7 +180,7 @@ with add_selector("fillable_field") as s:
 
     s.filter_set("field")
 
-    @s.filter("value")
+    @s.node_filter("value")
     def value(node, value):
         if isregex(value):
             return bool(value.search(node.value))
@@ -210,7 +210,7 @@ with add_selector("label") as s:
             expr = expr[x.string.n.is_(str_(locator)) | x.attr("id").equals(str_(locator))]
         return expr
 
-    @s.filter("field")
+    @s.node_filter("field")
     def field(node, field_or_value):
         from capybara.node.element import Element
 
@@ -249,7 +249,7 @@ with add_selector("link") as s:
 
         return expr
 
-    @s.filter("href")
+    @s.node_filter("href")
     def href(node, href):
         if isregex(href):
             return bool(href.search(node["href"]))
@@ -273,7 +273,7 @@ with add_selector("link_or_button") as s:
     def xpath(locator):
         return selectors["link"](locator) + selectors["button"](locator)
 
-    @s.filter("disabled", boolean=True, default=False, skip_if="all")
+    @s.node_filter("disabled", boolean=True, default=False, skip_if="all")
     def disabled(node, value):
         return (
             node.tag_name == "a" or
@@ -316,11 +316,11 @@ with add_selector("select") as s:
 
     s.filter_set("field")
 
-    @s.filter("multiple", boolean=True)
+    @s.node_filter("multiple", boolean=True)
     def multiple(node, value):
         return not node.multiple ^ value
 
-    @s.filter("options")
+    @s.node_filter("options")
     def options(node, options):
         if node.visible:
             actual = [n.text for n in node.find_all("xpath", ".//option")]
@@ -329,7 +329,7 @@ with add_selector("select") as s:
 
         return sorted(options) == sorted(actual)
 
-    @s.filter("selected")
+    @s.node_filter("selected")
     def selected(node, selected):
         if not isinstance(selected, list):
             selected = [selected]
@@ -341,7 +341,7 @@ with add_selector("select") as s:
 
         return sorted(selected) == sorted(actual)
 
-    @s.filter("with_options")
+    @s.node_filter("with_options")
     def with_options(node, options):
         finder_settings = {"minimum": 0}
         if not node.visible:

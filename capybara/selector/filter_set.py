@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 
-from capybara.selector.filter import Filter
+from capybara.selector.node_filter import NodeFilter
 
 
 filter_sets = {}
@@ -15,7 +15,7 @@ class FilterSet(object):
         name (str): The name of this set of filters.
         descriptions (List[Callable[[Dict[str, Any]], str]]): Functions that generate descriptions
             for options.
-        filters (Dict[str, Filter], optional): The filters in this set. Defaults to {}.
+        filters (Dict[str, NodeFilter], optional): The filters in this set. Defaults to {}.
     """
 
     def __init__(self, name, descriptions=None, filters=None):
@@ -55,9 +55,9 @@ class FilterSetFactory(object):
 
         self.descriptions.append(func)
 
-    def filter(self, name, **kwargs):
+    def node_filter(self, name, **kwargs):
         """
-        Returns a decorator function for adding filters to built sets.
+        Returns a decorator function for adding node filters to built sets.
 
         Args:
             name (str): The name of the filter.
@@ -69,7 +69,7 @@ class FilterSetFactory(object):
         """
 
         def decorator(func):
-            self.filters[name] = Filter(name, func, **kwargs)
+            self.filters[name] = NodeFilter(name, func, **kwargs)
 
         return decorator
 

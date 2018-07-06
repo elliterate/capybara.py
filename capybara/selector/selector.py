@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 
-from capybara.selector.filter import Filter
 from capybara.selector.filter_set import filter_sets
+from capybara.selector.node_filter import NodeFilter
 from capybara.utils import setter_decorator
 
 
@@ -22,19 +22,18 @@ class Selector(object):
             string.
         xpath (Callable[[str], str], optional): A function to generate an XPath query given a
             locator string.
-        custom_filters (Dict[str, Filter]): A dictionary of filters this selector should use
-            to identify matching elements. Defaults to {}.
+        filters (Dict[str, NodeFilter]): A dictionary of filters this selector should use to
+            identify matching elements. Defaults to {}.
     """
 
-    def __init__(self, name, label=None, descriptions=None, css=None, xpath=None,
-                 custom_filters=None):
+    def __init__(self, name, label=None, descriptions=None, css=None, xpath=None, filters=None):
         self.name = name
         self.label = label
         self.descriptions = descriptions or []
         self.css = css
         self.xpath = xpath
         self.format = "xpath" if xpath else "css"
-        self.custom_filters = custom_filters or {}
+        self.filters = filters or {}
 
     def __call__(self, locator):
         assert self.format, "selector has no format"
@@ -53,6 +52,14 @@ class Selector(object):
 
         return "".join([describe(options) for describe in self.descriptions])
 
+    @property
+    def node_filters(self):
+        """ Dict[str, NodeFilter]: Returns the node filters for this selector. """
+
+        return {
+            name: filter for name, filter in iter(self.filters.items())
+            if isinstance(filter, NodeFilter)}
+
 
 class SelectorFactory(object):
     """
@@ -68,7 +75,7 @@ class SelectorFactory(object):
         self.descriptions = []
         self.func = None
         self.format = None
-        self.custom_filters = {}
+        self.filters = {}
 
     def describe(self, func):
         """
@@ -104,20 +111,21 @@ class SelectorFactory(object):
         self.func = func
         self.format = "xpath"
 
-    def filter(self, name, **kwargs):
+    def node_filter(self, name, **kwargs):
         """
-        Returns a decorator function for adding afilter.
+        Returns a decorator function for adding a node filter.
 
         Args:
             name (str): The name of the filter.
             **kwargs: Variable keyword arguments for the filter.
 
         Returns:
-            Callable[[Callable[[Element, Any], bool]]]: A decorator function for adding a filter.
+            Callable[[Callable[[Element, Any], bool]]]: A decorator function for adding a node
+                filter.
         """
 
         def decorator(func):
-            self.custom_filters[name] = Filter(name, func, **kwargs)
+            self.filters[name] = NodeFilter(name, func, **kwargs)
 
         return decorator
 
@@ -130,8 +138,8 @@ class SelectorFactory(object):
         """
 
         filter_set = filter_sets[name]
-        for name, filter_ in iter(filter_set.filters.items()):
-            self.custom_filters[name] = filter_
+        for name, filter in iter(filter_set.filters.items()):
+            self.filters[name] = filter
         self.descriptions += filter_set.descriptions
 
     def build_selector(self):
@@ -140,7 +148,7 @@ class SelectorFactory(object):
         kwargs = {
             'label': self.label,
             'descriptions': self.descriptions,
-            'custom_filters': self.custom_filters}
+            'filters': self.filters}
         if self.format == "xpath":
             kwargs['xpath'] = self.func
         if self.format == "css":

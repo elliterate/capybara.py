@@ -254,12 +254,12 @@ class SelectorQuery(object):
             if node.visible:
                 return False
 
-        for name, query_filter in iter(self._query_filters.items()):
+        for name, node_filter in iter(self._node_filters.items()):
             if name in self.filter_options:
-                if not query_filter.matches(node, self.filter_options[name]):
+                if not node_filter.matches(node, self.filter_options[name]):
                     return False
-            elif query_filter.has_default:
-                if not query_filter.matches(node, query_filter.default):
+            elif node_filter.has_default:
+                if not node_filter.matches(node, node_filter.default):
                     return False
 
         if self.options["filter"] and not self.options["filter"](node):
@@ -268,5 +268,5 @@ class SelectorQuery(object):
         return True
 
     @property
-    def _query_filters(self):
-        return self.selector.custom_filters
+    def _node_filters(self):
+        return self.selector.node_filters
