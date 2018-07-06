@@ -1,4 +1,5 @@
 from collections import Hashable
+from functools import reduce
 import re
 from xpath.expression import AbstractExpression
 from xpath.renderer import to_xpath
@@ -172,7 +173,9 @@ class SelectorQuery(object):
         exact = exact if exact is not None else self.exact
 
         if isinstance(self.expression, AbstractExpression):
-            return to_xpath(self.expression, exact=exact)
+            expression = self._apply_expression_filters(self.expression)
+
+            return to_xpath(expression, exact=exact)
         else:
             return str_(self.expression)
 
@@ -266,6 +269,23 @@ class SelectorQuery(object):
             return False
 
         return True
+
+    def _apply_expression_filters(self, expr):
+        def apply_filter(memo, item):
+            name, ef = item
+
+            if name in self.filter_options:
+                return ef.apply_filter(memo, self.filter_options[name])
+            elif ef.has_default:
+                return ef.apply_filter(memo, ef.default)
+            else:
+                return memo
+
+        return reduce(apply_filter, iter(self._expression_filters.items()), expr)
+
+    @property
+    def _expression_filters(self):
+        return self.selector.expression_filters
 
     @property
     def _node_filters(self):

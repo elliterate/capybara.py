@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 
+from capybara.selector.expression_filter import ExpressionFilter
 from capybara.selector.node_filter import NodeFilter
 
 
@@ -15,7 +16,7 @@ class FilterSet(object):
         name (str): The name of this set of filters.
         descriptions (List[Callable[[Dict[str, Any]], str]]): Functions that generate descriptions
             for options.
-        filters (Dict[str, NodeFilter], optional): The filters in this set. Defaults to {}.
+        filters (Dict[str, AbstractFilter], optional): The filters in this set. Defaults to {}.
     """
 
     def __init__(self, name, descriptions=None, filters=None):
@@ -54,6 +55,12 @@ class FilterSetFactory(object):
         """
 
         self.descriptions.append(func)
+
+    def expression_filter(self, name, **kwargs):
+        def decorator(func):
+            self.filters[name] = ExpressionFilter(name, func, **kwargs)
+
+        return decorator
 
     def node_filter(self, name, **kwargs):
         """

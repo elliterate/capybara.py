@@ -1,3 +1,4 @@
+from functools import reduce
 from xpath import dsl as x
 
 import capybara
@@ -36,13 +37,13 @@ with add_filter_set("field") as fs:
     def id(node, value):
         return node["id"] == value
 
-    @fs.node_filter("name")
-    def name(node, value):
-        return node["name"] == value
+    @fs.expression_filter("name")
+    def name(expr, value):
+        return expr[x.attr("name") == value]
 
-    @fs.node_filter("placeholder")
-    def placeholder(node, value):
-        return node["placeholder"] == value
+    @fs.expression_filter("placeholder")
+    def placeholder(expr, value):
+        return expr[x.attr("placeholder") == value]
 
     @fs.node_filter("readonly", boolean=True)
     def readonly(node, value):
@@ -126,12 +127,12 @@ with add_selector("field") as s:
 
     s.filter_set("field")
 
-    @s.node_filter("field_type")
-    def field_type(node, value):
+    @s.expression_filter("field_type")
+    def field_type(expr, value):
         if value in ["select", "textarea"]:
-            return node.tag_name == value
+            return expr.axis("self", value)
         else:
-            return node["type"] == value
+            return expr[x.attr("type").equals(value)]
 
     @s.node_filter("value")
     def value(node, value):
@@ -341,15 +342,9 @@ with add_selector("select") as s:
 
         return sorted(selected) == sorted(actual)
 
-    @s.node_filter("with_options")
-    def with_options(node, options):
-        finder_settings = {"minimum": 0}
-        if not node.visible:
-            finder_settings["visible"] = False
-
-        return all([
-            node.find_first("option", option, **finder_settings)
-            for option in options])
+    @s.expression_filter("with_options")
+    def with_options(expr, options):
+        return reduce(lambda xpath, option: xpath[selectors["option"](option)], options, expr)
 
     @s.describe
     def describe(options):

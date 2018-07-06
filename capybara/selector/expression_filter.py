@@ -3,21 +3,21 @@ from warnings import warn
 from capybara.selector.abstract_filter import AbstractFilter
 
 
-class NodeFilter(AbstractFilter):
-    def matches(self, node, value):
+class ExpressionFilter(AbstractFilter):
+    def apply_filter(self, expr, value):
         """
-        Returns whether the given node matches the filter rule with the given value.
+        Returns the given expression filtered by the given value.
 
         Args:
-            node (Element): The node to filter.
-            value (object): The desired value with which the node should be evaluated.
+            expr (xpath.expression.AbstractExpression): The expression to filter.
+            value (object): The desired value with which the expression should be filtered.
 
         Returns:
-            bool: Whether the given node matches.
+            xpath.expression.AbstractExpression: The filtered expression.
         """
 
         if self.skip(value):
-            return True
+            return expr
 
         if not self._valid_value(value):
             msg = "Invalid value {value} passed to filter {name} - ".format(
@@ -29,6 +29,6 @@ class NodeFilter(AbstractFilter):
                 value = self.default
             else:
                 warn(msg + "skipping")
-                return True
+                return expr
 
-        return self.func(node, value)
+        return self.func(expr, value)

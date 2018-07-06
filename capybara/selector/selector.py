@@ -1,5 +1,6 @@
 from contextlib import contextmanager
 
+from capybara.selector.expression_filter import ExpressionFilter
 from capybara.selector.filter_set import filter_sets
 from capybara.selector.node_filter import NodeFilter
 from capybara.utils import setter_decorator
@@ -22,7 +23,7 @@ class Selector(object):
             string.
         xpath (Callable[[str], str], optional): A function to generate an XPath query given a
             locator string.
-        filters (Dict[str, NodeFilter]): A dictionary of filters this selector should use to
+        filters (Dict[str, AbstractFilter]): A dictionary of filters this selector should use to
             identify matching elements. Defaults to {}.
     """
 
@@ -51,6 +52,14 @@ class Selector(object):
         """
 
         return "".join([describe(options) for describe in self.descriptions])
+
+    @property
+    def expression_filters(self):
+        """ Dict[str, ExpressionFilter]: Returns the expression filters for this selector. """
+
+        return {
+            name: filter for name, filter in iter(self.filters.items())
+            if isinstance(filter, ExpressionFilter)}
 
     @property
     def node_filters(self):
@@ -110,6 +119,24 @@ class SelectorFactory(object):
 
         self.func = func
         self.format = "xpath"
+
+    def expression_filter(self, name, **kwargs):
+        """
+        Returns a decorator function for adding an expression filter.
+
+        Args:
+            name (str): The name of the filter.
+            **kwargs: Variable keyword arguments for the filter.
+
+        Returns:
+            Callable[[Callable[[AbstractExpression, Any], AbstractExpression]]]: A decorator
+                function for adding an expression filter.
+        """
+
+        def decorator(func):
+            self.filters[name] = ExpressionFilter(name, func, **kwargs)
+
+        return decorator
 
     def node_filter(self, name, **kwargs):
         """
