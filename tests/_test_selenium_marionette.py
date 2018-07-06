@@ -6,9 +6,9 @@ from selenium.webdriver.firefox.options import Options
 import capybara
 from capybara.selenium.driver import Driver
 from capybara.session import Session
-
 from capybara.tests.app import app
 from capybara.tests.suite import DriverSuite
+from tests.selenium_session_test_case import SeleniumSessionTestCase
 
 
 capabilities = DesiredCapabilities.FIREFOX.copy()
@@ -43,6 +43,12 @@ def init_selenium_marionette_clear_storage_driver(app):
 
 
 SeleniumMarionetteDriverSuite = DriverSuite("selenium_marionette")
+
+
+class TestSeleniumSession(SeleniumSessionTestCase):
+    @pytest.fixture(scope="module")
+    def session(self):
+        return Session("selenium_marionette", app)
 
 
 class TestSeleniumMarionette:

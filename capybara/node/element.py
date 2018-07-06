@@ -237,15 +237,16 @@ class Element(Base):
         self.base.select_option()
 
     @synchronize
-    def set(self, value):
+    def set(self, value, **options):
         """
         Set the value of the form element to the given value.
 
         Args:
             value (bool | str): The new value.
+            **options: Driver-specific options for how to set the value.
         """
 
-        self.base.set(value)
+        self.base.set(value, **options)
 
     @synchronize
     def unselect_option(self):

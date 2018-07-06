@@ -126,12 +126,13 @@ class Node(object):
 
         raise NotImplementedError()
 
-    def set(self, value):
+    def set(self, value, **options):
         """
         Sets the value of this node.
 
         Args:
             value (bool | str): The desired value.
+            **options: Driver-specific options for how to set a value on a node.
         """
 
         raise NotImplementedError()

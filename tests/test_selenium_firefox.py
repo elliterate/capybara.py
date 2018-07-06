@@ -1,3 +1,4 @@
+import pytest
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 import capybara
@@ -5,6 +6,7 @@ from capybara.session import Session
 from capybara.selenium.driver import Driver
 from capybara.tests.app import app
 from capybara.tests.suite import DriverSuite
+from tests.selenium_session_test_case import SeleniumSessionTestCase
 
 
 capabilities = DesiredCapabilities.FIREFOX.copy()
@@ -30,6 +32,12 @@ def init_selenium_firefox_clear_storage_driver(app):
 
 
 SeleniumFirefoxDriverSuite = DriverSuite("selenium_firefox")
+
+
+class TestSeleniumSession(SeleniumSessionTestCase):
+    @pytest.fixture(scope="module")
+    def session(self):
+        return Session("selenium_firefox", app)
 
 
 class TestSeleniumFirefox:

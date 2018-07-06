@@ -2,6 +2,7 @@ from contextlib import contextmanager
 from functools import wraps
 from selenium.common.exceptions import MoveTargetOutOfBoundsException, WebDriverException
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.webdriver.common.keys import Keys
 
 try:
     from selenium.common.exceptions import ElementClickInterceptedException
@@ -134,7 +135,7 @@ class Node(Base):
     def send_keys(self, *args):
         self.native.send_keys(*args)
 
-    def set(self, value):
+    def set(self, value, clear=None):
         tag_name = self.tag_name
         type_attr = self["type"]
 
@@ -149,9 +150,14 @@ class Node(Base):
             if self.readonly:
                 raise ReadOnlyElementError()
 
-            # Clear field by JavaScript assignment of the value property.
-            self.driver.browser.execute_script("arguments[0].value = ''", self.native)
-            self.native.send_keys(value)
+            if clear == "backspace":
+                # Clear field by sending the correct number of backspace keys.
+                backspaces = [Keys.BACKSPACE] * len(self.value)
+                self.native.send_keys(*(backspaces + [value]))
+            else:
+                # Clear field by JavaScript assignment of the value property.
+                self.driver.browser.execute_script("arguments[0].value = ''", self.native)
+                self.native.send_keys(value)
         elif self["isContentEditable"]:
             self.native.click()
             script = """

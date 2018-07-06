@@ -145,7 +145,7 @@ class ActionsMixin(object):
     click_on = click_link_or_button
     """ Alias for :meth:`click_link_or_button`. """
 
-    def fill_in(self, locator=None, current_value=None, value=None, **kwargs):
+    def fill_in(self, locator=None, current_value=None, value=None, fill_options=None, **kwargs):
         """
         Locate a text field or text area and fill it in with the given text. The field can be found
         via its name, id, or label text. ::
@@ -156,13 +156,16 @@ class ActionsMixin(object):
             locator (str, optional): Which field to fill in.
             current_value (str, optional): The current value of the field.
             value (str, optional): The value to fill in. Defaults to None.
+            fill_options (Dict, optional): Driver-specific options regarding how to fill fields.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
         """
 
         if current_value is not None:
             kwargs["value"] = current_value
 
-        self.find("fillable_field", locator, **kwargs).set(value)
+        fill_options = fill_options or {}
+
+        self.find("fillable_field", locator, **kwargs).set(value, **fill_options)
 
     def select(self, value=None, field=None, **kwargs):
         """

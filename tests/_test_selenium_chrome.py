@@ -1,4 +1,5 @@
 import os
+import pytest
 from selenium.webdriver.chrome.options import Options
 
 import capybara
@@ -6,6 +7,7 @@ from capybara.session import Session
 from capybara.selenium.driver import Driver
 from capybara.tests.app import app
 from capybara.tests.suite import DriverSuite
+from tests.selenium_session_test_case import SeleniumSessionTestCase
 
 
 chrome_options = Options()
@@ -39,6 +41,12 @@ if os.environ.get("HEADLESS"):
     _skip.append("windows")
 
 SeleniumChromeDriverSuite = DriverSuite("selenium_chrome", skip=_skip)
+
+
+class TestSeleniumSession(SeleniumSessionTestCase):
+    @pytest.fixture(scope="module")
+    def session(self):
+        return Session("selenium_chrome", app)
 
 
 class TestSeleniumChrome:
