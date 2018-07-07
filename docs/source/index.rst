@@ -372,6 +372,25 @@ currently four different strategies built into Capybara:
 
 The default for :data:`capybara.match` is ``"smart"``.
 
+_`Transactions and database setup`
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Some Capybara drivers need to run against an actual HTTP server. Capybara takes
+care of this and starts one for you in the same process as your test, but on
+another thread. Selenium is one of those drivers, whereas Werkzeug is not.
+
+If you are using a SQL database, it is common to run every test in a
+transaction, which is rolled back at the end of the test. Django's ``TestCase``
+does this by default out of the box, for example. Since transactions are
+usually not shared across threads, this will cause data you have put into the
+database in your test code to be invisible to Capybara.
+
+Django provides |transaction_test_case|_, which uses truncation instead of
+transactions, i.e., it empties out the entire database after each test.
+
+.. |transaction_test_case| replace:: ``TransactionTestCase``
+.. _transaction_test_case: https://docs.djangoproject.com/en/2.0/topics/testing/tools/#django.test.TransactionTestCase
+
 _`Asynchronous JavaScript (Ajax and friends)`
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
