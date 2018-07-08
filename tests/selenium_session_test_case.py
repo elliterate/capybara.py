@@ -40,3 +40,10 @@ class SeleniumSessionTestCase:
         # click outside the field to trigger the change event
         session.find("css", "body").click()
         assert session.has_xpath("//p[@class='input_event_triggered']", count=13)
+
+    def test_repr_outputs_obsolete_elements(self, session):
+        session.visit("/form")
+        el = session.find("button", "Click me!")
+        el.click()
+        assert session.has_no_button("Click me!")
+        assert repr(el) == "Obsolete <capybara.node.element.Element>"

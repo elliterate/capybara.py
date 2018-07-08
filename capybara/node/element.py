@@ -28,9 +28,15 @@ class Element(Base):
         self._scope = None
 
     def __repr__(self):
-        return "<capybara.node.element.Element tag=\"{tag}\" path=\"{path}\">".format(
-            tag=self.tag_name,
-            path=self.path)
+        try:
+            return "<capybara.node.element.Element tag=\"{tag}\" path=\"{path}\">".format(
+                tag=self.base.tag_name,
+                path=self.base.path)
+        except Exception as e:
+            if isinstance(e, self.session.driver.invalid_element_errors):
+                return "Obsolete <capybara.node.element.Element>"
+            else:
+                raise e
 
     @property
     def native(self):
