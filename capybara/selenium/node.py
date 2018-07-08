@@ -44,7 +44,7 @@ class Node(Base):
 
     @property
     def path(self):
-        path = [self] + list(reversed(self._find_xpath("ancestor::*")))
+        path = [self] + list(reversed(list(self._find_xpath("ancestor::*"))))
 
         result = []
         while path:
@@ -53,13 +53,20 @@ class Node(Base):
 
             if parent:
                 siblings = parent._find_xpath(node.tag_name)
-                if len(siblings) == 1:
-                    result.insert(0, node.tag_name)
-                else:
-                    index = siblings.index(node)
-                    result.insert(0, "{tag}[{i}]".format(tag=node.tag_name, i=index + 1))
+                index = next(i for i, elem in enumerate(siblings) if elem == node)
+
+                if index == 0:
+                    try:
+                        next(siblings)
+                    except StopIteration:
+                        index = None
             else:
+                index = None
+
+            if index is None:
                 result.insert(0, node.tag_name)
+            else:
+                result.insert(0, "{tag}[{i}]".format(tag=node.tag_name, i=index + 1))
 
         return "/" + "/".join(result)
 
@@ -77,13 +84,13 @@ class Node(Base):
 
     def _find_css(self, css):
         cls = type(self)
-        return [cls(self.driver, element)
-                for element in self.native.find_elements_by_css_selector(css)]
+        return (cls(self.driver, element)
+                for element in self.native.find_elements_by_css_selector(css))
 
     def _find_xpath(self, xpath):
         cls = type(self)
-        return [cls(self.driver, element)
-                for element in self.native.find_elements_by_xpath(xpath)]
+        return (cls(self.driver, element)
+                for element in self.native.find_elements_by_xpath(xpath))
 
     def click(self, *keys, **offset):
         try:
@@ -202,7 +209,7 @@ class Node(Base):
 
     @property
     def _select_node(self):
-        return self._find_xpath("./ancestor::select")[0]
+        return next(self._find_xpath("./ancestor::select"))
 
     @staticmethod
     def _has_coords(options):

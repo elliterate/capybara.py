@@ -202,7 +202,9 @@ class Driver(Base):
                         navigated = True
 
                     while True:
-                        if not len(self._find_xpath("/html/body/*")):
+                        try:
+                            next(self._find_xpath("/html/body/*"))
+                        except StopIteration:
                             break
                         if time() - start_time >= 10:
                             raise ExpectationNotMet("Timed out waiting for Selenium session reset")
@@ -255,10 +257,10 @@ class Driver(Base):
                 self.execute_script("window.sessionStorage.clear()")
 
     def _find_css(self, css):
-        return [Node(self, element) for element in self.browser.find_elements_by_css_selector(css)]
+        return (Node(self, element) for element in self.browser.find_elements_by_css_selector(css))
 
     def _find_xpath(self, xpath):
-        return [Node(self, element) for element in self.browser.find_elements_by_xpath(xpath)]
+        return (Node(self, element) for element in self.browser.find_elements_by_xpath(xpath))
 
     def _find_modal(self, text=None, wait=None):
         wait = wait or capybara.default_max_wait_time
