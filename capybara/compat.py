@@ -9,6 +9,8 @@ if PY2:
 
     bytes_ = str
     str_ = unicode
+
+    cmp = cmp
 else:
     from urllib.error import URLError
     from urllib.request import urlopen
@@ -16,3 +18,6 @@ else:
 
     bytes_ = bytes
     str_ = str
+
+    def cmp(a, b):
+        return (a > b) - (a < b)

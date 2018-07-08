@@ -210,7 +210,7 @@ class MatchersMixin(object):
         def assert_selector():
             result = query.resolve_for(self)
 
-            if not (matches_count(len(result), query.options) and
+            if not (result.matches_count and
                     (len(result) > 0 or expects_none(query.options))):
                 raise ExpectationNotMet(result.failure_message)
 
@@ -325,7 +325,7 @@ class MatchersMixin(object):
         def assert_no_selector():
             result = query.resolve_for(self)
 
-            if matches_count(len(result), query.options) and (
+            if result.matches_count and (
                    len(result) > 0 or expects_none(query.options)):
                 raise ExpectationNotMet(result.negative_failure_message)
 

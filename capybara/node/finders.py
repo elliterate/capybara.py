@@ -1,6 +1,5 @@
 import capybara
 from capybara.exceptions import Ambiguous, ElementNotFound, ExpectationNotMet
-from capybara.helpers import matches_count
 from capybara.queries.ancestor_query import AncestorQuery
 from capybara.queries.selector_query import SelectorQuery
 from capybara.queries.sibling_query import SiblingQuery
@@ -181,7 +180,8 @@ class FindersMixin(object):
             page.assert_selector("p#foo", minimum=1)
             page.assert_selector("p#foo", between=range(1, 11))
 
-        See :func:`matches_count` for additional information about count matching.
+        See :func:`capybara.result.Result.matches_count` for additional information about count
+        matching.
 
         Args:
             *args: Variable length argument list for :class:`SelectorQuery`.
@@ -200,7 +200,7 @@ class FindersMixin(object):
         def find_all():
             result = query.resolve_for(self)
 
-            if not matches_count(len(result), query.options):
+            if not result.matches_count:
                 raise ExpectationNotMet(result.failure_message)
 
             return result
