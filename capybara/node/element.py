@@ -64,6 +64,22 @@ class Element(Base):
         """ bool: Whether or not the element is visible. """
         return self.base.visible
 
+    @synchronize
+    def style(self, *styles):
+        """
+        Retrieve the given CSS styles. ::
+
+            element.style("color", "font-size")  # => Computed values of CSS "color" and "font-size" styles
+
+        Args:
+            *styles (str): Names of the desired CSS properties.
+
+        Returns:
+            Dict[str, str]: Dictionary of the CSS property names to computed values.
+        """
+
+        return self.base.style(styles)
+
     @property
     @synchronize
     def value(self):

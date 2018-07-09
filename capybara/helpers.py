@@ -21,22 +21,30 @@ def declension(singular, plural, count):
 
 
 def desc(value):
-    """ str | List[str]: A normalized representation for a user-provided value. """
+    """ str: A normalized representation for a user-provided value. """
 
-    if isinstance(value, list):
-        return map(desc, value)
+    def normalize_strings(value):
+        if isinstance(value, list):
+            value = [normalize_strings(e) for e in value]
 
-    if isregex(value):
-        value = value.pattern
+        if isinstance(value, dict):
+            value = {normalize_strings(k): normalize_strings(v) for k, v in iter(value.items())}
 
-    if isbytes(value):
-        value = decode_bytes(value)
+        if isregex(value):
+            value = value.pattern
 
-    if PY2:
-        if isstring(value):
-            # In Python 2, strings (``unicode`` objects) represent as ``u'...'``, so ensure
-            # the string is encoded (as a ``str`` object) for cleaner representation.
-            value = encode_string(value)
+        if isbytes(value):
+            value = decode_bytes(value)
+
+        if PY2:
+            if isstring(value):
+                # In Python 2, strings (``unicode`` objects) represent as ``u'...'``, so ensure
+                # the string is encoded (as a ``str`` object) for cleaner representation.
+                value = encode_string(value)
+
+        return value
+
+    value = normalize_strings(value)
 
     return repr(value)
 

@@ -11,5 +11,4 @@ def init_werkzeug_driver(app):
 
 WerkzeugDriverSuite = DriverSuite(
     "werkzeug",
-    skip=["frames", "hover", "js", "modals", "screenshot", "send_keys", "server",
-          "windows"])
+    skip=["css", "frames", "hover", "js", "modals", "screenshot", "send_keys", "server", "windows"])

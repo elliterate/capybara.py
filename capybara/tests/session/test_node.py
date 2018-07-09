@@ -54,6 +54,18 @@ class TestNodeAttribute(NodeTestCase):
         assert session.find("//input[@id='checked_field']")["checked"]
 
 
+@pytest.mark.requires("css")
+class TestNodeStyle(NodeTestCase):
+    def test_returns_the_computed_style_value(self, session):
+        assert session.find("css", "#first").style("display") == {"display": "block"}
+        assert session.find("css", "#second").style("display") == {"display": "inline"}
+
+    def test_returns_multiple_style_values(self, session):
+        assert session.find("css", "#first").style("display", "line-height") == {
+            "display": "block",
+            "line-height": "25px"}
+
+
 class TestNodeValue(NodeTestCase):
     def test_allows_retrieval_of_the_value(self, session):
         assert session.find("//textarea[@id='normal']").value == "banana"

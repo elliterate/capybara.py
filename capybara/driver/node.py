@@ -32,6 +32,19 @@ class Node(object):
         """ str: The value of the node. """
         raise NotImplementedError()
 
+    def style(self, styles):
+        """
+        Returns the computed values of the given styles.
+
+        Args:
+            styles (List[str]): The desired styles.
+
+        Returns:
+            Dict[str, str]: The computed styles.
+        """
+
+        raise NotImplementedError()
+
     @property
     def selected(self):
         """ bool: Whether this is a selected option node. """

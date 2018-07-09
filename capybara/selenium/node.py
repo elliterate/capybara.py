@@ -33,6 +33,9 @@ class Node(Base):
         else:
             return self.native.get_attribute("value")
 
+    def style(self, styles):
+        return {style: self.native.value_of_css_property(style) for style in styles}
+
     @property
     def selected(self):
         return self.native.is_selected()

@@ -5,6 +5,7 @@ from capybara.exceptions import ExpectationNotMet
 from capybara.helpers import expects_none, matches_count
 from capybara.selector import selectors
 from capybara.queries.selector_query import SelectorQuery
+from capybara.queries.style_query import StyleQuery
 from capybara.queries.text_query import TextQuery
 
 
@@ -63,6 +64,25 @@ class MatchersMixin(object):
 
         try:
             self.assert_no_selector(*args, **kwargs)
+            return True
+        except ExpectationNotMet:
+            return False
+
+    def has_style(self, styles, **kwargs):
+        """
+        Checks if an element has the specified CSS styles. ::
+
+            element.has_style({"color": "rgb(0,0,255)", "font-size": re.compile(r"px")})
+
+        Args:
+            styles (Dict[str, str | RegexObject]): The expected styles.
+
+        Returns:
+            bool: Whether the styles match.
+        """
+
+        try:
+            self.assert_style(styles, **kwargs)
             return True
         except ExpectationNotMet:
             return False
@@ -217,6 +237,33 @@ class MatchersMixin(object):
             return True
 
         return assert_selector()
+
+    def assert_style(self, styles, **kwargs):
+        """
+        Asserts that an element has the specified CSS styles. ::
+
+            element.assert_style({"color": "rgb(0,0,255)", "font-size": re.compile(r"px")})
+
+        Args:
+            styles (Dict[str, str | RegexObject]): The expected styles.
+
+        Returns:
+            True
+
+        Raises:
+            ExpectationNotMet: The element doesn't have the specified styles.
+        """
+
+        query = StyleQuery(styles, **kwargs)
+
+        @self.synchronize(wait=query.wait)
+        def assert_style():
+            if not query.resolves_for(self):
+                raise ExpectationNotMet(query.failure_message)
+
+            return True
+
+        return assert_style()
 
     def assert_all_of_selectors(self, selector, *locators, **kwargs):
         """
