@@ -38,6 +38,11 @@ class TestWithFrame:
                 with session.frame("grandchildFrame2"):
                     pass
 
+    def test_resets_scope_when_changing_frames(self, session):
+        with session.scope("css", "#divInMainWindow"):
+            with session.frame("innerParentFrame"):
+                assert session.has_selector("css", "iframe#childFrame") is True
+
     def test_handles_a_frame_closing(self, session):
         with session.frame("parentFrame"):
             with session.frame("childFrame"):
