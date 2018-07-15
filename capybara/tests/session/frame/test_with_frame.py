@@ -32,6 +32,14 @@ class TestWithFrame:
         with session.frame(element):
             assert session.find("//*[@id='divInFrameOne']").text == "This is the text of divInFrameOne"
 
+    def test_finds_the_div_given_selector_and_locator(self, session):
+        with session.frame("css", "#frameOne"):
+            assert session.find("//*[@id='divInFrameOne']").text == "This is the text of divInFrameOne"
+
+    def test_defaults_to_the_frame_selector_kind_when_only_options_passed(self, session):
+        with session.frame(name="my frame one"):
+            assert session.find("//*[@id='divInFrameOne']").text == "This is the text of divInFrameOne"
+
     def test_defaults_to_the_frame_selector_when_no_options_passed(self, session):
         container = session.find("css", "#divInMainWindow")
         with session.scope(container):

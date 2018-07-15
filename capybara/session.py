@@ -1,3 +1,4 @@
+from collections import Hashable
 from contextlib import contextmanager
 from datetime import datetime
 from functools import wraps
@@ -11,6 +12,7 @@ from capybara.exceptions import ScopeError, WindowError
 from capybara.node.base import Base
 from capybara.node.document import Document
 from capybara.node.element import Element
+from capybara.selector import selectors
 from capybara.server import Server
 from capybara.session_matchers import SessionMatchersMixin
 from capybara.utils import cached_property, encode_string
@@ -249,7 +251,7 @@ class Session(SessionMatchersMixin, object):
             yield
 
     @contextmanager
-    def frame(self, locator=None):
+    def frame(self, locator=None, *args, **kwargs):
         """
         Execute the wrapped code within the given iframe using the given frame or frame name/id.
         May not be supported by all drivers.
@@ -259,12 +261,21 @@ class Session(SessionMatchersMixin, object):
                 Defaults to the only frame in the document.
         """
 
-        new_frame = locator if isinstance(locator, Element) else self.find("frame", locator)
-        self.switch_to_frame(new_frame)
+        self.switch_to_frame(self._find_frame(locator, *args, **kwargs))
         try:
             yield
         finally:
             self.switch_to_frame("parent")
+
+    def _find_frame(self, locator=None, *args, **kwargs):
+        if isinstance(locator, Element):
+            return locator
+
+        if isinstance(locator, Hashable) and locator in selectors:
+            selector = locator
+            return self.find(selector, *args, **kwargs)
+
+        return self.find("frame", locator, **kwargs)
 
     @property
     def current_window(self):

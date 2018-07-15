@@ -203,6 +203,10 @@ with add_selector("frame") as s:
             expr = expr[x.attr("id").equals(locator) | x.attr("name").equals(locator)]
         return expr
 
+    @s.expression_filter("name")
+    def name(expr, value):
+        return expr[x.attr("name").equals(value)]
+
 with add_selector("label") as s:
     @s.xpath
     def xpath(locator):
