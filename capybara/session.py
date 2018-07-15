@@ -249,13 +249,14 @@ class Session(SessionMatchersMixin, object):
             yield
 
     @contextmanager
-    def frame(self, locator):
+    def frame(self, locator=None):
         """
         Execute the wrapped code within the given iframe using the given frame or frame name/id.
         May not be supported by all drivers.
 
         Args:
-            locator (str | Element): The name/id of the frame or the frame's element.
+            locator (str | Element, optional): The name/id of the frame or the frame's element.
+                Defaults to the only frame in the document.
         """
 
         new_frame = locator if isinstance(locator, Element) else self.find("frame", locator)
@@ -322,6 +323,10 @@ class Session(SessionMatchersMixin, object):
                                      "from inside a descendant frame's `scope` context.")
                 self._scopes = self._scopes[:idx]
                 self.driver.switch_to_frame("top")
+        else:
+            raise ValueError(
+                "You must provide a frame element, \"parent\", or \"top\" "
+                "when calling switch_to_frame")
 
     def switch_to_window(self, window, wait=None):
         """

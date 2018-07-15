@@ -1,5 +1,7 @@
 import pytest
 
+from capybara.exceptions import Ambiguous
+
 
 @pytest.mark.requires("frames")
 class TestWithFrame:
@@ -29,6 +31,17 @@ class TestWithFrame:
         element = session.find("css", "#frameOne")
         with session.frame(element):
             assert session.find("//*[@id='divInFrameOne']").text == "This is the text of divInFrameOne"
+
+    def test_defaults_to_the_frame_selector_when_no_options_passed(self, session):
+        container = session.find("css", "#divInMainWindow")
+        with session.scope(container):
+            # Ensure only one frame in scope
+            with session.frame():
+                assert session.has_css("body#parentBody")
+        with pytest.raises(Ambiguous):
+            # Multiple frames in scope here
+            with session.frame():
+                pass
 
     def test_finds_multiple_nested_frames(self, session):
         with session.frame("parentFrame"):
