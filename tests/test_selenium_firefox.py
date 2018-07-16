@@ -31,7 +31,7 @@ def init_selenium_firefox_clear_storage_driver(app):
         desired_capabilities=capabilities)
 
 
-SeleniumFirefoxDriverSuite = DriverSuite("selenium_firefox")
+SeleniumFirefoxDriverSuite = DriverSuite("selenium_firefox", skip=["fullscreen"])
 
 
 class TestSeleniumSession(SeleniumSessionTestCase):

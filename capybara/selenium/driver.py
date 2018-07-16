@@ -115,11 +115,24 @@ class Driver(Base):
 
     def resize_window_to(self, handle, width, height):
         with self._window(handle):
-            self.browser.set_window_size(width, height)
+            try:
+                self.browser.set_window_size(width, height)
+            except WebDriverException as e:
+                if self._chrome and "failed to change window state" in str(e):
+                    # Chromedriver doesn't wait long enough for state to change when coming out of fullscreen
+                    # and raises unnecessary error. Wait a bit and try again.
+                    sleep(0.5)
+                    self.browser.set_window_size(width, height)
+                else:
+                    raise
 
     def maximize_window(self, handle):
         with self._window(handle):
             self.browser.maximize_window()
+
+    def fullscreen_window(self, handle):
+        with self._window(handle):
+            self.browser.fullscreen_window()
 
     def close_window(self, handle):
         with self._window(handle):
@@ -244,6 +257,10 @@ class Driver(Base):
     @property
     def _marionette(self):
         return self._firefox and self.browser.w3c
+
+    @property
+    def _chrome(self):
+        return self._browser_name == "chrome"
 
     @property
     def _firefox(self):

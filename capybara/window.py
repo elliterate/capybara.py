@@ -86,6 +86,13 @@ class Window(object):
 
         self.driver.maximize_window(self.handle)
 
+    def fullscreen(self):
+        """
+        Fullscreen the window.
+        """
+
+        self.driver.fullscreen_window(self.handle)
+
     def resize_to(self, width, height):
         """
         Resizes the window to the given dimensions.

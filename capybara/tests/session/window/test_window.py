@@ -129,3 +129,17 @@ class TestWindowMaximize(WindowTestCase):
 
         assert ow_width > 400
         assert ow_height > 300
+
+
+@pytest.mark.requires("fullscreen")
+class TestWindowFullscreen(WindowTestCase):
+    @pytest.fixture(autouse=True)
+    def restore_window(self, session):
+        initial_size = session.current_window.size
+        try:
+            yield
+        finally:
+            session.current_window.resize_to(*initial_size)
+
+    def test_fullscreens_the_window(self, session):
+        session.current_window.fullscreen()

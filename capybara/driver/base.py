@@ -74,6 +74,10 @@ class Base(object):
         """ Maximizes the given window handle. """
         raise NotImplementedError()
 
+    def fullscreen_window(self, handle):
+        """ Fullscreens the given window handle. """
+        raise NotImplementedError()
+
     def close_window(self, handle):
         """
         Closes the window with the given handle.
