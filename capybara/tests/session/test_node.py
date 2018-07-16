@@ -391,6 +391,20 @@ class TestNodeSendKeys(NodeTestCase):
 
 
 @pytest.mark.requires("js")
+class TestNodeEvaluateAsyncScript(NodeTestCase):
+    def test_evaluates_the_given_script_in_the_context_of_the_element(self, session):
+        session.visit("/with_js")
+        el = session.find("css", "#with_change_event")
+        assert el.evaluate_async_script("arguments[0](this.value)") == "default value"
+
+    def test_supports_returning_elements_after_asynchronous_operation(self, session):
+        session.visit("/with_js")
+        change = session.find("css", "#change")  # ensure page has loaded and element is available
+        el = change.evaluate_async_script("var cb = arguments[0]; setTimeout(function(el) { cb(el); }, 100, this);")
+        assert el == change
+
+
+@pytest.mark.requires("js")
 class TestNodeReloadWithoutAutomaticReload(NodeTestCase):
     @pytest.fixture(autouse=True)
     def setup_capybara(self):
