@@ -63,8 +63,8 @@ class TestFind(FindTestCase):
         session.visit("/with_js")
         now = time.time()
 
-        import capybara.node.base
-        with patch.object(capybara.node.base, "time", return_value=now):
+        import capybara.helpers
+        with patch.object(capybara.helpers, "time", return_value=now):
             with pytest.raises(FrozenInTime):
                 session.find("//isnotthere")
 

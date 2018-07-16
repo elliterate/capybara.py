@@ -10,12 +10,12 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-from time import sleep, time
+from time import sleep
 
 import capybara
 from capybara.driver.base import Base
 from capybara.exceptions import ExpectationNotMet, ModalNotFound
-from capybara.helpers import toregex, desc
+from capybara.helpers import desc, Timer, toregex
 from capybara.selenium.browser import get_browser
 from capybara.selenium.node import Node
 from capybara.utils import cached_property, isregex
@@ -190,7 +190,7 @@ class Driver(Base):
         # Avoid starting the browser just to reset the session.
         if "browser" in self.__dict__:
             navigated = False
-            start_time = time()
+            timer = Timer(10)
             while True:
                 try:
                     # Only trigger a navigation if we haven't done it already,
@@ -206,7 +206,7 @@ class Driver(Base):
                             next(self._find_xpath("/html/body/*"))
                         except StopIteration:
                             break
-                        if time() - start_time >= 10:
+                        if timer.expired:
                             raise ExpectationNotMet("Timed out waiting for Selenium session reset")
                         sleep(0.05)
 

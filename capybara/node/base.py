@@ -1,8 +1,9 @@
 from functools import wraps
-from time import sleep, time
+from time import sleep
 
 import capybara
 from capybara.exceptions import ElementNotFound, FrozenInTime, ScopeError
+from capybara.helpers import Timer
 from capybara.node.actions import ActionsMixin
 from capybara.node.finders import FindersMixin
 from capybara.node.matchers import MatchersMixin
@@ -141,7 +142,7 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
                 if self.session.synchronized:
                     return inner()
                 else:
-                    start_time = time()
+                    timer = Timer(seconds)
                     self.session.synchronized = True
                     try:
                         while True:
@@ -152,12 +153,12 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
 
                                 if not isinstance(e, caught_errors):
                                     raise
-                                if time() - start_time >= seconds:
+                                if timer.expired:
                                     raise
 
                                 sleep(0.05)
 
-                                if time() == start_time:
+                                if timer.stalled:
                                     raise FrozenInTime(
                                         "time appears to be frozen, Capybara does not work with "
                                         "libraries which freeze time, consider using time "

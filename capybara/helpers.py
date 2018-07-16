@@ -1,4 +1,5 @@
 import re
+from time import time
 
 from capybara.compat import PY2, str_
 from capybara.utils import decode_bytes, isbytes, isregex, isstring, encode_string
@@ -165,6 +166,27 @@ def normalize_whitespace(text):
     """
 
     return re.sub(r"\s+", " ", text, flags=re.UNICODE).strip()
+
+
+class Timer:
+    """
+    Args:
+        expire_in (int): The number of seconds from now in which this timer should expire.
+    """
+
+    def __init__(self, expire_in):
+        self._start = time()
+        self._expire_in = expire_in
+
+    @property
+    def expired(self):
+        """ bool: Whether this timer has expired. """
+        return time() - self._start >= self._expire_in
+
+    @property
+    def stalled(self):
+        """ bool: Whether this timer appears to have stalled. """
+        return time() == self._start
 
 
 def toregex(text, exact=False):
