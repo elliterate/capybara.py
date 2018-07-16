@@ -203,7 +203,13 @@ class Node(Base):
 
     @property
     def disabled(self):
-        return not self.native.is_enabled()
+        if not self.native.is_enabled():
+            return True
+
+        if self.tag_name == "fieldset":
+            return any(self._find_xpath("ancestor-or-self::fieldset[@disabled]"))
+
+        return False
 
     @property
     def readonly(self):

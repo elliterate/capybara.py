@@ -153,6 +153,29 @@ class TestNodeDisabled(NodeTestCase):
         assert session.find("//select[@id='form_disabled_select']/option").disabled
         assert not session.find("//select[@id='form_title']/option[1]").disabled
 
+    def test_sees_enabled_options_in_disabled_optgroup_as_disabled(self, session):
+        session.visit("/form")
+        assert session.find("//option", text="A.B.1").disabled
+        assert not session.find("//option", text="A.2").disabled
+
+    def test_sees_a_disabled_fieldset_as_disabled(self, session):
+        session.visit("/form")
+        assert session.find("css", "#form_disabled_fieldset").disabled
+
+    def test_sees_elements_not_in_first_legend_in_a_disabled_fieldset_as_disabled(self, session):
+        session.visit("/form")
+        assert session.find("//input[@id='form_disabled_fieldset_child']").disabled
+        assert session.find("//input[@id='form_disabled_fieldset_second_legend_child']").disabled
+        assert not session.find("//input[@id='form_enabled_fieldset_child']").disabled
+
+    def test_sees_elements_in_first_legend_in_a_disabled_fieldset_as_enabled(self, session):
+        session.visit("/form")
+        assert not session.find("//input[@id='form_disabled_fieldset_legend_child']").disabled
+
+    def test_sees_options_not_in_first_legend_in_a_disabled_fieldset_as_disabled(self, session):
+        session.visit("/form")
+        assert session.find("//option", text="Disabled Child Option").disabled
+
     def test_is_boolean(self, session):
         session.visit("/form")
         assert session.find("//select[@id='form_disabled_select']/option").disabled is True

@@ -340,6 +340,48 @@ New line after and before textarea tag
     </label>
   </p>
 
+  <fieldset>
+    <input name="form[enabled_fieldset_child]" id="form_enabled_fieldset_child"/>
+  </fieldset>
+
+  <fieldset disabled="disabled" id="form_disabled_fieldset">
+    <legend>Disabled Child</legend>
+    <input name="form[disabled_fieldset_child]" id="form_disabled_fieldset_child"/>
+    <select>
+      <option>Disabled Child Option</option>
+    </select>
+  </fieldset>
+
+  <fieldset disabled="disabled">
+    <legend>
+      Nested Disabled
+      <input type="checkbox" name="form[disabled_fieldeset_legend_child]" id="form_disabled_fieldset_legend_child"/>
+    </legend>
+    <legend>
+      Another WLegend
+      <input type="checkbox" name="form[disabled_fieldeset_second_legend_child]" id="form_disabled_fieldset_second_legend_child"/>
+    </legend>
+    <fieldset>
+      <legend>
+        Disabled?
+        <input id="form_disabled_fieldset_descendant_legend_child">
+      </legend>
+      <input name="form[disabled_fieldset_descendant]" id="form_disabled_fieldset_descendant"/>
+    </fieldset>
+  </fieldset>
+
+  <p>
+    <select data-test-id="my_test_id">
+      <optgroup label="Level One">
+       <option> A.1 </option>
+      </optgroup>
+      <optgroup label="Level Two" disabled="disabled">
+       <option> A.B.1 </option>
+      </optgroup>
+      <option> A.2 </option>
+    </select>
+  </p>
+
   <p>
     <input type="button" name="form[fresh]" id="fresh_btn" value="i am fresh"/>
     <input type="submit" name="form[awesome]" id="awe123" title="What an Awesome Button" value="awesome"/>

@@ -45,10 +45,15 @@ class Node(Base):
 
     @property
     def disabled(self):
+        if self._string_node.disabled:
+            return True
+
         if self.tag_name in ["option", "optgroup"]:
-            return self._string_node.disabled or self._find_xpath("parent::*")[0].disabled
+            return self._find_xpath("parent::*[self::optgroup or self::select]")[0].disabled
         else:
-            return self._string_node.disabled
+            return any(self._find_xpath(
+                "parent::fieldset[@disabled] | "
+                "ancestor::*[not(self::legend) or preceding-sibling::legend][parent::fieldset[@disabled]]"))
 
     @property
     def readonly(self):
