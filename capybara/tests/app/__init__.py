@@ -37,6 +37,16 @@ def redirect_again():
     return flask.redirect("/landed")
 
 
+@app.route("/redirect_307", methods=["POST"])
+def redirect_307():
+    return flask.redirect("/landed", code=307)
+
+
+@app.route("/redirect_308", methods=["POST"])
+def redirect_308():
+    return flask.redirect("/landed", code=308)
+
+
 @app.route("/referrer_base")
 def referrer_base():
     return """
@@ -69,9 +79,14 @@ def redirect_n_times(times):
         return flask.redirect("/redirect/{0}/times".format(times - 1))
 
 
-@app.route("/landed")
+@app.route("/landed", methods=["GET"])
 def landed():
     return "You landed"
+
+
+@app.route("/landed", methods=["POST"])
+def post_landed():
+    return "You post landed: {}".format(request.form.get('form[data]'))
 
 
 @app.route("/with-quotes")

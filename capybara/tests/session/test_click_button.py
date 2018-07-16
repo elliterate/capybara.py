@@ -141,6 +141,14 @@ class TestClickButton(ClickButtonTestCase):
         assert session.has_text("You landed")
         assert re.compile(r"/landed$").search(session.current_url)
 
+    def test_follows_temporary_redirects_that_maintains_method(self, session):
+        session.click_button("Go 307")
+        assert session.has_text("You post landed: TWTW")
+
+    def test_follows_permanent_redirects_that_maintains_method(self, session):
+        session.click_button("Go 308")
+        assert session.has_text("You post landed: TWTW")
+
     def test_posts_back_to_the_same_url_when_no_action_given(self, session):
         session.visit("/postback")
         session.click_button("With no action")

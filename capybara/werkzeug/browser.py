@@ -80,7 +80,12 @@ class Browser(object):
         for _ in range(self.driver.redirect_limit):
             if 300 <= self.last_response.status_code < 400:
                 path = self.last_response.headers["Location"]
-                self._process("GET", path, headers=headers)
+
+                if self.last_response.status_code in {307, 308}:
+                    self._process(
+                        self.last_request.method, path, params=self._last_request_env_options["data"], headers=headers)
+                else:
+                    self._process("GET", path, headers=headers)
 
     def _process(self, method, path, params=None, headers=None):
         self._reset_cache()
