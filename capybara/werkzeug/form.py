@@ -64,7 +64,7 @@ class Form(Node):
         return params
 
     def submit(self, button):
-        action = self.native.get("action")
+        action = button["formaction"] if button and button["formaction"] else self.native.get("action")
         method = self._request_method
         self.driver.submit(method, action, self.params(button))
 

@@ -115,6 +115,12 @@ class TestClickButton(ClickButtonTestCase):
             session.click_button("does not exist")
         assert "Unable to find button 'does not exist'" in str(excinfo.value)
 
+    def test_submits_to_the_formaction_attributes(self, session):
+        session.click_button("Formaction button")
+        assert session.current_path == "/form"
+        results = extract_results(session)
+        assert results["form[which_form]"] == "formaction form"
+
     def test_serializes_and_sends_valueless_buttons_that_were_clicked(self, session):
         session.click_button("No Value!")
         assert extract_results(session)["form[no_value]"] is not None
