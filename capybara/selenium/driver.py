@@ -250,6 +250,10 @@ class Driver(Base):
                     # Try cleaning up the browser again.
                     continue
 
+            for handle in self.window_handles:
+                if handle != self.current_window_handle:
+                    self.close_window(handle)
+
     @property
     def invalid_element_errors(self):
         return (WebDriverException,)

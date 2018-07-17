@@ -54,6 +54,24 @@ class TestReset:
         session.reset()
         assert session.has_no_selector("xpath", "/html/body/*", wait=False)
 
+    @pytest.mark.requires("windows")
+    def test_closes_extra_windows(self, session):
+        session.visit("/with_html")
+        session.open_new_window()
+        session.open_new_window()
+        assert len(session.windows) == 3
+        session.reset()
+        assert len(session.windows) == 1
+
+    @pytest.mark.requires("windows")
+    def test_closes_extra_windows_when_not_on_the_first_window(self, session):
+        session.visit("/with_html")
+        session.switch_to_window(session.open_new_window())
+        session.open_new_window()
+        assert len(session.windows) == 3
+        session.reset()
+        assert len(session.windows) == 1
+
     @pytest.mark.requires("server")
     def test_raises_any_errors_caught_inside_the_server(self, session):
         session.visit("/error")
