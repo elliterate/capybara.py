@@ -163,7 +163,7 @@ class Node(Base):
             if clear == "backspace":
                 # Clear field by sending the correct number of backspace keys.
                 backspaces = [Keys.BACKSPACE] * len(self.value)
-                self.native.send_keys(*(backspaces + [value]))
+                self.native.send_keys(*([Keys.END] + backspaces + [value]))
             else:
                 # Clear field by JavaScript assignment of the value property.
                 self.driver.browser.execute_script("arguments[0].value = ''", self.native)

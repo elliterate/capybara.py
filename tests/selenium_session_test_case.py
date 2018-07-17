@@ -18,6 +18,19 @@ class SeleniumSessionTestCase:
         session.fill_in("form_first_name", value="Harry", fill_options={"clear": "backspace"})
         assert session.find("fillable_field", "form_first_name").value == "Harry"
 
+    def test_fill_in_with_clear_backspace_fills_in_a_field_replacing_an_existing_value_even_with_a_caret_position(self, session):
+        session.visit("/form")
+        el = session.find("css", "#form_first_name")
+        move_caret_to_beginning_js = (
+            """
+            this.focus();
+            this.setSelectionRange(0, 0);
+            """)
+        el.execute_script(move_caret_to_beginning_js)
+
+        session.fill_in("form_first_name", value="Harry", fill_options={"clear": "backspace"})
+        assert session.find("fillable_field", "form_first_name").value == "Harry"
+
     def test_fill_in_with_clear_backspace_only_triggers_onchange_once(self, session):
         session.visit("/with_js")
         session.fill_in(
