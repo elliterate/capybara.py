@@ -43,6 +43,20 @@ class Element(Base):
         """ object: The native element from the driver. """
         return self.base.native
 
+    def execute_script(self, script, *args):
+        self.session.execute_script("""
+          (function() {{
+            {script}
+          }}).apply(arguments[0], Array.prototype.slice.call(arguments, 1));
+        """.format(script=script), self, *args)
+
+    def evaluate_script(self, script, *args):
+        return self.session.evaluate_script("""
+          (function() {{
+            return {script}
+          }}).apply(arguments[0], Array.prototype.slice.call(arguments, 1));
+        """.format(script=script), self, *args)
+
     def evaluate_async_script(self, script, *args):
         return self.session.evaluate_async_script("""
           (function() {{

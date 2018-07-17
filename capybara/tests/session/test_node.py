@@ -4,6 +4,7 @@ from time import sleep
 
 import capybara
 from capybara.exceptions import ReadOnlyElementError
+from capybara.node.element import Element
 from capybara.tests.helpers import extract_results, isfirefox, ismarionette, ismarionettelt
 
 
@@ -388,6 +389,44 @@ class TestNodeSendKeys(NodeTestCase):
         session.find("css", "#address1_city").send_keys(
             "Ocean", Keys.SPACE, "sie", Keys.LEFT, "d")
         assert session.find("css", "#address1_city").value == "Ocean side"
+
+
+@pytest.mark.requires("js")
+class TestNodeExecuteScript(NodeTestCase):
+    def test_executes_the_given_script_in_the_context_of_the_element_and_returns_nothing(self, session):
+        session.visit("/with_js")
+        assert session.find("css", "#change").execute_script("this.textContent = 'Funky Doodle'") is None
+        assert session.has_css("#change", text="Funky Doodle")
+
+    def test_passes_arguments_to_the_script(self, session):
+        session.visit("/with_js")
+        session.find("css", "#change").execute_script("this.textContent = arguments[0]", "Doodle Funk")
+        assert session.has_css("#change", text="Doodle Funk")
+
+
+@pytest.mark.requires("js")
+class TestNodeEvaluateScript(NodeTestCase):
+    def test_evaluates_the_given_script_in_the_context_of_the_element_and_returns_whatever_it_produces(self, session):
+        session.visit("/with_js")
+        el = session.find("css", "#with_change_event")
+        assert el.evaluate_script("this.value") == "default value"
+
+    def test_passes_arguments_to_the_script(self, session):
+        session.visit("/with_js")
+        session.find("css", "#change").evaluate_script("this.textContent = arguments[0]", "Doodle Funk")
+        assert session.has_css("#change", text="Doodle Funk")
+
+    def test_passes_multiple_arguments(self, session):
+        session.visit("/with_js")
+        change = session.find("css", "#change")
+        assert change.evaluate_script("arguments[0] + arguments[1]", 2, 3) == 5
+
+    def test_supports_returning_elements(self, session):
+        session.visit("/with_js")
+        change = session.find("css", "#change")  # ensure page has loaded and element is available
+        el = change.evaluate_script("this")
+        assert isinstance(el, Element)
+        assert el == change
 
 
 @pytest.mark.requires("js")
