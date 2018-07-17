@@ -411,6 +411,12 @@ class TestNodeEvaluateScript(NodeTestCase):
         el = session.find("css", "#with_change_event")
         assert el.evaluate_script("this.value") == "default value"
 
+    def test_ignores_leading_whitespace(self, session):
+        session.visit("/with_js")
+        assert session.find("css", "#change").evaluate_script("""
+          2 + 3
+        """) == 5
+
     def test_passes_arguments_to_the_script(self, session):
         session.visit("/with_js")
         session.find("css", "#change").evaluate_script("this.textContent = arguments[0]", "Doodle Funk")

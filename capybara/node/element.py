@@ -55,7 +55,7 @@ class Element(Base):
           (function() {{
             return {script}
           }}).apply(arguments[0], Array.prototype.slice.call(arguments, 1));
-        """.format(script=script), self, *args)
+        """.format(script=script.strip()), self, *args)
 
     def evaluate_async_script(self, script, *args):
         return self.session.evaluate_async_script("""
