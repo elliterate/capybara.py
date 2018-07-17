@@ -59,14 +59,22 @@ class TestFind(FindTestCase):
         session.click_link("Click me")
         assert "Has been clicked" in session.find("css", "a#has-been-clicked", wait=0.9).text
 
-    def test_raises_an_error_suggesting_that_capybara_is_stuck_in_time(self, session):
-        session.visit("/with_js")
-        now = time.time()
+    if hasattr(time, "monotonic"):
+        def test_times_out_even_if_time_is_frozen(self, session):
+            session.visit("/with_js")
+            now = time.time()
 
-        import capybara.helpers
-        with patch.object(capybara.helpers, "time", return_value=now):
-            with pytest.raises(FrozenInTime):
-                session.find("//isnotthere")
+            with patch.object(time, "time", return_value=now):
+                with pytest.raises(ElementNotFound):
+                    session.find("//isnotthere")
+    else:
+        def test_raises_an_error_suggesting_that_capybara_is_stuck_in_time(self, session):
+            session.visit("/with_js")
+            now = time.time()
+
+            with patch.object(time, "time", return_value=now):
+                with pytest.raises(FrozenInTime):
+                    session.find("//isnotthere")
 
     def test_finds_the_first_element_with_using_the_given_css_selector_locator(self, session):
         assert session.find("css", "h1").text == "This is a test"

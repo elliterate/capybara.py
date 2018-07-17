@@ -1,5 +1,5 @@
 import re
-from time import time
+import time
 
 from capybara.compat import PY2, str_
 from capybara.utils import decode_bytes, isbytes, isregex, isstring, encode_string
@@ -132,6 +132,14 @@ def matches_count(count, options):
     return True
 
 
+def monotonic():
+    """ float: Returns the current time, using a monotonic clock where available. """
+    if hasattr(time, "monotonic"):
+        return time.monotonic()
+    else:
+        return time.time()
+
+
 def normalize_text(value):
     """
     Normalizes the given value to a string of text with extra whitespace removed.
@@ -175,18 +183,18 @@ class Timer:
     """
 
     def __init__(self, expire_in):
-        self._start = time()
+        self._start = monotonic()
         self._expire_in = expire_in
 
     @property
     def expired(self):
         """ bool: Whether this timer has expired. """
-        return time() - self._start >= self._expire_in
+        return monotonic() - self._start >= self._expire_in
 
     @property
     def stalled(self):
         """ bool: Whether this timer appears to have stalled. """
-        return time() == self._start
+        return monotonic() == self._start
 
 
 def toregex(text, exact=False):
