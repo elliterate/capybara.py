@@ -173,7 +173,7 @@ class Driver(Base):
         return self.browser.execute_script(script, *args)
 
     def evaluate_script(self, script, *args):
-        result = self.execute_script("return {0}".format(script), *args)
+        result = self.execute_script("return {0}".format(script.strip()), *args)
         return self._wrap_element_script_result(result)
 
     def evaluate_async_script(self, script, *args):

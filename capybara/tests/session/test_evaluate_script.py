@@ -10,6 +10,12 @@ class TestEvaluateScript:
         session.visit("/with_js")
         assert session.evaluate_script("1+3") == 4
 
+    def test_ignores_leading_whitespace(self, session):
+        session.visit("/with_js")
+        assert session.evaluate_script("""
+          1 + 3
+        """) == 4
+
     def test_passes_arguments_to_the_script(self, session):
         session.visit("/with_js")
         session.evaluate_script("document.getElementById('change').textContent = arguments[0]", "Doodle Funk")
