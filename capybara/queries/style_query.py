@@ -1,8 +1,8 @@
-import capybara
 from capybara.helpers import desc, toregex
+from capybara.queries.base_query import BaseQuery
 
 
-class StyleQuery:
+class StyleQuery(BaseQuery):
     """
     Queries for computed style values of a node.
 
@@ -22,10 +22,7 @@ class StyleQuery:
     @property
     def wait(self):
         """ int | float: How long to wait for synchronization. """
-        if self.options["wait"] is not None:
-            return self.options["wait"] or 0
-        else:
-            return capybara.default_max_wait_time
+        return self.normalize_wait(self.options["wait"])
 
     def resolves_for(self, node):
         """

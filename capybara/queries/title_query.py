@@ -1,11 +1,11 @@
 import re
 
-import capybara
 from capybara.helpers import desc, normalize_text, toregex
+from capybara.queries.base_query import BaseQuery
 from capybara.utils import isregex
 
 
-class TitleQuery(object):
+class TitleQuery(BaseQuery):
     """
     Queries the title content of a node.
 
@@ -42,10 +42,7 @@ class TitleQuery(object):
     @property
     def wait(self):
         """ int | float: How long to wait for synchronization. """
-        if self.options["wait"] is not None:
-            return self.options["wait"] or 0
-        else:
-            return capybara.default_max_wait_time
+        return self.normalize_wait(self.options["wait"])
 
     @property
     def failure_message(self):

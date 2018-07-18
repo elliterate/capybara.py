@@ -2,13 +2,14 @@ import re
 
 import capybara
 from capybara.helpers import declension, desc, failure_message, normalize_text, toregex
+from capybara.queries.base_query import BaseQuery
 from capybara.utils import isregex
 
 
 VALID_QUERY_TYPE = ["all", "visible"]
 
 
-class TextQuery(object):
+class TextQuery(BaseQuery):
     """
     Queries for text content in a node.
 
@@ -62,10 +63,7 @@ class TextQuery(object):
     @property
     def wait(self):
         """ int | float: How long to wait for synchronization. """
-        if self.options["wait"] is not None:
-            return self.options["wait"] or 0
-        else:
-            return capybara.default_max_wait_time
+        return self.normalize_wait(self.options["wait"])
 
     def resolve_for(self, node):
         """

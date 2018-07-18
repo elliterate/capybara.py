@@ -7,6 +7,7 @@ from xpath.renderer import to_xpath
 import capybara
 from capybara.compat import bytes_, str_
 from capybara.helpers import desc, normalize_text, toregex
+from capybara.queries.base_query import BaseQuery
 from capybara.result import Result
 from capybara.selector import selectors
 from capybara.utils import isregex
@@ -15,7 +16,7 @@ from capybara.utils import isregex
 VALID_MATCH = ["first", "one", "prefer_exact", "smart"]
 
 
-class SelectorQuery(object):
+class SelectorQuery(BaseQuery):
     """
     Queries for elements using a selector.
 
@@ -150,10 +151,7 @@ class SelectorQuery(object):
     @property
     def wait(self):
         """ int | float: How long to wait for synchronization. """
-        if self.options["wait"] is not None:
-            return self.options["wait"] or 0
-        else:
-            return capybara.default_max_wait_time
+        return self.normalize_wait(self.options["wait"])
 
     def css(self):
         """ str: The CSS query for this selector. """
