@@ -2,6 +2,7 @@ import os.path
 
 import capybara
 from capybara.exceptions import ElementNotFound, FileNotFound
+from capybara.queries.base_query import BaseQuery
 
 
 class ActionsMixin(object):
@@ -193,7 +194,8 @@ class ActionsMixin(object):
         else:
             self.find("option", value, **kwargs).unselect_option()
 
-    def _check_with_label(self, selector, checked, locator=None, allow_label_click=None, **kwargs):
+    def _check_with_label(self, selector, checked, locator=None, allow_label_click=None, visible=None, wait=None,
+                          **kwargs):
         """
         Args:
             selector (str): The selector for the type of element that should be checked/unchecked.
@@ -201,23 +203,29 @@ class ActionsMixin(object):
             locator (str, optional): Which element to check.
             allow_label_click (bool, optional): Attempt to click the label to toggle state if
                 element is non-visible. Defaults to :data:`capybara.automatic_label_click`.
+            visible (bool | str, optional): The desired element visibility. Defaults to
+                :data:`capybara.ignore_hidden_elements`.
+            wait (int | float, optional): The number of seconds to wait to check the element.
+                Defaults to :data:`capybara.default_max_wait_time`.
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
         """
 
         if allow_label_click is None:
             allow_label_click = capybara.automatic_label_click
 
-        try:
-            self.find(selector, locator, **kwargs).set(checked)
-        except ElementNotFound as e:
-            if not allow_label_click:
-                raise
+        @self.synchronize(wait=BaseQuery.normalize_wait(wait))
+        def check_with_label():
             try:
-                kwargs["visible"] = "hidden"
-                kwargs["wait"] = False
-                element = self.find(selector, locator, **kwargs)
-                label = self.find("label", field=element, visible=True, wait=False)
-                if element.checked != checked:
-                    label.click()
-            except Exception:
-                raise e
+                self.find(selector, locator, visible=visible, **kwargs).set(checked)
+            except ElementNotFound as e:
+                if not allow_label_click:
+                    raise
+                try:
+                    element = self.find(selector, locator, visible="hidden", **kwargs)
+                    label = self.find("label", field=element, visible=True)
+                    if element.checked != checked:
+                        label.click()
+                except Exception:
+                    raise e
+
+        check_with_label()

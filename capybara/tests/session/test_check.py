@@ -1,4 +1,5 @@
 import pytest
+from time import time
 
 import capybara
 from capybara.exceptions import ElementNotFound
@@ -129,3 +130,10 @@ class TestCheckWithoutAutomaticLabelClick(CheckTestCase):
         session.check("form_cars_tesla", allow_label_click=True)
         session.click_button("awesome")
         assert "tesla" in extract_results(session).getlist("form[cars][]")
+
+    def test_does_not_wait_the_full_time_if_label_can_be_clicked(self, session):
+        assert session.find("checkbox", "form_cars_tesla", unchecked=True, visible="hidden") is not None
+        start_time = time()
+        session.check("form_cars_tesla", allow_label_click=True, wait=10)
+        end_time = time()
+        assert end_time - start_time < 10
