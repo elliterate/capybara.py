@@ -54,23 +54,8 @@ class ActionsMixin(object):
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
         """
 
-        if allow_label_click is None:
-            allow_label_click = capybara.automatic_label_click
-
-        try:
-            self.find("checkbox", locator, **kwargs).set(True)
-        except ElementNotFound as e:
-            if not allow_label_click:
-                raise
-            try:
-                kwargs["visible"] = "hidden"
-                kwargs["wait"] = False
-                checkbox = self.find("checkbox", locator, **kwargs)
-                label = self.find("label", field=checkbox, visible=True, wait=False)
-                if not checkbox.checked:
-                    label.click()
-            except Exception:
-                raise e
+        self._check_with_label(
+            "checkbox", True, locator=locator, allow_label_click=allow_label_click, **kwargs)
 
     def choose(self, locator=None, allow_label_click=None, **kwargs):
         """
@@ -86,23 +71,8 @@ class ActionsMixin(object):
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
         """
 
-        if allow_label_click is None:
-            allow_label_click = capybara.automatic_label_click
-
-        try:
-            self.find("radio_button", locator, **kwargs).set(True)
-        except ElementNotFound as e:
-            if not allow_label_click:
-                raise
-            try:
-                kwargs["visible"] = "hidden"
-                kwargs["wait"] = False
-                radio_button = self.find("radio_button", locator, **kwargs)
-                label = self.find("label", field=radio_button, visible=True, wait=False)
-                if not radio_button.checked:
-                    label.click()
-            except Exception:
-                raise e
+        self._check_with_label(
+            "radio_button", True, locator=locator, allow_label_click=allow_label_click, **kwargs)
 
     def click_button(self, locator=None, **kwargs):
         """
@@ -201,23 +171,8 @@ class ActionsMixin(object):
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
         """
 
-        if allow_label_click is None:
-            allow_label_click = capybara.automatic_label_click
-
-        try:
-            self.find("checkbox", locator, **kwargs).set(False)
-        except ElementNotFound as e:
-            if not allow_label_click:
-                raise
-            try:
-                kwargs["visible"] = "hidden"
-                kwargs["wait"] = False
-                checkbox = self.find("checkbox", locator, **kwargs)
-                label = self.find("label", field=checkbox, visible=True, wait=False)
-                if checkbox.checked:
-                    label.click()
-            except Exception:
-                raise e
+        self._check_with_label(
+            "checkbox", False, locator=locator, allow_label_click=allow_label_click, **kwargs)
 
     def unselect(self, value=None, field=None, **kwargs):
         """
@@ -237,3 +192,32 @@ class ActionsMixin(object):
             self.find("select", field, **kwargs).find("option", value, **kwargs).unselect_option()
         else:
             self.find("option", value, **kwargs).unselect_option()
+
+    def _check_with_label(self, selector, checked, locator=None, allow_label_click=None, **kwargs):
+        """
+        Args:
+            selector (str): The selector for the type of element that should be checked/unchecked.
+            checked (bool): Whether the element should be checked.
+            locator (str, optional): Which element to check.
+            allow_label_click (bool, optional): Attempt to click the label to toggle state if
+                element is non-visible. Defaults to :data:`capybara.automatic_label_click`.
+            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
+        """
+
+        if allow_label_click is None:
+            allow_label_click = capybara.automatic_label_click
+
+        try:
+            self.find(selector, locator, **kwargs).set(checked)
+        except ElementNotFound as e:
+            if not allow_label_click:
+                raise
+            try:
+                kwargs["visible"] = "hidden"
+                kwargs["wait"] = False
+                element = self.find(selector, locator, **kwargs)
+                label = self.find("label", field=element, visible=True, wait=False)
+                if element.checked != checked:
+                    label.click()
+            except Exception:
+                raise e
