@@ -131,6 +131,18 @@ class TestCheckWithoutAutomaticLabelClick(CheckTestCase):
         session.click_button("awesome")
         assert "tesla" in extract_results(session).getlist("form[cars][]")
 
+    def test_check_via_the_label_if_input_is_moved_off_the_left_edge_of_the_page(self, session):
+        assert session.find("checkbox", "form_cars_pagani", unchecked=True, visible="all") is not None
+        session.check("form_cars_pagani", allow_label_click=True)
+        session.click_button("awesome")
+        assert "pagani" in extract_results(session).getlist("form[cars][]")
+
+    def test_check_via_the_label_if_input_is_visible_but_blocked_by_another_element(self, session):
+        assert session.find("checkbox", "form_cars_bugatti", unchecked=True, visible="all") is not None
+        session.check("form_cars_bugatti", allow_label_click=True)
+        session.click_button("awesome")
+        assert "bugatti" in extract_results(session).getlist("form[cars][]")
+
     def test_does_not_wait_the_full_time_if_label_can_be_clicked(self, session):
         assert session.find("checkbox", "form_cars_tesla", unchecked=True, visible="hidden") is not None
         start_time = time()

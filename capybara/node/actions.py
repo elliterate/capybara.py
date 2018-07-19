@@ -215,13 +215,16 @@ class ActionsMixin(object):
 
         @self.synchronize(wait=BaseQuery.normalize_wait(wait))
         def check_with_label():
+            element = None
             try:
-                self.find(selector, locator, visible=visible, **kwargs).set(checked)
-            except ElementNotFound as e:
-                if not allow_label_click:
+                element = self.find(selector, locator, visible=visible, **kwargs)
+                element.set(checked)
+            except Exception as e:
+                if not allow_label_click or not self._should_catch_error(e):
                     raise
                 try:
-                    element = self.find(selector, locator, visible="hidden", **kwargs)
+                    if not element:
+                        element = self.find(selector, locator, visible="all", **kwargs)
                     label = self.find("label", field=element, visible=True)
                     if element.checked != checked:
                         label.click()

@@ -131,9 +131,6 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
         def decorator(func):
             @wraps(func)
             def outer(*args, **kwargs):
-                caught_errors = (
-                    errors or
-                    self.session.driver.invalid_element_errors + (ElementNotFound,))
                 seconds = wait if wait is not None else capybara.default_max_wait_time
 
                 def inner():
@@ -151,7 +148,7 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
                             except Exception as e:
                                 self.session.raise_server_error()
 
-                                if not isinstance(e, caught_errors):
+                                if not self._should_catch_error(e, errors):
                                     raise
                                 if timer.expired:
                                     raise
@@ -174,6 +171,26 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
             return decorator(func)
         else:
             return decorator
+
+    def _should_catch_error(self, error, errors=()):
+        """
+        Returns whether to catch the given error.
+
+        Args:
+            error (Exception): The error to consider.
+            errors (Tuple[Type[Exception], ...], optional): The exception types that should be
+                caught. Defaults to :class:`ElementNotFound` plus any driver-specific invalid
+                element errors.
+
+        Returns:
+            bool: Whether to catch the given error.
+        """
+
+        caught_errors = (
+            errors or
+            self.session.driver.invalid_element_errors + (ElementNotFound,))
+
+        return isinstance(error, caught_errors)
 
     def _find_css(self, css):
         return self.base._find_css(css)
