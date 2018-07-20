@@ -57,6 +57,14 @@ capybara.html module
     :undoc-members:
     :show-inheritance:
 
+capybara.pytest_plugin module
+-----------------------------
+
+.. automodule:: capybara.pytest_plugin
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 capybara.result module
 ----------------------
 
