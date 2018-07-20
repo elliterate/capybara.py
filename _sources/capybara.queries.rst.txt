@@ -4,6 +4,22 @@ capybara.queries package
 Submodules
 ----------
 
+capybara.queries.ancestor_query module
+--------------------------------------
+
+.. automodule:: capybara.queries.ancestor_query
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+capybara.queries.base_query module
+----------------------------------
+
+.. automodule:: capybara.queries.base_query
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 capybara.queries.current_path_query module
 ------------------------------------------
 
@@ -16,6 +32,22 @@ capybara.queries.selector_query module
 --------------------------------------
 
 .. automodule:: capybara.queries.selector_query
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+capybara.queries.sibling_query module
+-------------------------------------
+
+.. automodule:: capybara.queries.sibling_query
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+capybara.queries.style_query module
+-----------------------------------
+
+.. automodule:: capybara.queries.style_query
     :members:
     :undoc-members:
     :show-inheritance:

@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.session_matchers &#8212; Capybara 0.1.4 documentation</title>
+    <title>capybara.session_matchers &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for capybara.session_matchers</h1><div class="highlight"><pre>
@@ -58,8 +60,8 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">query</span><span class="o">.</span><span class="n">resolves_for</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">ExpectationNotMet</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">failure_message</span><span class="p">)</span>
         <span class="n">assert_current_path</span><span class="p">()</span>
-</div>
-        <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="SessionMatchersMixin.assert_no_current_path"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.SessionMatchersMixin.assert_no_current_path">[docs]</a>    <span class="k">def</span> <span class="nf">assert_no_current_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -84,8 +86,8 @@
                 <span class="k">raise</span> <span class="n">ExpectationNotMet</span><span class="p">(</span><span class="n">query</span><span class="o">.</span><span class="n">negative_failure_message</span><span class="p">)</span>
 
         <span class="n">assert_no_current_path</span><span class="p">()</span>
-</div>
-        <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="SessionMatchersMixin.has_current_path"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.SessionMatchersMixin.has_current_path">[docs]</a>    <span class="k">def</span> <span class="nf">has_current_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -101,8 +103,8 @@
 
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">assert_current_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">ExpectationNotMet</span><span class="p">:</span></div>
-            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">except</span> <span class="n">ExpectationNotMet</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="SessionMatchersMixin.has_no_current_path"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.SessionMatchersMixin.has_no_current_path">[docs]</a>    <span class="k">def</span> <span class="nf">has_no_current_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -118,15 +120,28 @@
 
         <span class="k">try</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">assert_no_current_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">ExpectationNotMet</span><span class="p">:</span></div></div>
-            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">except</span> <span class="n">ExpectationNotMet</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span></div></div>
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
@@ -157,8 +172,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

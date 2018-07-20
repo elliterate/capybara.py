@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.node.element &#8212; Capybara 0.1.4 documentation</title>
+    <title>capybara.node.element &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for capybara.node.element</h1><div class="highlight"><pre>
@@ -60,14 +62,41 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_scope</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;&lt;capybara.node.element.Element tag=</span><span class="se">\&quot;</span><span class="si">{tag}</span><span class="se">\&quot;</span><span class="s2"> path=</span><span class="se">\&quot;</span><span class="si">{path}</span><span class="se">\&quot;</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-            <span class="n">tag</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">tag_name</span><span class="p">,</span>
-            <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;&lt;capybara.node.element.Element tag=</span><span class="se">\&quot;</span><span class="si">{tag}</span><span class="se">\&quot;</span><span class="s2"> path=</span><span class="se">\&quot;</span><span class="si">{path}</span><span class="se">\&quot;</span><span class="s2">&gt;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">tag</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">tag_name</span><span class="p">,</span>
+                <span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">invalid_element_errors</span><span class="p">):</span>
+                <span class="k">return</span> <span class="s2">&quot;Obsolete &lt;capybara.node.element.Element&gt;&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">native</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; object: The native element from the driver. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">native</span>
+
+<div class="viewcode-block" id="Element.execute_script"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.execute_script">[docs]</a>    <span class="k">def</span> <span class="nf">execute_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">          (function() {{</span>
+<span class="s2">            </span><span class="si">{script}</span><span class="s2"></span>
+<span class="s2">          }}).apply(arguments[0], Array.prototype.slice.call(arguments, 1));</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">script</span><span class="o">=</span><span class="n">script</span><span class="p">),</span> <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Element.evaluate_script"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.evaluate_script">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">evaluate_script</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">          (function() {{</span>
+<span class="s2">            return </span><span class="si">{script}</span><span class="s2"></span>
+<span class="s2">          }}).apply(arguments[0], Array.prototype.slice.call(arguments, 1));</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">script</span><span class="o">=</span><span class="n">script</span><span class="o">.</span><span class="n">strip</span><span class="p">()),</span> <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Element.evaluate_async_script"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.evaluate_async_script">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_async_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">session</span><span class="o">.</span><span class="n">evaluate_async_script</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">          (function() {{</span>
+<span class="s2">            </span><span class="si">{script}</span><span class="s2"></span>
+<span class="s2">          }}).apply(arguments[0], Array.prototype.slice.call(arguments, 1));</span>
+<span class="s2">        &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">script</span><span class="o">=</span><span class="n">script</span><span class="p">),</span> <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Element.reload"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.reload">[docs]</a>    <span class="k">def</span> <span class="nf">reload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">allow_reload</span><span class="p">:</span>
@@ -75,8 +104,8 @@
             <span class="n">reloaded</span> <span class="o">=</span> <span class="n">query_scope</span><span class="o">.</span><span class="n">find_first</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">query</span><span class="o">.</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">reloaded</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">base</span> <span class="o">=</span> <span class="n">reloaded</span><span class="o">.</span><span class="n">base</span></div>
-        <span class="k">return</span> <span class="bp">self</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">base</span> <span class="o">=</span> <span class="n">reloaded</span><span class="o">.</span><span class="n">base</span>
+        <span class="k">return</span> <span class="bp">self</span></div>
 
     <span class="nd">@property</span>
     <span class="nd">@synchronize</span>
@@ -89,6 +118,22 @@
     <span class="k">def</span> <span class="nf">visible</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; bool: Whether or not the element is visible. &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">visible</span>
+
+<div class="viewcode-block" id="Element.style"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.style">[docs]</a>    <span class="nd">@synchronize</span>
+    <span class="k">def</span> <span class="nf">style</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">styles</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve the given CSS styles. ::</span>
+
+<span class="sd">            element.style(&quot;color&quot;, &quot;font-size&quot;)  # =&gt; Computed values of CSS &quot;color&quot; and &quot;font-size&quot; styles</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            *styles (str): Names of the desired CSS properties.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Dict[str, str]: Dictionary of the CSS property names to computed values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">style</span><span class="p">(</span><span class="n">styles</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="nd">@synchronize</span>
@@ -178,14 +223,35 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
 
 <div class="viewcode-block" id="Element.click"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.click">[docs]</a>    <span class="nd">@synchronize</span>
-    <span class="k">def</span> <span class="nf">click</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Click the element. &quot;&quot;&quot;</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">click</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">,</span> <span class="o">**</span><span class="n">offset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Click the element.</span>
+
+<span class="sd">        Both ``x`` and ``y`` must be specified if an offset is wanted. If not specified, the click</span>
+<span class="sd">        will occur at the middle of the element.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            keys (List[Keys], optional): Keys to be held down when clicking.</span>
+<span class="sd">            offset (Dict[str, int], optional): X- and Y-coordinates to offset the click location</span>
+<span class="sd">                from the toop left corner of the element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">click</span><span class="p">(</span><span class="o">*</span><span class="n">keys</span><span class="p">,</span> <span class="o">**</span><span class="n">offset</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Element.double_click"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.double_click">[docs]</a>    <span class="nd">@synchronize</span>
-    <span class="k">def</span> <span class="nf">double_click</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Double-click the element. &quot;&quot;&quot;</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">double_click</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">double_click</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">,</span> <span class="o">**</span><span class="n">offset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Double-click the element.</span>
+
+<span class="sd">        Both ``x`` and ``y`` must be specified if an offset is wanted. If not specified, the click</span>
+<span class="sd">        will occur at the middle of the element.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            keys (List[Keys], optional): Keys to be held down when clicking.</span>
+<span class="sd">            offset (Dict[str, int], optional): X- and Y-coordinates to offset the click location</span>
+<span class="sd">                from the toop left corner of the element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">double_click</span><span class="p">(</span><span class="o">*</span><span class="n">keys</span><span class="p">,</span> <span class="o">**</span><span class="n">offset</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Element.drag_to"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.drag_to">[docs]</a>    <span class="nd">@synchronize</span>
     <span class="k">def</span> <span class="nf">drag_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
@@ -199,8 +265,8 @@
 <span class="sd">        Args:</span>
 <span class="sd">            node (Element): The element to drag to.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-</div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">drag_to</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">base</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">drag_to</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">base</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Element.send_keys"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.send_keys">[docs]</a>    <span class="nd">@synchronize</span>
     <span class="k">def</span> <span class="nf">send_keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
@@ -217,48 +283,72 @@
 <span class="sd">        Args:</span>
 <span class="sd">            *args: Variable length list of keys to send.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-</div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">send_keys</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Element.hover"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.hover">[docs]</a>    <span class="nd">@synchronize</span>
     <span class="k">def</span> <span class="nf">hover</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Hover on the element. &quot;&quot;&quot;</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">hover</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot; Hover on the element. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">hover</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Element.right_click"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.right_click">[docs]</a>    <span class="nd">@synchronize</span>
-    <span class="k">def</span> <span class="nf">right_click</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Right-click the element. &quot;&quot;&quot;</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">right_click</span><span class="p">()</span>
+    <span class="k">def</span> <span class="nf">right_click</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">,</span> <span class="o">**</span><span class="n">offset</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Right-click the element.</span>
+
+<span class="sd">        Both ``x`` and ``y`` must be specified if an offset is wanted. If not specified, the click</span>
+<span class="sd">        will occur at the middle of the element.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            keys (List[Keys], optional): Keys to be held down when clicking.</span>
+<span class="sd">            offset (Dict[str, int], optional): X- and Y-coordinates to offset the click location</span>
+<span class="sd">                from the toop left corner of the element.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">right_click</span><span class="p">(</span><span class="o">*</span><span class="n">keys</span><span class="p">,</span> <span class="o">**</span><span class="n">offset</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Element.select_option"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.select_option">[docs]</a>    <span class="nd">@synchronize</span>
     <span class="k">def</span> <span class="nf">select_option</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Select this node if it is an option element inside a select tag. &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">disabled</span><span class="p">:</span>
-            <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Attempt to select disabled option: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">))</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">select_option</span><span class="p">()</span>
+            <span class="n">warn</span><span class="p">(</span><span class="s2">&quot;Attempt to select disabled option: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">select_option</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Element.set"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.set">[docs]</a>    <span class="nd">@synchronize</span>
-    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Set the value of the form element to the given value.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            value (bool | str): The new value.</span>
+<span class="sd">            **options: Driver-specific options for how to set the value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-</div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">options</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Element.unselect_option"><a class="viewcode-back" href="../../../capybara.node.html#capybara.node.element.Element.unselect_option">[docs]</a>    <span class="nd">@synchronize</span>
     <span class="k">def</span> <span class="nf">unselect_option</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Unselect this node if it is an option element inside a multiple select tag. &quot;&quot;&quot;</span></div></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">unselect_option</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot; Unselect this node if it is an option element inside a multiple select tag. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">unselect_option</span><span class="p">()</span></div></div>
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../index.html">Documentation overview</a><ul>
@@ -289,8 +379,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

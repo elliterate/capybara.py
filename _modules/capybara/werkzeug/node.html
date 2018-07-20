@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.werkzeug.node &#8212; Capybara 0.1.4 documentation</title>
+    <title>capybara.werkzeug.node &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for capybara.werkzeug.node</h1><div class="highlight"><pre>
@@ -72,15 +74,20 @@
                 <span class="nb">list</span><span class="p">(</span><span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="p">(</span>
                     <span class="p">[</span><span class="n">Node</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span><span class="o">.</span><span class="n">unnormalized_text</span><span class="p">(</span><span class="n">check_ancestor_visibility</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
                      <span class="n">c</span><span class="o">.</span><span class="n">tail</span><span class="p">]</span>
-                    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">getchildren</span><span class="p">()))))</span></div>
-            <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">parts</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">getchildren</span><span class="p">()))))</span>
+            <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">filter</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="n">parts</span><span class="p">))</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">disabled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_string_node</span><span class="o">.</span><span class="n">disabled</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;option&quot;</span><span class="p">,</span> <span class="s2">&quot;optgroup&quot;</span><span class="p">]:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_string_node</span><span class="o">.</span><span class="n">disabled</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_xpath</span><span class="p">(</span><span class="s2">&quot;parent::*&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">disabled</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_xpath</span><span class="p">(</span><span class="s2">&quot;parent::*[self::optgroup or self::select]&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">disabled</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_string_node</span><span class="o">.</span><span class="n">disabled</span>
+            <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_find_xpath</span><span class="p">(</span>
+                <span class="s2">&quot;parent::fieldset[@disabled] | &quot;</span>
+                <span class="s2">&quot;ancestor::*[not(self::legend) or preceding-sibling::legend][parent::fieldset[@disabled]]&quot;</span><span class="p">))</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">readonly</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -110,7 +117,10 @@
     <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_string_node</span><span class="o">.</span><span class="n">value</span>
 
-<div class="viewcode-block" id="Node.click"><a class="viewcode-back" href="../../../capybara.werkzeug.html#capybara.werkzeug.node.Node.click">[docs]</a>    <span class="k">def</span> <span class="nf">click</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Node.click"><a class="viewcode-back" href="../../../capybara.werkzeug.html#capybara.werkzeug.node.Node.click">[docs]</a>    <span class="k">def</span> <span class="nf">click</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">keys</span><span class="p">,</span> <span class="o">**</span><span class="n">offset</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">keys</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span><span class="n">offset</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The Werkzeug driver does not support click options&quot;</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tag_name</span> <span class="o">==</span> <span class="s2">&quot;a&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">]:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">follow</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;href&quot;</span><span class="p">])</span>
         <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tag_name</span> <span class="o">==</span> <span class="s2">&quot;input&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;submit&quot;</span><span class="p">,</span> <span class="s2">&quot;image&quot;</span><span class="p">])</span> <span class="ow">or</span> \
@@ -127,8 +137,8 @@
                 <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_xpath</span><span class="p">(</span><span class="s2">&quot;.//input&quot;</span><span class="p">))</span>
             <span class="n">labeled_control</span> <span class="o">=</span> <span class="n">labeled_controls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">labeled_controls</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
 
-            <span class="k">if</span> <span class="n">labeled_control</span> <span class="ow">and</span> <span class="p">(</span><span class="n">labeled_control</span><span class="o">.</span><span class="n">_is_checkbox</span> <span class="ow">or</span> <span class="n">labeled_control</span><span class="o">.</span><span class="n">_is_radio</span><span class="p">):</span></div>
-                <span class="n">labeled_control</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="ow">not</span> <span class="n">labeled_control</span><span class="o">.</span><span class="n">checked</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">labeled_control</span> <span class="ow">and</span> <span class="p">(</span><span class="n">labeled_control</span><span class="o">.</span><span class="n">_is_checkbox</span> <span class="ow">or</span> <span class="n">labeled_control</span><span class="o">.</span><span class="n">_is_radio</span><span class="p">):</span>
+                <span class="n">labeled_control</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="ow">not</span> <span class="n">labeled_control</span><span class="o">.</span><span class="n">checked</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Node.set"><a class="viewcode-back" href="../../../capybara.werkzeug.html#capybara.werkzeug.node.Node.set">[docs]</a>    <span class="k">def</span> <span class="nf">set</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">readonly</span><span class="p">:</span>
@@ -140,8 +150,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_checkbox</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_input_field</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_set_input</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_textarea</span><span class="p">:</span></div>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_set_textarea</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_is_textarea</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_set_textarea</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Node.select_option"><a class="viewcode-back" href="../../../capybara.werkzeug.html#capybara.werkzeug.node.Node.select_option">[docs]</a>    <span class="k">def</span> <span class="nf">select_option</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">disabled</span><span class="p">:</span>
@@ -153,15 +163,15 @@
             <span class="n">options</span> <span class="o">=</span> <span class="n">select</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;.//option[@selected=&#39;selected&#39;]&quot;</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">option</span> <span class="ow">in</span> <span class="n">options</span><span class="p">:</span>
                 <span class="n">option</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-</div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">,</span> <span class="s2">&quot;selected&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">,</span> <span class="s2">&quot;selected&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Node.unselect_option"><a class="viewcode-back" href="../../../capybara.werkzeug.html#capybara.werkzeug.node.Node.unselect_option">[docs]</a>    <span class="k">def</span> <span class="nf">unselect_option</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">select</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">&quot;ancestor::select&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">select</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;multiple&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">&quot;multiple&quot;</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">UnselectNotAllowed</span><span class="p">()</span>
-</div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">attrib</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;selected&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_is_input_field</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -223,15 +233,28 @@
     <span class="k">def</span> <span class="nf">_set_textarea</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">getchildren</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
-</div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">native</span><span class="o">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">value</span></div>
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../index.html">Documentation overview</a><ul>
@@ -262,8 +285,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

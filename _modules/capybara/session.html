@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.session &#8212; Capybara 0.1.4 documentation</title>
+    <title>capybara.session &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -27,10 +27,13 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for capybara.session</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Hashable</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">contextmanager</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
 <span class="kn">import</span> <span class="nn">os</span>
@@ -43,6 +46,7 @@
 <span class="kn">from</span> <span class="nn">capybara.node.base</span> <span class="k">import</span> <span class="n">Base</span>
 <span class="kn">from</span> <span class="nn">capybara.node.document</span> <span class="k">import</span> <span class="n">Document</span>
 <span class="kn">from</span> <span class="nn">capybara.node.element</span> <span class="k">import</span> <span class="n">Element</span>
+<span class="kn">from</span> <span class="nn">capybara.selector</span> <span class="k">import</span> <span class="n">selectors</span>
 <span class="kn">from</span> <span class="nn">capybara.server</span> <span class="k">import</span> <span class="n">Server</span>
 <span class="kn">from</span> <span class="nn">capybara.session_matchers</span> <span class="k">import</span> <span class="n">SessionMatchersMixin</span>
 <span class="kn">from</span> <span class="nn">capybara.utils</span> <span class="k">import</span> <span class="n">cached_property</span><span class="p">,</span> <span class="n">encode_string</span>
@@ -52,21 +56,23 @@
 <span class="n">_DOCUMENT_METHODS</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;assert_no_title&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_title&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_title&quot;</span><span class="p">,</span> <span class="s2">&quot;has_title&quot;</span><span class="p">]</span>
 <span class="n">_DOCUMENT_PROPERTIES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;title&quot;</span><span class="p">]</span>
 <span class="n">_NODE_METHODS</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;assert_no_selector&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_no_text&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_selector&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_text&quot;</span><span class="p">,</span> <span class="s2">&quot;attach_file&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;check&quot;</span><span class="p">,</span> <span class="s2">&quot;choose&quot;</span><span class="p">,</span> <span class="s2">&quot;click_button&quot;</span><span class="p">,</span> <span class="s2">&quot;click_link&quot;</span><span class="p">,</span> <span class="s2">&quot;click_link_or_button&quot;</span><span class="p">,</span> <span class="s2">&quot;click_on&quot;</span><span class="p">,</span> <span class="s2">&quot;fill_in&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;find&quot;</span><span class="p">,</span> <span class="s2">&quot;find_all&quot;</span><span class="p">,</span> <span class="s2">&quot;find_button&quot;</span><span class="p">,</span> <span class="s2">&quot;find_by_id&quot;</span><span class="p">,</span> <span class="s2">&quot;find_field&quot;</span><span class="p">,</span> <span class="s2">&quot;find_first&quot;</span><span class="p">,</span> <span class="s2">&quot;find_link&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;assert_all_of_selectors&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_no_selector&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_none_of_selectors&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_no_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;assert_selector&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_style&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_text&quot;</span><span class="p">,</span> <span class="s2">&quot;attach_file&quot;</span><span class="p">,</span> <span class="s2">&quot;check&quot;</span><span class="p">,</span> <span class="s2">&quot;choose&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;click_button&quot;</span><span class="p">,</span> <span class="s2">&quot;click_link&quot;</span><span class="p">,</span> <span class="s2">&quot;click_link_or_button&quot;</span><span class="p">,</span> <span class="s2">&quot;click_on&quot;</span><span class="p">,</span> <span class="s2">&quot;fill_in&quot;</span><span class="p">,</span> <span class="s2">&quot;find&quot;</span><span class="p">,</span> <span class="s2">&quot;find_all&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;find_button&quot;</span><span class="p">,</span> <span class="s2">&quot;find_by_id&quot;</span><span class="p">,</span> <span class="s2">&quot;find_field&quot;</span><span class="p">,</span> <span class="s2">&quot;find_first&quot;</span><span class="p">,</span> <span class="s2">&quot;find_link&quot;</span><span class="p">,</span> <span class="s2">&quot;has_all_of_selectors&quot;</span><span class="p">,</span>
     <span class="s2">&quot;has_button&quot;</span><span class="p">,</span> <span class="s2">&quot;has_checked_field&quot;</span><span class="p">,</span> <span class="s2">&quot;has_content&quot;</span><span class="p">,</span> <span class="s2">&quot;has_css&quot;</span><span class="p">,</span> <span class="s2">&quot;has_field&quot;</span><span class="p">,</span> <span class="s2">&quot;has_link&quot;</span><span class="p">,</span>
     <span class="s2">&quot;has_no_button&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_checked_field&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_css&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_field&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_link&quot;</span><span class="p">,</span>
     <span class="s2">&quot;has_no_select&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_selector&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_table&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_text&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_unchecked_field&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;has_no_xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;has_select&quot;</span><span class="p">,</span> <span class="s2">&quot;has_selector&quot;</span><span class="p">,</span> <span class="s2">&quot;has_table&quot;</span><span class="p">,</span> <span class="s2">&quot;has_text&quot;</span><span class="p">,</span> <span class="s2">&quot;has_unchecked_field&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;has_xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;select&quot;</span><span class="p">,</span> <span class="s2">&quot;uncheck&quot;</span><span class="p">,</span> <span class="s2">&quot;unselect&quot;</span><span class="p">]</span>
+    <span class="s2">&quot;has_no_xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;has_none_of_selectors&quot;</span><span class="p">,</span> <span class="s2">&quot;has_select&quot;</span><span class="p">,</span> <span class="s2">&quot;has_selector&quot;</span><span class="p">,</span> <span class="s2">&quot;has_table&quot;</span><span class="p">,</span> <span class="s2">&quot;has_text&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;has_unchecked_field&quot;</span><span class="p">,</span> <span class="s2">&quot;has_xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;select&quot;</span><span class="p">,</span> <span class="s2">&quot;uncheck&quot;</span><span class="p">,</span> <span class="s2">&quot;unselect&quot;</span><span class="p">]</span>
 <span class="n">_NODE_PROPERTIES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span>
 <span class="n">_SESSION_METHODS</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;accept_alert&quot;</span><span class="p">,</span> <span class="s2">&quot;accept_confirm&quot;</span><span class="p">,</span> <span class="s2">&quot;accept_prompt&quot;</span><span class="p">,</span> <span class="s2">&quot;assert_current_path&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;assert_no_current_path&quot;</span><span class="p">,</span> <span class="s2">&quot;dismiss_confirm&quot;</span><span class="p">,</span> <span class="s2">&quot;dismiss_prompt&quot;</span><span class="p">,</span> <span class="s2">&quot;evaluate_script&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;execute_script&quot;</span><span class="p">,</span> <span class="s2">&quot;fieldset&quot;</span><span class="p">,</span> <span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="s2">&quot;go_back&quot;</span><span class="p">,</span> <span class="s2">&quot;go_forward&quot;</span><span class="p">,</span> <span class="s2">&quot;has_current_path&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;has_no_current_path&quot;</span><span class="p">,</span> <span class="s2">&quot;open_new_window&quot;</span><span class="p">,</span> <span class="s2">&quot;refresh&quot;</span><span class="p">,</span> <span class="s2">&quot;reset&quot;</span><span class="p">,</span> <span class="s2">&quot;save_page&quot;</span><span class="p">,</span> <span class="s2">&quot;save_screenshot&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;scope&quot;</span><span class="p">,</span> <span class="s2">&quot;switch_to_frame&quot;</span><span class="p">,</span> <span class="s2">&quot;switch_to_window&quot;</span><span class="p">,</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;visit&quot;</span><span class="p">,</span> <span class="s2">&quot;window&quot;</span><span class="p">,</span> <span class="s2">&quot;window_opened_by&quot;</span><span class="p">]</span>
+    <span class="s2">&quot;assert_no_current_path&quot;</span><span class="p">,</span> <span class="s2">&quot;dismiss_confirm&quot;</span><span class="p">,</span> <span class="s2">&quot;dismiss_prompt&quot;</span><span class="p">,</span> <span class="s2">&quot;evaluate_async_script&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;evaluate_script&quot;</span><span class="p">,</span> <span class="s2">&quot;execute_script&quot;</span><span class="p">,</span> <span class="s2">&quot;fieldset&quot;</span><span class="p">,</span> <span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="s2">&quot;go_back&quot;</span><span class="p">,</span> <span class="s2">&quot;go_forward&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;has_current_path&quot;</span><span class="p">,</span> <span class="s2">&quot;has_no_current_path&quot;</span><span class="p">,</span> <span class="s2">&quot;open_new_window&quot;</span><span class="p">,</span> <span class="s2">&quot;refresh&quot;</span><span class="p">,</span> <span class="s2">&quot;reset&quot;</span><span class="p">,</span> <span class="s2">&quot;save_page&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;save_screenshot&quot;</span><span class="p">,</span> <span class="s2">&quot;scope&quot;</span><span class="p">,</span> <span class="s2">&quot;switch_to_frame&quot;</span><span class="p">,</span> <span class="s2">&quot;switch_to_window&quot;</span><span class="p">,</span> <span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="s2">&quot;visit&quot;</span><span class="p">,</span> <span class="s2">&quot;window&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;window_opened_by&quot;</span><span class="p">]</span>
 <span class="n">_SESSION_PROPERTIES</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;current_host&quot;</span><span class="p">,</span> <span class="s2">&quot;current_path&quot;</span><span class="p">,</span> <span class="s2">&quot;current_url&quot;</span><span class="p">,</span> <span class="s2">&quot;current_window&quot;</span><span class="p">,</span> <span class="s2">&quot;windows&quot;</span><span class="p">]</span>
 
 <span class="n">DSL_METHODS</span> <span class="o">=</span> <span class="n">_DOCUMENT_METHODS</span> <span class="o">+</span> <span class="n">_NODE_METHODS</span> <span class="o">+</span> <span class="n">_SESSION_METHODS</span>
@@ -109,13 +115,13 @@
 
 <div class="viewcode-block" id="Session.driver"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.driver">[docs]</a>    <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">driver</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; driver.Base: The driver for the current session. &quot;&quot;&quot;</span></div>
-        <span class="k">return</span> <span class="n">capybara</span><span class="o">.</span><span class="n">drivers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot; driver.Base: The driver for the current session. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">capybara</span><span class="o">.</span><span class="n">drivers</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">mode</span><span class="p">](</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Session.document"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.document">[docs]</a>    <span class="nd">@cached_property</span>
     <span class="k">def</span> <span class="nf">document</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Document: The document for the current page. &quot;&quot;&quot;</span></div>
-        <span class="k">return</span> <span class="n">Document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="p">)</span>
+        <span class="sd">&quot;&quot;&quot; Document: The document for the current page. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Document</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="p">)</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_scope</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -201,21 +207,21 @@
             <span class="n">params</span><span class="o">=</span><span class="n">visit_uri</span><span class="o">.</span><span class="n">params</span><span class="p">,</span>
             <span class="n">query</span><span class="o">=</span><span class="n">visit_uri</span><span class="o">.</span><span class="n">query</span><span class="p">,</span>
             <span class="n">fragment</span><span class="o">=</span><span class="n">visit_uri</span><span class="o">.</span><span class="n">fragment</span><span class="p">)</span>
-</div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">visit_uri</span><span class="o">.</span><span class="n">geturl</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="n">visit_uri</span><span class="o">.</span><span class="n">geturl</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="Session.refresh"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.refresh">[docs]</a>    <span class="k">def</span> <span class="nf">refresh</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Refresh the page. &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">raise_server_error</span><span class="p">()</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raise_server_error</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Session.go_back"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.go_back">[docs]</a>    <span class="k">def</span> <span class="nf">go_back</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Move back a single entry in the browser&#39;s history. &quot;&quot;&quot;</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">go_back</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot; Move back a single entry in the browser&#39;s history. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">go_back</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Session.go_forward"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.go_forward">[docs]</a>    <span class="k">def</span> <span class="nf">go_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Move forward a single entry in the browser&#39;s history. &quot;&quot;&quot;</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">go_forward</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot; Move forward a single entry in the browser&#39;s history. &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">go_forward</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Session.scope"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.scope">[docs]</a>    <span class="nd">@contextmanager</span>
     <span class="k">def</span> <span class="nf">scope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -250,8 +256,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_scope</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">yield</span>
-        <span class="k">finally</span><span class="p">:</span></div>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Session.fieldset"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.fieldset">[docs]</a>    <span class="nd">@contextmanager</span>
     <span class="k">def</span> <span class="nf">fieldset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
@@ -263,8 +269,8 @@
 <span class="sd">            locator (str): The id or legend of the fieldset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">&quot;fieldset&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span></div>
-            <span class="k">yield</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">&quot;fieldset&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+            <span class="k">yield</span></div>
 
 <div class="viewcode-block" id="Session.table"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.table">[docs]</a>    <span class="nd">@contextmanager</span>
     <span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
@@ -275,25 +281,35 @@
 <span class="sd">            locator (str): The id or caption of the table.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span></div>
-            <span class="k">yield</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">scope</span><span class="p">(</span><span class="s2">&quot;table&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+            <span class="k">yield</span></div>
 
 <div class="viewcode-block" id="Session.frame"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.frame">[docs]</a>    <span class="nd">@contextmanager</span>
-    <span class="k">def</span> <span class="nf">frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Execute the wrapped code within the given iframe using the given frame or frame name/id.</span>
 <span class="sd">        May not be supported by all drivers.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            locator (str | Element): The name/id of the frame or the frame&#39;s element.</span>
+<span class="sd">            locator (str | Element, optional): The name/id of the frame or the frame&#39;s element.</span>
+<span class="sd">                Defaults to the only frame in the document.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">new_frame</span> <span class="o">=</span> <span class="n">locator</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">Element</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="n">new_frame</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_find_frame</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">yield</span>
-        <span class="k">finally</span><span class="p">:</span></div>
-            <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="s2">&quot;parent&quot;</span><span class="p">)</span>
+        <span class="k">finally</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="s2">&quot;parent&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_find_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">Element</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">locator</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="n">Hashable</span><span class="p">)</span> <span class="ow">and</span> <span class="n">locator</span> <span class="ow">in</span> <span class="n">selectors</span><span class="p">:</span>
+            <span class="n">selector</span> <span class="o">=</span> <span class="n">locator</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">selector</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">current_window</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -320,8 +336,8 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Window: The window that has been opened.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-</div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_opened_by</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">open_new_window</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">window_opened_by</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">open_new_window</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="Session.switch_to_frame"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.switch_to_frame">[docs]</a>    <span class="k">def</span> <span class="nf">switch_to_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -350,8 +366,12 @@
                 <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">scope</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;frame&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="k">for</span> <span class="n">scope</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="p">[</span><span class="n">idx</span><span class="p">:]]):</span>
                     <span class="k">raise</span> <span class="n">ScopeError</span><span class="p">(</span><span class="s2">&quot;`switch_to_frame(</span><span class="se">\&quot;</span><span class="s2">top</span><span class="se">\&quot;</span><span class="s2">)` cannot be called &quot;</span>
                                      <span class="s2">&quot;from inside a descendant frame&#39;s `scope` context.&quot;</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="p">[:</span><span class="n">idx</span><span class="p">]</span></div>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="p">[:</span><span class="n">idx</span><span class="p">]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_frame</span><span class="p">(</span><span class="s2">&quot;top&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;You must provide a frame element, </span><span class="se">\&quot;</span><span class="s2">parent</span><span class="se">\&quot;</span><span class="s2">, or </span><span class="se">\&quot;</span><span class="s2">top</span><span class="se">\&quot;</span><span class="s2"> &quot;</span>
+                <span class="s2">&quot;when calling switch_to_frame&quot;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Session.switch_to_window"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.switch_to_window">[docs]</a>    <span class="k">def</span> <span class="nf">switch_to_window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -396,8 +416,8 @@
 
                 <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">original_window_handle</span><span class="p">)</span>
                 <span class="k">raise</span> <span class="n">WindowError</span><span class="p">(</span><span class="s2">&quot;Could not find a window matching lambda&quot;</span><span class="p">)</span>
-</div>
-            <span class="k">return</span> <span class="n">switch_and_get_matching_window</span><span class="p">()</span>
+
+            <span class="k">return</span> <span class="n">switch_and_get_matching_window</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Session.window"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.window">[docs]</a>    <span class="nd">@contextmanager</span>
     <span class="k">def</span> <span class="nf">window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window</span><span class="p">):</span>
@@ -421,8 +441,8 @@
             <span class="k">yield</span>
         <span class="k">finally</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_scopes</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-            <span class="k">if</span> <span class="n">original</span> <span class="o">!=</span> <span class="n">window</span><span class="p">:</span></div>
-                <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">original</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">original</span> <span class="o">!=</span> <span class="n">window</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">switch_to_window</span><span class="p">(</span><span class="n">original</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Session.window_opened_by"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.window_opened_by">[docs]</a>    <span class="k">def</span> <span class="nf">window_opened_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">trigger_func</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -455,8 +475,8 @@
                 <span class="k">raise</span> <span class="n">WindowError</span><span class="p">(</span><span class="s2">&quot;lambda passed to `window_opened_by` &quot;</span>
                                   <span class="s2">&quot;opened </span><span class="si">{0}</span><span class="s2"> windows instead of 1&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">opened_handles</span><span class="p">)))</span>
             <span class="k">return</span> <span class="n">Window</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">opened_handles</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
-</div>
-        <span class="k">return</span> <span class="n">get_new_window</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">get_new_window</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Session.execute_script"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.execute_script">[docs]</a>    <span class="k">def</span> <span class="nf">execute_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -469,8 +489,8 @@
 <span class="sd">            *args: Variable length argument list to pass to the executed JavaScript string.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">arg</span><span class="o">.</span><span class="n">base</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">Base</span><span class="p">)</span> <span class="k">else</span> <span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">arg</span><span class="o">.</span><span class="n">base</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">Base</span><span class="p">)</span> <span class="k">else</span> <span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">execute_script</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Session.evaluate_script"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.evaluate_script">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -487,8 +507,25 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">arg</span><span class="o">.</span><span class="n">base</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">Base</span><span class="p">)</span> <span class="k">else</span> <span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">evaluate_script</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span></div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_element_script_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">evaluate_script</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_element_script_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Session.evaluate_async_script"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.evaluate_async_script">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_async_script</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate the given JavaScript and obtain the result from a callback function which will be</span>
+<span class="sd">        passed as the last argument to the script.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            script (str): A string of JavaScript to evaluate.</span>
+<span class="sd">            *args: Variable length argument list to pass to the executed JavaScript string.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            object: The result of the evaluated JavaScript (may be driver specific).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">arg</span><span class="o">.</span><span class="n">base</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">Base</span><span class="p">)</span> <span class="k">else</span> <span class="n">arg</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">evaluate_async_script</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_element_script_result</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Session.accept_alert"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.accept_alert">[docs]</a>    <span class="nd">@contextmanager</span>
     <span class="k">def</span> <span class="nf">accept_alert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -505,8 +542,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">wait</span> <span class="o">=</span> <span class="n">wait</span> <span class="ow">or</span> <span class="n">capybara</span><span class="o">.</span><span class="n">default_max_wait_time</span>
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">accept_modal</span><span class="p">(</span><span class="s2">&quot;alert&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span></div>
-            <span class="k">yield</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">accept_modal</span><span class="p">(</span><span class="s2">&quot;alert&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span>
+            <span class="k">yield</span></div>
 
 <div class="viewcode-block" id="Session.accept_confirm"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.accept_confirm">[docs]</a>    <span class="nd">@contextmanager</span>
     <span class="k">def</span> <span class="nf">accept_confirm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -522,8 +559,8 @@
 <span class="sd">            ModalNotFound: If a modal dialog hasn&#39;t been found.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">accept_modal</span><span class="p">(</span><span class="s2">&quot;confirm&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span></div>
-            <span class="k">yield</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">accept_modal</span><span class="p">(</span><span class="s2">&quot;confirm&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span>
+            <span class="k">yield</span></div>
 
 <div class="viewcode-block" id="Session.dismiss_confirm"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.dismiss_confirm">[docs]</a>    <span class="nd">@contextmanager</span>
     <span class="k">def</span> <span class="nf">dismiss_confirm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -539,8 +576,8 @@
 <span class="sd">            ModalNotFound: If a modal dialog hasn&#39;t been found.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">dismiss_modal</span><span class="p">(</span><span class="s2">&quot;confirm&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span></div>
-            <span class="k">yield</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">dismiss_modal</span><span class="p">(</span><span class="s2">&quot;confirm&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span>
+            <span class="k">yield</span></div>
 
 <div class="viewcode-block" id="Session.accept_prompt"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.accept_prompt">[docs]</a>    <span class="nd">@contextmanager</span>
     <span class="k">def</span> <span class="nf">accept_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -557,8 +594,8 @@
 <span class="sd">            ModalNotFound: If a modal dialog hasn&#39;t been found.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">accept_modal</span><span class="p">(</span><span class="s2">&quot;prompt&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span></div>
-            <span class="k">yield</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">accept_modal</span><span class="p">(</span><span class="s2">&quot;prompt&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">response</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span>
+            <span class="k">yield</span></div>
 
 <div class="viewcode-block" id="Session.dismiss_prompt"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.dismiss_prompt">[docs]</a>    <span class="nd">@contextmanager</span>
     <span class="k">def</span> <span class="nf">dismiss_prompt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -574,8 +611,8 @@
 <span class="sd">            ModalNotFound: If a modal dialog hasn&#39;t been found.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">dismiss_modal</span><span class="p">(</span><span class="s2">&quot;prompt&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span></div>
-            <span class="k">yield</span>
+        <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">dismiss_modal</span><span class="p">(</span><span class="s2">&quot;prompt&quot;</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="n">wait</span><span class="p">):</span>
+            <span class="k">yield</span></div>
 
 <div class="viewcode-block" id="Session.save_page"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.save_page">[docs]</a>    <span class="k">def</span> <span class="nf">save_page</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -596,8 +633,8 @@
 
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">encode_string</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="p">))</span>
-</div>
-        <span class="k">return</span> <span class="n">path</span>
+
+        <span class="k">return</span> <span class="n">path</span></div>
 
 <div class="viewcode-block" id="Session.save_screenshot"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.save_screenshot">[docs]</a>    <span class="k">def</span> <span class="nf">save_screenshot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -616,8 +653,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">path</span> <span class="o">=</span> <span class="n">_prepare_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;png&quot;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
-        <span class="k">return</span> <span class="n">path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">save_screenshot</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">path</span></div>
 
 <div class="viewcode-block" id="Session.reset"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -637,8 +674,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">driver</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">wait_for_pending_requests</span><span class="p">()</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">raise_server_error</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">wait_for_pending_requests</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">raise_server_error</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="Session.raise_server_error"><a class="viewcode-back" href="../../capybara.html#capybara.dsl.Session.raise_server_error">[docs]</a>    <span class="k">def</span> <span class="nf">raise_server_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; Raise errors encountered by the server. &quot;&quot;&quot;</span>
@@ -646,8 +683,8 @@
             <span class="k">try</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">capybara</span><span class="o">.</span><span class="n">raise_server_errors</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">error</span>
-            <span class="k">finally</span><span class="p">:</span></div>
-                <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">reset_error</span><span class="p">()</span>
+            <span class="k">finally</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">server</span><span class="o">.</span><span class="n">reset_error</span><span class="p">()</span></div>
 
     <span class="n">cleanup</span> <span class="o">=</span> <span class="n">reset</span>
     <span class="sd">&quot;&quot;&quot; Alias for :meth:`reset`. &quot;&quot;&quot;</span>
@@ -662,8 +699,8 @@
             <span class="k">return</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wrap_element_script_result</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">Node</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">Element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span></div>
-            <span class="k">return</span> <span class="n">arg</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">arg</span></div>
 
 
 <span class="k">def</span> <span class="nf">_define_document_method</span><span class="p">(</span><span class="n">method_name</span><span class="p">):</span>
@@ -726,10 +763,23 @@
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
@@ -760,8 +810,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

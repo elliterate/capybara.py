@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.selector package &#8212; Capybara 0.1.4 documentation</title>
+    <title>capybara.selector package &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="capybara-selector-package">
@@ -34,11 +36,11 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-capybara.selector.filter">
-<span id="capybara-selector-filter-module"></span><h2>capybara.selector.filter module<a class="headerlink" href="#module-capybara.selector.filter" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-capybara.selector.abstract_filter">
+<span id="capybara-selector-abstract-filter-module"></span><h2>capybara.selector.abstract_filter module<a class="headerlink" href="#module-capybara.selector.abstract_filter" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="capybara.selector.filter.Filter">
-<em class="property">class </em><code class="descclassname">capybara.selector.filter.</code><code class="descname">Filter</code><span class="sig-paren">(</span><em>name</em>, <em>func</em>, <em>boolean=None</em>, <em>default=None</em>, <em>skip_if=None</em>, <em>valid_values=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/filter.html#Filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.filter.Filter" title="Permalink to this definition">¶</a></dt>
+<dt id="capybara.selector.abstract_filter.AbstractFilter">
+<em class="property">class </em><code class="descclassname">capybara.selector.abstract_filter.</code><code class="descname">AbstractFilter</code><span class="sig-paren">(</span><em>name</em>, <em>func</em>, <em>boolean=None</em>, <em>default=None</em>, <em>skip_if=None</em>, <em>valid_values=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/abstract_filter.html#AbstractFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.abstract_filter.AbstractFilter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A rule to apply to identify desired nodes.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -60,44 +62,20 @@ should be skipped.</li>
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="capybara.selector.filter.Filter.has_default">
-<code class="descname">has_default</code><a class="headerlink" href="#capybara.selector.filter.Filter.has_default" title="Permalink to this definition">¶</a></dt>
+<dt id="capybara.selector.abstract_filter.AbstractFilter.has_default">
+<code class="descname">has_default</code><a class="headerlink" href="#capybara.selector.abstract_filter.AbstractFilter.has_default" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>bool</em> – Whether this rule has a default desired value.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="capybara.selector.filter.Filter.has_skip_if">
-<code class="descname">has_skip_if</code><a class="headerlink" href="#capybara.selector.filter.Filter.has_skip_if" title="Permalink to this definition">¶</a></dt>
+<dt id="capybara.selector.abstract_filter.AbstractFilter.has_skip_if">
+<code class="descname">has_skip_if</code><a class="headerlink" href="#capybara.selector.abstract_filter.AbstractFilter.has_skip_if" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>bool</em> – Whether this rule has a value for which it should be skipped.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="capybara.selector.filter.Filter.matches">
-<code class="descname">matches</code><span class="sig-paren">(</span><em>node</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/filter.html#Filter.matches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.filter.Filter.matches" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns whether the given node matches the filter rule with the given value.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>node</strong> (<a class="reference internal" href="capybara.node.html#capybara.node.element.Element" title="capybara.node.element.Element"><em>Element</em></a>) – The node to filter.</li>
-<li><strong>value</strong> (<em>object</em>) – The desired value with which the node should be evaluated.</li>
-</ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Whether the given node matches.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
-</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<dl class="method">
-<dt id="capybara.selector.filter.Filter.skip">
-<code class="descname">skip</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/filter.html#Filter.skip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.filter.Filter.skip" title="Permalink to this definition">¶</a></dt>
+<dt id="capybara.selector.abstract_filter.AbstractFilter.skip">
+<code class="descname">skip</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/abstract_filter.html#AbstractFilter.skip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.abstract_filter.AbstractFilter.skip" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns whether this rule should be skipped for the given value.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -108,6 +86,39 @@ should be skipped.</li>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Whether this rule should be skipped.</td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">bool</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-capybara.selector.expression_filter">
+<span id="capybara-selector-expression-filter-module"></span><h2>capybara.selector.expression_filter module<a class="headerlink" href="#module-capybara.selector.expression_filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="capybara.selector.expression_filter.ExpressionFilter">
+<em class="property">class </em><code class="descclassname">capybara.selector.expression_filter.</code><code class="descname">ExpressionFilter</code><span class="sig-paren">(</span><em>name</em>, <em>func</em>, <em>boolean=None</em>, <em>default=None</em>, <em>skip_if=None</em>, <em>valid_values=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/expression_filter.html#ExpressionFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.expression_filter.ExpressionFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#capybara.selector.abstract_filter.AbstractFilter" title="capybara.selector.abstract_filter.AbstractFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.selector.abstract_filter.AbstractFilter</span></code></a></p>
+<dl class="method">
+<dt id="capybara.selector.expression_filter.ExpressionFilter.apply_filter">
+<code class="descname">apply_filter</code><span class="sig-paren">(</span><em>expr</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/expression_filter.html#ExpressionFilter.apply_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.expression_filter.ExpressionFilter.apply_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the given expression filtered by the given value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>expr</strong> (<em>xpath.expression.AbstractExpression</em>) – The expression to filter.</li>
+<li><strong>value</strong> (<em>object</em>) – The desired value with which the expression should be filtered.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The filtered expression.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">xpath.expression.AbstractExpression</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -131,7 +142,7 @@ should be skipped.</li>
 <li><strong>name</strong> (<em>str</em>) – The name of this set of filters.</li>
 <li><strong>descriptions</strong> (<em>List</em><em>[</em><em>Callable</em><em>[</em><em>[</em><em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em><em>, </em><em>str</em><em>]</em><em>]</em>) – Functions that generate descriptions
 for options.</li>
-<li><strong>filters</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#capybara.selector.filter.Filter" title="capybara.selector.filter.Filter"><em>Filter</em></a><em>]</em><em>, </em><em>optional</em>) – The filters in this set. Defaults to {}.</li>
+<li><strong>filters</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#capybara.selector.abstract_filter.AbstractFilter" title="capybara.selector.abstract_filter.AbstractFilter"><em>AbstractFilter</em></a><em>]</em><em>, </em><em>optional</em>) – The filters in this set. Defaults to {}.</li>
 </ul>
 </td>
 </tr>
@@ -183,9 +194,14 @@ for options.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="capybara.selector.filter_set.FilterSetFactory.filter">
-<code class="descname">filter</code><span class="sig-paren">(</span><em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/filter_set.html#FilterSetFactory.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.filter_set.FilterSetFactory.filter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a decorator function for adding filters to built sets.</p>
+<dt id="capybara.selector.filter_set.FilterSetFactory.expression_filter">
+<code class="descname">expression_filter</code><span class="sig-paren">(</span><em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/filter_set.html#FilterSetFactory.expression_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.filter_set.FilterSetFactory.expression_filter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="capybara.selector.filter_set.FilterSetFactory.node_filter">
+<code class="descname">node_filter</code><span class="sig-paren">(</span><em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/filter_set.html#FilterSetFactory.node_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.filter_set.FilterSetFactory.node_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a decorator function for adding node filters to built sets.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -215,7 +231,7 @@ for options.</li>
 
 <dl class="function">
 <dt id="capybara.selector.filter_set.add_filter_set">
-<code class="descclassname">capybara.selector.filter_set.</code><code class="descname">add_filter_set</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/filter_set.html#add_filter_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.filter_set.add_filter_set" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.selector.filter_set.</code><code class="descname">add_filter_set</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/filter_set.html#add_filter_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.filter_set.add_filter_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds and registers a global <a class="reference internal" href="#capybara.selector.filter_set.FilterSet" title="capybara.selector.filter_set.FilterSet"><code class="xref py py-class docutils literal notranslate"><span class="pre">FilterSet</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -244,11 +260,44 @@ for options.</li>
 </dd></dl>
 
 </div>
+<div class="section" id="module-capybara.selector.node_filter">
+<span id="capybara-selector-node-filter-module"></span><h2>capybara.selector.node_filter module<a class="headerlink" href="#module-capybara.selector.node_filter" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="capybara.selector.node_filter.NodeFilter">
+<em class="property">class </em><code class="descclassname">capybara.selector.node_filter.</code><code class="descname">NodeFilter</code><span class="sig-paren">(</span><em>name</em>, <em>func</em>, <em>boolean=None</em>, <em>default=None</em>, <em>skip_if=None</em>, <em>valid_values=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/node_filter.html#NodeFilter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.node_filter.NodeFilter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#capybara.selector.abstract_filter.AbstractFilter" title="capybara.selector.abstract_filter.AbstractFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.selector.abstract_filter.AbstractFilter</span></code></a></p>
+<dl class="method">
+<dt id="capybara.selector.node_filter.NodeFilter.matches">
+<code class="descname">matches</code><span class="sig-paren">(</span><em>node</em>, <em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/node_filter.html#NodeFilter.matches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.node_filter.NodeFilter.matches" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns whether the given node matches the filter rule with the given value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<a class="reference internal" href="capybara.node.html#capybara.node.element.Element" title="capybara.node.element.Element"><em>Element</em></a>) – The node to filter.</li>
+<li><strong>value</strong> (<em>object</em>) – The desired value with which the node should be evaluated.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Whether the given node matches.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">bool</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-capybara.selector.selector">
 <span id="capybara-selector-selector-module"></span><h2>capybara.selector.selector module<a class="headerlink" href="#module-capybara.selector.selector" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="capybara.selector.selector.Selector">
-<em class="property">class </em><code class="descclassname">capybara.selector.selector.</code><code class="descname">Selector</code><span class="sig-paren">(</span><em>name</em>, <em>label=None</em>, <em>descriptions=None</em>, <em>css=None</em>, <em>xpath=None</em>, <em>custom_filters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/selector.html#Selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.selector.Selector" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">capybara.selector.selector.</code><code class="descname">Selector</code><span class="sig-paren">(</span><em>name</em>, <em>label=None</em>, <em>descriptions=None</em>, <em>css=None</em>, <em>xpath=None</em>, <em>filters=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/selector.html#Selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.selector.Selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>A callable object used for selecting elements in a document or node.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -264,8 +313,8 @@ the given filter options.</li>
 string.</li>
 <li><strong>xpath</strong> (<em>Callable</em><em>[</em><em>[</em><em>str</em><em>]</em><em>, </em><em>str</em><em>]</em><em>, </em><em>optional</em>) – A function to generate an XPath query given a
 locator string.</li>
-<li><strong>custom_filters</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#capybara.selector.filter.Filter" title="capybara.selector.filter.Filter"><em>Filter</em></a><em>]</em>) – A dictionary of filters this selector should use
-to identify matching elements. Defaults to {}.</li>
+<li><strong>filters</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#capybara.selector.abstract_filter.AbstractFilter" title="capybara.selector.abstract_filter.AbstractFilter"><em>AbstractFilter</em></a><em>]</em>) – A dictionary of filters this selector should use to
+identify matching elements. Defaults to {}.</li>
 </ul>
 </td>
 </tr>
@@ -287,6 +336,18 @@ to identify matching elements. Defaults to {}.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="capybara.selector.selector.Selector.expression_filters">
+<code class="descname">expression_filters</code><a class="headerlink" href="#capybara.selector.selector.Selector.expression_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Dict[str, ExpressionFilter]</em> – Returns the expression filters for this selector.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="capybara.selector.selector.Selector.node_filters">
+<code class="descname">node_filters</code><a class="headerlink" href="#capybara.selector.selector.Selector.node_filters" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Dict[str, NodeFilter]</em> – Returns the node filters for this selector.</p>
 </dd></dl>
 
 </dd></dl>
@@ -339,9 +400,9 @@ to identify matching elements. Defaults to {}.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="capybara.selector.selector.SelectorFactory.filter">
-<code class="descname">filter</code><span class="sig-paren">(</span><em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/selector.html#SelectorFactory.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.selector.SelectorFactory.filter" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns a decorator function for adding afilter.</p>
+<dt id="capybara.selector.selector.SelectorFactory.expression_filter">
+<code class="descname">expression_filter</code><span class="sig-paren">(</span><em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/selector.html#SelectorFactory.expression_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.selector.SelectorFactory.expression_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a decorator function for adding an expression filter.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -352,10 +413,15 @@ to identify matching elements. Defaults to {}.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A decorator function for adding a filter.</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>A decorator</dt>
+<dd><p class="first last">function for adding an expression filter.</p>
+</dd>
+</dl>
+</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Callable[[Callable[[<a class="reference internal" href="capybara.node.html#capybara.node.element.Element" title="capybara.node.element.Element">Element</a>, Any], bool]]]</p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Callable[[Callable[[AbstractExpression, Any], AbstractExpression]]]</p>
 </td>
 </tr>
 </tbody>
@@ -371,6 +437,35 @@ to identify matching elements. Defaults to {}.</li>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>str</em>) – The name of the set whose filters should be added.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="capybara.selector.selector.SelectorFactory.node_filter">
+<code class="descname">node_filter</code><span class="sig-paren">(</span><em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/selector.html#SelectorFactory.node_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.selector.SelectorFactory.node_filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a decorator function for adding a node filter.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<em>str</em>) – The name of the filter.</li>
+<li><strong>**kwargs</strong> – Variable keyword arguments for the filter.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><dl class="docutils">
+<dt>A decorator function for adding a node</dt>
+<dd><p class="first last">filter.</p>
+</dd>
+</dl>
+</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Callable[[Callable[[<a class="reference internal" href="capybara.node.html#capybara.node.element.Element" title="capybara.node.element.Element">Element</a>, Any], bool]]]</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -394,7 +489,7 @@ to identify matching elements. Defaults to {}.</li>
 
 <dl class="function">
 <dt id="capybara.selector.selector.add_selector">
-<code class="descclassname">capybara.selector.selector.</code><code class="descname">add_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/selector.html#add_selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.selector.add_selector" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.selector.selector.</code><code class="descname">add_selector</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/selector.html#add_selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.selector.add_selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds and registers a <a class="reference internal" href="#capybara.selector.selector.Selector" title="capybara.selector.selector.Selector"><code class="xref py py-class docutils literal notranslate"><span class="pre">Selector</span></code></a> object with the given name and configuration.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -427,7 +522,7 @@ to identify matching elements. Defaults to {}.</li>
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-capybara.selector" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="capybara.selector.add_filter_set">
-<code class="descclassname">capybara.selector.</code><code class="descname">add_filter_set</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/filter_set.html#add_filter_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.add_filter_set" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.selector.</code><code class="descname">add_filter_set</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/filter_set.html#add_filter_set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.add_filter_set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds and registers a global <code class="xref py py-class docutils literal notranslate"><span class="pre">FilterSet</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -443,7 +538,7 @@ to identify matching elements. Defaults to {}.</li>
 
 <dl class="function">
 <dt id="capybara.selector.add_selector">
-<code class="descclassname">capybara.selector.</code><code class="descname">add_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/selector.html#add_selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.add_selector" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.selector.</code><code class="descname">add_selector</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selector/selector.html#add_selector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selector.add_selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Builds and registers a <code class="xref py py-class docutils literal notranslate"><span class="pre">Selector</span></code> object with the given name and configuration.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -490,21 +585,22 @@ to identify matching elements. Defaults to {}.</li>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">capybara.selector package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-capybara.selector.filter">capybara.selector.filter module</a></li>
-<li><a class="reference internal" href="#module-capybara.selector.filter_set">capybara.selector.filter_set module</a></li>
-<li><a class="reference internal" href="#module-capybara.selector.selector">capybara.selector.selector module</a></li>
-<li><a class="reference internal" href="#module-capybara.selector">Module contents</a></li>
-</ul>
-</li>
-</ul>
+<h1 class="logo"><a href="index.html">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
@@ -512,13 +608,6 @@ to identify matching elements. Defaults to {}.</li>
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/capybara.selector.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
@@ -539,8 +628,8 @@ to identify matching elements. Defaults to {}.</li>
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
       <a href="_sources/capybara.selector.rst.txt"

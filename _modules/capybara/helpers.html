@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.helpers &#8212; Capybara 0.1.4 documentation</title>
+    <title>capybara.helpers &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -27,10 +27,13 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for capybara.helpers</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">time</span>
 
 <span class="kn">from</span> <span class="nn">capybara.compat</span> <span class="k">import</span> <span class="n">PY2</span><span class="p">,</span> <span class="n">str_</span>
 <span class="kn">from</span> <span class="nn">capybara.utils</span> <span class="k">import</span> <span class="n">decode_bytes</span><span class="p">,</span> <span class="n">isbytes</span><span class="p">,</span> <span class="n">isregex</span><span class="p">,</span> <span class="n">isstring</span><span class="p">,</span> <span class="n">encode_string</span>
@@ -48,29 +51,37 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        str: The appropriate variation for the quantity.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-</div>
-    <span class="k">return</span> <span class="n">singular</span> <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">plural</span>
+
+    <span class="k">return</span> <span class="n">singular</span> <span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">plural</span></div>
 
 
 <div class="viewcode-block" id="desc"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.desc">[docs]</a><span class="k">def</span> <span class="nf">desc</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; str | List[str]: A normalized representation for a user-provided value. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot; str: A normalized representation for a user-provided value. &quot;&quot;&quot;</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="n">desc</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">normalize_strings</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="p">[</span><span class="n">normalize_strings</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">isregex</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">pattern</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="p">{</span><span class="n">normalize_strings</span><span class="p">(</span><span class="n">k</span><span class="p">):</span> <span class="n">normalize_strings</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">())}</span>
 
-    <span class="k">if</span> <span class="n">isbytes</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-        <span class="n">value</span> <span class="o">=</span> <span class="n">decode_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">isregex</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">pattern</span>
 
-    <span class="k">if</span> <span class="n">PY2</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">isstring</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-            <span class="c1"># In Python 2, strings (``unicode`` objects) represent as ``u&#39;...&#39;``, so ensure</span>
-            <span class="c1"># the string is encoded (as a ``str`` object) for cleaner representation.</span>
-            <span class="n">value</span> <span class="o">=</span> <span class="n">encode_string</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-</div>
-    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">isbytes</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="n">decode_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">PY2</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">isstring</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+                <span class="c1"># In Python 2, strings (``unicode`` objects) represent as ``u&#39;...&#39;``, so ensure</span>
+                <span class="c1"># the string is encoded (as a ``str`` object) for cleaner representation.</span>
+                <span class="n">value</span> <span class="o">=</span> <span class="n">encode_string</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="n">value</span> <span class="o">=</span> <span class="n">normalize_strings</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">repr</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="expects_none"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.expects_none">[docs]</a><span class="k">def</span> <span class="nf">expects_none</span><span class="p">(</span><span class="n">options</span><span class="p">):</span>
@@ -86,8 +97,8 @@
 
     <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;count&quot;</span><span class="p">,</span> <span class="s2">&quot;maximum&quot;</span><span class="p">,</span> <span class="s2">&quot;minimum&quot;</span><span class="p">,</span> <span class="s2">&quot;between&quot;</span><span class="p">]):</span>
         <span class="k">return</span> <span class="n">matches_count</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span></div>
-        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
 
 <div class="viewcode-block" id="failure_message"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.failure_message">[docs]</a><span class="k">def</span> <span class="nf">failure_message</span><span class="p">(</span><span class="n">description</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
@@ -126,8 +137,8 @@
         <span class="n">message</span> <span class="o">+=</span> <span class="s2">&quot; at least </span><span class="si">{minimum}</span><span class="s2"> </span><span class="si">{times}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">minimum</span><span class="o">=</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;minimum&quot;</span><span class="p">],</span>
             <span class="n">times</span><span class="o">=</span><span class="n">declension</span><span class="p">(</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="s2">&quot;times&quot;</span><span class="p">,</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;minimum&quot;</span><span class="p">]))</span>
-</div>
-    <span class="k">return</span> <span class="n">message</span>
+
+    <span class="k">return</span> <span class="n">message</span></div>
 
 
 <div class="viewcode-block" id="matches_count"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.matches_count">[docs]</a><span class="k">def</span> <span class="nf">matches_count</span><span class="p">(</span><span class="n">count</span><span class="p">,</span> <span class="n">options</span><span class="p">):</span>
@@ -151,8 +162,16 @@
     <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;minimum&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">int</span><span class="p">(</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;minimum&quot;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="n">count</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="k">if</span> <span class="n">options</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;between&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">count</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">options</span><span class="p">[</span><span class="s2">&quot;between&quot;</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="kc">False</span></div>
-    <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="monotonic"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.monotonic">[docs]</a><span class="k">def</span> <span class="nf">monotonic</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot; float: Returns the current time, using a monotonic clock where available. &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="s2">&quot;monotonic&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">monotonic</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="normalize_text"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.normalize_text">[docs]</a><span class="k">def</span> <span class="nf">normalize_text</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -173,8 +192,8 @@
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
 
     <span class="n">text</span> <span class="o">=</span> <span class="n">decode_bytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">if</span> <span class="n">isbytes</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="k">else</span> <span class="n">str_</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-</div>
-    <span class="k">return</span> <span class="n">normalize_whitespace</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">normalize_whitespace</span><span class="p">(</span><span class="n">text</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="normalize_whitespace"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.normalize_whitespace">[docs]</a><span class="k">def</span> <span class="nf">normalize_whitespace</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
@@ -187,8 +206,29 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        str: The normalized text.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-</div>
-    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\s+&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">UNICODE</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Timer"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.Timer">[docs]</a><span class="k">class</span> <span class="nc">Timer</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Args:</span>
+<span class="sd">        expire_in (int): The number of seconds from now in which this timer should expire.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expire_in</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_start</span> <span class="o">=</span> <span class="n">monotonic</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_expire_in</span> <span class="o">=</span> <span class="n">expire_in</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">expired</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; bool: Whether this timer has expired. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">monotonic</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_expire_in</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">stalled</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; bool: Whether this timer appears to have stalled. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">monotonic</span><span class="p">()</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start</span></div>
 
 
 <div class="viewcode-block" id="toregex"><a class="viewcode-back" href="../../capybara.html#capybara.helpers.toregex">[docs]</a><span class="k">def</span> <span class="nf">toregex</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
@@ -210,15 +250,28 @@
     <span class="n">escaped</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">normalize_text</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">exact</span><span class="p">:</span>
         <span class="n">escaped</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\A</span><span class="si">{}</span><span class="s2">\Z&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">escaped</span><span class="p">)</span>
-</div>
-    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">escaped</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">escaped</span><span class="p">)</span></div>
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
@@ -249,8 +302,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.node.actions &#8212; Capybara 0.1.4 documentation</title>
+    <title>capybara.node.actions &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for capybara.node.actions</h1><div class="highlight"><pre>
@@ -34,6 +36,7 @@
 
 <span class="kn">import</span> <span class="nn">capybara</span>
 <span class="kn">from</span> <span class="nn">capybara.exceptions</span> <span class="k">import</span> <span class="n">ElementNotFound</span><span class="p">,</span> <span class="n">FileNotFound</span>
+<span class="kn">from</span> <span class="nn">capybara.queries.base_query</span> <span class="k">import</span> <span class="n">BaseQuery</span>
 
 
 <div class="viewcode-block" id="ActionsMixin"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin">[docs]</a><span class="k">class</span> <span class="nc">ActionsMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -69,8 +72,8 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">FileNotFound</span><span class="p">(</span><span class="s2">&quot;cannot attach file, </span><span class="si">{0}</span><span class="s2"> does not exist&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
-</div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;file_field&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;file_field&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ActionsMixin.check"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.check">[docs]</a>    <span class="k">def</span> <span class="nf">check</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_label_click</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -86,23 +89,8 @@
 <span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">allow_label_click</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">allow_label_click</span> <span class="o">=</span> <span class="n">capybara</span><span class="o">.</span><span class="n">automatic_label_click</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;checkbox&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">ElementNotFound</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_label_click</span><span class="p">:</span>
-                <span class="k">raise</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hidden&quot;</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;wait&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="n">checkbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;checkbox&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">checkbox</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">checkbox</span><span class="o">.</span><span class="n">checked</span><span class="p">:</span>
-                    <span class="n">label</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
-            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span></div>
-                <span class="k">raise</span> <span class="n">e</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_with_label</span><span class="p">(</span>
+            <span class="s2">&quot;checkbox&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="n">locator</span><span class="p">,</span> <span class="n">allow_label_click</span><span class="o">=</span><span class="n">allow_label_click</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ActionsMixin.choose"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.choose">[docs]</a>    <span class="k">def</span> <span class="nf">choose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_label_click</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -118,23 +106,8 @@
 <span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">allow_label_click</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">allow_label_click</span> <span class="o">=</span> <span class="n">capybara</span><span class="o">.</span><span class="n">automatic_label_click</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;radio_button&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">ElementNotFound</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_label_click</span><span class="p">:</span>
-                <span class="k">raise</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hidden&quot;</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;wait&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="n">radio_button</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;radio_button&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">radio_button</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                <span class="k">if</span> <span class="ow">not</span> <span class="n">radio_button</span><span class="o">.</span><span class="n">checked</span><span class="p">:</span>
-                    <span class="n">label</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
-            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span></div>
-                <span class="k">raise</span> <span class="n">e</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_with_label</span><span class="p">(</span>
+            <span class="s2">&quot;radio_button&quot;</span><span class="p">,</span> <span class="kc">True</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="n">locator</span><span class="p">,</span> <span class="n">allow_label_click</span><span class="o">=</span><span class="n">allow_label_click</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ActionsMixin.click_button"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.click_button">[docs]</a>    <span class="k">def</span> <span class="nf">click_button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -147,8 +120,8 @@
 <span class="sd">            locator (str, optional): Which button to find.</span>
 <span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-</div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;button&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;button&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ActionsMixin.click_link"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.click_link">[docs]</a>    <span class="k">def</span> <span class="nf">click_link</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -159,8 +132,8 @@
 <span class="sd">            locator (str, optional): Text, id, title, or nested image&#39;s alt attribute.</span>
 <span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-</div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;link&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;link&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ActionsMixin.click_link_or_button"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.click_link_or_button">[docs]</a>    <span class="k">def</span> <span class="nf">click_link_or_button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -171,13 +144,13 @@
 <span class="sd">            locator (str, optional): Text, id, or value of link or button.</span>
 <span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-</div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;link_or_button&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;link_or_button&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span></div>
 
     <span class="n">click_on</span> <span class="o">=</span> <span class="n">click_link_or_button</span>
     <span class="sd">&quot;&quot;&quot; Alias for :meth:`click_link_or_button`. &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="ActionsMixin.fill_in"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.fill_in">[docs]</a>    <span class="k">def</span> <span class="nf">fill_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">current_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="ActionsMixin.fill_in"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.fill_in">[docs]</a>    <span class="k">def</span> <span class="nf">fill_in</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">current_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">fill_options</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Locate a text field or text area and fill it in with the given text. The field can be found</span>
 <span class="sd">        via its name, id, or label text. ::</span>
@@ -188,13 +161,16 @@
 <span class="sd">            locator (str, optional): Which field to fill in.</span>
 <span class="sd">            current_value (str, optional): The current value of the field.</span>
 <span class="sd">            value (str, optional): The value to fill in. Defaults to None.</span>
+<span class="sd">            fill_options (Dict, optional): Driver-specific options regarding how to fill fields.</span>
 <span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">current_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_value</span>
-</div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;fillable_field&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="n">fill_options</span> <span class="o">=</span> <span class="n">fill_options</span> <span class="ow">or</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;fillable_field&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">fill_options</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ActionsMixin.select"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.select">[docs]</a>    <span class="k">def</span> <span class="nf">select</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -214,8 +190,8 @@
 
         <span class="k">if</span> <span class="n">field</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;select&quot;</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;option&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">select_option</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span></div>
-            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;option&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">select_option</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;option&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">select_option</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ActionsMixin.uncheck"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.uncheck">[docs]</a>    <span class="k">def</span> <span class="nf">uncheck</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_label_click</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -230,23 +206,8 @@
 <span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="k">if</span> <span class="n">allow_label_click</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">allow_label_click</span> <span class="o">=</span> <span class="n">capybara</span><span class="o">.</span><span class="n">automatic_label_click</span>
-
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;checkbox&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
-        <span class="k">except</span> <span class="n">ElementNotFound</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_label_click</span><span class="p">:</span>
-                <span class="k">raise</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;visible&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;hidden&quot;</span>
-                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;wait&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
-                <span class="n">checkbox</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;checkbox&quot;</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-                <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">checkbox</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">checkbox</span><span class="o">.</span><span class="n">checked</span><span class="p">:</span>
-                    <span class="n">label</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
-            <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span></div>
-                <span class="k">raise</span> <span class="n">e</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_with_label</span><span class="p">(</span>
+            <span class="s2">&quot;checkbox&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="n">locator</span><span class="p">,</span> <span class="n">allow_label_click</span><span class="o">=</span><span class="n">allow_label_click</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ActionsMixin.unselect"><a class="viewcode-back" href="../../../capybara.node.html#capybara.dsl.ActionsMixin.unselect">[docs]</a>    <span class="k">def</span> <span class="nf">unselect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -264,15 +225,67 @@
 
         <span class="k">if</span> <span class="n">field</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;select&quot;</span><span class="p">,</span> <span class="n">field</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;option&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">unselect_option</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span></div></div>
-            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;option&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">unselect_option</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;option&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">unselect_option</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">_check_with_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selector</span><span class="p">,</span> <span class="n">checked</span><span class="p">,</span> <span class="n">locator</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_label_click</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                          <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Args:</span>
+<span class="sd">            selector (str): The selector for the type of element that should be checked/unchecked.</span>
+<span class="sd">            checked (bool): Whether the element should be checked.</span>
+<span class="sd">            locator (str, optional): Which element to check.</span>
+<span class="sd">            allow_label_click (bool, optional): Attempt to click the label to toggle state if</span>
+<span class="sd">                element is non-visible. Defaults to :data:`capybara.automatic_label_click`.</span>
+<span class="sd">            visible (bool | str, optional): The desired element visibility. Defaults to</span>
+<span class="sd">                :data:`capybara.ignore_hidden_elements`.</span>
+<span class="sd">            wait (int | float, optional): The number of seconds to wait to check the element.</span>
+<span class="sd">                Defaults to :data:`capybara.default_max_wait_time`.</span>
+<span class="sd">            **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">allow_label_click</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">allow_label_click</span> <span class="o">=</span> <span class="n">capybara</span><span class="o">.</span><span class="n">automatic_label_click</span>
+
+        <span class="nd">@self</span><span class="o">.</span><span class="n">synchronize</span><span class="p">(</span><span class="n">wait</span><span class="o">=</span><span class="n">BaseQuery</span><span class="o">.</span><span class="n">normalize_wait</span><span class="p">(</span><span class="n">wait</span><span class="p">))</span>
+        <span class="k">def</span> <span class="nf">check_with_label</span><span class="p">():</span>
+            <span class="n">element</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">selector</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="n">visible</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">element</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">checked</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">allow_label_click</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_should_catch_error</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+                    <span class="k">raise</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">element</span><span class="p">:</span>
+                        <span class="n">element</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">selector</span><span class="p">,</span> <span class="n">locator</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                    <span class="n">label</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;label&quot;</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">element</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">checked</span> <span class="o">!=</span> <span class="n">checked</span><span class="p">:</span>
+                        <span class="n">label</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">e</span>
+
+        <span class="n">check_with_label</span><span class="p">()</span></div>
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../index.html">Documentation overview</a><ul>
@@ -303,8 +316,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

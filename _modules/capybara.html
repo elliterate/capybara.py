@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara &#8212; Capybara 0.1.4 documentation</title>
+    <title>capybara &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for capybara</h1><div class="highlight"><pre>
@@ -126,8 +128,8 @@
 
     <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">init_func</span><span class="p">):</span>
         <span class="n">servers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_func</span>
-</div>
-    <span class="k">return</span> <span class="n">register</span>
+
+    <span class="k">return</span> <span class="n">register</span></div>
 
 
 <div class="viewcode-block" id="register_driver"><a class="viewcode-back" href="../capybara.html#capybara.dsl.register_driver">[docs]</a><span class="k">def</span> <span class="nf">register_driver</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
@@ -144,18 +146,18 @@
 
     <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="n">init_func</span><span class="p">):</span>
         <span class="n">drivers</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">init_func</span>
-</div>
-    <span class="k">return</span> <span class="n">register</span>
+
+    <span class="k">return</span> <span class="n">register</span></div>
 
 
-<div class="viewcode-block" id="run_default_server"><a class="viewcode-back" href="../capybara.html#capybara.dsl.run_default_server">[docs]</a><span class="k">def</span> <span class="nf">run_default_server</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span></div>
-    <span class="n">servers</span><span class="p">[</span><span class="s2">&quot;werkzeug&quot;</span><span class="p">](</span><span class="n">app</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">server_host</span><span class="p">)</span>
+<div class="viewcode-block" id="run_default_server"><a class="viewcode-back" href="../capybara.html#capybara.dsl.run_default_server">[docs]</a><span class="k">def</span> <span class="nf">run_default_server</span><span class="p">(</span><span class="n">app</span><span class="p">,</span> <span class="n">port</span><span class="p">):</span>
+    <span class="n">servers</span><span class="p">[</span><span class="s2">&quot;werkzeug&quot;</span><span class="p">](</span><span class="n">app</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">server_host</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="use_default_driver"><a class="viewcode-back" href="../capybara.html#capybara.dsl.use_default_driver">[docs]</a><span class="k">def</span> <span class="nf">use_default_driver</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; Use the default driver as the current driver. &quot;&quot;&quot;</span>
-    <span class="k">global</span> <span class="n">current_driver</span></div>
-    <span class="n">current_driver</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">global</span> <span class="n">current_driver</span>
+    <span class="n">current_driver</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 
 <div class="viewcode-block" id="using_driver"><a class="viewcode-back" href="../capybara.html#capybara.dsl.using_driver">[docs]</a><span class="nd">@contextmanager</span>
@@ -173,8 +175,8 @@
     <span class="n">current_driver</span> <span class="o">=</span> <span class="n">driver</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">yield</span>
-    <span class="k">finally</span><span class="p">:</span></div>
-        <span class="n">current_driver</span> <span class="o">=</span> <span class="n">original_current_driver</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">current_driver</span> <span class="o">=</span> <span class="n">original_current_driver</span></div>
 
 
 <div class="viewcode-block" id="using_wait_time"><a class="viewcode-back" href="../capybara.html#capybara.dsl.using_wait_time">[docs]</a><span class="nd">@contextmanager</span>
@@ -192,8 +194,8 @@
     <span class="n">default_max_wait_time</span> <span class="o">=</span> <span class="n">seconds</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">yield</span>
-    <span class="k">finally</span><span class="p">:</span></div>
-        <span class="n">default_max_wait_time</span> <span class="o">=</span> <span class="n">original_max_wait_time</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">default_max_wait_time</span> <span class="o">=</span> <span class="n">original_max_wait_time</span></div>
 
 
 <div class="viewcode-block" id="current_session"><a class="viewcode-back" href="../capybara.html#capybara.dsl.current_session">[docs]</a><span class="k">def</span> <span class="nf">current_session</span><span class="p">():</span>
@@ -214,8 +216,8 @@
         <span class="kn">from</span> <span class="nn">capybara.session</span> <span class="k">import</span> <span class="n">Session</span>
         <span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">app</span><span class="p">)</span>
         <span class="n">_session_pool</span><span class="p">[</span><span class="n">session_key</span><span class="p">]</span> <span class="o">=</span> <span class="n">session</span>
-</div>
-    <span class="k">return</span> <span class="n">session</span>
+
+    <span class="k">return</span> <span class="n">session</span></div>
 
 
 <div class="viewcode-block" id="using_session"><a class="viewcode-back" href="../capybara.html#capybara.dsl.using_session">[docs]</a><span class="nd">@contextmanager</span>
@@ -233,15 +235,15 @@
     <span class="n">session_name</span> <span class="o">=</span> <span class="n">name</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">yield</span>
-    <span class="k">finally</span><span class="p">:</span></div>
-        <span class="n">session_name</span> <span class="o">=</span> <span class="n">previous_session_name</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">session_name</span> <span class="o">=</span> <span class="n">previous_session_name</span></div>
 
 
 <div class="viewcode-block" id="reset_sessions"><a class="viewcode-back" href="../capybara.html#capybara.dsl.reset_sessions">[docs]</a><span class="k">def</span> <span class="nf">reset_sessions</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot; Resets all sessions. &quot;&quot;&quot;</span>
 
-    <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">_session_pool</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span></div>
-        <span class="n">session</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="nb">iter</span><span class="p">(</span><span class="n">_session_pool</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span></div>
 
 
 <span class="n">reset</span> <span class="o">=</span> <span class="n">reset_sessions</span>
@@ -284,8 +286,8 @@
 <span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="kn">from</span> <span class="nn">capybara.node.simple</span> <span class="k">import</span> <span class="n">Simple</span>
-</div>
-    <span class="k">return</span> <span class="n">Simple</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Simple</span><span class="p">(</span><span class="n">html</span><span class="p">)</span></div>
 
 
 <span class="nd">@register_server</span><span class="p">(</span><span class="s2">&quot;default&quot;</span><span class="p">)</span>
@@ -347,10 +349,23 @@
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
@@ -379,8 +394,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

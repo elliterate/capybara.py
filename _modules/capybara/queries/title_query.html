@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.queries.title_query &#8212; Capybara 0.1.4 documentation</title>
+    <title>capybara.queries.title_query &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -27,29 +27,37 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for capybara.queries.title_query</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">from</span> <span class="nn">capybara.helpers</span> <span class="k">import</span> <span class="n">desc</span><span class="p">,</span> <span class="n">normalize_text</span><span class="p">,</span> <span class="n">toregex</span>
+<span class="kn">from</span> <span class="nn">capybara.queries.base_query</span> <span class="k">import</span> <span class="n">BaseQuery</span>
 <span class="kn">from</span> <span class="nn">capybara.utils</span> <span class="k">import</span> <span class="n">isregex</span>
 
 
-<div class="viewcode-block" id="TitleQuery"><a class="viewcode-back" href="../../../capybara.queries.html#capybara.queries.title_query.TitleQuery">[docs]</a><span class="k">class</span> <span class="nc">TitleQuery</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="TitleQuery"><a class="viewcode-back" href="../../../capybara.queries.html#capybara.queries.title_query.TitleQuery">[docs]</a><span class="k">class</span> <span class="nc">TitleQuery</span><span class="p">(</span><span class="n">BaseQuery</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Queries the title content of a node.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        expected_title (str | RegexObject): The desired title.</span>
 <span class="sd">        exact (bool, optional): Whether the text should match exactly. Defaults to False.</span>
+<span class="sd">        wait (bool | int | float, optional): Whether and how long to wait for synchronization.</span>
+<span class="sd">            Defaults to :data:`capybara.default_max_wait_time`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected_title</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">expected_title</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">wait</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">expected_title</span> <span class="o">=</span> <span class="p">(</span><span class="n">expected_title</span> <span class="k">if</span> <span class="n">isregex</span><span class="p">(</span><span class="n">expected_title</span><span class="p">)</span>
                                <span class="k">else</span> <span class="n">normalize_text</span><span class="p">(</span><span class="n">expected_title</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">actual_title</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">search_regexp</span> <span class="o">=</span> <span class="n">toregex</span><span class="p">(</span><span class="n">expected_title</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="n">exact</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;wait&quot;</span><span class="p">:</span> <span class="n">wait</span><span class="p">}</span>
 
 <div class="viewcode-block" id="TitleQuery.resolves_for"><a class="viewcode-back" href="../../../capybara.queries.html#capybara.queries.title_query.TitleQuery.resolves_for">[docs]</a>    <span class="k">def</span> <span class="nf">resolves_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -62,8 +70,13 @@
 <span class="sd">            bool: Whether the given node matches this query.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">actual_title</span> <span class="o">=</span> <span class="n">normalize_text</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">title</span><span class="p">)</span></div>
-        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_regexp</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actual_title</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">actual_title</span> <span class="o">=</span> <span class="n">normalize_text</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">title</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_regexp</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actual_title</span><span class="p">))</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; int | float: How long to wait for synchronization. &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize_wait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;wait&quot;</span><span class="p">])</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">failure_message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -80,15 +93,28 @@
         <span class="k">return</span> <span class="s2">&quot;expected </span><span class="si">{actual}{negated}</span><span class="s2"> to </span><span class="si">{verb}</span><span class="s2"> </span><span class="si">{expected}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">actual</span><span class="o">=</span><span class="n">desc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">actual_title</span><span class="p">),</span>
             <span class="n">negated</span><span class="o">=</span><span class="n">negated</span><span class="p">,</span>
-            <span class="n">verb</span><span class="o">=</span><span class="n">verb</span><span class="p">,</span></div>
-            <span class="n">expected</span><span class="o">=</span><span class="n">desc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_title</span><span class="p">))</span>
+            <span class="n">verb</span><span class="o">=</span><span class="n">verb</span><span class="p">,</span>
+            <span class="n">expected</span><span class="o">=</span><span class="n">desc</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">expected_title</span><span class="p">))</span></div>
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../index.html">Documentation overview</a><ul>
@@ -119,8 +145,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

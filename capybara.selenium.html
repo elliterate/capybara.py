@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.selenium package &#8212; Capybara 0.1.4 documentation</title>
+    <title>capybara.selenium package &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="capybara-selenium-package">
@@ -68,7 +70,7 @@ Defaults to None.</li>
 <span id="capybara-selenium-driver-module"></span><h2>capybara.selenium.driver module<a class="headerlink" href="#module-capybara.selenium.driver" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="capybara.selenium.driver.Driver">
-<em class="property">class </em><code class="descclassname">capybara.selenium.driver.</code><code class="descname">Driver</code><span class="sig-paren">(</span><em>app</em>, <em>browser='firefox'</em>, <em>desired_capabilities=None</em>, <em>**options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">capybara.selenium.driver.</code><code class="descname">Driver</code><span class="sig-paren">(</span><em>app</em>, <em>browser='firefox'</em>, <em>clear_local_storage=False</em>, <em>clear_session_storage=False</em>, <em>desired_capabilities=None</em>, <em>**options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="capybara.driver.html#capybara.driver.base.Base" title="capybara.driver.base.Base"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.driver.base.Base</span></code></a></p>
 <p>A Capybara driver that uses Selenium WebDriver to drive a real browser.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -78,6 +80,10 @@ Defaults to None.</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>app</strong> (<em>object</em>) – The WSGI-compliant app to drive.</li>
 <li><strong>browser</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the browser to use. Defaults to “firefox”.</li>
+<li><strong>clear_local_storage</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to clear local storage on reset.
+Defaults to False.</li>
+<li><strong>clear_session_storage</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to clear session storage on
+reset. Defaults to False.</li>
 <li><strong>desired_capabilities</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str | bool</em><em>]</em><em>, </em><em>optional</em>) – Desired
 capabilities of the underlying browser. Defaults to a set of
 reasonable defaults provided by Selenium.</li>
@@ -89,7 +95,7 @@ reasonable defaults provided by Selenium.</li>
 </table>
 <dl class="method">
 <dt id="capybara.selenium.driver.Driver.accept_modal">
-<code class="descname">accept_modal</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver.accept_modal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver.accept_modal" title="Permalink to this definition">¶</a></dt>
+<code class="descname">accept_modal</code><span class="sig-paren">(</span><em>modal_type</em>, <em>text=None</em>, <em>response=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver.accept_modal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver.accept_modal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Accepts the modal that appears matching the given type and, optionally, text.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -129,16 +135,18 @@ reasonable defaults provided by Selenium.</li>
 <dl class="attribute">
 <dt id="capybara.selenium.driver.Driver.current_url">
 <code class="descname">current_url</code><a class="headerlink" href="#capybara.selenium.driver.Driver.current_url" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>str</em> – The current URL.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.selenium.driver.Driver.current_window_handle">
 <code class="descname">current_window_handle</code><a class="headerlink" href="#capybara.selenium.driver.Driver.current_window_handle" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>object</em> – The current window handle.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="capybara.selenium.driver.Driver.dismiss_modal">
-<code class="descname">dismiss_modal</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver.dismiss_modal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver.dismiss_modal" title="Permalink to this definition">¶</a></dt>
+<code class="descname">dismiss_modal</code><span class="sig-paren">(</span><em>modal_type</em>, <em>text=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver.dismiss_modal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver.dismiss_modal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dismisses the modal that appears matching the given type and, optionally, text.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -149,6 +157,30 @@ reasonable defaults provided by Selenium.</li>
 <li><strong>text</strong> (<em>str | RegexObject</em><em>, </em><em>optional</em>) – Text that is expected to appear in the modal.</li>
 <li><strong>wait</strong> (<em>int</em><em>, </em><em>optional</em>) – The number of seconds to wait for the modal to appear.</li>
 </ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="capybara.selenium.driver.Driver.evaluate_async_script">
+<code class="descname">evaluate_async_script</code><span class="sig-paren">(</span><em>script</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver.evaluate_async_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver.evaluate_async_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluates the given JavaScript and obtains the result from a callback function.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>script</strong> (<em>str</em>) – A string of JavaScript to evaluate.</li>
+<li><strong>*args</strong> – Variable length argument list to pass to the executed JavaScript string.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The result of the evaluated JavaScript.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">object</p>
 </td>
 </tr>
 </tbody>
@@ -198,6 +230,12 @@ reasonable defaults provided by Selenium.</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="capybara.selenium.driver.Driver.fullscreen_window">
+<code class="descname">fullscreen_window</code><span class="sig-paren">(</span><em>handle</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver.fullscreen_window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver.fullscreen_window" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fullscreens the given window handle.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="capybara.selenium.driver.Driver.go_back">
 <code class="descname">go_back</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/driver.html#Driver.go_back"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.driver.Driver.go_back" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move back a single entry in the browser’s history.</p>
@@ -212,12 +250,14 @@ reasonable defaults provided by Selenium.</li>
 <dl class="attribute">
 <dt id="capybara.selenium.driver.Driver.html">
 <code class="descname">html</code><a class="headerlink" href="#capybara.selenium.driver.Driver.html" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>str</em> – A snapshot of the DOM of the current document, as it looks right now.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.selenium.driver.Driver.invalid_element_errors">
 <code class="descname">invalid_element_errors</code><a class="headerlink" href="#capybara.selenium.driver.Driver.invalid_element_errors" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>Tuple[Exception]</em> – A tuple of exceptions that indicate an element is invalid.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="capybara.selenium.driver.Driver.maximize_window">
@@ -228,12 +268,14 @@ reasonable defaults provided by Selenium.</li>
 <dl class="attribute">
 <dt id="capybara.selenium.driver.Driver.needs_server">
 <code class="descname">needs_server</code><a class="headerlink" href="#capybara.selenium.driver.Driver.needs_server" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>bool</em> – Whether this driver needs to communicate with a real HTTP server.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.selenium.driver.Driver.no_such_window_error">
 <code class="descname">no_such_window_error</code><a class="headerlink" href="#capybara.selenium.driver.Driver.no_such_window_error" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>Exception</em> – The error that is thrown when a window cannot be found.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="capybara.selenium.driver.Driver.open_new_window">
@@ -326,7 +368,8 @@ reasonable defaults provided by Selenium.</li>
 <dl class="attribute">
 <dt id="capybara.selenium.driver.Driver.title">
 <code class="descname">title</code><a class="headerlink" href="#capybara.selenium.driver.Driver.title" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>str</em> – The current page title.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="capybara.selenium.driver.Driver.visit">
@@ -345,7 +388,8 @@ reasonable defaults provided by Selenium.</li>
 <dl class="attribute">
 <dt id="capybara.selenium.driver.Driver.window_handles">
 <code class="descname">window_handles</code><a class="headerlink" href="#capybara.selenium.driver.Driver.window_handles" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>List[object]</em> – The handles for all opened windows.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="capybara.selenium.driver.Driver.window_size">
@@ -365,27 +409,30 @@ reasonable defaults provided by Selenium.</li>
 <dl class="attribute">
 <dt id="capybara.selenium.node.Node.all_text">
 <code class="descname">all_text</code><a class="headerlink" href="#capybara.selenium.node.Node.all_text" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>str</em> – All of the text of the node.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.selenium.node.Node.checked">
 <code class="descname">checked</code><a class="headerlink" href="#capybara.selenium.node.Node.checked" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>bool</em> – Whether this node is checked.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="capybara.selenium.node.Node.click">
-<code class="descname">click</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/node.html#Node.click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.node.Node.click" title="Permalink to this definition">¶</a></dt>
+<code class="descname">click</code><span class="sig-paren">(</span><em>*keys</em>, <em>**offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/node.html#Node.click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.node.Node.click" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clicks on this node.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.selenium.node.Node.disabled">
 <code class="descname">disabled</code><a class="headerlink" href="#capybara.selenium.node.Node.disabled" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>bool</em> – Whether this node is disabled.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="capybara.selenium.node.Node.double_click">
-<code class="descname">double_click</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/node.html#Node.double_click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.node.Node.double_click" title="Permalink to this definition">¶</a></dt>
+<code class="descname">double_click</code><span class="sig-paren">(</span><em>*keys</em>, <em>**offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/node.html#Node.double_click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.node.Node.double_click" title="Permalink to this definition">¶</a></dt>
 <dd><p>Double-click the node.</p>
 </dd></dl>
 
@@ -417,21 +464,24 @@ reasonable defaults provided by Selenium.</li>
 <dl class="attribute">
 <dt id="capybara.selenium.node.Node.multiple">
 <code class="descname">multiple</code><a class="headerlink" href="#capybara.selenium.node.Node.multiple" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>bool</em> – Whether this is a multi-select node.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.selenium.node.Node.path">
 <code class="descname">path</code><a class="headerlink" href="#capybara.selenium.node.Node.path" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>str</em> – An XPath expression describing where on the page the node can be found.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.selenium.node.Node.readonly">
 <code class="descname">readonly</code><a class="headerlink" href="#capybara.selenium.node.Node.readonly" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>bool</em> – Whether the node is read-only.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="capybara.selenium.node.Node.right_click">
-<code class="descname">right_click</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/node.html#Node.right_click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.node.Node.right_click" title="Permalink to this definition">¶</a></dt>
+<code class="descname">right_click</code><span class="sig-paren">(</span><em>*keys</em>, <em>**offset</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/node.html#Node.right_click"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.node.Node.right_click" title="Permalink to this definition">¶</a></dt>
 <dd><p>Right-click the node.</p>
 </dd></dl>
 
@@ -444,7 +494,8 @@ reasonable defaults provided by Selenium.</li>
 <dl class="attribute">
 <dt id="capybara.selenium.node.Node.selected">
 <code class="descname">selected</code><a class="headerlink" href="#capybara.selenium.node.Node.selected" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>bool</em> – Whether this node is selected.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="capybara.selenium.node.Node.send_keys">
@@ -469,13 +520,35 @@ reasonable defaults provided by Selenium.</li>
 
 <dl class="method">
 <dt id="capybara.selenium.node.Node.set">
-<code class="descname">set</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/node.html#Node.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.node.Node.set" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set</code><span class="sig-paren">(</span><em>value</em>, <em>clear=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/node.html#Node.set"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.node.Node.set" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets the value of this node.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>value</strong> (<em>bool | str</em>) – The desired value.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>value</strong> (<em>bool | str</em>) – The desired value.</li>
+<li><strong>**options</strong> – Driver-specific options for how to set a value on a node.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="capybara.selenium.node.Node.style">
+<code class="descname">style</code><span class="sig-paren">(</span><em>styles</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/selenium/node.html#Node.style"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.selenium.node.Node.style" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the computed values of the given styles.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>styles</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – The desired styles.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The computed styles.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Dict[str, str]</td>
 </tr>
 </tbody>
 </table>
@@ -484,7 +557,8 @@ reasonable defaults provided by Selenium.</li>
 <dl class="attribute">
 <dt id="capybara.selenium.node.Node.tag_name">
 <code class="descname">tag_name</code><a class="headerlink" href="#capybara.selenium.node.Node.tag_name" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>str</em> – The tag name of the node.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="capybara.selenium.node.Node.unselect_option">
@@ -495,17 +569,20 @@ reasonable defaults provided by Selenium.</li>
 <dl class="attribute">
 <dt id="capybara.selenium.node.Node.value">
 <code class="descname">value</code><a class="headerlink" href="#capybara.selenium.node.Node.value" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>str</em> – The value of the node.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.selenium.node.Node.visible">
 <code class="descname">visible</code><a class="headerlink" href="#capybara.selenium.node.Node.visible" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>bool</em> – Whether or not the node is visible.</p>
+</dd></dl>
 
 <dl class="attribute">
 <dt id="capybara.selenium.node.Node.visible_text">
 <code class="descname">visible_text</code><a class="headerlink" href="#capybara.selenium.node.Node.visible_text" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p><em>str</em> – Only the visible text of the node.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -517,21 +594,22 @@ reasonable defaults provided by Selenium.</li>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">capybara.selenium package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-capybara.selenium.browser">capybara.selenium.browser module</a></li>
-<li><a class="reference internal" href="#module-capybara.selenium.driver">capybara.selenium.driver module</a></li>
-<li><a class="reference internal" href="#module-capybara.selenium.node">capybara.selenium.node module</a></li>
-<li><a class="reference internal" href="#module-capybara.selenium">Module contents</a></li>
-</ul>
-</li>
-</ul>
+<h1 class="logo"><a href="index.html">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
@@ -539,13 +617,6 @@ reasonable defaults provided by Selenium.</li>
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/capybara.selenium.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
@@ -566,8 +637,8 @@ reasonable defaults provided by Selenium.</li>
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
       <a href="_sources/capybara.selenium.rst.txt"

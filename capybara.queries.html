@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.queries package &#8212; Capybara 0.1.4 documentation</title>
+    <title>capybara.queries package &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -27,12 +27,81 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="capybara-queries-package">
 <h1>capybara.queries package<a class="headerlink" href="#capybara-queries-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-capybara.queries.ancestor_query">
+<span id="capybara-queries-ancestor-query-module"></span><h2>capybara.queries.ancestor_query module<a class="headerlink" href="#module-capybara.queries.ancestor_query" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="capybara.queries.ancestor_query.AncestorQuery">
+<em class="property">class </em><code class="descclassname">capybara.queries.ancestor_query.</code><code class="descname">AncestorQuery</code><span class="sig-paren">(</span><em>selector</em>, <em>locator=None</em>, <em>between=None</em>, <em>count=None</em>, <em>exact=None</em>, <em>exact_text=None</em>, <em>filter=None</em>, <em>match=None</em>, <em>maximum=None</em>, <em>minimum=None</em>, <em>text=None</em>, <em>visible=None</em>, <em>wait=None</em>, <em>**filter_options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/ancestor_query.html#AncestorQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.ancestor_query.AncestorQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#capybara.queries.selector_query.SelectorQuery" title="capybara.queries.selector_query.SelectorQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.queries.selector_query.SelectorQuery</span></code></a></p>
+<dl class="attribute">
+<dt id="capybara.queries.ancestor_query.AncestorQuery.description">
+<code class="descname">description</code><a class="headerlink" href="#capybara.queries.ancestor_query.AncestorQuery.description" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> – A long description of this query.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="capybara.queries.ancestor_query.AncestorQuery.resolve_for">
+<code class="descname">resolve_for</code><span class="sig-paren">(</span><em>node</em>, <em>exact=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/ancestor_query.html#AncestorQuery.resolve_for"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.ancestor_query.AncestorQuery.resolve_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolves this query relative to the given node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<em>node.Base</em>) – The node relative to which this query should be resolved.</li>
+<li><strong>exact</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to exactly match text.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of elements matched by this query.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list[<a class="reference internal" href="capybara.node.html#capybara.node.element.Element" title="capybara.node.element.Element">Element</a>]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-capybara.queries.base_query">
+<span id="capybara-queries-base-query-module"></span><h2>capybara.queries.base_query module<a class="headerlink" href="#module-capybara.queries.base_query" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="capybara.queries.base_query.BaseQuery">
+<em class="property">class </em><code class="descclassname">capybara.queries.base_query.</code><code class="descname">BaseQuery</code><a class="reference internal" href="_modules/capybara/queries/base_query.html#BaseQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.base_query.BaseQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="staticmethod">
+<dt id="capybara.queries.base_query.BaseQuery.normalize_wait">
+<em class="property">static </em><code class="descname">normalize_wait</code><span class="sig-paren">(</span><em>wait</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/base_query.html#BaseQuery.normalize_wait"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.base_query.BaseQuery.normalize_wait" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the number of seconds to wait.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>wait</strong> (<em>int | float | bool</em><em>, </em><em>optional</em>) – The desired wait time in seconds, or <code class="docutils literal notranslate"><span class="pre">False</span></code> to
+disable waiting. Defaults to <a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The number of seconds to wait.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-capybara.queries.current_path_query">
 <span id="capybara-queries-current-path-query-module"></span><h2>capybara.queries.current_path_query module<a class="headerlink" href="#module-capybara.queries.current_path_query" title="Permalink to this headline">¶</a></h2>
@@ -93,7 +162,7 @@ match. Defaults to False.</li>
 <dl class="class">
 <dt id="capybara.queries.selector_query.SelectorQuery">
 <em class="property">class </em><code class="descclassname">capybara.queries.selector_query.</code><code class="descname">SelectorQuery</code><span class="sig-paren">(</span><em>selector</em>, <em>locator=None</em>, <em>between=None</em>, <em>count=None</em>, <em>exact=None</em>, <em>exact_text=None</em>, <em>filter=None</em>, <em>match=None</em>, <em>maximum=None</em>, <em>minimum=None</em>, <em>text=None</em>, <em>visible=None</em>, <em>wait=None</em>, <em>**filter_options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/selector_query.html#SelectorQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.selector_query.SelectorQuery" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#capybara.queries.base_query.BaseQuery" title="capybara.queries.base_query.BaseQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.queries.base_query.BaseQuery</span></code></a></p>
 <p>Queries for elements using a selector.</p>
 <p>If no locator is provided and the given selector is not a valid selector, the first
 argument is assumed to be the locator and the default selector will be used.</p>
@@ -250,12 +319,104 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 </dd></dl>
 
 </div>
+<div class="section" id="module-capybara.queries.sibling_query">
+<span id="capybara-queries-sibling-query-module"></span><h2>capybara.queries.sibling_query module<a class="headerlink" href="#module-capybara.queries.sibling_query" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="capybara.queries.sibling_query.SiblingQuery">
+<em class="property">class </em><code class="descclassname">capybara.queries.sibling_query.</code><code class="descname">SiblingQuery</code><span class="sig-paren">(</span><em>selector</em>, <em>locator=None</em>, <em>between=None</em>, <em>count=None</em>, <em>exact=None</em>, <em>exact_text=None</em>, <em>filter=None</em>, <em>match=None</em>, <em>maximum=None</em>, <em>minimum=None</em>, <em>text=None</em>, <em>visible=None</em>, <em>wait=None</em>, <em>**filter_options</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/sibling_query.html#SiblingQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.sibling_query.SiblingQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#capybara.queries.selector_query.SelectorQuery" title="capybara.queries.selector_query.SelectorQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.queries.selector_query.SelectorQuery</span></code></a></p>
+<dl class="attribute">
+<dt id="capybara.queries.sibling_query.SiblingQuery.description">
+<code class="descname">description</code><a class="headerlink" href="#capybara.queries.sibling_query.SiblingQuery.description" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> – A long description of this query.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="capybara.queries.sibling_query.SiblingQuery.resolve_for">
+<code class="descname">resolve_for</code><span class="sig-paren">(</span><em>node</em>, <em>exact=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/sibling_query.html#SiblingQuery.resolve_for"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.sibling_query.SiblingQuery.resolve_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolves this query relative to the given node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>node</strong> (<em>node.Base</em>) – The node relative to which this query should be resolved.</li>
+<li><strong>exact</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to exactly match text.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A list of elements matched by this query.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list[<a class="reference internal" href="capybara.node.html#capybara.node.element.Element" title="capybara.node.element.Element">Element</a>]</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-capybara.queries.style_query">
+<span id="capybara-queries-style-query-module"></span><h2>capybara.queries.style_query module<a class="headerlink" href="#module-capybara.queries.style_query" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="capybara.queries.style_query.StyleQuery">
+<em class="property">class </em><code class="descclassname">capybara.queries.style_query.</code><code class="descname">StyleQuery</code><span class="sig-paren">(</span><em>expected_styles</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/style_query.html#StyleQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.style_query.StyleQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#capybara.queries.base_query.BaseQuery" title="capybara.queries.base_query.BaseQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.queries.base_query.BaseQuery</span></code></a></p>
+<p>Queries for computed style values of a node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>expected_styles</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – The expected style names and values.</li>
+<li><strong>wait</strong> (<em>bool | int | float</em><em>, </em><em>optional</em>) – Whether and how long to wait for synchronization.
+Defaults to <a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="capybara.queries.style_query.StyleQuery.failure_message">
+<code class="descname">failure_message</code><a class="headerlink" href="#capybara.queries.style_query.StyleQuery.failure_message" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> – A message describing the query failure.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="capybara.queries.style_query.StyleQuery.resolves_for">
+<code class="descname">resolves_for</code><span class="sig-paren">(</span><em>node</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/style_query.html#StyleQuery.resolves_for"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.style_query.StyleQuery.resolves_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolves this query relative to the given node.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>node</strong> (<em>node.Base</em>) – The node to be evaluated.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The number of matches found.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="capybara.queries.style_query.StyleQuery.wait">
+<code class="descname">wait</code><a class="headerlink" href="#capybara.queries.style_query.StyleQuery.wait" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int | float</em> – How long to wait for synchronization.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-capybara.queries.text_query">
 <span id="capybara-queries-text-query-module"></span><h2>capybara.queries.text_query module<a class="headerlink" href="#module-capybara.queries.text_query" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="capybara.queries.text_query.TextQuery">
 <em class="property">class </em><code class="descclassname">capybara.queries.text_query.</code><code class="descname">TextQuery</code><span class="sig-paren">(</span><em>query_type</em>, <em>expected_text=None</em>, <em>between=None</em>, <em>count=None</em>, <em>exact_text=False</em>, <em>maximum=None</em>, <em>minimum=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/text_query.html#TextQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.text_query.TextQuery" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dd><p>Bases: <a class="reference internal" href="#capybara.queries.base_query.BaseQuery" title="capybara.queries.base_query.BaseQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.queries.base_query.BaseQuery</span></code></a></p>
 <p>Queries for text content in a node.</p>
 <p>If only one argument is provided, it will be assumed to be <code class="docutils literal notranslate"><span class="pre">expected_text</span></code>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -328,8 +489,8 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <span id="capybara-queries-title-query-module"></span><h2>capybara.queries.title_query module<a class="headerlink" href="#module-capybara.queries.title_query" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="capybara.queries.title_query.TitleQuery">
-<em class="property">class </em><code class="descclassname">capybara.queries.title_query.</code><code class="descname">TitleQuery</code><span class="sig-paren">(</span><em>expected_title</em>, <em>exact=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/title_query.html#TitleQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.title_query.TitleQuery" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<em class="property">class </em><code class="descclassname">capybara.queries.title_query.</code><code class="descname">TitleQuery</code><span class="sig-paren">(</span><em>expected_title</em>, <em>exact=False</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/queries/title_query.html#TitleQuery"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.queries.title_query.TitleQuery" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#capybara.queries.base_query.BaseQuery" title="capybara.queries.base_query.BaseQuery"><code class="xref py py-class docutils literal notranslate"><span class="pre">capybara.queries.base_query.BaseQuery</span></code></a></p>
 <p>Queries the title content of a node.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -338,6 +499,8 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>expected_title</strong> (<em>str | RegexObject</em>) – The desired title.</li>
 <li><strong>exact</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the text should match exactly. Defaults to False.</li>
+<li><strong>wait</strong> (<em>bool | int | float</em><em>, </em><em>optional</em>) – Whether and how long to wait for synchronization.
+Defaults to <a class="reference internal" href="capybara.html#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>.</li>
 </ul>
 </td>
 </tr>
@@ -373,6 +536,12 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 </table>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="capybara.queries.title_query.TitleQuery.wait">
+<code class="descname">wait</code><a class="headerlink" href="#capybara.queries.title_query.TitleQuery.wait" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int | float</em> – How long to wait for synchronization.</p>
+</dd></dl>
+
 </dd></dl>
 
 </div>
@@ -383,22 +552,22 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">capybara.queries package</a><ul>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-capybara.queries.current_path_query">capybara.queries.current_path_query module</a></li>
-<li><a class="reference internal" href="#module-capybara.queries.selector_query">capybara.queries.selector_query module</a></li>
-<li><a class="reference internal" href="#module-capybara.queries.text_query">capybara.queries.text_query module</a></li>
-<li><a class="reference internal" href="#module-capybara.queries.title_query">capybara.queries.title_query module</a></li>
-<li><a class="reference internal" href="#module-capybara.queries">Module contents</a></li>
-</ul>
-</li>
-</ul>
+<h1 class="logo"><a href="index.html">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
@@ -406,13 +575,6 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/capybara.queries.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
@@ -433,8 +595,8 @@ Defaults to <a class="reference internal" href="capybara.html#capybara.default_m
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
       <a href="_sources/capybara.queries.rst.txt"

@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara package &#8212; Capybara 0.1.4 documentation</title>
+    <title>capybara package &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="capybara-package">
@@ -57,8 +59,12 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="capybara.queries.html">capybara.queries package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="capybara.queries.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="capybara.queries.html#module-capybara.queries.ancestor_query">capybara.queries.ancestor_query module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="capybara.queries.html#module-capybara.queries.base_query">capybara.queries.base_query module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="capybara.queries.html#module-capybara.queries.current_path_query">capybara.queries.current_path_query module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="capybara.queries.html#module-capybara.queries.selector_query">capybara.queries.selector_query module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="capybara.queries.html#module-capybara.queries.sibling_query">capybara.queries.sibling_query module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="capybara.queries.html#module-capybara.queries.style_query">capybara.queries.style_query module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="capybara.queries.html#module-capybara.queries.text_query">capybara.queries.text_query module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="capybara.queries.html#module-capybara.queries.title_query">capybara.queries.title_query module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="capybara.queries.html#module-capybara.queries">Module contents</a></li>
@@ -66,8 +72,10 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="capybara.selector.html">capybara.selector package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="capybara.selector.html#submodules">Submodules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="capybara.selector.html#module-capybara.selector.filter">capybara.selector.filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="capybara.selector.html#module-capybara.selector.abstract_filter">capybara.selector.abstract_filter module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="capybara.selector.html#module-capybara.selector.expression_filter">capybara.selector.expression_filter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="capybara.selector.html#module-capybara.selector.filter_set">capybara.selector.filter_set module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="capybara.selector.html#module-capybara.selector.node_filter">capybara.selector.node_filter module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="capybara.selector.html#module-capybara.selector.selector">capybara.selector.selector module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="capybara.selector.html#module-capybara.selector">Module contents</a></li>
 </ul>
@@ -107,6 +115,11 @@
 </div>
 <div class="section" id="module-capybara.compat">
 <span id="capybara-compat-module"></span><h2>capybara.compat module<a class="headerlink" href="#module-capybara.compat" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="capybara.compat.cmp">
+<code class="descclassname">capybara.compat.</code><code class="descname">cmp</code><span class="sig-paren">(</span><em>a</em>, <em>b</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/compat.html#cmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.compat.cmp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="module-capybara.dsl">
 <span id="capybara-dsl-module"></span><h2>capybara.dsl module<a class="headerlink" href="#module-capybara.dsl" title="Permalink to this headline">¶</a></h2>
@@ -118,7 +131,7 @@
 
 <dl class="function">
 <dt id="capybara.dsl.assert_no_title">
-<code class="descclassname">capybara.dsl.</code><code class="descname">assert_no_title</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_no_title" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">assert_no_title</code><span class="sig-paren">(</span><em>self</em>, <em>title</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_no_title" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that the page doesn’t have the given title.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -142,7 +155,7 @@
 
 <dl class="function">
 <dt id="capybara.dsl.assert_title">
-<code class="descclassname">capybara.dsl.</code><code class="descname">assert_title</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_title" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">assert_title</code><span class="sig-paren">(</span><em>self</em>, <em>title</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_title" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that the page has the given title.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -166,7 +179,7 @@
 
 <dl class="function">
 <dt id="capybara.dsl.has_no_title">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_title</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_title" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_title</code><span class="sig-paren">(</span><em>self</em>, <em>title</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_title" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page doesn’t have the given title.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -190,7 +203,7 @@
 
 <dl class="function">
 <dt id="capybara.dsl.has_title">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_title</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_title" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_title</code><span class="sig-paren">(</span><em>self</em>, <em>title</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_title" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page has the given title.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -213,8 +226,39 @@
 </dd></dl>
 
 <dl class="function">
+<dt id="capybara.dsl.assert_all_of_selectors">
+<code class="descclassname">capybara.dsl.</code><code class="descname">assert_all_of_selectors</code><span class="sig-paren">(</span><em>self</em>, <em>selector</em>, <em>*locators</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_all_of_selectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asserts that all of the provided selectors are present on the given page or descendants of
+the current node. If options are provided, the assertion will check that each locator is
+present with those options as well (other than <code class="docutils literal notranslate"><span class="pre">wait</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_all_of_selectors</span><span class="p">(</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span> <span class="s2">&quot;Tom&quot;</span><span class="p">,</span> <span class="s2">&quot;Joe&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">assert_all_of_selectors</span><span class="p">(</span><span class="s2">&quot;css&quot;</span><span class="p">,</span> <span class="s2">&quot;#my_dif&quot;</span><span class="p">,</span> <span class="s2">&quot;a.not_clicked&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It accepts all options that <a class="reference internal" href="#capybara.dsl.find_all" title="capybara.dsl.find_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code></a> accepts, such as <code class="docutils literal notranslate"><span class="pre">text</span></code> and <code class="docutils literal notranslate"><span class="pre">visible</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">wait</span></code> option applies to all of the selectors as a group, so all of the locators must
+be present within <code class="docutils literal notranslate"><span class="pre">wait</span></code> (defaults to <a class="reference internal" href="#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>) seconds.</p>
+<p>If the given selector is not a valid selector, the first argument is assumed to be a locator
+and the default selector will be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>selector</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the selector to use. Defaults to
+<a class="reference internal" href="#capybara.default_selector" title="capybara.default_selector"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_selector</span></code></a>.</li>
+<li><strong>*locators</strong> (<em>str</em>) – Variable length list of locators.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="capybara.dsl.assert_no_selector">
-<code class="descclassname">capybara.dsl.</code><code class="descname">assert_no_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_no_selector" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">assert_no_selector</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_no_selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that a given selector is not on the page or a descendant of the current node. Usage
 is identical to <a class="reference internal" href="#capybara.dsl.assert_selector" title="capybara.dsl.assert_selector"><code class="xref py py-meth docutils literal notranslate"><span class="pre">assert_selector()</span></code></a>.</p>
 <p>Query options such as <code class="docutils literal notranslate"><span class="pre">count</span></code>, <code class="docutils literal notranslate"><span class="pre">minimum</span></code>, and <code class="docutils literal notranslate"><span class="pre">between</span></code> are considered to be an
@@ -246,8 +290,39 @@ anchors but the query expects 5:</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="capybara.dsl.assert_none_of_selectors">
+<code class="descclassname">capybara.dsl.</code><code class="descname">assert_none_of_selectors</code><span class="sig-paren">(</span><em>self</em>, <em>selector</em>, <em>*locators</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_none_of_selectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asserts that none of the provided selectors are present on the given page or descendants of
+the current node. If options are provided, the assertion will check that each locator is
+present with those options as well (other than <code class="docutils literal notranslate"><span class="pre">wait</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_none_of_selectors</span><span class="p">(</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span> <span class="s2">&quot;Tom&quot;</span><span class="p">,</span> <span class="s2">&quot;Joe&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">assert_none_of_selectors</span><span class="p">(</span><span class="s2">&quot;css&quot;</span><span class="p">,</span> <span class="s2">&quot;#my_div&quot;</span><span class="p">,</span> <span class="s2">&quot;a.not_clicked&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It accepts all options that <a class="reference internal" href="#capybara.dsl.find_all" title="capybara.dsl.find_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code></a> accepts, such as <code class="docutils literal notranslate"><span class="pre">text</span></code> and <code class="docutils literal notranslate"><span class="pre">visible</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">wait</span></code> option applies to all of the selectors as a group, so none of the locators must
+be present with <code class="docutils literal notranslate"><span class="pre">wait</span></code> (defaults to <a class="reference internal" href="#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>) seconds.</p>
+<p>If the given selector is not a valid selector, the first argument is assumed to be a locator
+and the default selector will be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>selector</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the selector to use. Defaults to
+<a class="reference internal" href="#capybara.default_selector" title="capybara.default_selector"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_selector</span></code></a>.</li>
+<li><strong>*locators</strong> (<em>str</em>) – Variable length list of locators.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="capybara.dsl.assert_no_text">
-<code class="descclassname">capybara.dsl.</code><code class="descname">assert_no_text</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_no_text" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">assert_no_text</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_no_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that the page or current node doesn’t have the given text content, ignoring any
 HTML tags.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -272,7 +347,7 @@ HTML tags.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.assert_selector">
-<code class="descclassname">capybara.dsl.</code><code class="descname">assert_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_selector" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">assert_selector</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that a given selector is on the page or a descendant of the current node.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">)</span>
 </pre></div>
@@ -319,8 +394,29 @@ package:</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="capybara.dsl.assert_style">
+<code class="descclassname">capybara.dsl.</code><code class="descname">assert_style</code><span class="sig-paren">(</span><em>self</em>, <em>styles</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_style" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asserts that an element has the specified CSS styles.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">element</span><span class="o">.</span><span class="n">assert_style</span><span class="p">({</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(0,0,255)&quot;</span><span class="p">,</span> <span class="s2">&quot;font-size&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;px&quot;</span><span class="p">)})</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>styles</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str | RegexObject</em><em>]</em>) – The expected styles.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ExpectationNotMet</span></code> – The element doesn’t have the specified styles.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="capybara.dsl.assert_text">
-<code class="descclassname">capybara.dsl.</code><code class="descname">assert_text</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_text" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">assert_text</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that the page or current node has the given text content, ignoring any HTML tags.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -344,7 +440,7 @@ package:</p>
 
 <dl class="function">
 <dt id="capybara.dsl.attach_file">
-<code class="descclassname">capybara.dsl.</code><code class="descname">attach_file</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.attach_file" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">attach_file</code><span class="sig-paren">(</span><em>self</em>, <em>locator_or_path</em>, <em>path=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.attach_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a file field on the page and attach a file given its path. The file field can be found
 via its name, id, or label text.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">attach_file</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="s2">&quot;/path/to/file.png&quot;</span><span class="p">)</span>
@@ -372,7 +468,7 @@ will be attached.</li>
 
 <dl class="function">
 <dt id="capybara.dsl.check">
-<code class="descclassname">capybara.dsl.</code><code class="descname">check</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.check" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">check</code><span class="sig-paren">(</span><em>self</em>, <em>locator=None</em>, <em>allow_label_click=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a check box and mark it as checked. The check box can be found via name, id, or label
 text.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="s2">&quot;German&quot;</span><span class="p">)</span>
@@ -396,7 +492,7 @@ element is non-visible. Defaults to <a class="reference internal" href="#capybar
 
 <dl class="function">
 <dt id="capybara.dsl.choose">
-<code class="descclassname">capybara.dsl.</code><code class="descname">choose</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.choose" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">choose</code><span class="sig-paren">(</span><em>self</em>, <em>locator=None</em>, <em>allow_label_click=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.choose" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a radio button and mark it as checked. The radio button can be found via name, id, or
 label text.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">choose</span><span class="p">(</span><span class="s2">&quot;Male&quot;</span><span class="p">)</span>
@@ -420,7 +516,7 @@ element is non-visible. Defaults to <a class="reference internal" href="#capybar
 
 <dl class="function">
 <dt id="capybara.dsl.click_button">
-<code class="descclassname">capybara.dsl.</code><code class="descname">click_button</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.click_button" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">click_button</code><span class="sig-paren">(</span><em>self</em>, <em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.click_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a button on the page and clicks it. This can be any <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> element of type
 submit, reset, image, or button, or it can be any <code class="docutils literal notranslate"><span class="pre">&lt;button&gt;</span></code> element. All buttons can be
 found by their id, value, or title. <code class="docutils literal notranslate"><span class="pre">&lt;button&gt;</span></code> elements can also be found by their text
@@ -441,7 +537,7 @@ content, and image <code class="docutils literal notranslate"><span class="pre">
 
 <dl class="function">
 <dt id="capybara.dsl.click_link">
-<code class="descclassname">capybara.dsl.</code><code class="descname">click_link</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.click_link" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">click_link</code><span class="sig-paren">(</span><em>self</em>, <em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.click_link" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a link by id, text, or title and clicks it. Also looks at image alt text inside the
 link.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -460,7 +556,7 @@ link.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.click_link_or_button">
-<code class="descclassname">capybara.dsl.</code><code class="descname">click_link_or_button</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.click_link_or_button" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">click_link_or_button</code><span class="sig-paren">(</span><em>self</em>, <em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.click_link_or_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a button or link by id, text or value and clicks it. Also looks at image alt text
 inside the link.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -479,7 +575,7 @@ inside the link.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.click_on">
-<code class="descclassname">capybara.dsl.</code><code class="descname">click_on</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.click_on" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">click_on</code><span class="sig-paren">(</span><em>self</em>, <em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.click_on" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a button or link by id, text or value and clicks it. Also looks at image alt text
 inside the link.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -498,7 +594,7 @@ inside the link.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.fill_in">
-<code class="descclassname">capybara.dsl.</code><code class="descname">fill_in</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.fill_in" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">fill_in</code><span class="sig-paren">(</span><em>self</em>, <em>locator=None</em>, <em>current_value=None</em>, <em>value=None</em>, <em>fill_options=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.fill_in" title="Permalink to this definition">¶</a></dt>
 <dd><p>Locate a text field or text area and fill it in with the given text. The field can be found
 via its name, id, or label text.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">fill_in</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Bob&quot;</span><span class="p">)</span>
@@ -512,6 +608,7 @@ via its name, id, or label text.</p>
 <li><strong>locator</strong> (<em>str</em><em>, </em><em>optional</em>) – Which field to fill in.</li>
 <li><strong>current_value</strong> (<em>str</em><em>, </em><em>optional</em>) – The current value of the field.</li>
 <li><strong>value</strong> (<em>str</em><em>, </em><em>optional</em>) – The value to fill in. Defaults to None.</li>
+<li><strong>fill_options</strong> (<em>Dict</em><em>, </em><em>optional</em>) – Driver-specific options regarding how to fill fields.</li>
 <li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
@@ -522,7 +619,7 @@ via its name, id, or label text.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.find">
-<code class="descclassname">capybara.dsl.</code><code class="descname">find</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.find" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">find</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.find" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find an <code class="xref py py-class docutils literal notranslate"><span class="pre">Element</span></code> based on the given arguments. <code class="docutils literal notranslate"><span class="pre">find</span></code> will raise an error if the
 element is not found.</p>
 <p><code class="docutils literal notranslate"><span class="pre">find</span></code> takes the same options as <a class="reference internal" href="#capybara.dsl.find_all" title="capybara.dsl.find_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code></a>.</p>
@@ -559,7 +656,7 @@ element is not found.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.find_all">
-<code class="descclassname">capybara.dsl.</code><code class="descname">find_all</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.find_all" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">find_all</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.find_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find all elements on the page matching the given selector and options.</p>
 <p>Both XPath and CSS expressions are supported, but Capybara does not try to automatically
 distinguish between them. The following statements are equivalent:</p>
@@ -590,7 +687,8 @@ the expectations to match. The expectations can be set using:</p>
 <span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">,</span> <span class="n">between</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>See <code class="xref py py-func docutils literal notranslate"><span class="pre">matches_count()</span></code> for additional information about count matching.</p>
+<p>See <a class="reference internal" href="#capybara.result.Result.matches_count" title="capybara.result.Result.matches_count"><code class="xref py py-func docutils literal notranslate"><span class="pre">capybara.result.Result.matches_count()</span></code></a> for additional information about count
+matching.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -616,7 +714,7 @@ the expectations to match. The expectations can be set using:</p>
 
 <dl class="function">
 <dt id="capybara.dsl.find_button">
-<code class="descclassname">capybara.dsl.</code><code class="descname">find_button</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.find_button" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">find_button</code><span class="sig-paren">(</span><em>self</em>, <em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.find_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a button on the page. This can be any <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> element of type submit, reset, image,
 or button, or it can be a <code class="docutils literal notranslate"><span class="pre">&lt;button&gt;</span></code> element. All buttons can be found by their id, value,
 or title. <code class="docutils literal notranslate"><span class="pre">&lt;button&gt;</span></code> elements can also be found by their text content, and image
@@ -643,7 +741,7 @@ or title. <code class="docutils literal notranslate"><span class="pre">&lt;butto
 
 <dl class="function">
 <dt id="capybara.dsl.find_by_id">
-<code class="descclassname">capybara.dsl.</code><code class="descname">find_by_id</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.find_by_id" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">find_by_id</code><span class="sig-paren">(</span><em>self</em>, <em>id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.find_by_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find an element on the page, given its id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -667,7 +765,7 @@ or title. <code class="docutils literal notranslate"><span class="pre">&lt;butto
 
 <dl class="function">
 <dt id="capybara.dsl.find_field">
-<code class="descclassname">capybara.dsl.</code><code class="descname">find_field</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.find_field" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">find_field</code><span class="sig-paren">(</span><em>self</em>, <em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.find_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a form field on the page. The field can be found by its name, id, or label text.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -691,7 +789,7 @@ or title. <code class="docutils literal notranslate"><span class="pre">&lt;butto
 
 <dl class="function">
 <dt id="capybara.dsl.find_first">
-<code class="descclassname">capybara.dsl.</code><code class="descname">find_first</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.find_first" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">find_first</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.find_first" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the first element on the page matching the given selector and options, or None if no
 element matches.</p>
 <p>By default, no waiting behavior occurs. However, if <code class="docutils literal notranslate"><span class="pre">capybara.wait_on_first_by_default</span></code>
@@ -719,7 +817,7 @@ element to be found.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.find_link">
-<code class="descclassname">capybara.dsl.</code><code class="descname">find_link</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.find_link" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">find_link</code><span class="sig-paren">(</span><em>self</em>, <em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.find_link" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a link on the page. The link can be found by its id or text.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -742,8 +840,39 @@ element to be found.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="capybara.dsl.has_all_of_selectors">
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_all_of_selectors</code><span class="sig-paren">(</span><em>self</em>, <em>selector</em>, <em>*locators</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_all_of_selectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if allof the provided selectors are present on the given page or descendants of the
+current node. If options are provided, the assertion will check that each locator is present
+with those options as well (other than <code class="docutils literal notranslate"><span class="pre">wait</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_all_of_selectors</span><span class="p">(</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span> <span class="s2">&quot;Tom&quot;</span><span class="p">,</span> <span class="s2">&quot;Joe&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">assert_all_of_selectors</span><span class="p">(</span><span class="s2">&quot;css&quot;</span><span class="p">,</span> <span class="s2">&quot;#my_dif&quot;</span><span class="p">,</span> <span class="s2">&quot;a.not_clicked&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It accepts all options that <a class="reference internal" href="#capybara.dsl.find_all" title="capybara.dsl.find_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code></a> accepts, such as <code class="docutils literal notranslate"><span class="pre">text</span></code> and <code class="docutils literal notranslate"><span class="pre">visible</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">wait</span></code> option applies to all of the selectors as a group, so all of the locators must
+be present within <code class="docutils literal notranslate"><span class="pre">wait</span></code> (defaults to <a class="reference internal" href="#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>) seconds.</p>
+<p>If the given selector is not a valid selector, the first argument is assumed to be a locator
+and the default selector will be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>selector</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the selector to use. Defaults to
+<a class="reference internal" href="#capybara.default_selector" title="capybara.default_selector"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_selector</span></code></a>.</li>
+<li><strong>*locators</strong> (<em>str</em>) – Variable length list of locators.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="capybara.dsl.has_button">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_button</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_button" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_button</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a button with the given text, value, or id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -767,7 +896,7 @@ element to be found.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.has_checked_field">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_checked_field</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_checked_field" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_checked_field</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_checked_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a radio button or checkbox with the given label,
 value, or id, that is currently checked.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -792,7 +921,7 @@ value, or id, that is currently checked.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.has_content">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_content</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_content" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_content</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_content" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has the given text content, ignoring any HTML tags.</p>
 <p>Whitespaces are normalized in both the node’s text and the passed text parameter. Note that
 whitespace isn’t normalized in a passed regular expression as normalizing whitespace in a
@@ -824,7 +953,7 @@ specified.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.has_css">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_css</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_css" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_css</code><span class="sig-paren">(</span><em>self</em>, <em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_css" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given CSS selector is on the page or a descendant of the current node.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_css</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">)</span>
 </pre></div>
@@ -862,7 +991,7 @@ be specified.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.has_field">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_field</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_field" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_field</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a form field with the given label, name, or id.</p>
 <p>For text fields and other textual fields, such as textareas and HTML5 email/url/etc. fields,
 it’s possible to specify a <code class="docutils literal notranslate"><span class="pre">value</span></code> argument to specify the text the field should contain:</p>
@@ -891,7 +1020,7 @@ it’s possible to specify a <code class="docutils literal notranslate"><span cl
 
 <dl class="function">
 <dt id="capybara.dsl.has_link">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_link</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_link" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_link</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_link" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a link with the given text or id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -915,7 +1044,7 @@ it’s possible to specify a <code class="docutils literal notranslate"><span cl
 
 <dl class="function">
 <dt id="capybara.dsl.has_no_button">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_button</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_button" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_button</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no button with the given text, value, or id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -939,7 +1068,7 @@ it’s possible to specify a <code class="docutils literal notranslate"><span cl
 
 <dl class="function">
 <dt id="capybara.dsl.has_no_checked_field">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_checked_field</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_checked_field" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_checked_field</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_checked_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no radio button or checkbox with the given label,
 value, or id that is currently checked.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -964,7 +1093,7 @@ value, or id that is currently checked.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.has_no_css">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_css</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_css" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_css</code><span class="sig-paren">(</span><em>self</em>, <em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_css" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given CSS selector is not on the page or a descendant of the current node.
 Usage is identical to <a class="reference internal" href="#capybara.dsl.has_css" title="capybara.dsl.has_css"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_css()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -989,7 +1118,7 @@ Usage is identical to <a class="reference internal" href="#capybara.dsl.has_css"
 
 <dl class="function">
 <dt id="capybara.dsl.has_no_field">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_field</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_field" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_field</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no form field with the given label, name, or id. See
 <a class="reference internal" href="#capybara.dsl.has_field" title="capybara.dsl.has_field"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_field()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1014,7 +1143,7 @@ Usage is identical to <a class="reference internal" href="#capybara.dsl.has_css"
 
 <dl class="function">
 <dt id="capybara.dsl.has_no_link">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_link</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_link" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_link</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_link" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no link with the given text or id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1038,7 +1167,7 @@ Usage is identical to <a class="reference internal" href="#capybara.dsl.has_css"
 
 <dl class="function">
 <dt id="capybara.dsl.has_no_select">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_select</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_select" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_select</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_select" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no select field with the given label, name, or id.
 See <a class="reference internal" href="#capybara.dsl.has_select" title="capybara.dsl.has_select"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_select()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1063,7 +1192,7 @@ See <a class="reference internal" href="#capybara.dsl.has_select" title="capybar
 
 <dl class="function">
 <dt id="capybara.dsl.has_no_selector">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_selector" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_selector</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given selector is not on the page or a descendant of the current node. Usage is
 identical to <a class="reference internal" href="#capybara.dsl.has_selector" title="capybara.dsl.has_selector"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_selector()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1088,7 +1217,7 @@ identical to <a class="reference internal" href="#capybara.dsl.has_selector" tit
 
 <dl class="function">
 <dt id="capybara.dsl.has_no_table">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_table</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_table" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_table</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no table with the given id or caption. See
 <a class="reference internal" href="#capybara.dsl.has_table" title="capybara.dsl.has_table"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_table()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1113,7 +1242,7 @@ identical to <a class="reference internal" href="#capybara.dsl.has_selector" tit
 
 <dl class="function">
 <dt id="capybara.dsl.has_no_text">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_text</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_text" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_text</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node does not have the given text content, ignoring any HTML
 tags and normalizing whitespace.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1138,7 +1267,7 @@ tags and normalizing whitespace.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.has_no_unchecked_field">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_unchecked_field</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_unchecked_field" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_unchecked_field</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_unchecked_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no radio button or checkbox with the given label,
 value, or id, that is currently unchecked.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1163,7 +1292,7 @@ value, or id, that is currently unchecked.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.has_no_xpath">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_xpath</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_xpath" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_xpath</code><span class="sig-paren">(</span><em>self</em>, <em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_xpath" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given XPath expression is not on the page or a descendant of the current node.
 Usage is identical to <a class="reference internal" href="#capybara.dsl.has_xpath" title="capybara.dsl.has_xpath"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_xpath()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1187,8 +1316,39 @@ Usage is identical to <a class="reference internal" href="#capybara.dsl.has_xpat
 </dd></dl>
 
 <dl class="function">
+<dt id="capybara.dsl.has_none_of_selectors">
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_none_of_selectors</code><span class="sig-paren">(</span><em>self</em>, <em>selector</em>, <em>*locators</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_none_of_selectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if none of the provided selectors are present on the given page or descendants of the
+current node. If options are provided, the assertion will check that each locator is present
+with those options as well (other than <code class="docutils literal notranslate"><span class="pre">wait</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_none_of_selectors</span><span class="p">(</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span> <span class="s2">&quot;Tom&quot;</span><span class="p">,</span> <span class="s2">&quot;Joe&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">assert_none_of_selectors</span><span class="p">(</span><span class="s2">&quot;css&quot;</span><span class="p">,</span> <span class="s2">&quot;#my_div&quot;</span><span class="p">,</span> <span class="s2">&quot;a.not_clicked&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It accepts all options that <a class="reference internal" href="#capybara.dsl.find_all" title="capybara.dsl.find_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code></a> accepts, such as <code class="docutils literal notranslate"><span class="pre">text</span></code> and <code class="docutils literal notranslate"><span class="pre">visible</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">wait</span></code> option applies to all of the selectors as a group, so none of the locators must
+be present with <code class="docutils literal notranslate"><span class="pre">wait</span></code> (defaults to <a class="reference internal" href="#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>) seconds.</p>
+<p>If the given selector is not a valid selector, the first argument is assumed to be a locator
+and the default selector will be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>selector</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the selector to use. Defaults to
+<a class="reference internal" href="#capybara.default_selector" title="capybara.default_selector"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_selector</span></code></a>.</li>
+<li><strong>*locators</strong> (<em>str</em>) – Variable length list of locators.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="capybara.dsl.has_select">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_select</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_select" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_select</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_select" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a select field with the given label, name, or id.</p>
 <p>It can be specified which option should currently be selected:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_select</span><span class="p">(</span><span class="s2">&quot;Language&quot;</span><span class="p">,</span> <span class="n">selected</span><span class="o">=</span><span class="s2">&quot;German&quot;</span><span class="p">)</span>
@@ -1228,7 +1388,7 @@ Usage is identical to <a class="reference internal" href="#capybara.dsl.has_xpat
 
 <dl class="function">
 <dt id="capybara.dsl.has_selector">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_selector</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_selector" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_selector</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_selector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given selector is on the page or a descendant of the current node.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">)</span>
 <span class="n">page</span><span class="o">.</span><span class="n">has_selector</span><span class="p">(</span><span class="s2">&quot;xpath&quot;</span><span class="p">,</span> <span class="s2">&quot;.//p[@id=&#39;foo&#39;]&quot;</span><span class="p">)</span>
@@ -1273,7 +1433,7 @@ be specified.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.has_table">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_table</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_table" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_table</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a table with the given id or caption:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_table</span><span class="p">(</span><span class="s2">&quot;People&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1300,7 +1460,7 @@ be specified.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.has_text">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_text</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_text" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_text</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has the given text content, ignoring any HTML tags.</p>
 <p>Whitespaces are normalized in both the node’s text and the passed text parameter. Note that
 whitespace isn’t normalized in a passed regular expression as normalizing whitespace in a
@@ -1332,7 +1492,7 @@ specified.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.has_unchecked_field">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_unchecked_field</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_unchecked_field" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_unchecked_field</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_unchecked_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a radio button or checkbox with the given label,
 value, or id, that is currently unchecked.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1357,7 +1517,7 @@ value, or id, that is currently unchecked.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.has_xpath">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_xpath</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_xpath" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_xpath</code><span class="sig-paren">(</span><em>self</em>, <em>query</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_xpath" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given XPath expression is on the page or a descendant of the current node.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">has_xpath</span><span class="p">(</span><span class="s2">&quot;.//p[@id=&#39;foo&#39;]&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1390,7 +1550,7 @@ value, or id, that is currently unchecked.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.select">
-<code class="descclassname">capybara.dsl.</code><code class="descname">select</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.select" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">select</code><span class="sig-paren">(</span><em>self</em>, <em>value=None</em>, <em>field=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.select" title="Permalink to this definition">¶</a></dt>
 <dd><p>If the <code class="docutils literal notranslate"><span class="pre">field</span></code> argument is present, <code class="docutils literal notranslate"><span class="pre">select</span></code> finds a select box on the page and selects
 a particular option from it. Otherwise it finds an option inside the current scope and
 selects it. If the select box is a multiple select, <code class="docutils literal notranslate"><span class="pre">select</span></code> can be called multiple times
@@ -1416,7 +1576,7 @@ The option can be found by its text.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.uncheck">
-<code class="descclassname">capybara.dsl.</code><code class="descname">uncheck</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.uncheck" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">uncheck</code><span class="sig-paren">(</span><em>self</em>, <em>locator=None</em>, <em>allow_label_click=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.uncheck" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a check box and uncheck it. The check box can be found via name, id, or label text.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">uncheck</span><span class="p">(</span><span class="s2">&quot;German&quot;</span><span class="p">)</span>
 </pre></div>
@@ -1439,7 +1599,7 @@ element is non-visible. Defaults to <a class="reference internal" href="#capybar
 
 <dl class="function">
 <dt id="capybara.dsl.unselect">
-<code class="descclassname">capybara.dsl.</code><code class="descname">unselect</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.unselect" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">unselect</code><span class="sig-paren">(</span><em>self</em>, <em>value=None</em>, <em>field=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.unselect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a select box on the page and unselect a particular option from it. If the select box is
 a multiple select, <code class="docutils literal notranslate"><span class="pre">unselect</span></code> can be called multiple times to unselect more than one
 option. The select box can be found via its name, id, or label text.</p>
@@ -1463,7 +1623,7 @@ option. The select box can be found via its name, id, or label text.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.accept_alert">
-<code class="descclassname">capybara.dsl.</code><code class="descname">accept_alert</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.accept_alert" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">accept_alert</code><span class="sig-paren">(</span><em>self</em>, <em>text=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.accept_alert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code, accepting an alert.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1485,7 +1645,7 @@ executing the wrapped code.</li>
 
 <dl class="function">
 <dt id="capybara.dsl.accept_confirm">
-<code class="descclassname">capybara.dsl.</code><code class="descname">accept_confirm</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.accept_confirm" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">accept_confirm</code><span class="sig-paren">(</span><em>self</em>, <em>text=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.accept_confirm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code, accepting a confirm.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1507,7 +1667,7 @@ executing the wrapped code.</li>
 
 <dl class="function">
 <dt id="capybara.dsl.accept_prompt">
-<code class="descclassname">capybara.dsl.</code><code class="descname">accept_prompt</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.accept_prompt" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">accept_prompt</code><span class="sig-paren">(</span><em>self</em>, <em>text=None</em>, <em>response=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.accept_prompt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code, accepting a prompt, optionally responding to the prompt.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1530,7 +1690,7 @@ executing the wrapped code.</li>
 
 <dl class="function">
 <dt id="capybara.dsl.assert_current_path">
-<code class="descclassname">capybara.dsl.</code><code class="descname">assert_current_path</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_current_path" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">assert_current_path</code><span class="sig-paren">(</span><em>self</em>, <em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_current_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that the page has the given path. By default this will compare against the
 path+query portion of the full URL.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1555,7 +1715,7 @@ path+query portion of the full URL.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.assert_no_current_path">
-<code class="descclassname">capybara.dsl.</code><code class="descname">assert_no_current_path</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_no_current_path" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">assert_no_current_path</code><span class="sig-paren">(</span><em>self</em>, <em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.assert_no_current_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that the page doesn’t have the given path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1579,7 +1739,7 @@ path+query portion of the full URL.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.dismiss_confirm">
-<code class="descclassname">capybara.dsl.</code><code class="descname">dismiss_confirm</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.dismiss_confirm" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">dismiss_confirm</code><span class="sig-paren">(</span><em>self</em>, <em>text=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.dismiss_confirm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code, dismissing a confirm.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1601,7 +1761,7 @@ executing the wrapped code.</li>
 
 <dl class="function">
 <dt id="capybara.dsl.dismiss_prompt">
-<code class="descclassname">capybara.dsl.</code><code class="descname">dismiss_prompt</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.dismiss_prompt" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">dismiss_prompt</code><span class="sig-paren">(</span><em>self</em>, <em>text=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.dismiss_prompt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code, dismissing a prompt.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1622,8 +1782,33 @@ executing the wrapped code.</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="capybara.dsl.evaluate_async_script">
+<code class="descclassname">capybara.dsl.</code><code class="descname">evaluate_async_script</code><span class="sig-paren">(</span><em>self</em>, <em>script</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.evaluate_async_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the given JavaScript and obtain the result from a callback function which will be
+passed as the last argument to the script.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>script</strong> (<em>str</em>) – A string of JavaScript to evaluate.</li>
+<li><strong>*args</strong> – Variable length argument list to pass to the executed JavaScript string.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The result of the evaluated JavaScript (may be driver specific).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
 <dt id="capybara.dsl.evaluate_script">
-<code class="descclassname">capybara.dsl.</code><code class="descname">evaluate_script</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.evaluate_script" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">evaluate_script</code><span class="sig-paren">(</span><em>self</em>, <em>script</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.evaluate_script" title="Permalink to this definition">¶</a></dt>
 <dd><p>Evaluate the given JavaScript and return the result. Be careful when using this with
 scripts that return complex objects, such as jQuery statements. <a class="reference internal" href="#capybara.dsl.execute_script" title="capybara.dsl.execute_script"><code class="xref py py-meth docutils literal notranslate"><span class="pre">execute_script()</span></code></a>
 might be a better alternative.</p>
@@ -1649,7 +1834,7 @@ might be a better alternative.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.execute_script">
-<code class="descclassname">capybara.dsl.</code><code class="descname">execute_script</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.execute_script" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">execute_script</code><span class="sig-paren">(</span><em>self</em>, <em>script</em>, <em>*args</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.execute_script" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the given script, not returning a result. This is useful for scripts that return
 complex objects, such as jQuery statements. <code class="docutils literal notranslate"><span class="pre">execute_script</span></code> should be used over
 <a class="reference internal" href="#capybara.dsl.evaluate_script" title="capybara.dsl.evaluate_script"><code class="xref py py-meth docutils literal notranslate"><span class="pre">evaluate_script()</span></code></a> whenever possible.</p>
@@ -1669,7 +1854,7 @@ complex objects, such as jQuery statements. <code class="docutils literal notran
 
 <dl class="function">
 <dt id="capybara.dsl.fieldset">
-<code class="descclassname">capybara.dsl.</code><code class="descname">fieldset</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.fieldset" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">fieldset</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.fieldset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code within a specific fieldset given the id or legend of that
 fieldset.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1684,14 +1869,15 @@ fieldset.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.frame">
-<code class="descclassname">capybara.dsl.</code><code class="descname">frame</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.frame" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">frame</code><span class="sig-paren">(</span><em>self</em>, <em>locator=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code within the given iframe using the given frame or frame name/id.
 May not be supported by all drivers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>locator</strong> (<em>str | Element</em>) – The name/id of the frame or the frame’s element.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>locator</strong> (<em>str | Element</em><em>, </em><em>optional</em>) – The name/id of the frame or the frame’s element.
+Defaults to the only frame in the document.</td>
 </tr>
 </tbody>
 </table>
@@ -1699,19 +1885,19 @@ May not be supported by all drivers.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.go_back">
-<code class="descclassname">capybara.dsl.</code><code class="descname">go_back</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.go_back" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">go_back</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.go_back" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move back a single entry in the browser’s history.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="capybara.dsl.go_forward">
-<code class="descclassname">capybara.dsl.</code><code class="descname">go_forward</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.go_forward" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">go_forward</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.go_forward" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move forward a single entry in the browser’s history.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="capybara.dsl.has_current_path">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_current_path</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_current_path" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_current_path</code><span class="sig-paren">(</span><em>self</em>, <em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_current_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page has the given path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1735,7 +1921,7 @@ May not be supported by all drivers.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.has_no_current_path">
-<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_current_path</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_current_path" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">has_no_current_path</code><span class="sig-paren">(</span><em>self</em>, <em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.has_no_current_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page doesn’t have the given path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1759,7 +1945,7 @@ May not be supported by all drivers.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.open_new_window">
-<code class="descclassname">capybara.dsl.</code><code class="descname">open_new_window</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.open_new_window" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">open_new_window</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.open_new_window" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open new window. The current window doesn’t change as a result of this call. It should be
 switched explicitly.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1776,13 +1962,13 @@ switched explicitly.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.refresh">
-<code class="descclassname">capybara.dsl.</code><code class="descname">refresh</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.refresh" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">refresh</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.refresh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Refresh the page.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="capybara.dsl.reset">
-<code class="descclassname">capybara.dsl.</code><code class="descname">reset</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.reset" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">reset</code><span class="sig-paren">(</span><em>self</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.reset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reset the session (i.e., remove cookies and navigate to a blank page).</p>
 <p>This method does not:
 * accept modal dialogs if they are present (the Selenium driver does, but others may not),
@@ -1796,7 +1982,7 @@ teardown method.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.save_page">
-<code class="descclassname">capybara.dsl.</code><code class="descname">save_page</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.save_page" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">save_page</code><span class="sig-paren">(</span><em>self</em>, <em>path=None</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.save_page" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a snapshot of the page.</p>
 <p>If invoked without arguments, it will save a file to <a class="reference internal" href="#capybara.save_path" title="capybara.save_path"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.save_path</span></code></a> and the
 file will be given a randomly generated filename. If invoked with a relative path, the path
@@ -1817,7 +2003,7 @@ will be relative to <a class="reference internal" href="#capybara.save_path" tit
 
 <dl class="function">
 <dt id="capybara.dsl.save_screenshot">
-<code class="descclassname">capybara.dsl.</code><code class="descname">save_screenshot</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.save_screenshot" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">save_screenshot</code><span class="sig-paren">(</span><em>self</em>, <em>path=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.save_screenshot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a screenshot of the page.</p>
 <p>If invoked without arguments, it will save a file to <a class="reference internal" href="#capybara.save_path" title="capybara.save_path"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.save_path</span></code></a> and the
 file will be given a randomly generated filename. If invoked with a relative path, the path
@@ -1844,7 +2030,7 @@ will be relative to <a class="reference internal" href="#capybara.save_path" tit
 
 <dl class="function">
 <dt id="capybara.dsl.scope">
-<code class="descclassname">capybara.dsl.</code><code class="descname">scope</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.scope" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">scope</code><span class="sig-paren">(</span><em>self</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.scope" title="Permalink to this definition">¶</a></dt>
 <dd><p>Executes the wrapped code within the context of a node. <code class="docutils literal notranslate"><span class="pre">scope</span></code> takes the same options
 as <a class="reference internal" href="#capybara.dsl.find" title="capybara.dsl.find"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find()</span></code></a>. For the duration of the context, any command to Capybara will be handled
 as though it were scoped to the given element.</p>
@@ -1881,7 +2067,7 @@ the type set in <a class="reference internal" href="#capybara.default_selector" 
 
 <dl class="function">
 <dt id="capybara.dsl.switch_to_frame">
-<code class="descclassname">capybara.dsl.</code><code class="descname">switch_to_frame</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.switch_to_frame" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">switch_to_frame</code><span class="sig-paren">(</span><em>self</em>, <em>frame</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.switch_to_frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Switch to the given frame.</p>
 <p>If you use this method you are responsible for making sure you switch back to the parent
 frame when done in the frame changed to. <a class="reference internal" href="#capybara.dsl.frame" title="capybara.dsl.frame"><code class="xref py py-meth docutils literal notranslate"><span class="pre">frame()</span></code></a> is preferred over this method and
@@ -1898,7 +2084,7 @@ should be used when possible. May not be supported by all drivers.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.switch_to_window">
-<code class="descclassname">capybara.dsl.</code><code class="descname">switch_to_window</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.switch_to_window" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">switch_to_window</code><span class="sig-paren">(</span><em>self</em>, <em>window</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.switch_to_window" title="Permalink to this definition">¶</a></dt>
 <dd><p>If <code class="docutils literal notranslate"><span class="pre">window</span></code> is a lambda, it switches to the first window for which <code class="docutils literal notranslate"><span class="pre">window</span></code> returns a
 value other than False or None. If a window that matches can’t be found, the window will be
 switched back and <code class="xref py py-exc docutils literal notranslate"><span class="pre">WindowError</span></code> will be raised.</p>
@@ -1931,7 +2117,7 @@ switched back and <code class="xref py py-exc docutils literal notranslate"><spa
 
 <dl class="function">
 <dt id="capybara.dsl.table">
-<code class="descclassname">capybara.dsl.</code><code class="descname">table</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.table" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">table</code><span class="sig-paren">(</span><em>self</em>, <em>locator</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code within a specific table given the id or caption of that table.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1945,7 +2131,7 @@ switched back and <code class="xref py py-exc docutils literal notranslate"><spa
 
 <dl class="function">
 <dt id="capybara.dsl.visit">
-<code class="descclassname">capybara.dsl.</code><code class="descname">visit</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.visit" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">visit</code><span class="sig-paren">(</span><em>self</em>, <em>visit_uri</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.visit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Navigate to the given URL. The URL can either be a relative URL or an absolute URL. The
 behavior of either depends on the driver.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">visit</span><span class="p">(</span><span class="s2">&quot;/foo&quot;</span><span class="p">)</span>
@@ -1972,7 +2158,7 @@ remote server the default. For example:</p>
 
 <dl class="function">
 <dt id="capybara.dsl.window">
-<code class="descclassname">capybara.dsl.</code><code class="descname">window</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.window" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">window</code><span class="sig-paren">(</span><em>self</em>, <em>window</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.window" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method does the following:</p>
 <ol class="arabic simple">
 <li>Switches to the given window (it can be located by window instance/lambda/string).</li>
@@ -1992,7 +2178,7 @@ the context of each open window and returns <code class="docutils literal notran
 
 <dl class="function">
 <dt id="capybara.dsl.window_opened_by">
-<code class="descclassname">capybara.dsl.</code><code class="descname">window_opened_by</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.window_opened_by" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">window_opened_by</code><span class="sig-paren">(</span><em>self</em>, <em>trigger_func</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.dsl.window_opened_by" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the window that has been opened by the passed lambda. It will wait for it to be opened
 (in the same way as other Capybara methods wait). It’s better to use this method than
 <code class="docutils literal notranslate"><span class="pre">windows[-1]</span></code> <a class="reference external" href="https://dvcs.w3.org/hg/webdriver/raw-file/default/webdriver-spec.html#h_note_10">as order of windows isn’t defined in some drivers</a>.</p>
@@ -2023,7 +2209,7 @@ window.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.using_session">
-<code class="descclassname">capybara.dsl.</code><code class="descname">using_session</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara.html#using_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.dsl.using_session" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">using_session</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara.html#using_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.dsl.using_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code using a specific session name.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2037,7 +2223,7 @@ window.</p>
 
 <dl class="function">
 <dt id="capybara.dsl.using_wait_time">
-<code class="descclassname">capybara.dsl.</code><code class="descname">using_wait_time</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara.html#using_wait_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.dsl.using_wait_time" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.dsl.</code><code class="descname">using_wait_time</code><span class="sig-paren">(</span><em>seconds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara.html#using_wait_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.dsl.using_wait_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a context using a specific wait time.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2061,7 +2247,7 @@ window.</p>
 <dl class="exception">
 <dt id="capybara.exceptions.CapybaraError">
 <em class="property">exception </em><code class="descclassname">capybara.exceptions.</code><code class="descname">CapybaraError</code><a class="reference internal" href="_modules/capybara/exceptions.html#CapybaraError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.exceptions.CapybaraError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></p>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
 </dd></dl>
 
 <dl class="exception">
@@ -2121,6 +2307,32 @@ window.</p>
 </div>
 <div class="section" id="module-capybara.helpers">
 <span id="capybara-helpers-module"></span><h2>capybara.helpers module<a class="headerlink" href="#module-capybara.helpers" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="capybara.helpers.Timer">
+<em class="property">class </em><code class="descclassname">capybara.helpers.</code><code class="descname">Timer</code><span class="sig-paren">(</span><em>expire_in</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/helpers.html#Timer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.helpers.Timer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>expire_in</strong> (<em>int</em>) – The number of seconds from now in which this timer should expire.</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="capybara.helpers.Timer.expired">
+<code class="descname">expired</code><a class="headerlink" href="#capybara.helpers.Timer.expired" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>bool</em> – Whether this timer has expired.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="capybara.helpers.Timer.stalled">
+<code class="descname">stalled</code><a class="headerlink" href="#capybara.helpers.Timer.stalled" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>bool</em> – Whether this timer appears to have stalled.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="function">
 <dt id="capybara.helpers.declension">
 <code class="descclassname">capybara.helpers.</code><code class="descname">declension</code><span class="sig-paren">(</span><em>singular</em>, <em>plural</em>, <em>count</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/helpers.html#declension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.helpers.declension" title="Permalink to this definition">¶</a></dt>
@@ -2149,7 +2361,7 @@ window.</p>
 <dl class="function">
 <dt id="capybara.helpers.desc">
 <code class="descclassname">capybara.helpers.</code><code class="descname">desc</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/helpers.html#desc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.helpers.desc" title="Permalink to this definition">¶</a></dt>
-<dd><p>str | List[str]: A normalized representation for a user-provided value.</p>
+<dd><p>str: A normalized representation for a user-provided value.</p>
 </dd></dl>
 
 <dl class="function">
@@ -2217,6 +2429,12 @@ window.</p>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="function">
+<dt id="capybara.helpers.monotonic">
+<code class="descclassname">capybara.helpers.</code><code class="descname">monotonic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/helpers.html#monotonic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.helpers.monotonic" title="Permalink to this definition">¶</a></dt>
+<dd><p>float: Returns the current time, using a monotonic clock where available.</p>
 </dd></dl>
 
 <dl class="function">
@@ -2297,6 +2515,24 @@ strings. Defaults to False.</li>
 </dd></dl>
 
 </div>
+<div class="section" id="module-capybara.pytest_plugin">
+<span id="capybara-pytest-plugin-module"></span><h2>capybara.pytest_plugin module<a class="headerlink" href="#module-capybara.pytest_plugin" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="capybara.pytest_plugin.page">
+<code class="descclassname">capybara.pytest_plugin.</code><code class="descname">page</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/pytest_plugin.html#page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.pytest_plugin.page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="capybara.pytest_plugin.pytest_runtest_setup">
+<code class="descclassname">capybara.pytest_plugin.</code><code class="descname">pytest_runtest_setup</code><span class="sig-paren">(</span><em>item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/pytest_plugin.html#pytest_runtest_setup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.pytest_plugin.pytest_runtest_setup" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="capybara.pytest_plugin.pytest_runtest_teardown">
+<code class="descclassname">capybara.pytest_plugin.</code><code class="descname">pytest_runtest_teardown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/pytest_plugin.html#pytest_runtest_teardown"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.pytest_plugin.pytest_runtest_teardown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
 <div class="section" id="module-capybara.result">
 <span id="capybara-result-module"></span><h2>capybara.result module<a class="headerlink" href="#module-capybara.result" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
@@ -2323,9 +2559,33 @@ possible to interact with this collection similar to a List because it implement
 </tbody>
 </table>
 <dl class="attribute">
+<dt id="capybara.result.Result.compare_count">
+<code class="descname">compare_count</code><a class="headerlink" href="#capybara.result.Result.compare_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns how the result count compares to the query options.</p>
+<p>The return value is negative if too few results were found, zero if enough were found, and
+positive if too many were found.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">-1, 0, or 1.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">int</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="capybara.result.Result.failure_message">
 <code class="descname">failure_message</code><a class="headerlink" href="#capybara.result.Result.failure_message" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>str</em> – A message describing the query failure.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="capybara.result.Result.matches_count">
+<code class="descname">matches_count</code><a class="headerlink" href="#capybara.result.Result.matches_count" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>bool</em> – Whether the result count matches the query options.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -2470,7 +2730,7 @@ a <code class="xref py py-class docutils literal notranslate"><span class="pre">
 </table>
 <dl class="method">
 <dt id="capybara.session.Session.accept_alert">
-<code class="descname">accept_alert</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.accept_alert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.accept_alert" title="Permalink to this definition">¶</a></dt>
+<code class="descname">accept_alert</code><span class="sig-paren">(</span><em>text=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.accept_alert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.accept_alert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code, accepting an alert.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2492,7 +2752,7 @@ executing the wrapped code.</li>
 
 <dl class="method">
 <dt id="capybara.session.Session.accept_confirm">
-<code class="descname">accept_confirm</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.accept_confirm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.accept_confirm" title="Permalink to this definition">¶</a></dt>
+<code class="descname">accept_confirm</code><span class="sig-paren">(</span><em>text=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.accept_confirm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.accept_confirm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code, accepting a confirm.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2514,7 +2774,7 @@ executing the wrapped code.</li>
 
 <dl class="method">
 <dt id="capybara.session.Session.accept_prompt">
-<code class="descname">accept_prompt</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.accept_prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.accept_prompt" title="Permalink to this definition">¶</a></dt>
+<code class="descname">accept_prompt</code><span class="sig-paren">(</span><em>text=None</em>, <em>response=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.accept_prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.accept_prompt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code, accepting a prompt, optionally responding to the prompt.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2529,6 +2789,37 @@ executing the wrapped code.</li>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ModalNotFound</span></code> – If a modal dialog hasn’t been found.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="capybara.session.Session.assert_all_of_selectors">
+<code class="descname">assert_all_of_selectors</code><span class="sig-paren">(</span><em>selector</em>, <em>*locators</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.assert_all_of_selectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asserts that all of the provided selectors are present on the given page or descendants of
+the current node. If options are provided, the assertion will check that each locator is
+present with those options as well (other than <code class="docutils literal notranslate"><span class="pre">wait</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_all_of_selectors</span><span class="p">(</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span> <span class="s2">&quot;Tom&quot;</span><span class="p">,</span> <span class="s2">&quot;Joe&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">assert_all_of_selectors</span><span class="p">(</span><span class="s2">&quot;css&quot;</span><span class="p">,</span> <span class="s2">&quot;#my_dif&quot;</span><span class="p">,</span> <span class="s2">&quot;a.not_clicked&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It accepts all options that <a class="reference internal" href="#capybara.session.Session.find_all" title="capybara.session.Session.find_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code></a> accepts, such as <code class="docutils literal notranslate"><span class="pre">text</span></code> and <code class="docutils literal notranslate"><span class="pre">visible</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">wait</span></code> option applies to all of the selectors as a group, so all of the locators must
+be present within <code class="docutils literal notranslate"><span class="pre">wait</span></code> (defaults to <a class="reference internal" href="#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>) seconds.</p>
+<p>If the given selector is not a valid selector, the first argument is assumed to be a locator
+and the default selector will be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>selector</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the selector to use. Defaults to
+<a class="reference internal" href="#capybara.default_selector" title="capybara.default_selector"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_selector</span></code></a>.</li>
+<li><strong>*locators</strong> (<em>str</em>) – Variable length list of locators.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -2595,7 +2886,7 @@ HTML tags.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.assert_no_title">
-<code class="descname">assert_no_title</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.assert_no_title" title="Permalink to this definition">¶</a></dt>
+<code class="descname">assert_no_title</code><span class="sig-paren">(</span><em>title</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.assert_no_title" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that the page doesn’t have the given title.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2611,6 +2902,37 @@ HTML tags.</p>
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ExpectationNotMet</span></code> – If the assertion hasn’t succeeded during the wait time.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="capybara.session.Session.assert_none_of_selectors">
+<code class="descname">assert_none_of_selectors</code><span class="sig-paren">(</span><em>selector</em>, <em>*locators</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.assert_none_of_selectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asserts that none of the provided selectors are present on the given page or descendants of
+the current node. If options are provided, the assertion will check that each locator is
+present with those options as well (other than <code class="docutils literal notranslate"><span class="pre">wait</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_none_of_selectors</span><span class="p">(</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span> <span class="s2">&quot;Tom&quot;</span><span class="p">,</span> <span class="s2">&quot;Joe&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">assert_none_of_selectors</span><span class="p">(</span><span class="s2">&quot;css&quot;</span><span class="p">,</span> <span class="s2">&quot;#my_div&quot;</span><span class="p">,</span> <span class="s2">&quot;a.not_clicked&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It accepts all options that <a class="reference internal" href="#capybara.session.Session.find_all" title="capybara.session.Session.find_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code></a> accepts, such as <code class="docutils literal notranslate"><span class="pre">text</span></code> and <code class="docutils literal notranslate"><span class="pre">visible</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">wait</span></code> option applies to all of the selectors as a group, so none of the locators must
+be present with <code class="docutils literal notranslate"><span class="pre">wait</span></code> (defaults to <a class="reference internal" href="#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>) seconds.</p>
+<p>If the given selector is not a valid selector, the first argument is assumed to be a locator
+and the default selector will be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>selector</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the selector to use. Defaults to
+<a class="reference internal" href="#capybara.default_selector" title="capybara.default_selector"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_selector</span></code></a>.</li>
+<li><strong>*locators</strong> (<em>str</em>) – Variable length list of locators.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -2666,6 +2988,27 @@ package:</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="capybara.session.Session.assert_style">
+<code class="descname">assert_style</code><span class="sig-paren">(</span><em>styles</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.assert_style" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asserts that an element has the specified CSS styles.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">element</span><span class="o">.</span><span class="n">assert_style</span><span class="p">({</span><span class="s2">&quot;color&quot;</span><span class="p">:</span> <span class="s2">&quot;rgb(0,0,255)&quot;</span><span class="p">,</span> <span class="s2">&quot;font-size&quot;</span><span class="p">:</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;px&quot;</span><span class="p">)})</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>styles</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str | RegexObject</em><em>]</em>) – The expected styles.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Raises:</th><td class="field-body"><code class="xref py py-exc docutils literal notranslate"><span class="pre">ExpectationNotMet</span></code> – The element doesn’t have the specified styles.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="capybara.session.Session.assert_text">
 <code class="descname">assert_text</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.assert_text" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that the page or current node has the given text content, ignoring any HTML tags.</p>
@@ -2691,7 +3034,7 @@ package:</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.assert_title">
-<code class="descname">assert_title</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.assert_title" title="Permalink to this definition">¶</a></dt>
+<code class="descname">assert_title</code><span class="sig-paren">(</span><em>title</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.assert_title" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asserts that the page has the given title.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2715,7 +3058,7 @@ package:</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.attach_file">
-<code class="descname">attach_file</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.attach_file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">attach_file</code><span class="sig-paren">(</span><em>locator_or_path</em>, <em>path=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.attach_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a file field on the page and attach a file given its path. The file field can be found
 via its name, id, or label text.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">attach_file</span><span class="p">(</span><span class="n">locator</span><span class="p">,</span> <span class="s2">&quot;/path/to/file.png&quot;</span><span class="p">)</span>
@@ -2749,7 +3092,7 @@ will be attached.</li>
 
 <dl class="method">
 <dt id="capybara.session.Session.check">
-<code class="descname">check</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.check" title="Permalink to this definition">¶</a></dt>
+<code class="descname">check</code><span class="sig-paren">(</span><em>locator=None</em>, <em>allow_label_click=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.check" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a check box and mark it as checked. The check box can be found via name, id, or label
 text.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="s2">&quot;German&quot;</span><span class="p">)</span>
@@ -2773,7 +3116,7 @@ element is non-visible. Defaults to <a class="reference internal" href="#capybar
 
 <dl class="method">
 <dt id="capybara.session.Session.choose">
-<code class="descname">choose</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.choose" title="Permalink to this definition">¶</a></dt>
+<code class="descname">choose</code><span class="sig-paren">(</span><em>locator=None</em>, <em>allow_label_click=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.choose" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a radio button and mark it as checked. The radio button can be found via name, id, or
 label text.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">choose</span><span class="p">(</span><span class="s2">&quot;Male&quot;</span><span class="p">)</span>
@@ -2803,7 +3146,7 @@ element is non-visible. Defaults to <a class="reference internal" href="#capybar
 
 <dl class="method">
 <dt id="capybara.session.Session.click_button">
-<code class="descname">click_button</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.click_button" title="Permalink to this definition">¶</a></dt>
+<code class="descname">click_button</code><span class="sig-paren">(</span><em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.click_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a button on the page and clicks it. This can be any <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> element of type
 submit, reset, image, or button, or it can be any <code class="docutils literal notranslate"><span class="pre">&lt;button&gt;</span></code> element. All buttons can be
 found by their id, value, or title. <code class="docutils literal notranslate"><span class="pre">&lt;button&gt;</span></code> elements can also be found by their text
@@ -2824,7 +3167,7 @@ content, and image <code class="docutils literal notranslate"><span class="pre">
 
 <dl class="method">
 <dt id="capybara.session.Session.click_link">
-<code class="descname">click_link</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.click_link" title="Permalink to this definition">¶</a></dt>
+<code class="descname">click_link</code><span class="sig-paren">(</span><em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.click_link" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a link by id, text, or title and clicks it. Also looks at image alt text inside the
 link.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2843,7 +3186,7 @@ link.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.click_link_or_button">
-<code class="descname">click_link_or_button</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.click_link_or_button" title="Permalink to this definition">¶</a></dt>
+<code class="descname">click_link_or_button</code><span class="sig-paren">(</span><em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.click_link_or_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a button or link by id, text or value and clicks it. Also looks at image alt text
 inside the link.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2862,7 +3205,7 @@ inside the link.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.click_on">
-<code class="descname">click_on</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.click_on" title="Permalink to this definition">¶</a></dt>
+<code class="descname">click_on</code><span class="sig-paren">(</span><em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.click_on" title="Permalink to this definition">¶</a></dt>
 <dd><p>Finds a button or link by id, text or value and clicks it. Also looks at image alt text
 inside the link.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2911,7 +3254,7 @@ inside the link.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.dismiss_confirm">
-<code class="descname">dismiss_confirm</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.dismiss_confirm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.dismiss_confirm" title="Permalink to this definition">¶</a></dt>
+<code class="descname">dismiss_confirm</code><span class="sig-paren">(</span><em>text=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.dismiss_confirm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.dismiss_confirm" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code, dismissing a confirm.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2933,7 +3276,7 @@ executing the wrapped code.</li>
 
 <dl class="method">
 <dt id="capybara.session.Session.dismiss_prompt">
-<code class="descname">dismiss_prompt</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.dismiss_prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.dismiss_prompt" title="Permalink to this definition">¶</a></dt>
+<code class="descname">dismiss_prompt</code><span class="sig-paren">(</span><em>text=None</em>, <em>wait=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.dismiss_prompt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.dismiss_prompt" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code, dismissing a prompt.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2963,6 +3306,31 @@ executing the wrapped code.</li>
 <dt id="capybara.session.Session.driver">
 <code class="descname">driver</code><a class="reference internal" href="_modules/capybara/session.html#Session.driver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.driver" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>driver.Base</em> – The driver for the current session.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="capybara.session.Session.evaluate_async_script">
+<code class="descname">evaluate_async_script</code><span class="sig-paren">(</span><em>script</em>, <em>*args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.evaluate_async_script"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.evaluate_async_script" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate the given JavaScript and obtain the result from a callback function which will be
+passed as the last argument to the script.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>script</strong> (<em>str</em>) – A string of JavaScript to evaluate.</li>
+<li><strong>*args</strong> – Variable length argument list to pass to the executed JavaScript string.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The result of the evaluated JavaScript (may be driver specific).</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">object</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -3013,7 +3381,7 @@ complex objects, such as jQuery statements. <code class="docutils literal notran
 
 <dl class="method">
 <dt id="capybara.session.Session.fieldset">
-<code class="descname">fieldset</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.fieldset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.fieldset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fieldset</code><span class="sig-paren">(</span><em>locator</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.fieldset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.fieldset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code within a specific fieldset given the id or legend of that
 fieldset.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3028,7 +3396,7 @@ fieldset.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.fill_in">
-<code class="descname">fill_in</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.fill_in" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fill_in</code><span class="sig-paren">(</span><em>locator=None</em>, <em>current_value=None</em>, <em>value=None</em>, <em>fill_options=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.fill_in" title="Permalink to this definition">¶</a></dt>
 <dd><p>Locate a text field or text area and fill it in with the given text. The field can be found
 via its name, id, or label text.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">fill_in</span><span class="p">(</span><span class="s2">&quot;Name&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="s2">&quot;Bob&quot;</span><span class="p">)</span>
@@ -3042,6 +3410,7 @@ via its name, id, or label text.</p>
 <li><strong>locator</strong> (<em>str</em><em>, </em><em>optional</em>) – Which field to fill in.</li>
 <li><strong>current_value</strong> (<em>str</em><em>, </em><em>optional</em>) – The current value of the field.</li>
 <li><strong>value</strong> (<em>str</em><em>, </em><em>optional</em>) – The value to fill in. Defaults to None.</li>
+<li><strong>fill_options</strong> (<em>Dict</em><em>, </em><em>optional</em>) – Driver-specific options regarding how to fill fields.</li>
 <li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
 </ul>
 </td>
@@ -3120,7 +3489,8 @@ the expectations to match. The expectations can be set using:</p>
 <span class="n">page</span><span class="o">.</span><span class="n">assert_selector</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">,</span> <span class="n">between</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
 </pre></div>
 </div>
-<p>See <code class="xref py py-func docutils literal notranslate"><span class="pre">matches_count()</span></code> for additional information about count matching.</p>
+<p>See <a class="reference internal" href="#capybara.result.Result.matches_count" title="capybara.result.Result.matches_count"><code class="xref py py-func docutils literal notranslate"><span class="pre">capybara.result.Result.matches_count()</span></code></a> for additional information about count
+matching.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -3146,7 +3516,7 @@ the expectations to match. The expectations can be set using:</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.find_button">
-<code class="descname">find_button</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.find_button" title="Permalink to this definition">¶</a></dt>
+<code class="descname">find_button</code><span class="sig-paren">(</span><em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.find_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a button on the page. This can be any <code class="docutils literal notranslate"><span class="pre">&lt;input&gt;</span></code> element of type submit, reset, image,
 or button, or it can be a <code class="docutils literal notranslate"><span class="pre">&lt;button&gt;</span></code> element. All buttons can be found by their id, value,
 or title. <code class="docutils literal notranslate"><span class="pre">&lt;button&gt;</span></code> elements can also be found by their text content, and image
@@ -3173,7 +3543,7 @@ or title. <code class="docutils literal notranslate"><span class="pre">&lt;butto
 
 <dl class="method">
 <dt id="capybara.session.Session.find_by_id">
-<code class="descname">find_by_id</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.find_by_id" title="Permalink to this definition">¶</a></dt>
+<code class="descname">find_by_id</code><span class="sig-paren">(</span><em>id</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.find_by_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find an element on the page, given its id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3197,7 +3567,7 @@ or title. <code class="docutils literal notranslate"><span class="pre">&lt;butto
 
 <dl class="method">
 <dt id="capybara.session.Session.find_field">
-<code class="descname">find_field</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.find_field" title="Permalink to this definition">¶</a></dt>
+<code class="descname">find_field</code><span class="sig-paren">(</span><em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.find_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a form field on the page. The field can be found by its name, id, or label text.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3249,7 +3619,7 @@ element to be found.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.find_link">
-<code class="descname">find_link</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.find_link" title="Permalink to this definition">¶</a></dt>
+<code class="descname">find_link</code><span class="sig-paren">(</span><em>locator=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.find_link" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a link on the page. The link can be found by its id or text.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3273,14 +3643,15 @@ element to be found.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.frame">
-<code class="descname">frame</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.frame" title="Permalink to this definition">¶</a></dt>
+<code class="descname">frame</code><span class="sig-paren">(</span><em>locator=None</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.frame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.frame" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code within the given iframe using the given frame or frame name/id.
 May not be supported by all drivers.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>locator</strong> (<em>str | Element</em>) – The name/id of the frame or the frame’s element.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>locator</strong> (<em>str | Element</em><em>, </em><em>optional</em>) – The name/id of the frame or the frame’s element.
+Defaults to the only frame in the document.</td>
 </tr>
 </tbody>
 </table>
@@ -3299,8 +3670,39 @@ May not be supported by all drivers.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="capybara.session.Session.has_all_of_selectors">
+<code class="descname">has_all_of_selectors</code><span class="sig-paren">(</span><em>selector</em>, <em>*locators</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_all_of_selectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if allof the provided selectors are present on the given page or descendants of the
+current node. If options are provided, the assertion will check that each locator is present
+with those options as well (other than <code class="docutils literal notranslate"><span class="pre">wait</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_all_of_selectors</span><span class="p">(</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span> <span class="s2">&quot;Tom&quot;</span><span class="p">,</span> <span class="s2">&quot;Joe&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">assert_all_of_selectors</span><span class="p">(</span><span class="s2">&quot;css&quot;</span><span class="p">,</span> <span class="s2">&quot;#my_dif&quot;</span><span class="p">,</span> <span class="s2">&quot;a.not_clicked&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It accepts all options that <a class="reference internal" href="#capybara.session.Session.find_all" title="capybara.session.Session.find_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code></a> accepts, such as <code class="docutils literal notranslate"><span class="pre">text</span></code> and <code class="docutils literal notranslate"><span class="pre">visible</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">wait</span></code> option applies to all of the selectors as a group, so all of the locators must
+be present within <code class="docutils literal notranslate"><span class="pre">wait</span></code> (defaults to <a class="reference internal" href="#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>) seconds.</p>
+<p>If the given selector is not a valid selector, the first argument is assumed to be a locator
+and the default selector will be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>selector</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the selector to use. Defaults to
+<a class="reference internal" href="#capybara.default_selector" title="capybara.default_selector"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_selector</span></code></a>.</li>
+<li><strong>*locators</strong> (<em>str</em>) – Variable length list of locators.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="capybara.session.Session.has_button">
-<code class="descname">has_button</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_button" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_button</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a button with the given text, value, or id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3324,7 +3726,7 @@ May not be supported by all drivers.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.has_checked_field">
-<code class="descname">has_checked_field</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_checked_field" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_checked_field</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_checked_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a radio button or checkbox with the given label,
 value, or id, that is currently checked.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3381,7 +3783,7 @@ specified.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.has_css">
-<code class="descname">has_css</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_css" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_css</code><span class="sig-paren">(</span><em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_css" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given CSS selector is on the page or a descendant of the current node.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_css</span><span class="p">(</span><span class="s2">&quot;p#foo&quot;</span><span class="p">)</span>
 </pre></div>
@@ -3419,7 +3821,7 @@ be specified.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.has_field">
-<code class="descname">has_field</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_field" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_field</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a form field with the given label, name, or id.</p>
 <p>For text fields and other textual fields, such as textareas and HTML5 email/url/etc. fields,
 it’s possible to specify a <code class="docutils literal notranslate"><span class="pre">value</span></code> argument to specify the text the field should contain:</p>
@@ -3448,7 +3850,7 @@ it’s possible to specify a <code class="docutils literal notranslate"><span cl
 
 <dl class="method">
 <dt id="capybara.session.Session.has_link">
-<code class="descname">has_link</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_link" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_link</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_link" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a link with the given text or id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3472,7 +3874,7 @@ it’s possible to specify a <code class="docutils literal notranslate"><span cl
 
 <dl class="method">
 <dt id="capybara.session.Session.has_no_button">
-<code class="descname">has_no_button</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_button" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_no_button</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no button with the given text, value, or id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3496,7 +3898,7 @@ it’s possible to specify a <code class="docutils literal notranslate"><span cl
 
 <dl class="method">
 <dt id="capybara.session.Session.has_no_checked_field">
-<code class="descname">has_no_checked_field</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_checked_field" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_no_checked_field</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_checked_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no radio button or checkbox with the given label,
 value, or id that is currently checked.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3521,7 +3923,7 @@ value, or id that is currently checked.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.has_no_css">
-<code class="descname">has_no_css</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_css" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_no_css</code><span class="sig-paren">(</span><em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_css" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given CSS selector is not on the page or a descendant of the current node.
 Usage is identical to <a class="reference internal" href="#capybara.session.Session.has_css" title="capybara.session.Session.has_css"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_css()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3546,7 +3948,7 @@ Usage is identical to <a class="reference internal" href="#capybara.session.Sess
 
 <dl class="method">
 <dt id="capybara.session.Session.has_no_field">
-<code class="descname">has_no_field</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_field" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_no_field</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no form field with the given label, name, or id. See
 <a class="reference internal" href="#capybara.session.Session.has_field" title="capybara.session.Session.has_field"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_field()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3571,7 +3973,7 @@ Usage is identical to <a class="reference internal" href="#capybara.session.Sess
 
 <dl class="method">
 <dt id="capybara.session.Session.has_no_link">
-<code class="descname">has_no_link</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_link" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_no_link</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_link" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no link with the given text or id.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3595,7 +3997,7 @@ Usage is identical to <a class="reference internal" href="#capybara.session.Sess
 
 <dl class="method">
 <dt id="capybara.session.Session.has_no_select">
-<code class="descname">has_no_select</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_select" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_no_select</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_select" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no select field with the given label, name, or id.
 See <a class="reference internal" href="#capybara.session.Session.has_select" title="capybara.session.Session.has_select"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_select()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3645,7 +4047,7 @@ identical to <a class="reference internal" href="#capybara.session.Session.has_s
 
 <dl class="method">
 <dt id="capybara.session.Session.has_no_table">
-<code class="descname">has_no_table</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_table" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_no_table</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no table with the given id or caption. See
 <a class="reference internal" href="#capybara.session.Session.has_table" title="capybara.session.Session.has_table"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_table()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3695,7 +4097,7 @@ tags and normalizing whitespace.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.has_no_title">
-<code class="descname">has_no_title</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_title" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_no_title</code><span class="sig-paren">(</span><em>title</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_title" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page doesn’t have the given title.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3719,7 +4121,7 @@ tags and normalizing whitespace.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.has_no_unchecked_field">
-<code class="descname">has_no_unchecked_field</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_unchecked_field" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_no_unchecked_field</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_unchecked_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has no radio button or checkbox with the given label,
 value, or id, that is currently unchecked.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3744,7 +4146,7 @@ value, or id, that is currently unchecked.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.has_no_xpath">
-<code class="descname">has_no_xpath</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_xpath" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_no_xpath</code><span class="sig-paren">(</span><em>path</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_no_xpath" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given XPath expression is not on the page or a descendant of the current node.
 Usage is identical to <a class="reference internal" href="#capybara.session.Session.has_xpath" title="capybara.session.Session.has_xpath"><code class="xref py py-meth docutils literal notranslate"><span class="pre">has_xpath()</span></code></a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3768,8 +4170,39 @@ Usage is identical to <a class="reference internal" href="#capybara.session.Sess
 </dd></dl>
 
 <dl class="method">
+<dt id="capybara.session.Session.has_none_of_selectors">
+<code class="descname">has_none_of_selectors</code><span class="sig-paren">(</span><em>selector</em>, <em>*locators</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_none_of_selectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if none of the provided selectors are present on the given page or descendants of the
+current node. If options are provided, the assertion will check that each locator is present
+with those options as well (other than <code class="docutils literal notranslate"><span class="pre">wait</span></code>).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">assert_none_of_selectors</span><span class="p">(</span><span class="s2">&quot;custom&quot;</span><span class="p">,</span> <span class="s2">&quot;Tom&quot;</span><span class="p">,</span> <span class="s2">&quot;Joe&quot;</span><span class="p">,</span> <span class="n">visible</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">)</span>
+<span class="n">page</span><span class="o">.</span><span class="n">assert_none_of_selectors</span><span class="p">(</span><span class="s2">&quot;css&quot;</span><span class="p">,</span> <span class="s2">&quot;#my_div&quot;</span><span class="p">,</span> <span class="s2">&quot;a.not_clicked&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>It accepts all options that <a class="reference internal" href="#capybara.session.Session.find_all" title="capybara.session.Session.find_all"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find_all()</span></code></a> accepts, such as <code class="docutils literal notranslate"><span class="pre">text</span></code> and <code class="docutils literal notranslate"><span class="pre">visible</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">wait</span></code> option applies to all of the selectors as a group, so none of the locators must
+be present with <code class="docutils literal notranslate"><span class="pre">wait</span></code> (defaults to <a class="reference internal" href="#capybara.default_max_wait_time" title="capybara.default_max_wait_time"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_max_wait_time</span></code></a>) seconds.</p>
+<p>If the given selector is not a valid selector, the first argument is assumed to be a locator
+and the default selector will be used.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>selector</strong> (<em>str</em><em>, </em><em>optional</em>) – The name of the selector to use. Defaults to
+<a class="reference internal" href="#capybara.default_selector" title="capybara.default_selector"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.default_selector</span></code></a>.</li>
+<li><strong>*locators</strong> (<em>str</em>) – Variable length list of locators.</li>
+<li><strong>**kwargs</strong> – Arbitrary keyword arguments for <code class="xref py py-class docutils literal notranslate"><span class="pre">SelectorQuery</span></code>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="capybara.session.Session.has_select">
-<code class="descname">has_select</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_select" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_select</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_select" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a select field with the given label, name, or id.</p>
 <p>It can be specified which option should currently be selected:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_select</span><span class="p">(</span><span class="s2">&quot;Language&quot;</span><span class="p">,</span> <span class="n">selected</span><span class="o">=</span><span class="s2">&quot;German&quot;</span><span class="p">)</span>
@@ -3854,7 +4287,7 @@ be specified.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.has_table">
-<code class="descname">has_table</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_table" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_table</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a table with the given id or caption:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">has_table</span><span class="p">(</span><span class="s2">&quot;People&quot;</span><span class="p">)</span>
 </pre></div>
@@ -3913,7 +4346,7 @@ specified.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.has_title">
-<code class="descname">has_title</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_title" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_title</code><span class="sig-paren">(</span><em>title</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_title" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page has the given title.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -3937,7 +4370,7 @@ specified.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.has_unchecked_field">
-<code class="descname">has_unchecked_field</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_unchecked_field" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_unchecked_field</code><span class="sig-paren">(</span><em>locator</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_unchecked_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the page or current node has a radio button or checkbox with the given label,
 value, or id, that is currently unchecked.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -3962,7 +4395,7 @@ value, or id, that is currently unchecked.</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.has_xpath">
-<code class="descname">has_xpath</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_xpath" title="Permalink to this definition">¶</a></dt>
+<code class="descname">has_xpath</code><span class="sig-paren">(</span><em>query</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.has_xpath" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if a given XPath expression is on the page or a descendant of the current node.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">session</span><span class="o">.</span><span class="n">has_xpath</span><span class="p">(</span><span class="s2">&quot;.//p[@id=&#39;foo&#39;]&quot;</span><span class="p">)</span>
 </pre></div>
@@ -4098,7 +4531,7 @@ will be relative to <a class="reference internal" href="#capybara.save_path" tit
 
 <dl class="method">
 <dt id="capybara.session.Session.scope">
-<code class="descname">scope</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.scope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.scope" title="Permalink to this definition">¶</a></dt>
+<code class="descname">scope</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.scope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.scope" title="Permalink to this definition">¶</a></dt>
 <dd><p>Executes the wrapped code within the context of a node. <code class="docutils literal notranslate"><span class="pre">scope</span></code> takes the same options
 as <a class="reference internal" href="#capybara.session.Session.find" title="capybara.session.Session.find"><code class="xref py py-meth docutils literal notranslate"><span class="pre">find()</span></code></a>. For the duration of the context, any command to Capybara will be handled
 as though it were scoped to the given element.</p>
@@ -4135,7 +4568,7 @@ the type set in <a class="reference internal" href="#capybara.default_selector" 
 
 <dl class="method">
 <dt id="capybara.session.Session.select">
-<code class="descname">select</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.select" title="Permalink to this definition">¶</a></dt>
+<code class="descname">select</code><span class="sig-paren">(</span><em>value=None</em>, <em>field=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.select" title="Permalink to this definition">¶</a></dt>
 <dd><p>If the <code class="docutils literal notranslate"><span class="pre">field</span></code> argument is present, <code class="docutils literal notranslate"><span class="pre">select</span></code> finds a select box on the page and selects
 a particular option from it. Otherwise it finds an option inside the current scope and
 selects it. If the select box is a multiple select, <code class="docutils literal notranslate"><span class="pre">select</span></code> can be called multiple times
@@ -4217,7 +4650,7 @@ switched back and <code class="xref py py-exc docutils literal notranslate"><spa
 
 <dl class="method">
 <dt id="capybara.session.Session.table">
-<code class="descname">table</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.table" title="Permalink to this definition">¶</a></dt>
+<code class="descname">table</code><span class="sig-paren">(</span><em>locator</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code within a specific table given the id or caption of that table.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -4243,7 +4676,7 @@ switched back and <code class="xref py py-exc docutils literal notranslate"><spa
 
 <dl class="method">
 <dt id="capybara.session.Session.uncheck">
-<code class="descname">uncheck</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.uncheck" title="Permalink to this definition">¶</a></dt>
+<code class="descname">uncheck</code><span class="sig-paren">(</span><em>locator=None</em>, <em>allow_label_click=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.uncheck" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a check box and uncheck it. The check box can be found via name, id, or label text.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">page</span><span class="o">.</span><span class="n">uncheck</span><span class="p">(</span><span class="s2">&quot;German&quot;</span><span class="p">)</span>
 </pre></div>
@@ -4266,7 +4699,7 @@ element is non-visible. Defaults to <a class="reference internal" href="#capybar
 
 <dl class="method">
 <dt id="capybara.session.Session.unselect">
-<code class="descname">unselect</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.unselect" title="Permalink to this definition">¶</a></dt>
+<code class="descname">unselect</code><span class="sig-paren">(</span><em>value=None</em>, <em>field=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#capybara.session.Session.unselect" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find a select box on the page and unselect a particular option from it. If the select box is
 a multiple select, <code class="docutils literal notranslate"><span class="pre">unselect</span></code> can be called multiple times to unselect more than one
 option. The select box can be found via its name, id, or label text.</p>
@@ -4317,7 +4750,7 @@ remote server the default. For example:</p>
 
 <dl class="method">
 <dt id="capybara.session.Session.window">
-<code class="descname">window</code><span class="sig-paren">(</span><em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.window" title="Permalink to this definition">¶</a></dt>
+<code class="descname">window</code><span class="sig-paren">(</span><em>window</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/session.html#Session.window"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.session.Session.window" title="Permalink to this definition">¶</a></dt>
 <dd><p>This method does the following:</p>
 <ol class="arabic simple">
 <li>Switches to the given window (it can be located by window instance/lambda/string).</li>
@@ -4507,12 +4940,6 @@ path+query portion of the full URL.</p>
 
 </dd></dl>
 
-<dl class="exception">
-<dt id="capybara.utils.TimeoutError">
-<em class="property">exception </em><code class="descclassname">capybara.utils.</code><code class="descname">TimeoutError</code><a class="reference internal" href="_modules/capybara/utils.html#TimeoutError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.utils.TimeoutError" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">exceptions.Exception</span></code></p>
-</dd></dl>
-
 <dl class="class">
 <dt id="capybara.utils.cached_property">
 <em class="property">class </em><code class="descclassname">capybara.utils.</code><code class="descname">cached_property</code><span class="sig-paren">(</span><em>func</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/utils.html#cached_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.utils.cached_property" title="Permalink to this definition">¶</a></dt>
@@ -4655,22 +5082,6 @@ method argument, or through decoration:</p>
 </div>
 </dd></dl>
 
-<dl class="function">
-<dt id="capybara.utils.timeout">
-<code class="descclassname">capybara.utils.</code><code class="descname">timeout</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/utils.html#timeout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.utils.timeout" title="Permalink to this definition">¶</a></dt>
-<dd><p>Raises an exception if the wrapped code fails to return within the given number of seconds.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>seconds</strong> (<em>int | float</em>) – The number of seconds to wait before timing out.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><a class="reference internal" href="#capybara.utils.TimeoutError" title="capybara.utils.TimeoutError"><code class="xref py py-exc docutils literal notranslate"><span class="pre">TimeoutError</span></code></a> – The wrapped code failed to return within the given timeout.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
 </div>
 <div class="section" id="module-capybara.version">
 <span id="capybara-version-module"></span><h2>capybara.version module<a class="headerlink" href="#module-capybara.version" title="Permalink to this headline">¶</a></h2>
@@ -4736,6 +5147,12 @@ the current window should remain the same as it was before calling this method.<
 <dt id="capybara.window.Window.exists">
 <code class="descname">exists</code><a class="headerlink" href="#capybara.window.Window.exists" title="Permalink to this definition">¶</a></dt>
 <dd><p><em>bool</em> – Whether the window is not closed.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="capybara.window.Window.fullscreen">
+<code class="descname">fullscreen</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara/window.html#Window.fullscreen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.window.Window.fullscreen" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fullscreen the window.</p>
 </dd></dl>
 
 <dl class="method">
@@ -5018,7 +5435,7 @@ current document in a Capybara session.</p>
 
 <dl class="function">
 <dt id="capybara.using_driver">
-<code class="descclassname">capybara.</code><code class="descname">using_driver</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara.html#using_driver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.using_driver" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.</code><code class="descname">using_driver</code><span class="sig-paren">(</span><em>driver</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara.html#using_driver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.using_driver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code using a specific driver.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -5032,7 +5449,7 @@ current document in a Capybara session.</p>
 
 <dl class="function">
 <dt id="capybara.using_session">
-<code class="descclassname">capybara.</code><code class="descname">using_session</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara.html#using_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.using_session" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.</code><code class="descname">using_session</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara.html#using_session"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.using_session" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute the wrapped code using a specific session name.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -5046,7 +5463,7 @@ current document in a Capybara session.</p>
 
 <dl class="function">
 <dt id="capybara.using_wait_time">
-<code class="descclassname">capybara.</code><code class="descname">using_wait_time</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara.html#using_wait_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.using_wait_time" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">capybara.</code><code class="descname">using_wait_time</code><span class="sig-paren">(</span><em>seconds</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/capybara.html#using_wait_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#capybara.using_wait_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Execute a context using a specific wait time.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -5075,31 +5492,22 @@ current document in a Capybara session.</p>
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">capybara package</a><ul>
-<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
-<li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-capybara.compat">capybara.compat module</a></li>
-<li><a class="reference internal" href="#module-capybara.dsl">capybara.dsl module</a></li>
-<li><a class="reference internal" href="#module-capybara.exceptions">capybara.exceptions module</a></li>
-<li><a class="reference internal" href="#module-capybara.helpers">capybara.helpers module</a></li>
-<li><a class="reference internal" href="#module-capybara.html">capybara.html module</a></li>
-<li><a class="reference internal" href="#module-capybara.result">capybara.result module</a></li>
-<li><a class="reference internal" href="#module-capybara.server">capybara.server module</a></li>
-<li><a class="reference internal" href="#module-capybara.session">capybara.session module</a></li>
-<li><a class="reference internal" href="#module-capybara.session_matchers">capybara.session_matchers module</a></li>
-<li><a class="reference internal" href="#module-capybara.utils">capybara.utils module</a></li>
-<li><a class="reference internal" href="#module-capybara.version">capybara.version module</a></li>
-<li><a class="reference internal" href="#module-capybara.window">capybara.window module</a></li>
-<li><a class="reference internal" href="#module-capybara">Module contents</a></li>
-</ul>
-</li>
-</ul>
+<h1 class="logo"><a href="index.html">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
@@ -5107,13 +5515,6 @@ current document in a Capybara session.</p>
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/capybara.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
@@ -5134,8 +5535,8 @@ current document in a Capybara session.</p>
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
       <a href="_sources/capybara.rst.txt"

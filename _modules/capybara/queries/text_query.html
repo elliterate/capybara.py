@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.queries.text_query &#8212; Capybara 0.1.4 documentation</title>
+    <title>capybara.queries.text_query &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for capybara.queries.text_query</h1><div class="highlight"><pre>
@@ -34,13 +36,14 @@
 
 <span class="kn">import</span> <span class="nn">capybara</span>
 <span class="kn">from</span> <span class="nn">capybara.helpers</span> <span class="k">import</span> <span class="n">declension</span><span class="p">,</span> <span class="n">desc</span><span class="p">,</span> <span class="n">failure_message</span><span class="p">,</span> <span class="n">normalize_text</span><span class="p">,</span> <span class="n">toregex</span>
+<span class="kn">from</span> <span class="nn">capybara.queries.base_query</span> <span class="k">import</span> <span class="n">BaseQuery</span>
 <span class="kn">from</span> <span class="nn">capybara.utils</span> <span class="k">import</span> <span class="n">isregex</span>
 
 
 <span class="n">VALID_QUERY_TYPE</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="s2">&quot;visible&quot;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="TextQuery"><a class="viewcode-back" href="../../../capybara.queries.html#capybara.queries.text_query.TextQuery">[docs]</a><span class="k">class</span> <span class="nc">TextQuery</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="TextQuery"><a class="viewcode-back" href="../../../capybara.queries.html#capybara.queries.text_query.TextQuery">[docs]</a><span class="k">class</span> <span class="nc">TextQuery</span><span class="p">(</span><span class="n">BaseQuery</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Queries for text content in a node.</span>
 
@@ -94,10 +97,7 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">wait</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot; int | float: How long to wait for synchronization. &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;wait&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;wait&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="mi">0</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">capybara</span><span class="o">.</span><span class="n">default_max_wait_time</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize_wait</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">[</span><span class="s2">&quot;wait&quot;</span><span class="p">])</span>
 
 <div class="viewcode-block" id="TextQuery.resolve_for"><a class="viewcode-back" href="../../../capybara.queries.html#capybara.queries.text_query.TextQuery.resolve_for">[docs]</a>    <span class="k">def</span> <span class="nf">resolve_for</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -114,8 +114,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">actual_text</span> <span class="o">=</span> <span class="n">normalize_text</span><span class="p">(</span>
             <span class="n">node</span><span class="o">.</span><span class="n">visible_text</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">query_type</span> <span class="o">==</span> <span class="s2">&quot;visible&quot;</span> <span class="k">else</span> <span class="n">node</span><span class="o">.</span><span class="n">all_text</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">search_regexp</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">actual_text</span><span class="p">))</span>
-</div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">count</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -168,15 +168,28 @@
 
         <span class="k">if</span> <span class="n">details_message</span><span class="p">:</span>
             <span class="n">message</span> <span class="o">+=</span> <span class="s2">&quot;. (However, </span><span class="si">{details}</span><span class="s2">.)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">details</span><span class="o">=</span><span class="s2">&quot; and &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">details_message</span><span class="p">))</span>
-</div>
-        <span class="k">return</span> <span class="n">message</span>
+
+        <span class="k">return</span> <span class="n">message</span></div>
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../../index.html">Documentation overview</a><ul>
@@ -207,8 +220,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

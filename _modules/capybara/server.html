@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>capybara.server &#8212; Capybara 0.1.4 documentation</title>
+    <title>capybara.server &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <h1>Source code for capybara.server</h1><div class="highlight"><pre>
@@ -36,14 +38,13 @@
 
 <span class="kn">import</span> <span class="nn">capybara</span>
 <span class="kn">from</span> <span class="nn">capybara.compat</span> <span class="k">import</span> <span class="n">URLError</span><span class="p">,</span> <span class="n">urlopen</span>
+<span class="kn">from</span> <span class="nn">capybara.helpers</span> <span class="k">import</span> <span class="n">Timer</span>
 <span class="kn">from</span> <span class="nn">capybara.utils</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">Counter</span><span class="p">,</span>
-    <span class="ne">TimeoutError</span><span class="p">,</span>
     <span class="n">cached_property</span><span class="p">,</span>
     <span class="n">decode_bytes</span><span class="p">,</span>
     <span class="n">encode_string</span><span class="p">,</span>
-    <span class="n">find_available_port</span><span class="p">,</span>
-    <span class="n">timeout</span><span class="p">)</span>
+    <span class="n">find_available_port</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Server"><a class="viewcode-back" href="../../capybara.html#capybara.server.Server">[docs]</a><span class="k">class</span> <span class="nc">Server</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -80,24 +81,23 @@
     <span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">error</span>
 
-<div class="viewcode-block" id="Server.reset_error"><a class="viewcode-back" href="../../capybara.html#capybara.server.Server.reset_error">[docs]</a>    <span class="k">def</span> <span class="nf">reset_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
-        <span class="bp">self</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="kc">None</span>
+<div class="viewcode-block" id="Server.reset_error"><a class="viewcode-back" href="../../capybara.html#capybara.server.Server.reset_error">[docs]</a>    <span class="k">def</span> <span class="nf">reset_error</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="kc">None</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">port_key</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Server.middleware"><a class="viewcode-back" href="../../capybara.html#capybara.server.Server.middleware">[docs]</a>    <span class="nd">@cached_property</span>
-    <span class="k">def</span> <span class="nf">middleware</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
-        <span class="k">return</span> <span class="n">Middleware</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">middleware</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">Middleware</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Server.wait_for_pending_requests"><a class="viewcode-back" href="../../capybara.html#capybara.server.Server.wait_for_pending_requests">[docs]</a>    <span class="k">def</span> <span class="nf">wait_for_pending_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="k">with</span> <span class="n">timeout</span><span class="p">(</span><span class="mi">60</span><span class="p">):</span>
-                <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_pending_requests</span><span class="p">:</span>
-                    <span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">TimeoutError</span><span class="p">:</span></div>
-            <span class="k">raise</span> <span class="ne">TimeoutError</span><span class="p">(</span><span class="s2">&quot;Requests did not finish in 60 seconds&quot;</span><span class="p">)</span>
+        <span class="n">timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_pending_requests</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">timer</span><span class="o">.</span><span class="n">expired</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Requests did not finish in 60 seconds&quot;</span><span class="p">)</span>
+            <span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Server.boot"><a class="viewcode-back" href="../../capybara.html#capybara.server.Server.boot">[docs]</a>    <span class="k">def</span> <span class="nf">boot</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -123,11 +123,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">server_thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
             <span class="c1"># Make sure the server actually starts and becomes responsive.</span>
-            <span class="k">with</span> <span class="n">timeout</span><span class="p">(</span><span class="mi">60</span><span class="p">):</span>
-                <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">responsive</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">server_thread</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
-</div>
-        <span class="k">return</span> <span class="bp">self</span>
+            <span class="n">timer</span> <span class="o">=</span> <span class="n">Timer</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
+            <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">responsive</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">timer</span><span class="o">.</span><span class="n">expired</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;WSGI application timed out during boot&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">server_thread</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span></div>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">responsive</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -151,8 +153,8 @@
         <span class="k">return</span> <span class="kc">False</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">has_pending_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">has_pending_requests</span>
+    <span class="k">def</span> <span class="nf">has_pending_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">middleware</span><span class="o">.</span><span class="n">has_pending_requests</span></div>
 
 
 <div class="viewcode-block" id="Middleware"><a class="viewcode-back" href="../../capybara.html#capybara.server.Middleware">[docs]</a><span class="k">class</span> <span class="nc">Middleware</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -173,19 +175,32 @@
                     <span class="k">raise</span>
 
 <div class="viewcode-block" id="Middleware.identify"><a class="viewcode-back" href="../../capybara.html#capybara.server.Middleware.identify">[docs]</a>    <span class="k">def</span> <span class="nf">identify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">environ</span><span class="p">,</span> <span class="n">start_response</span><span class="p">):</span>
-        <span class="n">start_response</span><span class="p">(</span><span class="s2">&quot;200 OK&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)])</span></div>
-        <span class="k">return</span> <span class="p">[</span><span class="n">encode_string</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)))]</span>
+        <span class="n">start_response</span><span class="p">(</span><span class="s2">&quot;200 OK&quot;</span><span class="p">,</span> <span class="p">[(</span><span class="s2">&quot;Content-Type&quot;</span><span class="p">,</span> <span class="s2">&quot;text/plain&quot;</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">encode_string</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">app</span><span class="p">)))]</span></div>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">has_pending_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span></div>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">def</span> <span class="nf">has_pending_requests</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">counter</span><span class="o">.</span><span class="n">value</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
 </pre></div>
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper"><div class="relations">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../../index.html">Documentation overview</a><ul>
@@ -216,8 +231,8 @@
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
     </div>
 

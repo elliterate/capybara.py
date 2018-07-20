@@ -4,12 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Capybara &#8212; Capybara 0.1.4 documentation</title>
+    <title>Capybara &#8212; Capybara 0.1.5 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -27,6 +27,8 @@
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
+          
+
           <div class="body" role="main">
             
   <div class="section" id="capybara">
@@ -34,6 +36,8 @@
 <p>Capybara helps you test web applications by simulating how a real user would
 interact with your app. It is agnostic about the driver running your tests and
 comes with Werkzeug and Selenium support built in.</p>
+<p><strong>Need help?</strong> Ask on the mailing list (please do not open an issue on GitHub):
+<a class="reference external" href="http://groups.google.com/group/capybara-py/">http://groups.google.com/group/capybara-py/</a>.</p>
 <p><strong>Note: Firefox 48+</strong> If you’re using Firefox with <code class="docutils literal notranslate"><span class="pre">selenium</span></code> and want full
 functionality stay on either Firefox <a class="reference external" href="https://ftp.mozilla.org/pub/firefox/releases/45.0esr/">45.0esr</a> or <a class="reference external" href="https://ftp.mozilla.org/pub/firefox/releases/47.0.1/">47.0.1</a>. If using <code class="docutils literal notranslate"><span class="pre">selenium</span></code>
 3.0+ this will require configuring your driver with the <code class="docutils literal notranslate"><span class="pre">&quot;marionette&quot;:</span> <span class="pre">False</span></code>
@@ -372,7 +376,20 @@ some of which are not, then the first exactly matching element is returned.</li>
 </div>
 </div>
 <div class="section" id="id23">
-<h2><span class="target" id="asynchronous-javascript-ajax-and-friends">Asynchronous JavaScript (Ajax and friends)</span><a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
+<h2><span class="target" id="transactions-and-database-setup">Transactions and database setup</span><a class="headerlink" href="#id23" title="Permalink to this headline">¶</a></h2>
+<p>Some Capybara drivers need to run against an actual HTTP server. Capybara takes
+care of this and starts one for you in the same process as your test, but on
+another thread. Selenium is one of those drivers, whereas Werkzeug is not.</p>
+<p>If you are using a SQL database, it is common to run every test in a
+transaction, which is rolled back at the end of the test. Django’s <code class="docutils literal notranslate"><span class="pre">TestCase</span></code>
+does this by default out of the box, for example. Since transactions are
+usually not shared across threads, this will cause data you have put into the
+database in your test code to be invisible to Capybara.</p>
+<p>Django provides <a class="reference external" href="https://docs.djangoproject.com/en/2.0/topics/testing/tools/#django.test.TransactionTestCase"><code class="docutils literal notranslate"><span class="pre">TransactionTestCase</span></code></a>, which uses truncation instead of
+transactions, i.e., it empties out the entire database after each test.</p>
+</div>
+<div class="section" id="id24">
+<h2><span class="target" id="asynchronous-javascript-ajax-and-friends">Asynchronous JavaScript (Ajax and friends)</span><a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h2>
 <p>When working with asynchronous JavaScript, you might come across situations
 where you are attempting to interact with an element which is not yet present
 on the page. Capybara automatically deals with this by waiting for elements
@@ -417,14 +434,14 @@ the text of the <code class="docutils literal notranslate"><span class="pre">h1<
 pass. If you do not want this behavior, you can set
 <a class="reference internal" href="capybara.html#capybara.automatic_reload" title="capybara.automatic_reload"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.automatic_reload</span></code></a> to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </div>
-<div class="section" id="id24">
-<h2><span class="target" id="using-sessions">Using sessions</span><a class="headerlink" href="#id24" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id25">
+<h2><span class="target" id="using-sessions">Using sessions</span><a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h2>
 <p>Capybara manages named sessions (“default” if not specified) allowing multiple
 sessions using the same driver and test app instance to be interacted with. A
 new session will be created using the current driver if a session with the given
 name using the current driver and test app instance is not found.</p>
-<div class="section" id="id25">
-<h3><span class="target" id="named-sessions">Named sessions</span><a class="headerlink" href="#id25" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id26">
+<h3><span class="target" id="named-sessions">Named sessions</span><a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h3>
 <p>To perform operations in a different session and then revert to the previous
 session:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">capybara</span>
@@ -441,8 +458,8 @@ session:</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="id26">
-<h3><span class="target" id="using-sessions-manually">Using sessions manually</span><a class="headerlink" href="#id26" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id27">
+<h3><span class="target" id="using-sessions-manually">Using sessions manually</span><a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h3>
 <p>For ultimate control, you can instantiate and use a <a class="reference internal" href="capybara.html#capybara.session.Session" title="capybara.session.Session"><code class="xref py py-class docutils literal notranslate"><span class="pre">Session</span></code></a>
 manually.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">capybara.session</span> <span class="k">import</span> <span class="n">Session</span>
@@ -456,8 +473,8 @@ manually.</p>
 </div>
 </div>
 </div>
-<div class="section" id="id27">
-<h2><span class="target" id="using-the-dsl-elsewhere">Using the DSL elsewhere</span><a class="headerlink" href="#id27" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id28">
+<h2><span class="target" id="using-the-dsl-elsewhere">Using the DSL elsewhere</span><a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h2>
 <p>You can access the <a class="reference internal" href="capybara.html#capybara.dsl.page" title="capybara.dsl.page"><code class="xref py py-data docutils literal notranslate"><span class="pre">page</span></code></a> session proxy from anywhere by importing it:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">capybara.dsl</span> <span class="k">import</span> <span class="n">page</span>
 
@@ -497,8 +514,8 @@ manually.</p>
 <p>This enables its use in unsupported testing frameworks, and for general-purpose
 scripting.</p>
 </div>
-<div class="section" id="id28">
-<h2><span class="target" id="calling-remote-servers">Calling remote servers</span><a class="headerlink" href="#id28" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id29">
+<h2><span class="target" id="calling-remote-servers">Calling remote servers</span><a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h2>
 <p>Normally Capybara expects to be testing an in-process WSGI application, but you
 can also use it to talk to a web server running anywhere on the internet, by
 setting <a class="reference internal" href="capybara.html#capybara.app_host" title="capybara.app_host"><code class="xref py py-data docutils literal notranslate"><span class="pre">capybara.app_host</span></code></a>:</p>
@@ -512,8 +529,8 @@ setting <a class="reference internal" href="capybara.html#capybara.app_host" tit
 </pre></div>
 </div>
 </div>
-<div class="section" id="id29">
-<h2><span class="target" id="xpath-css-and-selectors">XPath, CSS and selectors</span><a class="headerlink" href="#id29" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id30">
+<h2><span class="target" id="xpath-css-and-selectors">XPath, CSS and selectors</span><a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h2>
 <p>Capybara does not try to guess what kind of selector you are going to give it,
 and will always use CSS by default. If you want to use XPath, you’ll need to
 do:</p>
@@ -554,8 +571,8 @@ selectors like this:</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="id30">
-<h2><span class="target" id="beware-the-xpath-trap">Beware the XPath // trap</span><a class="headerlink" href="#id30" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id31">
+<h2><span class="target" id="beware-the-xpath-trap">Beware the XPath // trap</span><a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h2>
 <p>In XPath the expression // means something very specific, and it might not be what
 you think. Contrary to common belief, // means “anywhere in the document” not “anywhere
 in the current context”. As an example:</p>
@@ -576,8 +593,8 @@ for is the .// expression which means “any descendant of the current node”:<
 </pre></div>
 </div>
 </div>
-<div class="section" id="id31">
-<h2><span class="target" id="configuring-and-adding-drivers">Configuring and adding drivers</span><a class="headerlink" href="#id31" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id32">
+<h2><span class="target" id="configuring-and-adding-drivers">Configuring and adding drivers</span><a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h2>
 <p>Capybara makes it convenient to switch between different drivers. It also
 exposes an API to tweak those drivers with whatever settings you want, or to
 add your own drivers. This is how to override the Selenium driver
@@ -609,8 +626,8 @@ inherit from this class.</p>
 <p>The <a class="reference external" href="https://github.com/SeleniumHQ/selenium/wiki/Python-Bindings">Selenium wiki</a> has additional info about how the underlying driver can be
 configured.</p>
 </div>
-<div class="section" id="id32">
-<h2><span class="target" id="gotchas">Gotchas:</span><a class="headerlink" href="#id32" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id33">
+<h2><span class="target" id="gotchas">Gotchas:</span><a class="headerlink" href="#id33" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Server errors will only be raised in the session that initiates the server
 thread. If you are testing for specific server errors and using multiple
@@ -635,57 +652,22 @@ sessions make sure to test for the errors using the initial session (usually
 
 
           </div>
+          
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Capybara</a><ul>
-<li><a class="reference internal" href="#id1">Key benefits</a></li>
-<li><a class="reference internal" href="#id2">Setup</a></li>
-<li><a class="reference internal" href="#id3">Using Capybara with pytest</a></li>
-<li><a class="reference internal" href="#id4">Using Capybara with unittest</a></li>
-<li><a class="reference internal" href="#id5">Drivers</a><ul>
-<li><a class="reference internal" href="#id6">Selecting the Driver</a></li>
-<li><a class="reference internal" href="#id7">Werkzeug</a></li>
-<li><a class="reference internal" href="#id8">Selenium</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id9">The DSL</a><ul>
-<li><a class="reference internal" href="#id10">Navigating</a></li>
-<li><a class="reference internal" href="#id11">Clicking links and buttons</a></li>
-<li><a class="reference internal" href="#id12">Interacting with forms</a></li>
-<li><a class="reference internal" href="#id13">Querying</a></li>
-<li><a class="reference internal" href="#id14">Finding</a></li>
-<li><a class="reference internal" href="#id15">Scoping</a></li>
-<li><a class="reference internal" href="#id16">Working with windows</a></li>
-<li><a class="reference internal" href="#id17">Scripting</a></li>
-<li><a class="reference internal" href="#id18">Modals</a></li>
-<li><a class="reference internal" href="#id19">Debugging</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id20">Matching</a><ul>
-<li><a class="reference internal" href="#id21">Exactness</a></li>
-<li><a class="reference internal" href="#id22">Strategy</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id23">Asynchronous JavaScript (Ajax and friends)</a></li>
-<li><a class="reference internal" href="#id24">Using sessions</a><ul>
-<li><a class="reference internal" href="#id25">Named sessions</a></li>
-<li><a class="reference internal" href="#id26">Using sessions manually</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#id27">Using the DSL elsewhere</a></li>
-<li><a class="reference internal" href="#id28">Calling remote servers</a></li>
-<li><a class="reference internal" href="#id29">XPath, CSS and selectors</a></li>
-<li><a class="reference internal" href="#id30">Beware the XPath // trap</a></li>
-<li><a class="reference internal" href="#id31">Configuring and adding drivers</a></li>
-<li><a class="reference internal" href="#id32">Gotchas:</a></li>
-</ul>
-</li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
-</ul>
+<h1 class="logo"><a href="#">Capybara</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
@@ -693,13 +675,6 @@ sessions make sure to test for the errors using the initial session (usually
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/index.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">
@@ -720,8 +695,8 @@ sessions make sure to test for the errors using the initial session (usually
       &copy;2016, Ian Lesperance.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |
       <a href="_sources/index.rst.txt"
