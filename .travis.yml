@@ -41,6 +41,7 @@ matrix:
           packages:
             - awesome
     - env: TOXENV=selenium2
+    - env: TOXENV=docs
   allow_failures:
     - env:
         - TOXENV=chrome
@@ -49,6 +50,7 @@ matrix:
     - env:
         - TOXENV=marionette
         - HEADLESS=true
+    - env: TOXENV=docs
 before_install:
   # Upgrade pip to a version that supports `pip install .[test]`.
   - pip install --upgrade pip
