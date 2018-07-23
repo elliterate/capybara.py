@@ -1,81 +1,30 @@
 sudo: true
 language: python
 dist: trusty
-addons:
-  firefox: 47.0.1
-  apt:
-    packages:
-      - awesome
 matrix:
   include:
-    - python: 2.7
-      env: TOXENV=py27
-    - python: 3.5
-      env: TOXENV=py35
-    - env: TOXENV=chrome
-      addons:
-        chrome: stable
-        apt:
-          packages:
-            - awesome
-    - env:
-        - TOXENV=chrome
-        - HEADLESS=true
-      addons:
-        chrome: stable
-        apt:
-          packages:
-            - awesome
-    - env: TOXENV=marionette
-      addons:
-        firefox: latest-beta
-        apt:
-          packages:
-            - awesome
     - env:
         - TOXENV=marionette
-        - HEADLESS=true
-      addons:
-        firefox: latest-beta
-        apt:
-          packages:
-            - awesome
-    - env: TOXENV=selenium2
-    - env: TOXENV=docs
-  allow_failures:
-    - env:
-        - TOXENV=chrome
-        - HEADLESS=true
-    - env: TOXENV=marionette
+        - FOO=1
     - env:
         - TOXENV=marionette
-        - HEADLESS=true
-    - env: TOXENV=docs
+        - FOO=2
+    - env:
+        - TOXENV=marionette
+        - FOO=3
+    - env:
+        - TOXENV=marionette
+        - FOO=4
 before_install:
-  # Upgrade pip to a version that supports `pip install .[test]`.
-  - pip install --upgrade pip
   - mkdir -p ~/drivers; export PATH=~/drivers:$PATH;
   - if [[ $TOXENV == marionette ]]; then
-      GECKODRIVER_VERSION=$(curl -s https://api.github.com/repos/mozilla/geckodriver/releases/latest | python -c "import sys, json; print json.load(sys.stdin)['tag_name']");
+      DATA=$(curl -s --stderr stderr.out https://api.github.com/repos/mozilla/geckodriver/releases/latest);
+      echo $?;
+      echo $DATA;
+      cat stderr.out;
+      GECKODRIVER_VERSION=$(echo $DATA | python -c "import sys, json; sys.stdout.write(json.load(sys.stdin)['tag_name'])");
       GECKODRIVER_URL="https://github.com/mozilla/geckodriver/releases/download/$GECKODRIVER_VERSION/geckodriver-$GECKODRIVER_VERSION-linux64.tar.gz";
       FILE=`mktemp`; wget "$GECKODRIVER_URL" -qO $FILE && tar xz -C ~/drivers -f $FILE geckodriver; rm $FILE; chmod 777 ~/drivers/geckodriver;
       ~/drivers/geckodriver --version;
     fi
-  - if [[ $TOXENV == chrome ]]; then
-      CHROMEDRIVER_VERSION=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE);
-      CHROMEDRIVER_URL="http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip";
-      FILE=`mktemp`; wget "$CHROMEDRIVER_URL" -qO $FILE && unzip $FILE chromedriver -d ~/drivers; rm $FILE; chmod 777 ~/drivers/chromedriver;
-      ~/drivers/chromedriver --version;
-    fi
-install:
-  - pip install tox
-before_script:
-  - if [[ -z $HEADLESS ]]; then
-      export DISPLAY=:99.0;
-      sh -e /etc/init.d/xvfb start && sleep 1;
-      mkdir -p ~/.config/awesome;
-      echo "require('awful'); tags = {}; tags[1] = awful.tag({'name'})" > ~/.config/awesome/rc.lua;
-      awesome &
-    fi
-script: tox
-cache: pip
+script: "true"
