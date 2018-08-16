@@ -26,6 +26,7 @@ class Window(object):
         self.session = session
         self.driver = session.driver
         self.handle = handle
+        self._contexts = []
 
     def __repr__(self):
         return "<capybara.window.Window handle={}>".format(repr(self.handle))
@@ -38,6 +39,15 @@ class Window(object):
 
     def __hash__(self):
         return hash(self.session) ^ hash(self.handle)
+
+    def __enter__(self):
+        context = self.session.window(self)
+        self._contexts.append(context)
+        return context.__enter__()
+
+    def __exit__(self, *args):
+        context = self._contexts.pop()
+        context.__exit__(*args)
 
     @property
     def closed(self):

@@ -28,9 +28,15 @@ class TestWithWindow:
                 window.close()
             session.switch_to_window(initial_window)
 
-    def test_switches_to_another_window(self, session, initial_window):
+    def test_switches_to_another_window_by_method(self, session, initial_window):
         window = list(set(session.windows) - set([initial_window]))[0]
         with session.window(window):
+            assert session.title in ["Title of the first popup", "Title of popup two"]
+        assert session.title == "With Windows"
+
+    def test_switches_to_another_window_by_instance(self, session, initial_window):
+        window = list(set(session.windows) - set([initial_window]))[0]
+        with window:
             assert session.title in ["Title of the first popup", "Title of popup two"]
         assert session.title == "With Windows"
 
