@@ -37,7 +37,7 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
         self.session = session
         self.base = base
         self.allow_reload = False
-        self._scopes = []
+        self._contexts = []
 
     def reload(self):
         """
@@ -69,13 +69,15 @@ class Base(FindersMixin, ActionsMixin, MatchersMixin, object):
         raise NotImplementedError()
 
     def __enter__(self):
-        scope = self.session.scope(self)
-        self._scopes.append(scope)
-        return scope.__enter__()
+        context = (
+            self.session.frame(self) if self.tag_name in {"frame", "iframe"}
+            else self.session.scope(self))
+        self._contexts.append(context)
+        return context.__enter__()
 
     def __exit__(self, *args):
-        scope = self._scopes.pop()
-        scope.__exit__(*args)
+        context = self._contexts.pop()
+        context.__exit__(*args)
 
     @property
     def text(self):

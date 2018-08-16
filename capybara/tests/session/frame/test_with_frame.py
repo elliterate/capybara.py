@@ -27,9 +27,14 @@ class TestWithFrame:
             assert session.find("//*[@id='divInFrameTwo']").text == "This is the text of divInFrameTwo"
         assert session.find("//*[@id='divInMainWindow']").text == "This is the text for divInMainWindow"
 
-    def test_finds_the_div_given_an_element(self, session):
+    def test_finds_the_div_given_an_element_by_method(self, session):
         element = session.find("css", "#frameOne")
         with session.frame(element):
+            assert session.find("//*[@id='divInFrameOne']").text == "This is the text of divInFrameOne"
+
+    def test_finds_the_div_given_an_element_by_instance(self, session):
+        element = session.find("css", "#frameOne")
+        with element:
             assert session.find("//*[@id='divInFrameOne']").text == "This is the text of divInFrameOne"
 
     def test_finds_the_div_given_selector_and_locator(self, session):
