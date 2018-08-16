@@ -27,6 +27,15 @@ class TestMatchesSelector(MatchesSelectorTestCase):
         assert not element.matches_selector("span.not_a_number")
         assert element.matches_selector("span.number")
 
+    def test_works_with_elements_located_via_a_sibling_selector(self, element):
+        sibling = element.sibling("css", "span", text="Other span")
+        assert sibling.matches_selector("xpath", "//span")
+        assert sibling.matches_selector("css", "span")
+
+    def test_works_with_the_html_element(self, session):
+        html = session.find("/html")
+        assert html.matches_selector("css", "html")
+
     def test_discards_all_matches_where_the_given_string_is_not_contained(self, element):
         assert element.matches_selector("//span", text="42")
         assert not element.matches_selector("//span", text="Doesnotexist")
@@ -45,6 +54,15 @@ class TestNotMatchSelector(MatchesSelectorTestCase):
         capybara.default_selector = "css"
         assert element.not_match_selector("span.not_a_number")
         assert not element.not_match_selector("span.number")
+
+    def test_works_with_elements_located_via_a_sibling_selector(self, element):
+        sibling = element.sibling("css", "span", text="Other span")
+        assert not sibling.not_match_selector("xpath", "//span")
+        assert sibling.not_match_selector("css", "div")
+
+    def test_works_with_the_html_element(self, session):
+        html = session.find("/html")
+        assert html.not_match_selector("css", "body")
 
     def test_discards_all_matches_where_the_given_string_is_contained(self, element):
         assert not element.not_match_selector("//span", text="42")

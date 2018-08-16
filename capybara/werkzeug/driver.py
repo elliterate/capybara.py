@@ -48,7 +48,7 @@ class Driver(Base):
         self._browser = None
 
     def _find_css(self, css):
-        elements = self.browser.dom.xpath(to_xpath(x.css(css)))
+        elements = self.browser.dom.css(css)
         return [Node(self, element) for element in elements]
 
     def _find_xpath(self, xpath):

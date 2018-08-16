@@ -1,3 +1,4 @@
+from cssselect import HTMLTranslator
 from lxml import etree
 import re
 
@@ -20,6 +21,9 @@ class HTML(object):
             element.text = content
 
         self.tree = tree
+
+    def css(self, css):
+        return etree.XPath(HTMLTranslator().css_to_xpath(css))(self.tree)
 
     def xpath(self, xpath):
         return self.tree.xpath(xpath)

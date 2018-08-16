@@ -78,7 +78,7 @@ setup(
         glob("capybara/tests/app/static/*") +
         glob("capybara/tests/app/templates/*") +
         glob("capybara/tests/fixtures/*")),
-    install_requires=["lxml", "xpath-py ~= 0.1.2"],
+    install_requires=["cssselect", "lxml", "xpath-py ~= 0.1.2"],
     setup_requires=["pytest-runner"],
     tests_require=tests_require,
     extras_require={

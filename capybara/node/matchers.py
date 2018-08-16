@@ -410,7 +410,7 @@ class MatchersMixin(object):
 
         @self.synchronize(wait=query.wait)
         def assert_matches_selector():
-            result = query.resolve_for(self.query_scope)
+            result = query.resolve_for(self.find_first("xpath", "./parent::*", minimum=0) or self.query_scope)
 
             if self not in result:
                 raise ExpectationNotMet("Item does not match the provided selector")
@@ -439,7 +439,7 @@ class MatchersMixin(object):
 
         @self.synchronize(wait=query.wait)
         def assert_not_match_selector():
-            result = query.resolve_for(self.query_scope)
+            result = query.resolve_for(self.find_first("xpath", "./parent::*", minimum=0) or self.query_scope)
 
             if self in result:
                 raise ExpectationNotMet("Item matched the provided selector")
