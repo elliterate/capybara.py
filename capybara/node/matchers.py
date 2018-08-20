@@ -13,6 +13,9 @@ from capybara.queries.text_query import TextQuery
 def predicate(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
+        if "wait" not in kwargs and not capybara.predicates_wait:
+            kwargs["wait"] = 0
+
         try:
             return func(*args, **kwargs)
         except ExpectationNotMet:

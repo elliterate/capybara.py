@@ -7,7 +7,7 @@ class TestHasTitle:
         session.visit("/with_js")
 
     def test_is_true_if_the_page_has_the_given_title(self, session):
-        assert session.has_title("with_js")
+        assert session.has_title("with_js") is True
 
     @pytest.mark.requires("js")
     def test_waits_for_title(self, session):
@@ -15,15 +15,15 @@ class TestHasTitle:
         assert session.has_title("changed title")
 
     def test_is_false_if_the_page_does_not_have_the_given_title(self, session):
-        assert not session.has_title("monkey")
+        assert session.has_title("monkey") is False
 
     def test_defaults_to_exact_false_matching(self, session):
         assert session.has_title("with_js")
         assert session.has_title("with_")
 
     def test_matches_exactly_if_exact_true_option_passed(self, session):
-        assert session.has_title("with_js", exact=True)
-        assert not session.has_title("with_", exact=True)
+        assert session.has_title("with_js", exact=True) is True
+        assert session.has_title("with_", exact=True) is False
 
     def test_matches_partial_if_exact_false_option_passed(self, session):
         assert session.has_title("with_js", exact=False)

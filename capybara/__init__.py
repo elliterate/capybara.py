@@ -52,6 +52,9 @@ ignore_hidden_elements = True
 match = "smart"
 """ str: The matching strategy to use. """
 
+predicates_wait = True
+""" bool: Whether Capybara's predicate matchers use waiting behavior by default. """
+
 raise_server_errors = True
 """ bool: Whether errors raised in the server should be raised in the tests. """
 

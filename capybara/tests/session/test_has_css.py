@@ -1,6 +1,8 @@
 import pytest
 import re
 
+import capybara
+
 
 class TestHasCSS:
     @pytest.fixture(autouse=True)
@@ -26,6 +28,21 @@ class TestHasCSS:
         session.visit("/with_js")
         session.click_link("Click me")
         assert session.has_css("input[type='submit'][value='New Here']")
+
+    @pytest.mark.requires("js")
+    def test_waits_for_content_to_appear_if_predicates_wait_is_true(self, session):
+        capybara.predicates_wait = True
+        capybara.default_max_wait_time = 2
+        session.visit("/with_js")
+        session.click_link("Click me")
+        assert session.has_css("input[type='submit'][value='New Here']") is True
+
+    def test_does_not_wait_for_content_to_appear_if_predicates_wait_is_false(self, session):
+        capybara.predicates_wait = False
+        capybara.default_max_wait_time = 2
+        session.visit("/with_js")
+        session.click_link("Click me")
+        assert session.has_css("input[type='submit'][value='New Here']") is False
 
     def test_is_true_if_the_content_occurs_within_the_range_given(self, session):
         assert session.has_css("p", between=range(1, 5))
