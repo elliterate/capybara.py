@@ -97,8 +97,8 @@ class MatchersMixin(object):
         current node. If options are provided, the assertion will check that each locator is present
         with those options as well (other than ``wait``). ::
 
-            page.assert_all_of_selectors("custom", "Tom", "Joe", visible="all")
-            page.assert_all_of_selectors("css", "#my_dif", "a.not_clicked")
+            page.has_all_of_selectors("custom", "Tom", "Joe", visible="all")
+            page.has_all_of_selectors("css", "#my_dif", "a.not_clicked")
 
         It accepts all options that :meth:`find_all` accepts, such as ``text`` and ``visible``.
 
@@ -124,8 +124,8 @@ class MatchersMixin(object):
         current node. If options are provided, the assertion will check that each locator is present
         with those options as well (other than ``wait``). ::
 
-            page.assert_none_of_selectors("custom", "Tom", "Joe", visible="all")
-            page.assert_none_of_selectors("css", "#my_div", "a.not_clicked")
+            page.has_none_of_selectors("custom", "Tom", "Joe", visible="all")
+            page.has_none_of_selectors("css", "#my_div", "a.not_clicked")
 
         It accepts all options that :meth:`find_all` accepts, such as ``text`` and ``visible``.
 
