@@ -1,4 +1,5 @@
 from collections import Hashable
+from functools import wraps
 
 import capybara
 from capybara.exceptions import ExpectationNotMet
@@ -9,7 +10,19 @@ from capybara.queries.style_query import StyleQuery
 from capybara.queries.text_query import TextQuery
 
 
+def predicate(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ExpectationNotMet:
+            return False
+
+    return wrapper
+
+
 class MatchersMixin(object):
+    @predicate
     def has_selector(self, *args, **kwargs):
         """
         Checks if a given selector is on the page or a descendant of the current node. ::
@@ -43,12 +56,9 @@ class MatchersMixin(object):
             bool: If the expression exists.
         """
 
-        try:
-            self.assert_selector(*args, **kwargs)
-            return True
-        except ExpectationNotMet:
-            return False
+        return self.assert_selector(*args, **kwargs)
 
+    @predicate
     def has_no_selector(self, *args, **kwargs):
         """
         Checks if a given selector is not on the page or a descendant of the current node. Usage is
@@ -62,12 +72,9 @@ class MatchersMixin(object):
             bool: Whether it doesn't exist.
         """
 
-        try:
-            self.assert_no_selector(*args, **kwargs)
-            return True
-        except ExpectationNotMet:
-            return False
+        return self.assert_no_selector(*args, **kwargs)
 
+    @predicate
     def has_style(self, styles, **kwargs):
         """
         Checks if an element has the specified CSS styles. ::
@@ -81,12 +88,9 @@ class MatchersMixin(object):
             bool: Whether the styles match.
         """
 
-        try:
-            self.assert_style(styles, **kwargs)
-            return True
-        except ExpectationNotMet:
-            return False
+        return self.assert_style(styles, **kwargs)
 
+    @predicate
     def has_all_of_selectors(self, selector, *locators, **kwargs):
         """
         Checks if allof the provided selectors are present on the given page or descendants of the
@@ -111,12 +115,9 @@ class MatchersMixin(object):
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
         """
 
-        try:
-            self.assert_all_of_selectors(selector, *locators, **kwargs)
-            return True
-        except ExpectationNotMet:
-            return False
+        return self.assert_all_of_selectors(selector, *locators, **kwargs)
 
+    @predicate
     def has_none_of_selectors(self, selector, *locators, **kwargs):
         """
         Checks if none of the provided selectors are present on the given page or descendants of the
@@ -141,12 +142,9 @@ class MatchersMixin(object):
             **kwargs: Arbitrary keyword arguments for :class:`SelectorQuery`.
         """
 
-        try:
-            self.assert_none_of_selectors(selector, *locators, **kwargs)
-            return True
-        except ExpectationNotMet:
-            return False
+        return self.assert_none_of_selectors(selector, *locators, **kwargs)
 
+    @predicate
     def matches_selector(self, *args, **kwargs):
         """
         Checks if the current node matches the given selector.
@@ -159,12 +157,9 @@ class MatchersMixin(object):
             bool: Whether it matches.
         """
 
-        try:
-            self.assert_matches_selector(*args, **kwargs)
-            return True
-        except ExpectationNotMet:
-            return False
+        return self.assert_matches_selector(*args, **kwargs)
 
+    @predicate
     def not_match_selector(self, *args, **kwargs):
         """
         Checks if the current node does not match the given selector. Usage is identical to
@@ -178,11 +173,7 @@ class MatchersMixin(object):
             bool: Whether it doesn't match.
         """
 
-        try:
-            self.assert_not_match_selector(*args, **kwargs)
-            return True
-        except ExpectationNotMet:
-            return False
+        return self.assert_not_match_selector(*args, **kwargs)
 
     def assert_selector(self, *args, **kwargs):
         """
@@ -878,6 +869,7 @@ class MatchersMixin(object):
 
         return assert_no_text()
 
+    @predicate
     def has_text(self, *args, **kwargs):
         """
         Checks if the page or current node has the given text content, ignoring any HTML tags.
@@ -899,14 +891,12 @@ class MatchersMixin(object):
             bool: Whether it exists.
         """
 
-        try:
-            return self.assert_text(*args, **kwargs)
-        except ExpectationNotMet:
-            return False
+        return self.assert_text(*args, **kwargs)
 
     has_content = has_text
     """ Alias for :meth:`has_text`. """
 
+    @predicate
     def has_no_text(self, *args, **kwargs):
         """
         Checks if the page or current node does not have the given text content, ignoring any HTML
@@ -920,10 +910,7 @@ class MatchersMixin(object):
             bool: Whether it doesn't exist.
         """
 
-        try:
-            return self.assert_no_text(*args, **kwargs)
-        except ExpectationNotMet:
-            return False
+        return self.assert_no_text(*args, **kwargs)
 
     has_no_content = has_no_text
     """ Alias for :meth:`has_no_text`. """
