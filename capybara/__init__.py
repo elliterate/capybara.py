@@ -16,6 +16,11 @@ default_driver = "werkzeug"
 javascript_driver = "selenium"
 """ str: The name of the driver to use when JavaScript is required. """
 
+selenium_browser = "firefox"
+""" str: The name of the browser for selenium.
+    Possible Values: (chrome|edge|firefox|ie|phantomjs|remote|safari)
+"""
+
 current_driver = None
 """ str: The name of the driver currently in use. """
 
@@ -300,7 +305,7 @@ def init_selenium_driver(app):
 
     from capybara.selenium.driver import Driver
 
-    return Driver(app)
+    return Driver(app, browser=selenium_browser)
 
 
 @register_driver("werkzeug")
