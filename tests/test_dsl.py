@@ -139,3 +139,15 @@ class TestUsingSession(DSLTestCase):
 class TestSessionName(DSLTestCase):
     def test_defaults_to_default(self):
         assert capybara.session_name == "default"
+
+
+class TestUsingDSLMixin(DSLTestCase):
+    @pytest.fixture
+    def myclass(self):
+        from capybara.dsl import DSLMixin
+        class MyClass(DSLMixin):
+            pass
+        return MyClass()
+
+    def test_uses_current_session(self, myclass):
+        assert myclass.has_no_current_path("/")

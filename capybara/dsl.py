@@ -37,11 +37,15 @@ def _define_package_method(name):
 
 def _define_session_method(name):
     @wraps(getattr(Session, name))
-    def func(*args, **kwargs):
+    def class_func(self, *args, **kwargs):
         return getattr(page, name)(*args, **kwargs)
 
-    setattr(DSLMixin, name, func)
-    setattr(_module, name, func)
+    @wraps(getattr(Session, name))
+    def module_func(*args, **kwargs):
+        return getattr(page, name)(*args, **kwargs)
+
+    setattr(DSLMixin, name, class_func)
+    setattr(_module, name, module_func)
 
 
 for _method in PACKAGE_METHODS:
