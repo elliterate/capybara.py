@@ -5,10 +5,10 @@ import capybara.dsl
 
 
 def pytest_runtest_setup(item):
-    if item.get_marker("js"):
+    if item.get_closest_marker("js"):
         capybara.current_driver = capybara.javascript_driver
 
-    driver = item.get_marker("driver")
+    driver = item.get_closest_marker("driver")
     if driver:
         assert len(driver.args) == 1, "exactly one driver must be specified"
         capybara.current_driver = driver.args[0]
