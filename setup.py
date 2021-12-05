@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 import sys
 
 
-tests_require = ["selenium < 4", "werkzeug"]
+tests_require = ["selenium >= 4", "werkzeug"]
 if sys.version_info < (3, 3):
     tests_require.append("mock")
 
