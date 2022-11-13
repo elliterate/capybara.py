@@ -1,7 +1,7 @@
+from collections import Hashable
 from functools import wraps
 
 import capybara
-from capybara.compat import Hashable
 from capybara.exceptions import ExpectationNotMet
 from capybara.helpers import expects_none, matches_count
 from capybara.selector import selectors
