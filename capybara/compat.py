@@ -21,9 +21,3 @@ else:
 
     def cmp(a, b):
         return (a > b) - (a < b)
-
-try:
-    from collections.abc import Hashable
-except ImportError:
-    # deprecated since python 3.3
-    from collections import Hashable

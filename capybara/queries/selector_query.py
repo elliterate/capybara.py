@@ -1,10 +1,11 @@
+from collections import Hashable
 from functools import reduce
 import re
 from xpath.expression import AbstractExpression
 from xpath.renderer import to_xpath
 
 import capybara
-from capybara.compat import Hashable, bytes_, str_
+from capybara.compat import bytes_, str_
 from capybara.helpers import desc, normalize_text, toregex
 from capybara.queries.base_query import BaseQuery
 from capybara.result import Result
