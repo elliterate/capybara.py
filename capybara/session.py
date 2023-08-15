@@ -1,4 +1,3 @@
-from collections import Hashable
 from contextlib import contextmanager
 from datetime import datetime
 from functools import wraps
@@ -6,7 +5,7 @@ import os
 import random
 
 import capybara
-from capybara.compat import ParseResult, urlparse
+from capybara.compat import Hashable, ParseResult, urlparse
 from capybara.driver.node import Node
 from capybara.exceptions import ScopeError, WindowError
 from capybara.node.base import Base
