@@ -17,7 +17,7 @@ def pytest_pycollect_makeitem(collector, name, obj):
 @pytest.hookimpl(tryfirst=True)
 def pytest_runtest_setup(item):
     # See if this test ``requires`` any special driver features.
-    requires = item.get_marker("requires")
+    requires = item.get_closest_marker("requires")
     if requires is not None:
         driver = item.getparent(Driver).obj
 
